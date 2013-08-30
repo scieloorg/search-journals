@@ -1,4 +1,4 @@
-iahx-opac-scielo
+search-journals
 ================
 
 iAHx Search Interface for SciELO
