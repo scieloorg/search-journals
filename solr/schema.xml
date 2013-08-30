@@ -1,56 +1,10 @@
-<?xml version="1.0" ?>
-<schema name="scielo" version="1.0">
-  <types>
-    <fieldtype name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="integer" class="solr.IntField" omitNorms="true"/>
-    <fieldtype name="long" class="solr.LongField" omitNorms="true"/>
-    <fieldtype name="float" class="solr.FloatField" omitNorms="true"/>
-    <fieldtype name="double" class="solr.DoubleField" omitNorms="true"/>
-    <fieldtype name="sint" class="solr.SortableIntField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="slong" class="solr.SortableLongField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="sfloat" class="solr.SortableFloatField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="sdouble" class="solr.SortableDoubleField" sortMissingLast="true" omitNorms="true"/>
-    <fieldtype name="date" class="solr.DateField" sortMissingLast="true" omitNorms="true"/>
-
-    <fieldtype name="text_ws" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-      </analyzer>
-    </fieldtype>
-
-	<fieldtype name="dateiso" class="solr.TextField">
-		<analyzer type="index">
-			<tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1"/>
-		</analyzer>
-	</fieldtype>
-
-	<fieldtype name="text" class="solr.TextField" positionIncrementGap="100">
-      <analyzer type="index">
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-		<filter class="solr.ISOLatin1AccentFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-      <analyzer type="query">
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-		<filter class="solr.ISOLatin1AccentFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-    </fieldtype>
-
-	<fieldtype name="string_lower" class="solr.StrField">
-		<analyzer>
-			<tokenizer class="solr.LowerCaseTokenizerFactory"/>
-		</analyzer>
-	</fieldtype>
-
-	<fieldtype name="ignored" stored="false" indexed="false" class="solr.StrField" />
- </types>
-
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="scielo_articles" version="1.5">
  <fields>
+
+
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+
    <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="in" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="type" type="string" indexed="true" stored="true"/>
@@ -58,13 +12,13 @@
    <field name="ti" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ab" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="fo" type="text" indexed="false" stored="true" multiValued="true"/>
-   <field name="la" type="string_lower" indexed="true" stored="true" multiValued="true"/>
+   <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true"/>
    <field name="ac" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ta_var" type="text" indexed="true" stored="false" multiValued="true"/>
 
-   <field name="da" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="pg" type="string" indexed="false" stored="true" multiValued="true"/>
 
    <!--Sponsor-->
@@ -95,16 +49,21 @@
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
    <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
+
+
+   <!-- uncomment the following to ignore any fields that don't already match an existing
+        field name or dynamic field, rather than reporting them as an error.
+        alternately, change the type="ignored" to some other type e.g. "text" if you want
+        unknown fields indexed and/or stored by default -->
+   <!--dynamicField name="*" type="ignored" multiValued="true" /-->
+
  </fields>
 
- <!-- field to use to determine and enforce document uniqueness. -->
+
+ <!-- Field to use to determine and enforce document uniqueness.
+      Unless this field is marked with required="false", it will be a required field
+   -->
  <uniqueKey>id</uniqueKey>
-
- <!-- field for the QueryParser to use when an explicit fieldname is absent -->
- <defaultSearchField>tw</defaultSearchField>
-
- <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
- <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="ti" dest="tw"/>
  <copyField source="ti_*" dest="tw"/>
@@ -125,5 +84,79 @@
 
  <!-- indice de revista -->
  <copyField source="ta_var" dest="ta"/>
+
+ <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+
+    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+
+    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+
+    <!-- A Trie based date field for faster date range queries and date faceting. -->
+    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+
+    <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
+    <fieldtype name="binary" class="solr.BinaryField"/>
+
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+
+    <!-- A text field that only splits on whitespace for exact matching of words -->
+    <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <fieldtype name="text" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldtype>
+
+    <!-- lowercases the entire field value, keeping it as a single token.  -->
+    <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldtype name="dateiso" class="solr.TextField">
+        <analyzer type="index">
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1"/>
+        </analyzer>
+    </fieldtype>
+
+    <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
+
+    <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
+    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+
+    <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
+
+    <!-- since fields of this type are by default not stored or indexed,
+         any data added to them will be ignored outright.  -->
+    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+
+ </types>
 
 </schema>
