@@ -1,4 +1,4 @@
 search-journals
 ================
 
-iAHx Search Interface for SciELO
+Configuration files and templates for SciELO articles search 
