@@ -1,0 +1,26 @@
+BODY{
+	margin-top: 20px;
+	padding: 10px;
+}
+
+BODY, INPUT, SELECT, TEXTAREA {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+th{
+	text-align: left;
+}
+
+th, td {
+	padding: 8px;
+	line-height: 20px;
+	text-align: left;
+	vertical-align: top;
+	border-top: 1px solid #DDD;
+}
+th, td{
+	display: table-cell;
+	font-size: 0.9em;
+}
+
+.odd {background: #F9F9F9}
