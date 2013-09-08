@@ -7,8 +7,10 @@
             </a>
         </div>
     {% endif %}
-
 {% endblock %}
+<div>
+    <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
+</div>
 
 {% block btn_related %}
     {% if config.show_related_docs == 'true' %}
