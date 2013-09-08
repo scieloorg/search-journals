@@ -2,8 +2,7 @@
 {% block btn_fulltext %}
     {% if doc.ur is defined %}
         <div>
-            {% set server_id = 'scielo_' ~ doc.in %}
-            <a target="_blank" href="{{ attribute(config.scielo, doc.in) }}scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
+            <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
                 <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
             </a>
         </div>
