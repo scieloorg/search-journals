@@ -15,7 +15,6 @@
 	<addthis_pub></addthis_pub>
 	<addthis_buttons>
 		<button>facebook</button>
-		<button>twitter</button>
 		<button>delicious</button>
 	</addthis_buttons>
 	<show_related_docs>false</show_related_docs>
@@ -129,7 +128,7 @@
 			</sort_list>
             <format_list>
             	<format>
-            		<name>summary</name>
+            		<name>abstract</name>
             	</format>
             </format_list>
             <!-- restrict list of clusters to show on result. If not set show all availables on solrconf.xml -->
@@ -139,4 +138,19 @@
             </cluster_list-->
 		</collection>
 	</search_collection_list>
+	<scielo_urls>
+		<arg>http://www.scielo.org.ar</arg>
+		<scl>http://www.scielo.br</scl>
+		<chl>http://www.scielo.cl</chl>
+		<col>http://www.scielo.org.co</col>
+		<cri>http://www.scielo.sa.cr</cri>
+		<cub>http://scielo.sld.cu</cub>
+		<esp>http://scielo.isciii.es</esp>
+		<mex>http://www.scielo.org.mx</mex>
+		<prt>http://www.scielo.gpeari.mctes.pt</prt>
+		<ven>http://www.scielo.org.ve</ven>
+		<spa>http://www.scielosp.org</spa>
+		<sss>http://socialsciences.scielo.org</sss>
+		<sza>http://www.scielo.org.za</sza>
+	</scielo_urls>
 </dia_config>
