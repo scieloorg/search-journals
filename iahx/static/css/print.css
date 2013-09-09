@@ -1,0 +1,59 @@
+@import url(./layout.css);
+@import url(./styles.css);
+
+DIV.top {
+	/*  background-color: #CCC; */
+}
+
+DIV.identification H1 {
+	/* color: #CCC; */	
+}
+
+DIV.search {
+	display: none;
+}
+
+DIV.results DIV.resultServices DIV H4,
+DIV.resultSet DIV.infoBar {
+	/* background-color: #CCC; */
+}
+
+DIV.resultSet {
+	margin: 10px 0px !important;
+}
+
+DIV.user-actions {
+	display: none;
+}
+
+DIV.resultSet DIV.infoBar DIV.pagination{
+	display: none;
+}
+
+DIV.results DIV.resultServices {
+	display: none;
+}
+
+DIV.resultsBar {
+	display: none;
+}
+
+DIV.data DIV.description DIV {
+	display: none !important;
+}
+
+DIV.data DIV.description DIV.full {
+	display: inline !important;
+}
+
+DIV.data DIV.description DIV.full A {
+	display: none;
+}
+
+DIV.footer DIV.links {
+	display:none;
+}
+
+DIV.otherVersions {
+	display: none;
+}

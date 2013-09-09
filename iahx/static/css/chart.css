@@ -1,0 +1,60 @@
+BODY{
+  margin: 0px;
+  padding: 0px;
+}
+
+a{
+	font-family: "Trebuchet MS";
+	text-decoration: none;
+	color: #000;
+	font-size: 10px;
+}
+
+ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+ul li {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+}
+
+ul li a span {
+	display: block;
+	padding-top: 45px;
+	text-align: center;
+	margin-left: 5px;
+}
+.chart_line a {
+	background: url(../image/common/linha_pq.gif) top left no-repeat;
+}
+
+.chart_bar a {
+	background: url(../image/common/barra_pq.gif) top left no-repeat;
+}
+
+.chart_pie a {
+	background: url(../image/common/pizza_pq.gif) top left no-repeat;
+}
+
+.chart_line a:hover {
+	background: url(../image/common/linha.gif) top left no-repeat;
+}
+
+.chart_bar a:hover {
+	background: url(../image/common/barra.gif) top left no-repeat;
+}
+
+.chart_pie a:hover {
+	background: url(../image/common/pizza.gif) top left no-repeat;
+}
+
+ul li a {
+	width: 60px;
+	height: 60px;
+	display: block;
+}

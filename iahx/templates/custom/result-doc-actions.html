@@ -1,0 +1,24 @@
+
+{% block btn_fulltext %}
+    {% if doc.ur is defined %}
+        <div>
+            <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
+                <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+<div>
+    <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
+</div>
+
+{% block btn_related %}
+    {% if config.show_related_docs == 'true' %}
+    	<div class="related">
+           	<a href="{{ constant("SEARCH_URL") }}related/{{ lang }}/{{ doc.id }}{% if debug == "true"  %}?debug=true{% endif %}" class="fancybox_iframe" title="{{ texts.RELATED_DOCUMENTS }}">
+        	    <img src="{{ constant("STATIC_URL") }}image/common/icon_related.gif" alt="{{ texts.RELATED_DOCUMENTS }}" />
+        	   {{ texts.RELATED_DOCUMENTS }}
+        	</a>
+        </div>
+    {% endif %}
+{% endblock %}
