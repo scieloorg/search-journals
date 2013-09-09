@@ -1,0 +1,20 @@
+.clear {clear: both;}
+.advanced-form {width: 90%; margin: 0 auto;}
+.advanced-form .mini {width: 90px;}
+.advanced-form .q-first input {width: 75%;}
+.advanced-form select.index {width: 178px;}
+.advanced-form .openerIndexes {background: url(../../static/image/indexes.gif)no-repeat; padding: 2px 0 2px 18px;text-decoration: none;}
+.advanced-form .openerIndexes:hover {text-decoration: underline;}
+.block-q .q, .more .q {width: 54.5%;}
+.indexList .vBlockR, .indexList .vBlockL {float:left;}
+.indexList .vBlockL.first {width: 590px;margin: -11px 0 0 1px;}
+.indexList .vBlockL  {width: 498px;margin: -11px 0 0 93px;}
+.indexList select {width: 100%;}
+.indexList .prev, .indexList .next {margin: 0 0 8px 4px;}
+.indexList .refresh {margin: 82px 0 8px 10px;}
+.indexList .prev a {background: url(../../static/image/arrow-up.gif) no-repeat; padding: 2px 0 2px 18px;text-decoration: none;}
+.indexList .next a {background: url(../../static/image/arrow-down.gif) no-repeat; padding: 2px 0 2px 18px;text-decoration: none;}
+.indexList .refresh a {background: url(../../static/image/refresh.gif) no-repeat; padding: 2px 0 2px 18px;text-decoration: none;}
+.advanced-form .openerIndexes:hover, .indexList .prev a:hover, .indexList .next a:hover, .indexList .refresh a:hover {text-decoration: underline;}
+
+.advanced-form .q-first input {width: 65%;}
