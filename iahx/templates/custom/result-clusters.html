@@ -19,7 +19,7 @@
                     <li class="filter">{{ attribute(texts.REFINE, cluster) }} 
                         <ul>
                             {% for item in items %}
-                                {% set item_value = cluster ~ '_' ~ item|replace({' ': '_', '/':'_'}) ~ '' %}
+                                {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
 
                                 <li>
                                     {{ translate(item, texts_group) }} <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}">(remover)</a>
@@ -88,7 +88,7 @@
 
                                 <ul id="ul_{{ name }}">
                                     {% for item in cluster if item.0 != '' %}
-                                        {% set cluster_item_id = name ~ '_' ~ item.0|replace({' ': '_', '/':'_'}) %}
+                                        {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
 
                                         <li class="{% if '/' in item.0 %}subtopic{% endif %}">
                                             <label for="{{ cluster_item_id }}"></label>
@@ -98,7 +98,7 @@
                                             {% endfor %}
                                             >
 
-                                            <a href="javascript: add_filter('{{ name }}_{{ item.0|replace({' ': '_', '/':'_'}) }}');" title="">
+                                            <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
                                                 {% if '/' in item.0 %}
                                                     {% set item_part = item.0|split('/') %}
                                                     {{ translate(item_part.1, cluster_labels ) }}
@@ -120,10 +120,6 @@
                     {% endif %}                    
                 {% endfor %}
             </form>
-
-            {% block detailed_query_box %}
-                {% include custom_template("result-detailed-query-box.html") %}
-            {% endblock %}
 
         </div>
 
