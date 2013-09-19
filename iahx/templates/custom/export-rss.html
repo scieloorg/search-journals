@@ -1,0 +1,61 @@
+{% set abstract_languages = ['pt', 'es', 'en'] %}
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0">
+    <channel>{% block channel %}
+        <title>{% block title %}{{ texts.TITLE }} {{ q }}{% endblock %}</title>
+        <link>{% block link %}{{ constant("SEARCH_URL") }}{% endblock %}</link>
+        <description>{% block description %}{{ texts.DESCRIPTION }}{% endblock %}</description>
+
+        {% for doc in docs %}
+            {% block item %}
+                <item>
+                    <title><![CDATA[{% for title in doc.ti if doc.ti is defined %}{{ title }}{% if not loop.index == doc.ti|length %}/{% endif %}{% endfor %}]]></title>
+
+                    <author><![CDATA[{% for author in doc.au if doc.au is defined %}{{ author }}{% if not loop.index == doc.au|length %};{% endif %}{% endfor %}]]></author>
+
+                    <source><![CDATA[{% for source in doc.fo if doc.fo is defined %}{{ source }}{% if not loop.index == doc.source|length %};{% endif %}{% endfor %}]]></source>
+                    
+                    <link><![CDATA[{{ constant("SEARCH_URL") }}{{ lang }}/{{ doc.id }}]]></link>
+
+                    <description><![CDATA[
+                        {% if doc.au is defined and doc.au|length > 0 %}
+                            {{ texts.RESULT.LABEL_AUTHOR }}:
+                            {% for author in doc.au if doc.au is defined %}
+                                {{ author }}{% if not loop.index == doc.au|length %};{% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if doc.fo is defined and doc.fo|length > 0 %}
+                            {{ texts.RESULT.LABEL_SOURCE }}:{{ doc.fo|length }}
+                            {% for source in doc.fo %}
+                                {{ source }}{% if not loop.index == doc.fo|length %};{% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% for lang in abstract_languages %}
+                            {% set label_name = 'LABEL_ABSTRACT_' ~ lang %}
+                            {% set label_attr = 'ab_' ~ lang %}
+                            {% set id = doc.id %}
+
+                            {% if attribute(doc, label_attr) %}
+                                {{ attribute(texts.RESULT, label_name) }}
+                                {{ attribute(doc, label_attr).0 }}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if doc.mh is defined %}
+                            <p> {{ texts.RESULT.LABEL_SUBJECT }}:
+                                {% for mesh in doc.mh if doc.mh is defined %}
+                                    {{ mesh }}{% if not loop.index == doc.mh|length %};{% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    ]]></description>
+
+
+                </item>
+                {% endblock %}
+        {% endfor %}
+    {% endblock %}</channel>
+</rss>
