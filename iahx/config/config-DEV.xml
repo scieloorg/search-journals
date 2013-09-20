@@ -129,6 +129,10 @@
 					 <name>YEAR_ASC</name>
 					 <value>da asc</value>
 				 </sort>
+                 <sort>
+                     <name>SJR</name>
+                     <value>order_sjr desc</value>
+                 </sort>
 			</sort_list>
             <format_list>
             	<format>
