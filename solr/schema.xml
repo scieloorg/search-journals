@@ -39,6 +39,9 @@
    <field name="acronym_sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="wok_subject_categories" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="wok_citation_index" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="document_type" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="aff_country" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
    <!-- END cluster list -->
 
    <!-- Dynamic field definitions -->
