@@ -12,6 +12,21 @@
 {% block result_navigation %}{% endblock %}
 {% block clusters %}{% endblock %}
 {% block results_topbar %}{% endblock %}
+{% block results_actions %}
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style">
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count" title="Facebook_like"></a>
+        <a class="addthis_button_tweet" title="Tweet"></a>            
+        <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>            
+        <a class="addthis_counter addthis_pill_style"></a> 
+        {% for service in config.addthis_buttons.button %}
+            <a class="addthis_button_{{ service }}"></a>
+        {% endfor %}
+    </div>
+    <script type="text/javascript">addthis_pub  = '{{ config.addthis_pub }}';</script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/152/addthis_widget.js"></script>    
+    <!-- AddThis Button END -->
+{% endblock %}
 {% block resultNavigation %}{% endblock %}
 
 {% block result_set %}
@@ -47,6 +62,7 @@
                 <div class="user-actions" %>
                     {% embed custom_template("result-doc-actions.html") %}
                         {# hide unused options #}
+                        {% block btn_share %}{% endblock %}
                         {% block btn_detail %}{% endblock %}
                         {% block btn_related %}{% endblock %}
                     {% endembed %}
