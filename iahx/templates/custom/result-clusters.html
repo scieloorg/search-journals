@@ -90,24 +90,28 @@
                                     {% for item in cluster if item.0 != '' %}
                                         {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
 
-                                        <li class="{% if '/' in item.0 %}subtopic{% endif %}">
-                                            <label for="{{ cluster_item_id }}"></label>
-                                            <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
-                                            {% for filter_name, filter in filters if filter_name == name %}
-                                                {% if item.0 in filter %}checked="true"{% endif %}
-                                            {% endfor %}
-                                            >
+                                        {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
+                                           {# hide cluster for document_type that dont have translation #}
+                                        {% else %}
+                                            <li class="{% if '/' in item.0 %}subtopic{% endif %}">
+                                                <label for="{{ cluster_item_id }}"></label>
+                                                <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
+                                                {% for filter_name, filter in filters if filter_name == name %}
+                                                    {% if item.0 in filter %}checked="true"{% endif %}
+                                                {% endfor %}
+                                                >
 
-                                            <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
-                                                {% if '/' in item.0 %}
-                                                    {% set item_part = item.0|split('/') %}
-                                                    {{ translate(item_part.1, cluster_labels ) }}
-                                                {% else %}
-                                                    {{ translate(item.0, cluster_labels ) }}
-                                                {% endif %}
-                                            </a> ({{ item.1 }})
+                                                <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
+                                                    {% if '/' in item.0 %}
+                                                        {% set item_part = item.0|split('/') %}
+                                                        {{ translate(item_part.1, cluster_labels ) }}
+                                                    {% else %}
+                                                        {{ translate(item.0, cluster_labels ) }}
+                                                    {% endif %}
+                                                </a> ({{ item.1 }})
 
-                                        </li>
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
 
                                     {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
