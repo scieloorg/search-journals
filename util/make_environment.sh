@@ -4,7 +4,7 @@ echo
 
 mkdir git
 
-cd git 
+cd git
 git clone git@github.com:bireme/iahx-controller.git iahx-controller
 git clone git@github.com:bireme/iahx-opac.git iahx-opac
 
@@ -34,6 +34,7 @@ chmod o+w logs
 # copy configuration file
 cd config
 cp ../../../git/search-books/iahx/config/config-DEV.xml config.xml
+cp config-mail-SAMPLE.php config-mail.php
 cd ..
 # make symbolic links for core files
 rm -rf lib
@@ -72,6 +73,7 @@ chmod o+w logs
 # copy configuration file
 cd config
 cp ../../../git/search-journals/iahx/config/config-DEV.xml config.xml
+cp config-mail-SAMPLE.php config-mail.php
 cd ..
 # make symbolic links for core files
 rm -rf lib
