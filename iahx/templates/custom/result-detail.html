@@ -1,0 +1,79 @@
+{% extends "index.html" %}
+
+{% set abstract_languages = ['pt', 'es', 'en'] %}
+
+{% block extrahead %}
+    <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/print.css" type="text/static" media="print">
+    <script>window.print();</script>
+{% endblock %}
+
+{# hide unused blocks #}
+
+{% block result_navigation %}{% endblock %}
+{% block clusters %}{% endblock %}
+{% block results_topbar %}{% endblock %}
+{% block results_actions %}
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style">
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count" title="Facebook_like"></a>
+        <a class="addthis_button_tweet" title="Tweet"></a>            
+        <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>            
+        <a class="addthis_counter addthis_pill_style"></a> 
+        {% for service in config.addthis_buttons.button %}
+            <a class="addthis_button_{{ service }}"></a>
+        {% endfor %}
+    </div>
+    <script type="text/javascript">addthis_pub  = '{{ config.addthis_pub }}';</script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/152/addthis_widget.js"></script>    
+    <!-- AddThis Button END -->
+{% endblock %}
+{% block resultNavigation %}{% endblock %}
+
+{% block result_set %}
+    <div id="{{ doc.id }}" class="record detail">
+        <div class="data">
+            {% block data %}
+
+
+                <!-- title -->
+                <h3>{{ occ( {'element': doc.ti, separator: ' / '} ) }}</h3>
+                <!-- author -->
+                {% if doc.au is defined %}
+                    {% for author in doc.au %}
+                        {{ author }}{% if loop.last %}.{% else %};{% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% include custom_template("result-inc-source.html") %}
+
+                <div>
+                    {% for lang in abstract_languages %}
+                        {% set label_name = 'LABEL_ABSTRACT_' ~ lang %}
+                        {% set label_attr = 'ab_' ~ lang %}
+                        {% set id = doc.id %}
+
+                        {% if attribute(doc, label_attr) %}
+                            <h4>{{ attribute(texts.RESULT, label_name) }}</h4>
+                            {{ attribute(doc, label_attr).0}}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="user-actions" %>
+                    {% embed custom_template("result-doc-actions.html") %}
+                        {# hide unused options #}
+                        {% block btn_share %}{% endblock %}
+                        {% block btn_detail %}{% endblock %}
+                        {% block btn_related %}{% endblock %}
+                    {% endembed %}
+                </div>
+
+                {% if maxScore > config.related_min_score %}
+                    {% include "related-list.html" %}
+                {% endif %}
+
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+

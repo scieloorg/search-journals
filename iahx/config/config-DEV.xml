@@ -14,6 +14,7 @@
 	<environment>development</environment>
 	<addthis_pub></addthis_pub>
 	<addthis_buttons>
+		<button>favorites</button>
 		<button>facebook</button>
 		<button>delicious</button>
 	</addthis_buttons>
@@ -35,23 +36,26 @@
 					<name>ALL</name>
 					<prefix></prefix>
 				</index>
+                <index>
+                    <name>YEAR</name>
+                    <prefix>year_cluster</prefix>
+                </index>
+                <index>
+                    <name>AU</name>
+                    <prefix>au</prefix>
+                </index>
 				<index>
-					<name>TI</name>
-					<prefix>ti</prefix>
-				</index>
-				<index>
-					<name>AU</name>
-					<prefix>au</prefix>
-				</index>
-				<index>
-					<name>AB</name>
-					<prefix>ab</prefix>
-				</index>
-				<index>
-					<advanced/>
 					<name>SP</name>
 					<prefix>sponsor</prefix>
 				</index>
+                <index>
+                    <name>TA</name>
+                    <prefix>ta</prefix>
+                </index>                
+                <index>
+                    <name>TI</name>
+                    <prefix>ti</prefix>
+                </index>
 			</index_list>
 			<where_list>
 				<where>
@@ -125,6 +129,10 @@
 					 <name>YEAR_ASC</name>
 					 <value>da asc</value>
 				 </sort>
+                 <sort>
+                     <name>SJR</name>
+                     <value>order_sjr desc</value>
+                 </sort>
 			</sort_list>
             <format_list>
             	<format>

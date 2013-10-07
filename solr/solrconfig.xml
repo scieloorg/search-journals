@@ -191,6 +191,9 @@
          <str name="facet.field">acronym_sponsor</str>
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
+         <str name="facet.field">document_type</str>
+         <str name="facet.field">aff_country</str>
+         <str name="facet.field">aff_institution</str>
          <str name="facet.field">la</str>
          <str name="facet.field">in</str>
          <str name="facet.limit">20</str>
