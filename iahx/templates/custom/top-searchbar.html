@@ -24,7 +24,7 @@
 
 
                 <label for="q" class="hide">Busca</label>
-                <input type="text" name="q" id="q" value="{% if params.q %}{{ params.q }}{% else %}{{ texts.SEARCH_WORDS }}{% endif %}" class="inputText {% if params.q is not defined %}defaultValue{% endif %}" title="{{ texts.SEARCH_WORDS }}" placeholder="{{ texts.SEARCH_WORDS }}" onfocus="if(this.value=='{{ texts.SEARCH_WORDS }}') this.value = '';" onblur="if(this.value=='') this.value = '{{ texts.SEARCH_WORDS }}';" onkeydown="$('#q').removeClass('defaultValue');">
+                <input type="text" name="q" id="q" value="{% if params.q %}{{ params.q }}{% endif %}" class="inputText"  title="{{ texts.SEARCH_WORDS }}" placeholder="{{ texts.SEARCH_WORDS }}" >
 
                 {% if collectionData.index_list.index is defined %}
                     <label for="selectIndex" class="hide">{{texts.LABEL_FOR_SELECT_INDEX}}</label>
