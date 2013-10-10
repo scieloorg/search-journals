@@ -92,6 +92,10 @@
 
                                         {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
                                            {# hide cluster for document_type that dont have translation #}
+
+                                        {% elseif name == 'la' and attribute(texts.REFINE_la, item.0|slugify) == '' %}
+                                           {# hide cluster for languages that dont have translation #}
+
                                         {% else %}
                                             <li class="{% if '/' in item.0 %}subtopic{% endif %}">
                                                 <label for="{{ cluster_item_id }}"></label>
