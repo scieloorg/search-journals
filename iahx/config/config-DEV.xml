@@ -121,7 +121,6 @@
 					 <value>score desc</value>
 				 </sort>
 				 <sort>
-				 	 <default_for_empty_query>1</default_for_empty_query>
 					 <name>YEAR_DESC</name>
 					 <value>da desc</value>
 				 </sort>
