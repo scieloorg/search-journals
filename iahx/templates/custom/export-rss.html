@@ -10,11 +10,17 @@
         {% for doc in docs %}
             {% block item %}
                 <item>
-                    <title><![CDATA[{% for title in doc.ti if doc.ti is defined %}{{ title }}{% if not loop.index == doc.ti|length %}/{% endif %}{% endfor %}]]></title>
+                    {% if doc.ti %}
+                        <title><![CDATA[{% for title in doc.ti if doc.ti is defined %}{{ title }}{% if loop.index < doc.ti|length %} / {% endif %}{% endfor %}]]></title>
+                    {% endif %}
 
-                    <author><![CDATA[{% for author in doc.au if doc.au is defined %}{{ author }}{% if not loop.index == doc.au|length %};{% endif %}{% endfor %}]]></author>
+                    {% if doc.au.0 != '' %}
+                        <author><![CDATA[{% for author in doc.au if doc.au is defined %}{{ author }}{% if loop.index < doc.au|length %}; {% endif %}{% endfor %}]]></author>
+                    {% endif %}
 
-                    <source><![CDATA[{% for source in doc.fo if doc.fo is defined %}{{ source }}{% if not loop.index == doc.source|length %};{% endif %}{% endfor %}]]></source>
+                    {% if doc.fo.0 %} 
+                        <source><![CDATA[{{ doc.fo.0 }}]]></source>
+                    {% endif %}
 
                     {% if doc.da != '' %}
                         {% set pub_date = doc.da|slice(0,4) ~  '-' ~ doc.da|slice(4,2) ~ '-' ~ doc.da|slice(6,2) %}
