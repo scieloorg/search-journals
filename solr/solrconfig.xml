@@ -180,6 +180,7 @@
        <str name="echoParams">explicit</str>
        <int name="rows">10</int>
        <str name="df">tw</str>
+       <str name="q.op">AND</str>
      </lst>
      <lst name="invariants">
          <str name="facet">true</str>
