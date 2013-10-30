@@ -180,22 +180,21 @@
        <str name="echoParams">explicit</str>
        <int name="rows">10</int>
        <str name="df">tw</str>
+       <str name="q.op">AND</str>
      </lst>
      <lst name="invariants">
          <str name="facet">true</str>
-         <str name="f.tag.facet.sort">false</str>
-         <str name="f.tag.facet.limit">-1</str>
-         <str name="facet.field">ac</str>
+         <str name="facet.field">in</str>
          <str name="facet.field">ta_cluster</str>
+         <str name="facet.field">la</str>
          <str name="facet.field">year_cluster</str>
-         <str name="facet.field">acronym_sponsor</str>
-         <str name="facet.field">wok_subject_categories</str>
-         <str name="facet.field">wok_citation_index</str>
+         <str name="facet.field">ac</str>
          <str name="facet.field">document_type</str>
          <str name="facet.field">aff_country</str>
          <str name="facet.field">aff_institution</str>
-         <str name="facet.field">la</str>
-         <str name="facet.field">in</str>
+         <str name="facet.field">wok_subject_categories</str>
+         <str name="facet.field">wok_citation_index</str>
+         <str name="facet.field">acronym_sponsor</str>
          <str name="facet.limit">20</str>
          <str name="facet.mincount">1</str>
      </lst>
