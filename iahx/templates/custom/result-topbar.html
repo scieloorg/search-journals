@@ -36,7 +36,7 @@
 
                     {* ajusta a variavel de traducao *}
                     {% if sort.name == params.sort %}
-                        <option value="{{ sort.name }}" selected="true">{{ attribute(texts, sort.name) }}</option>
+                        <option value="{{ sort.name }}" selected="true">{{ attribute(texts.SORT, sort.name) }}</option>
                     {% else %}
                         <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
                     {% endif %}
