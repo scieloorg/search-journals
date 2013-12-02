@@ -253,7 +253,7 @@ DIV.results {
     clear: both;
 }
 DIV.results DIV.resultServices {
-	float: right;
+	float: left;
     width: 230px;
 }
 DIV.results DIV.resultServices DIV.filters {
@@ -409,8 +409,8 @@ DIV.results DIV.resultServices DIV.closed DIV {
     display: none;
 }
 DIV.results DIV.resultSet {
-    float: left;
-    width: 730px;
+    float: right;
+    width: 740px;
 }
 DIV.resultSet DIV.infoBar {
     padding: 6px 10px;
@@ -561,7 +561,7 @@ DIV.resultServices DIV.searchHistory DIV.altpopup{
     padding: 5px 5px 5px 20px;
 }
 .resultOptions {
-    float: left;
+    float: right;
     width: 735px;
 }
 .yourSelectionCheck {
