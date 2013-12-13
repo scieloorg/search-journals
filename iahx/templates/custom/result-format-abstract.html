@@ -13,10 +13,10 @@
 
             {% if attribute(doc, label_attr) %}
                 <h4>{{ attribute(texts.RESULT, label_name) }}</h4>
-                {{ attribute(doc, label_attr).0|slice(0,300) }}
+                {{ attribute(doc, label_attr).0|slice(0,300)|raw }}
                 <a href="#" onclick="$('#{{id}}_{{lang}}').show(); $('#show_{{id}}_{{lang}}').hide(); return false;"  id="show_{{id}}_{{lang}}">[...]</a>
                     <span style="display:none" id="{{id}}_{{lang}}">
-                    {{ attribute(doc, label_attr).0|slice(300) }}
+                    {{ attribute(doc, label_attr).0|slice(300)|raw }}
                 </span>
             {% endif %}
         {% endfor %}
