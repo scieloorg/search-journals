@@ -1,16 +1,14 @@
 
 {% block btn_fulltext %}
-    {% if doc.ur is defined %}
-        <div>
-            <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
-                <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
-            </a>
-        </div>
-    {% endif %}
+    <div>
+        <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
+            <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
+        </a>
+    </div>
 {% endblock %}
 {% block btn_share %}
 <div>
-    <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
+    <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
 </div>
 {% endblock %}
 

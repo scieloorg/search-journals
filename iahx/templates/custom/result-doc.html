@@ -1,0 +1,26 @@
+{% for doc in docs %}
+
+    <div id="{{ doc.id }}" class="record">
+
+        <div class="yourSelectionCheck">
+            <label for="select_{{ doc.id }}" class="hide">{{ texts.SELECT }}</label>
+            <input type="checkbox" class="my_selection" value="{{ doc.id }}"
+            {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
+        </div>
+
+        <div class="position">{{ loop.index + pag.start }}.</div>
+        <div class="data">
+            {% block data %}
+                <!-- title -->
+                <h3>
+                    <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}" title="{{ doc.ti.0 }}">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</a>
+                </h3>
+
+            {% endblock %}
+            <div class="user-actions">
+                {% include custom_template("result-doc-actions.html") %}
+            </div>
+        </div>
+
+    </div>
+{% endfor %}

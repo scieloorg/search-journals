@@ -51,10 +51,14 @@
                 <index>
                     <name>TA</name>
                     <prefix>ta</prefix>
-                </index>                
+                </index>
                 <index>
                     <name>TI</name>
                     <prefix>ti</prefix>
+                </index>
+                <index>
+                    <name>AB</name>
+                    <prefix>ab</prefix>
                 </index>
 			</index_list>
 			<where_list>
