@@ -1,0 +1,28 @@
+<ul class="c-share-ul">
+
+    {% block btn_detail %}
+    
+        <li class="c-share-li"><a class="c-share-lia" href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/icon_page_go.gif" alt="{{ texts.SHOW_DETAILS }}" border="0" />{{ texts.SHOW_DETAILS }}</a>
+    
+    {% endblock %}
+
+    {% block btn_fulltext %}
+        {% if doc.ur is defined %}
+            <li class="c-share-li">
+                <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
+                    {{ texts.FULLTEXT }}
+                </a>
+            </li>
+        {% endif %}
+    {% endblock %}
+
+    {% block btn_related %}
+        {% if maxScore > config.related_min_score %} 
+            <li class="c-share-li">
+                <a class="c-share-lia"  href="{{ constant("SEARCH_URL") }}related/{{ lang }}/{{ doc.id }}?view=mobile"  title="{{ texts.RELATED_DOCUMENTS }}">
+                {{ texts.RELATED_DOCUMENTS }}</a>
+            </li>
+        {% endif %}
+    {% endblock %}
+
+</ul>
