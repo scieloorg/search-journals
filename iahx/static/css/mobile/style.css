@@ -16,8 +16,7 @@ img{border:0; max-width: 100%; height: auto;}
 .bg-white{background:rgb(255,255,255);}
 
 /* SPRITE */
-.h-bg, .i-nav-hide, .i-nav-show, .i-arrow-right, .i-results-arrow, .b-back, .b-search, .b-apply, .i-hide, .i-show, .c-filters-remove
-{background-image:url(../../image/mobile/sprite.png); background-repeat:no-repeat; background-color:transparent;}
+.i-nav-hide, .i-nav-show, .i-arrow-right, .i-results-arrow, .b-back, .b-search, .b-apply, .i-hide, .i-show, .c-filters-remove, .icn-html, .icn-pdf, .icn-epub {background-image:url(../../image/mobile/sprite.png); background-repeat:no-repeat; background-color:transparent;}
 
 /* ICONS (i) */
 .i-arrow-right{float:right; margin:2px 7px 0px 7px; width:10px; height:14px; background-position:-25px -177px;}
@@ -30,9 +29,9 @@ img{border:0; max-width: 100%; height: auto;}
 /* HEADER (h) */
 .h{overflow:hidden; border-bottom:1px solid rgb(122,128,145);}
 .h-padding{padding:7px 7px 0 7px;}
-.h-bg{background-color:rgb(255,255,255); background-position:right top;}
-.h-logo{width:100%; float:left; margin-bottom:12px;}
-.h-logo a img{width:250px; float:left;}
+.h-bg{background-color:rgb(255,255,255);}
+.top{width:100%; float: left; margin-bottom:12px;}
+.h-logo a img{float: left;}
 .h-search{width:100%; float:left; position:relative; margin-bottom:12px;}
 .h-label{float:left; margin:0 7px;}
 .h-div{position:relative; width:100%; float:left; padding:7px 0; background:rgb(199,199,199);}
@@ -43,6 +42,9 @@ img{border:0; max-width: 100%; height: auto;}
 .h-nav-ul{width:100%; float:left; list-style:none;}
 .h-nav-ul-li{width:100%; padding:12px 0; display:block; border-bottom:1px solid rgb(160,160,160);}
 .h-nav-ul-lia{padding:0 7px; color:rgb(51,51,51); font-size:13px; font-weight:bold; text-decoration:none;}
+.top .identification {float: left;}
+.top .identification H1 {display: none;}
+.top .identification H2 {display: none;}
 
 /* CONTENT (c) */
 .c{width:100%; height:100%; float:left; background:rgb(232,232,232);}
@@ -50,8 +52,8 @@ img{border:0; max-width: 100%; height: auto;}
 .c-results{float:left;padding:5px 0 5px 0; border-bottom:1px solid rgb(160,160,160); width:100%;position:relative;}
 .c-results-a{float:left; color:rgb(51,51,51); text-decoration:none;  padding:0 40px 0 7px;}
 .c-results-tit, .c-results-intro, .c-results-lang, .c-results-resume-tit, .c-results-assunt{width:100%; float:left;}
-.c-results-tit{color:rgb(16,163,84); font-weight:bold; font-size:14px; line-height:16px; margin:0 0 2px 0;}
-.c-tags{font-size:10px; float:left; background:rgb(185,185,185); padding:1px 5px; border:1px solid rgb(137,137,137); border-radius:12px; margin-right:5px;}
+.c-results-tit{color:#990000; font-weight:bold; font-size:14px; line-height:16px; margin:0 0 2px 0;}
+.c-tags{background: none repeat scroll 0 0 #B9B9B9;border: 1px solid #898989;border-radius: 12px 12px 12px 12px;float: left;font-size: 90%;margin: 2px 4px;padding: 0 4px;}
 .c-results-intro{font-size:11px; font-weight:normal; color:rgb(51,51,51); line-height:15px;}
 .c-results-lang{font-style:italic; margin-top:3px;}
 .c-results-resume{padding:0px 7px; overflow:hidden; margin-top:5px; border-top:1px solid rgb(160,160,160);}
@@ -68,17 +70,22 @@ img{border:0; max-width: 100%; height: auto;}
 .c-orderby-ul{padding:5px 0;background-color: rgb(255,255,255);border-bottom:1px solid rgb(160,160,160);}
 .c-orderby-li {padding:3px 7px;}
 
-/* BOTTOM BAR */
-.c-share{width:100%; background:rgb(57,57,57); z-index:999; position:fixed; bottom:0;}
-.c-share-ul{width:100%; float:left; list-style:none;}
-.c-share-li{float:left; color:rgb(255,255,255); font-size:10px;}
-.c-share-lia{float:left; padding:4px 5px; color:rgb(255,255,255); text-decoration:none;}
-.c-share-lia:hover{text-decoration:none; color:rgb(255,255,255); background:rgb(16,163,84);}
+
+.c-share, .related{padding: 5px;border-top: 1px solid #A0A0A0;margin-top: 5px;}
+.c-share-li{}
+.icn-epub, .icn-pdf, .icn-html{width: 16px; height:16px;display: inline-block;}
+.icn-epub{background-position: 0 -232px}
+.icn-pdf{background-position: -26px -232px}
+.icn-html{background-position: -52px -232px}
+.c-share-ul{margin:8px 0 0 0;}
+.c-share-li{display: inline-block;margin:0 6px 0 0;}
+.c-share-lia{text-decoration:none;}
+.c-share-lia:hover{text-decoration:underline;}
 
 /* FORMS */
 
 .input-search{width:70%; font-size:11px; min-height:20px; max-height:20px; float:left; border:1px solid rgb(60,67,75); padding:2px 7px; border-radius:5px;}
-.b-search{width:61px; height:27px; background-position:-49px -200px; margin-left: 6px; float:left; cursor:pointer; text-indent:-1999px; font-size:10px; border:none;}
+.b-search{width:61px; height:27px; background-position:-49px -200px; margin-left: 6px;cursor:pointer; text-indent:-1999px; font-size:10px; border:none;}
 .b-back{z-index:30; position:relative; width:44px; height:27px; float:left; margin-left:7px; background-position:0 -200px; text-indent:-2500px; font-size:10px;}
 .b-apply{z-index:30; position:relative; width:56px; height:27px; margin:-33px 26px 0 0; background-position:-115px -200px; text-indent:-2500px; font-size:10px;border:none;cursor:pointer;}
 .c-filters-ck{float:left; margin:1px 5px 0 0;}
@@ -88,13 +95,26 @@ img{border:0; max-width: 100%; height: auto;}
 .c-results-pag{width:100%; float:left; position:relative;}
 .simplePagerNav{list-style:none; float:right; margin:10px 7px 7px 0;}
 .simplePagerNav li{float:left; margin-left:5px; font-size:10px;}
-.simplePagerNav li a{float:left; background:rgb(16,163,84); padding:3px 10px; text-decoration:none; color:rgb(255,255,255);}
+.simplePagerNav li a{float:left; background:rgb(40,72,125); padding:3px 10px; text-decoration:none; color:rgb(255,255,255);}
 .currentPage a{background:rgb(51,51,51) !important; text-decoration:none; color:rgb(255,255,255) !important;}
 
 /* TAGS */
 
+/* RELATED DOCS */
+.related_docs_list li{
+	list-style-type: decimal;
+	list-style-position: inside;
+	padding-left:6px;
+	margin: 10px 0;
+}
+.related_docs_list li,
+.related_docs_list li a{
+	color:rgb(40,72,125);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+    text-decoration: None;
+}
+
 /* FOOTER */
 .footer{clear:both;padding:7px;}
-
-/* LOADING */
-#loading { background:url("../../image/mobile/loading.gif") no-repeat center; height: 100px; width: 100px; position: fixed; left: 50%; top: 50%; z-index: 1000; margin: -25px 0 0 -25px; }

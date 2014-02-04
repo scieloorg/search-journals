@@ -1,0 +1,49 @@
+{% block menu %}
+    <div class="h-div">
+        <span class="h-label">
+            {{ texts.RESULTS }} 
+            <strong>
+                {{ pag.start+1 }} - 
+                {% if pag.start+pag.count <= pag.total %}
+                    {{ pag.start+pag.count }}
+                {% else %}
+                    {{ pag.total }}
+                {% endif %}
+            </strong> de <strong>{{ pag.total_formatted }}</strong>
+        </span>
+        <i class="i-nav-show"></i>
+        <i class="i-nav-hide"></i>
+    </div>
+
+    <nav class="h-nav">
+        <ul class="h-nav-ul">
+            <li class="h-nav-ul-li show-filters">
+                <a class="h-nav-ul-lia" href="#">Filtros <i class="i-arrow-right"></i></a>                
+            </li>
+            {% include custom_template("mobile/result-clusters.html") %}
+            
+            <li class="h-nav-ul-li show-orderby">
+                <a class="h-nav-ul-lia" href="#">{{ texts.SORT_OPTIONS }} <i class="i-arrow-right"></i></a>
+            </li>
+            <div class="orderby" style="display: none;">
+                <ul class="c-orderby-ul">
+                {% for sort in collectionData.sort_list.sort %}
+                    {% set sort_label = 'SORT_' ~ sort.name %}
+                    <li class="c-orderby-li">
+                    {% if params.sort is defined %}                        
+                        {% if sort.name == params.sort %}
+                            <input type="radio"  name="sortBy" value="{{sort.name}}" checked="true" id="{{sort.name}}" /><label for="{{sort.name}}">{{ attribute(texts.SORT, sort.name) }}</label>
+                        {% else %}
+                            <input type="radio"  name="sortBy" value="{{sort.name}}" id="{{sort.name}}" /><label for="{{sort.name}}">{{ attribute(texts.SORT, sort.name) }}</label>
+                        {% endif %}                        
+                    {% else %}
+                        <input type="radio"  name="sortBy" value="{{sort.name}}" id="{{sort.name}}" /><label for="{{sort.name}}">{{ attribute(texts.SORT, sort.name) }}</label>
+                    {% endif %} 
+                    </li>                   
+                {% endfor %}
+                </ul>
+            </div>
+        </ul>
+        <div class="spacer"></div>
+    </nav>
+{% endblock %}
