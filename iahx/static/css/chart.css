@@ -41,6 +41,10 @@ ul li a span {
 	background: url(../image/common/pizza_pq.gif) top left no-repeat;
 }
 
+.chart_csv a {
+        background: url(../image/common/iconCSV.gif) top left no-repeat;
+}
+
 .chart_line a:hover {
 	background: url(../image/common/linha.gif) top left no-repeat;
 }
