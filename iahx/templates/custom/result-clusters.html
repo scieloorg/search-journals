@@ -47,7 +47,7 @@
                 <input type="hidden" name="fb" value="">
 
                 {% for key, value in params %}
-                    {% if key != "filter" and key != "submit" and key != "fb" %}
+                    {% if key != "filter" and key != "submit" and key != "fb" and "_submit" not in key  %}
                         {% if key == "from" or key == "page" %}
                             <input type="hidden" name="{{ key }}" value="1">
                         {% else %}
