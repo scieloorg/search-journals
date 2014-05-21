@@ -1,257 +1,270 @@
 #!/usr/bin/python
+#coding: utf-8
 
-import sys
-import argparse
-import logging
 import json
-import urllib2
-
+import utils
+import logging
+import requests
+import argparse
+import logging.config
 import lxml.etree as etree
+
 from datetime import datetime, timedelta
-from urllib2 import URLError, HTTPError
-from update_settings import *
 
 class Solr(object):
-    """Simple abstraction layer around Apache Solr"""
 
-    def __init__(self, url):
+    def __init__(self, url, log, timeout=5):
+        """
+        Create an instance of Solr class.
+
+        :param url: endpoint of Solr
+        :param log: dependence injection python built-in logging
+        :param timeout: Time for any request, default: 5 seconds
+        """
         self.url = url
+        self.log = log
+        self.timeout = timeout
 
-    def select(self, params):
-        """Search Solr, return URL and JSON response."""
-        params['wt'] = 'json'
-        url = self.url + '/select?' + urllib.urlencode(params)
-        conn = '{}'
+    def select(self, params, format='json'):
+        """
+        Search Solr, return URL and JSON response.
+
+        :param params: Dictionary parameters to Solr
+        :param format: Format of return send to Solr, default=json
+        """
+        params['wt'] = format
+
         try:
-            conn = urllib2.urlopen(url)
-        except URLError as e:
-            log_conection_exception(e, url)
-
-        return url, json.load(conn)
+            response = requests.get(self.url + '/select?', params=params, timeout=self.timeout)
+        except requests.exceptions.RequestException as e:
+            self.log.critical('Connection error: {0}'.format(e) )
+        else:
+            return response.text
 
     def delete(self, query, commit=False):
-        """Delete documents matching `query` from Solr, return (URL, status)"""
+        """
+        Delete documents matching `query` from Solr.
+
+        :param query: Solr query string, see: https://wiki.apache.org/solr/SolrQuerySyntax
+        :param commit: Boolean to carry out the operation
+        :param return: Return an int Solr status about the operation
+        """
         params = {}
         if commit:
             params['commit'] = 'true'
-        url = self.url + '/update?' + urllib.urlencode(params)
-        status = '-1'
 
-        request = urllib2.Request(url)
-        request.add_header('Content-Type', 'text/xml; charset=utf-8')
-        request.add_data('<delete><query>{0}</query></delete>'.format(query))
+        headers = {'Content-Type': 'text/xml; charset=utf-8'}
+        data = '<delete><query>{0}</query></delete>'.format(query)
+
         try:
-            response = urllib2.urlopen(request).read()
-            status = etree.XML(response).findtext('lst/int')
-        except URLError as e:
-            log_conection_exception(e, url)
+            response = requests.post(self.url + '/update?', params=params,
+                                    headers=headers, data=data, timeout=self.timeout)
+        except requests.exceptions.RequestException as e:
+            self.log.critical('Connection error: {0}'.format(e) )
+        else:
+            if response.status_code == 200:
+                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
+            else:
+                return -1
 
-        return url, status
+    def update(self, add_xml, commit=False):
+        """
+        Post list of docs to Solr.
 
-    def update(self, add_xml, commitwithin=None):
-        """Post list of docs to Solr, return URL and status.
-        Opptionall tell Solr to "commitwithin" that many milliseconds."""
-        url = self.url + '/update'
-        status = '-1'
+        :param commit: Boolean to carry out the operation
+        :param add_xml: XML send to Solr, ex.:
+            <add>
+              <doc>
+                <field name="id">XXX</field>
+                <field name="field_name">YYY</field>
+              </doc>
+            </add>
+        :param return: Return an int Solr status about the operation
+        """
+        params = {}
+        if commit:
+            params['commit'] = 'true'
 
-        request = urllib2.Request(url)
-        request.add_header('Content-Type', 'text/xml; charset=utf-8')
-        request.add_data(add_xml)
+        data = add_xml.encode('utf-8')
+        headers = {'Content-Type': 'text/xml; charset=utf-8'}
+
         try:
-            response = urllib2.urlopen(request).read()
-            status = etree.XML(response).findtext('lst/int')
-        except URLError as e:
-            log_conection_exception(e, url)            
-
-        return url, status
+            response = requests.post(self.url + '/update?', params=params,
+                                     headers=headers, data=data, timeout=self.timeout)
+        except requests.exceptions.RequestException as e:
+            self.log.critical('Connection error: {0}'.format(e) )
+        else:
+            if response.status_code == 200:
+                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
+            else:
+                return -1
 
     def commit(self, waitsearcher=False):
-        """Commit uncommitted changes to Solr immediately, without waiting."""
-        commit_xml = etree.Element('commit')        
-        commit_xml.set('waitSearcher', str(waitsearcher).lower())
-        url = self.url + '/update'
-        status = '-1'
-        request = urllib2.Request(url)
-        request.add_header('Content-Type', 'text/xml; charset=utf-8')
-        request.add_data(etree.tostring(commit_xml, pretty_print=True))
+        """
+        Commit uncommitted changes to Solr immediately, without waiting.
+
+        :param waitsearcher: Boolean wait or not the Solr to execute
+        :param return: Return an int Solr status about the operation
+        """
+
+        data = '<commit waitSearcher="' + str(waitsearcher).lower() + '"/>'
+        headers = {'Content-Type': 'text/xml; charset=utf-8'}
+
         try:
-            response = urllib2.urlopen(request).read()
-            status = etree.XML(response).findtext('lst/int')
-        except URLError as e:
-            log_conection_exception(e, url)
+            response = requests.post(self.url + '/update?', headers=headers,
+                                     data=data, timeout=self.timeout)
+        except requests.exceptions.RequestException as e:
+            self.log.critical('Connection error: {0}'.format(e) )
+        else:
+            if response.status_code == 200:
+                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
+            else:
+                return -1
 
-        return url, status
+
+def get_identifiers_list(from_date, until_date, offset):
+
+    ids_api_url = '{0}?from={1}&until={2}&offset={3}'.format(settings['endpoints']['identifiers'],
+                                                      from_date, until_date, offset)
+
+    log.debug('URL used for retrieve id list: {0}'.format(ids_api_url))
+
+    try:
+        response = requests.get(ids_api_url)
+    except requests.exceptions.RequestException as e:
+        log.critical('Connection error: {0}'.format(e))
+    else:
+        response_json = json.loads(response.text)
+        return response_json['meta']['total'], list(response_json['objects'])
 
 
-def main():
+def main(settings, *args, **xargs):
 
-    # solr object 
-    solr = Solr(SOLR_INDEX_URL)
+    solr = Solr(settings['endpoints']['solr'], log, timeout=int(settings['request']['timeout']))
 
-    # set initial values to from and until dates
     from_date  = datetime.now()
     until_date = datetime.now()
 
-    # parser of command line arguments
-    parser = argparse.ArgumentParser(description='Update Solr index')
+    parser = argparse.ArgumentParser(description='Script to update Solr')
 
-    parser.add_argument('--period', type=str, required=True, 
-                           help='index articles from specific period (use: week, month, year or custom). For custom inform --from and --until' )
+    parser.add_argument('--period',
+                        type=int,
+                        help='index articles from specific period, use number of days.')
 
-    parser.add_argument('--from', dest='from_date', type=mkdate, nargs='?', 
-                           help='index articles from specific date. YYYY-MM-DD')
- 
-    parser.add_argument('--until', dest='until_date', type=mkdate, nargs='?', 
-                           help='index articles until this specific date. YYYY-MM-DD (default today)',
-                           default=datetime.now())
+    parser.add_argument('--from',
+                        dest='from_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
+                        nargs='?',
+                        help='index articles from specific date. YYYY-MM-DD')
 
-    parser.add_argument('--debug', action='store_true', 
-                           help='execute the script in DEBUG mode (don\'t update the index)')
-                           
-    parser.add_argument('--version', action='version', version='%(prog)s 0.1')    
+    parser.add_argument('--until',
+                        dest='until_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
+                        nargs='?',
+                        help='index articles until this specific date. YYYY-MM-DD (default today)',
+                        default=datetime.now())
+
+    parser.add_argument('--debug',
+                        action='store_true',
+                        help='execute the script in DEBUG mode (don\'t update the index)')
+
+    parser.add_argument('--version',
+                        action='version',
+                        version='%(prog)s 0.1')
 
     args = parser.parse_args()
 
-    if args.period == 'week':
-        from_date -= timedelta(days=7)
-    elif args.period == 'month':
-        from_date -= timedelta(days=30)
-    elif args.period == 'year':
-        from_date -= timedelta(days=365)
-    else:
-        if not args.from_date:
-            print 'For custom date range please inform at least --from parameters. Use -h for help.'
-            sys.exit()
-        else:
-            from_date = args.from_date
-            until_date = args.until_date
+
+    if args.from_date:
+        from_date = args.from_date
+
+    if args.until_date:
+        until_date = args.until_date
+
+    if args.period:
+        from_date -= timedelta(days=args.period)
 
     from_date = from_date.strftime("%Y-%m-%d")
     until_date = until_date.strftime("%Y-%m-%d")
 
-    # check for debug mode and reset log level at console logger
     if args.debug:
-        ch.setLevel(logging.DEBUG)
+        log.setLevel(logging.DEBUG)
 
-    log.info('Start update solr index script with params from={0} and until={1}'.format(from_date, 
+    log.info('Start update solr index script with params from={0} and until={1}'.format(from_date,
         until_date))
 
     offset = 0
-    total_ids = -1    
-    fail_update_list = []
+    total_ids = 0
+    fail_list = []
     while True:
+        try:
+            total_ids, article_list = get_identifiers_list(from_date, until_date, offset)
 
-        (total_ids, article_list) = get_identifiers_list(from_date, until_date, offset)
-        if len(article_list) == 0:
-            break;
+            if len(article_list) == 0:
+                break;
 
-        log.info('Indexing {0} of {1} articles'.format(len(article_list), total_ids))
-        offset += IDENTIFIERS_LIMIT        
+            log.info('Indexing {0} of {1} articles'.format(len(article_list), total_ids))
 
-        # process articles list
-        for article in article_list:
+            offset += int(settings['params']['limit_offset'])
 
-            article_code = str(article['code']);
-            
-            xmliahx_api_url = '{0}?code={1}&format=xmliahx'.format(ARTICLE_ENDPOINT, 
-                article_code)
-            log.debug('URL used for retrieve solr xml of article {0}'.format(xmliahx_api_url))
-            # get xml of article in Solr format
-            try:
-                xmliahx_response = urllib2.urlopen(xmliahx_api_url)            
-                article_solr_xml = xmliahx_response.read()
-            except URLError as e:
-                log_conection_exception(e, xmliahx_api_url)
-                fail_update_list.append(article_code)
-                # if is a network connection error stop processing
-                if hasattr(e, 'reason'):
-                    sys.exit()
-                
-            else:
-                # index article xml
-                log.info('Indexing article {0}'.format(article_code))
-                # if is in debug mode solr index is not update
-                if not args.debug:
-                    update_url, update_status = solr.update(article_solr_xml)
-                
-                    if update_status != '0':
-                        log.error('Unable to index article {0}, status code:{1}'.format(article_code, update_status) )
-                        fail_update_list.append(article_code)
-                
+            for article in article_list:
 
-    if fail_update_list:    
-        log.warning('Unable to index the following articles {0}'.format(fail_update_list))
+                article_code = str(article['code']);
 
-    # summary information
-    total_fail = len(fail_update_list)
-    total_indexed = int(total_ids) - total_fail
+                xmliahx_api_url = '{0}?code={1}&format=xmliahx'.format(settings['endpoints']['article'],
+                                                                       article_code)
+                log.debug('URL used for retrieve solr xml of article {0}'.format(xmliahx_api_url))
 
-    log.info('Index complete! Indexed {0} of {1} articles, {2} fails.'.format(total_indexed, total_ids, total_fail))
+                try:
+                    response = requests.get(xmliahx_api_url)
+                except requests.exceptions.RequestException as e:
+                    log.critical('Connection error: {0}'.format(e) )
+                    fail_list.append(article_code)
+                else:
+                    article_solr_xml = response.text
+
+                    log.info('Indexing article {0}'.format(article_code))
+
+                    if not args.debug:
+                        status = solr.update(article_solr_xml)
+
+                        if status != 0:
+                            log.error('Unable to index article {0}, status code:{1}'.format(article_code, status) )
+                            fail_list.append(article_code)
+        except Exception as e:
+            log.critical('Unexpected error: {0}'.format(e))
+
+    if fail_list:
+        log.warning('Unable to index the following articles {0}'.format(fail_list))
+
+    log.info('Index complete! Indexed {0} of {1} articles, {2} fails.'.format(
+                                                int(total_ids) - len(fail_list),
+                                                total_ids,
+                                                len(fail_list)))
+
     if args.debug:
         log.info('USING DEBUG MODE. SOLR INDEX NOT UPDATED.')
     else:
-        (url, commit_status) = solr.commit()
-        if commit_status != '0':
+        status = solr.commit()
+        if status != 0:
             log.warning('Commit command at Solr index fail. Please check and execute commit at index. ')
         else:
             log.info('Commit command at Solr index successfully executed!')
 
     log.info('End of update solr index script.')
 
-def get_identifiers_list(from_date, until_date, offset):
-    article_list = []
-    total_ids = 0
-
-    ids_api_url = '{0}?from={1}&until={2}&offset={3}'.format(IDENTIFIERS_ENDPOINT, 
-            from_date, until_date, offset)
-
-    log.debug('URL used for retrieve id list: {0}'.format(ids_api_url))
-
-    try:
-        id_response = urllib2.urlopen(ids_api_url)
-        id_response_json = json.load(id_response)
-        article_list = id_response_json['objects']
-        total_ids = id_response_json['meta']['total']
-    except URLError as e:
-        log_conection_exception(e, ids_api_url)
-        sys.exit()
-
-    return total_ids, article_list
-    
-
-#  handle log of connection issues
-def log_conection_exception(e, url):
-    if hasattr(e, 'reason'):
-        log.critical('Connection error: {0} ({1})'.format(e.reason, url) )
-    elif hasattr(e, 'code'):
-        log.critical('Request error: {0} ({1})'.format(e.code, url) )
-
-
-# auxiliary function used at argument parser for convert string to date
-def mkdate(datestr):
-    return datetime.strptime(datestr, '%Y-%m-%d')
-
 
 if __name__ == "__main__":
+
+    # config app file
+    config = utils.Configuration.from_env()
+    settings = dict(config.items())
+
+    # config logger file
+    logging.config.fileConfig('logging.conf')
+
     # create logger
-    log = logging.getLogger('update_solr') 
-    log.setLevel(logging.DEBUG)   
-
-    # console log
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    # file log
-    fh = logging.FileHandler('update_solr.log')
-    fh.setLevel(logging.INFO)
-    # create a formatter and set the formatter for the handler.
-    frmt_con  = logging.Formatter('[%(levelname)-8s]  %(message)s')
-    frmt_file = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    ch.setFormatter(frmt_con)
-    fh.setFormatter(frmt_file)
-
-    # add handlers to the logger
-    log.addHandler(ch)
-    log.addHandler(fh)
+    log = logging.getLogger('update_solr')
 
     # execute update solr script
-    main()
+    main(settings)
