@@ -39,9 +39,6 @@ def summary(total, fail_list, debug=False):
 def get_identifiers(from_date, until_date, collection, offset):
 
     if not collection:
-        collection = None
-
-    if not collection:
         ident_url = '{0}?from={1}&until={2}&offset={3}'.format(
             settings['endpoints']['identifiers'], from_date, until_date, offset)
     else:
@@ -151,12 +148,12 @@ def main(settings, *args, **xargs):
                     log.critical('Connection error: {0}'.format(e))
                     fail_list.append(article_code)
                 else:
-                    article_solr_xml = response.text
+                    solr_xml = response.text
 
                     log.info('Indexing article {0}'.format(article_code))
 
                     if not args.debug:
-                        status = solr.update(article_solr_xml)
+                        status = solr.update(solr_xml)
 
                         if status != 0:
                             log.error('Unable to index article {0}, status code:{1}'.format(
