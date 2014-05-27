@@ -68,33 +68,33 @@ def main(settings, *args, **xargs):
 
     parser = argparse.ArgumentParser(description='Script to update Solr')
 
-    parser.add_argument('--period',
+    parser.add_argument('-p', '--period',
                         type=int,
                         help='index articles from specific period, use number of days.')
 
-    parser.add_argument('--from',
+    parser.add_argument('-f', '--from',
                         dest='from_date',
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
                         nargs='?',
                         help='index articles from specific date. YYYY-MM-DD')
 
-    parser.add_argument('--until',
+    parser.add_argument('-u', '--until',
                         dest='until_date',
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
                         nargs='?',
                         help='index articles until this specific date. YYYY-MM-DD (default today)',
                         default=datetime.now())
 
-    parser.add_argument('--collection',
+    parser.add_argument('-c', '--collection',
                         dest='collection',
                         default=None,
                         help='use the acronym of the collection eg.: spa, scl, col.')
 
-    parser.add_argument('--debug',
+    parser.add_argument('-d', '--debug',
                         action='store_true',
                         help='execute the script in DEBUG mode (don\'t update the index)')
 
-    parser.add_argument('--version',
+    parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s 0.1')
 
