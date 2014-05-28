@@ -1,12 +1,14 @@
 #!coding: utf-8
 
-import logging
 import requests
 import lxml.etree as etree
 
 class Solr(object):
+    """
+    Python implementation of the main operation in the Solr API Rest
+    """
 
-    def __init__(self, url, dep_log=logging, timeout=5):
+    def __init__(self, url, timeout=5):
         """
         Create an instance of Solr class.
 
@@ -15,7 +17,6 @@ class Solr(object):
         :param timeout: Time for any request, default: 5 seconds
         """
         self.url = url
-        self.log = dep_log
         self.timeout = timeout
 
     def select(self, params, format='json'):
@@ -27,12 +28,9 @@ class Solr(object):
         """
         params['wt'] = format
 
-        try:
-            response = requests.get(self.url + '/select?', params=params, timeout=self.timeout)
-        except requests.exceptions.RequestException as e:
-            self.log.critical('Connection error: {0}'.format(e) )
-        else:
-            return response.text
+        response = requests.get(self.url + '/select?', params=params, timeout=self.timeout)
+
+        return response.text
 
     def delete(self, query, commit=False):
         """
@@ -40,25 +38,24 @@ class Solr(object):
 
         :param query: Solr query string, see: https://wiki.apache.org/solr/SolrQuerySyntax
         :param commit: Boolean to carry out the operation
-        :param return: Return an int Solr status about the operation or -1
+        :param return: Return an int Solr status about the operation or -1 if
+                       HTTP status is diferent from 200
         """
         params = {}
+
         if commit:
             params['commit'] = 'true'
 
         headers = {'Content-Type': 'text/xml; charset=utf-8'}
         data = '<delete><query>{0}</query></delete>'.format(query)
 
-        try:
-            response = requests.post(self.url + '/update?', params=params,
-                                    headers=headers, data=data, timeout=self.timeout)
-        except requests.exceptions.RequestException as e:
-            self.log.critical('Connection error: {0}'.format(e) )
+        response = requests.post(self.url + '/update?', params=params,
+                                headers=headers, data=data, timeout=self.timeout)
+
+        if response.status_code == 200:
+            return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
         else:
-            if response.status_code == 200:
-                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
-            else:
-                return -1
+            return -1
 
     def update(self, add_xml, commit=False):
         """
@@ -72,7 +69,8 @@ class Solr(object):
                 <field name="field_name">YYY</field>
               </doc>
             </add>
-        :param return: Return an int Solr status about the operation or -1
+        :param return: Return an int Solr status about the operation or -1 if
+                       HTTP status is diferent from 200
         """
         params = {}
         if commit:
@@ -81,35 +79,30 @@ class Solr(object):
         data = add_xml.encode('utf-8')
         headers = {'Content-Type': 'text/xml; charset=utf-8'}
 
-        try:
-            response = requests.post(self.url + '/update?', params=params,
-                                     headers=headers, data=data, timeout=self.timeout)
-        except requests.exceptions.RequestException as e:
-            self.log.critical('Connection error: {0}'.format(e) )
+        response = requests.post(self.url + '/update?', params=params,
+                                 headers=headers, data=data, timeout=self.timeout)
+
+        if response.status_code == 200:
+            return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
         else:
-            if response.status_code == 200:
-                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
-            else:
-                return -1
+            return -1
 
     def commit(self, waitsearcher=False):
         """
         Commit uncommitted changes to Solr immediately, without waiting.
 
         :param waitsearcher: Boolean wait or not the Solr to execute
-        :param return: Return an int Solr status about the operation or -1
+        :param return: Return an int Solr status about the operation or -1 if
+                       HTTP status is diferent from 200
         """
 
         data = '<commit waitSearcher="' + str(waitsearcher).lower() + '"/>'
         headers = {'Content-Type': 'text/xml; charset=utf-8'}
 
-        try:
-            response = requests.post(self.url + '/update?', headers=headers,
-                                     data=data, timeout=self.timeout)
-        except requests.exceptions.RequestException as e:
-            self.log.critical('Connection error: {0}'.format(e) )
+        response = requests.post(self.url + '/update?', headers=headers,
+                                 data=data, timeout=self.timeout)
+
+        if response.status_code == 200:
+            return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
         else:
-            if response.status_code == 200:
-                return int(etree.XML(response.text.encode('utf-8')).findtext('lst/int'))
-            else:
-                return -1
+            return -1

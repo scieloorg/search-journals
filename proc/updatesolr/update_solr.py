@@ -58,7 +58,7 @@ def get_identifiers(from_date, until_date, collection, offset):
 
 def main(settings, *args, **xargs):
 
-    solr = Solr(settings['endpoints']['solr'], log, timeout=int(settings['request']['timeout']))
+    solr = Solr(settings['endpoints']['solr'], timeout=int(settings['request']['timeout']))
 
     from_date  = datetime.now()
     until_date = datetime.now()
@@ -156,7 +156,7 @@ def main(settings, *args, **xargs):
                         status = solr.update(solr_xml)
 
                         if status != 0:
-                            log.error('Unable to index article {0}, status code:{1}'.format(
+                            log.error('Unable to index article {0}, code:{1}'.format(
                                 article_code, status))
                             fail_list.append(article_code)
 
