@@ -66,12 +66,13 @@ def get_duplication_articles(solr, dup_code):
     return response_json['response']['docs']
 
 def save_csv_entry(csv, article):
-    title = article['ti'][0].encode('utf-8')
-    source = article['fo'][0].encode('utf-8')
-    authors = ', '.join(article['au']).encode('utf-8')
+    title = article['ti'][0] if 'ti' in article else ''
+    source = article['fo'][0] if 'fo' in article else ''
+    authors = ', '.join(article['au']) if 'au' in article else ''
     colection = article['in']
 
-    csv.writerow( [article['id'], title, authors, source, colection] )
+    csv.writerow( [article['id'], title.encode('utf-8'), authors.encode('utf-8'), 
+        source.encode('utf-8'), colection] )
 
 
 def update_solr_document(solr, id, field_name, field_value):
@@ -160,13 +161,14 @@ def main(settings, *args, **xargs):
                     main_article = [ article['id'] for article in article_id_list if '-scl' in article['id'] ]
 
                     if main_article:
+                        colection_list = []
                         for update_article in article_id_list:
                             update_id = update_article['id']
                             # if is the main article (SCL colection) update index
                             # otherwise delete article duplication
                             if update_id == main_article[0]:
                                 log.info('Updating colection element of article: {0}'.format(update_id))
-                                colection_list = [art['col'] for art in article_id_list]
+                                colection_list = [art['col'][0] for art in article_id_list]
 
                                 if not args.debug:
                                     status = update_solr_document(solr, update_id, 'in', 
