@@ -75,7 +75,7 @@ def save_csv_entry(csv, article):
         source.encode('utf-8'), colection] )
 
 
-def update_solr_document(solr, id, field_name, field_value):
+def update_solr_document(solr, id, field_value):
 
     add = etree.Element('add')
     doc = etree.Element('doc')
@@ -84,15 +84,12 @@ def update_solr_document(solr, id, field_name, field_value):
     field_id.text = id
     doc.append(field_id)
 
-    if isinstance(field_value, list):
-        for occ in field_value:
-            field = etree.Element('field', name=field_name, update='set')
-            field.text = occ
-            doc.append(field)
-    else:
-        field = etree.Element('field', name=field_name, update='set')
-        field.text = field_value
-        doc.append(field)
+    for occ in field_value:
+        for field, value in occ.iteritems():
+            if field != 'id':  
+                field = etree.Element('field', name=field, update='set')
+                field.text =value
+                doc.append(field)
 
     add.append(doc)
     update_xml = etree.tostring(add, pretty_print=True)
@@ -149,30 +146,29 @@ def main(settings, *args, **xargs):
 
             for dup_code in duplication_lst:
                 article_lst = get_duplication_articles(solr, dup_code[0])
-                article_id_list = []
+                process_list = []
 
                 for article in article_lst:
-                    article_id = article['id']
-                    article_id_list.append( {'id': article_id, 'col': article['in']} )
+                    process_list.append( {'id': article['id'], 'in': article['in'][0], 
+                        'ur': article['ur'][0]} )
                     # add CSV row for duplicated article
                     save_csv_entry(csv_writer, article)
 
-                if article_id_list:
-                    main_article = [ article['id'] for article in article_id_list if '-scl' in article['id'] ]
+                if process_list:
+                    main_article = [article['id'] for article in process_list if article['in'] == 'scl']
 
-                    if main_article:
-                        colection_list = []
-                        for update_article in article_id_list:
+                    # only process if is identified only one main article from SCL collection
+                    if len(main_article) == 1:
+                        
+                        for update_article in process_list:
                             update_id = update_article['id']
                             # if is the main article (SCL colection) update index
                             # otherwise delete article duplication
                             if update_id == main_article[0]:
                                 log.info('Updating colection element of article: {0}'.format(update_id))
-                                colection_list = [art['col'][0] for art in article_id_list]
-
+                                
                                 if not args.debug:
-                                    status = update_solr_document(solr, update_id, 'in', 
-                                            colection_list)
+                                    status = update_solr_document(solr, update_id, process_list)
                                     if status == 0:
                                         total_updated += 1
 
@@ -194,8 +190,8 @@ def main(settings, *args, **xargs):
 
                             
                     else:
-                        log.warning('Ignoring article id\'s for missing main article of SCL collection :{0}'.format(
-                            [art['id'] for art in article_id_list]) )
+                        log.warning('Ignoring articles for missing main article of SCL collection :{0}'.format(
+                            [art['id'].encode('utf-8') for art in process_list]) )
 
                 # write a empty line for separate next group of duplication articles
                 csv_writer.writerow([' '])
