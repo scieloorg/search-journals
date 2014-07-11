@@ -6,8 +6,8 @@
 {% endif %}
 
 <div>
-    <span>
-        SciELO {{ translate(doc.in, 'REFINE_in') }} |
+    <span>        
+        SciELO {{ occ({'element': doc.in, translate: true, 'group': 'REFINE_in'}) }} |
     </span>
     <span>
         {% if doc.la|length > 1 %}

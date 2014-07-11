@@ -1,14 +1,25 @@
 
 {% block btn_fulltext %}
     <div>
-        <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
-            <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
-        </a>
+        {% if doc.in|length > 1 %}
+            <a href=""><img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" /></a> {{ texts.FULLTEXT_AVAILABLE_IN }} (
+            {% for collection in doc.in %}
+                {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
+                <a href="{{ attribute(config.scielo_urls, collection) }}/scielo.php?script=sci_arttext&pid={{doc.ur[loop.index0]|substring_after}}&lang={{lang}}">{{ translate(collection, 'REFINE_in') }} 
+                </a>
+
+            {% endfor %}
+            )
+        {% else %}
+            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}">
+                <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
+            </a>
+        {% endif %}
     </div>
 {% endblock %}
 {% block btn_share %}
 <div>
-    <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
+    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
 </div>
 {% endblock %}
 
