@@ -69,7 +69,7 @@ def save_csv_entry(csv, article):
     title = article['ti'][0] if 'ti' in article else ''
     source = article['fo'][0] if 'fo' in article else ''
     authors = ', '.join(article['au']) if 'au' in article else ''
-    colection = article['in']
+    colection = ', '.join(article['in']) if 'in' in article else ''
 
     csv.writerow( [article['id'], title.encode('utf-8'), authors.encode('utf-8'), 
         source.encode('utf-8'), colection] )
@@ -188,9 +188,9 @@ def main(settings, *args, **xargs):
                                         update_id, status))
                                 fail_list.append(update_id)
 
-                            
+                    # skip
                     else:
-                        log.warning('Ignoring articles for missing main article of SCL collection :{0}'.format(
+                        log.warning('Skipping articles due missing main article of SCL collection :{0}'.format(
                             [art['id'].encode('utf-8') for art in process_list]) )
 
                 # write a empty line for separate next group of duplication articles
