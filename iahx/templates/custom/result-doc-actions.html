@@ -7,7 +7,6 @@
                 {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
                 <a href="{{ attribute(config.scielo_urls, collection) }}/scielo.php?script=sci_arttext&pid={{doc.ur[loop.index0]|substring_after}}&lang={{lang}}">{{ translate(collection, 'REFINE_in') }} 
                 </a>
-
             {% endfor %}
             )
         {% else %}

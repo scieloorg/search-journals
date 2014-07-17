@@ -65,17 +65,17 @@ def get_duplication_articles(solr, dup_code):
     
     return response_json['response']['docs']
 
-def save_csv_entry(csv, article):
+def save_csv_entry(csv, article, status):
     title = article['ti'][0] if 'ti' in article else ''
     source = article['fo'][0] if 'fo' in article else ''
     authors = ', '.join(article['au']) if 'au' in article else ''
     colection = ', '.join(article['in']) if 'in' in article else ''
 
     csv.writerow( [article['id'], title.encode('utf-8'), authors.encode('utf-8'), 
-        source.encode('utf-8'), colection] )
+        source.encode('utf-8'), colection, status] )
 
 
-def update_solr_document(solr, id, field_value):
+def update_main_article(solr, id, duplication_list):
 
     add = etree.Element('add')
     doc = etree.Element('doc')
@@ -84,11 +84,11 @@ def update_solr_document(solr, id, field_value):
     field_id.text = id
     doc.append(field_id)
 
-    for occ in field_value:
+    for occ in duplication_list:
         for field, value in occ.iteritems():
-            if field != 'id':  
+            if field == 'in' or field == 'ur':  
                 field = etree.Element('field', name=field, update='set')
-                field.text =value
+                field.text = value[0]
                 doc.append(field)
 
     add.append(doc)
@@ -145,17 +145,10 @@ def main(settings, *args, **xargs):
             offset += int(settings['params']['limit_offset'])
 
             for dup_code in duplication_lst:
-                article_lst = get_duplication_articles(solr, dup_code[0])
-                process_list = []
-
-                for article in article_lst:
-                    process_list.append( {'id': article['id'], 'in': article['in'][0], 
-                        'ur': article['ur'][0]} )
-                    # add CSV row for duplicated article
-                    save_csv_entry(csv_writer, article)
+                process_list = get_duplication_articles(solr, dup_code[0])
 
                 if process_list:
-                    main_article = [article['id'] for article in process_list if article['in'] == 'scl']
+                    main_article = [article['id'] for article in process_list if article['in'][0] == 'scl']
 
                     # only process if is identified only one main article from SCL collection
                     if len(main_article) == 1:
@@ -166,14 +159,18 @@ def main(settings, *args, **xargs):
                             # otherwise delete article duplication
                             if update_id == main_article[0]:
                                 log.info('Updating colection element of article: {0}'.format(update_id))
+                                save_csv_entry(csv_writer, update_article, 'updated')
                                 
                                 if not args.debug:
-                                    status = update_solr_document(solr, update_id, process_list)
+                                    #field_value = {'in': update_article['in'][0], 'ur': update_article['ur'][0]}
+
+                                    status = update_main_article(solr, update_id, process_list)
                                     if status == 0:
                                         total_updated += 1
 
                             else:
                                 log.info('Deleting duplicated article: {0}'.format(update_id))
+                                save_csv_entry(csv_writer, update_article, 'duplication deleted')
                                 total_duplicated += 1
 
                                 if not args.debug:
@@ -192,6 +189,9 @@ def main(settings, *args, **xargs):
                     else:
                         log.warning('Skipping articles due missing main article of SCL collection :{0}'.format(
                             [art['id'].encode('utf-8') for art in process_list]) )
+                        # save list of ignored articles to csv file 
+                        for art in process_list:
+                            save_csv_entry(csv_writer, art, 'ignored due missing main article')
 
                 # write a empty line for separate next group of duplication articles
                 csv_writer.writerow([' '])
