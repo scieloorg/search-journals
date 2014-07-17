@@ -26,14 +26,13 @@ def commit(solr, debug=False):
             log.info('Commit command at Solr index successfully executed!')
 
 
-def summary(total_duplicated, total_updated, total_deleted, fail_list, debug=False):
+def summary(total_duplicated, fail_list, debug=False):
 
     if fail_list:
         log.warning('Unable to update the following articles {0}'.format(fail_list))
 
     if not debug:
-        log.info('Update index complete! Duplications ({0}), Updated ({1}), Deleted ({2}), ({3}) fails.'.format(
-            int(total_duplicated), total_updated, total_deleted, len(fail_list)))
+        log.info('Update index complete! Total of duplication found ({0}).'.format(int(total_duplicated)))
 
     log.info('End of find duplication script.')
 
@@ -86,7 +85,7 @@ def update_main_article(solr, id, duplication_list):
 
     for occ in duplication_list:
         for field, value in occ.iteritems():
-            if field == 'in' or field == 'ur':  
+            if field == 'in' or field == 'ur':
                 field = etree.Element('field', name=field, update='set')
                 field.text = value[0]
                 doc.append(field)
@@ -127,8 +126,6 @@ def main(settings, *args, **xargs):
     csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_MINIMAL)
 
     total_duplicated = 0
-    total_deleted = 0
-    total_updated = 0
     offset = 0
     fail_list = []
 
@@ -145,6 +142,11 @@ def main(settings, *args, **xargs):
             offset += int(settings['params']['limit_offset'])
 
             for dup_code in duplication_lst:
+
+                # ignore partial upgrade duplication signature (SOLR-4016)
+                if dup_code[0] == '0000000000000000':
+                    continue
+                
                 process_list = get_duplication_articles(solr, dup_code[0])
 
                 if process_list:
@@ -162,22 +164,20 @@ def main(settings, *args, **xargs):
                                 save_csv_entry(csv_writer, update_article, 'updated')
                                 
                                 if not args.debug:
-                                    #field_value = {'in': update_article['in'][0], 'ur': update_article['ur'][0]}
-
                                     status = update_main_article(solr, update_id, process_list)
-                                    if status == 0:
-                                        total_updated += 1
 
                             else:
                                 log.info('Deleting duplicated article: {0}'.format(update_id))
                                 save_csv_entry(csv_writer, update_article, 'duplication deleted')
-                                total_duplicated += 1
 
                                 if not args.debug:
                                     delete_query = 'id:"{0}"'.format(update_id)
                                     status = solr.delete(delete_query)
-                                    if status == 0:
-                                        total_deleted += 1
+                                    total_duplicated += 1
+                                    if status != 0:
+                                        log.error('Unable to delete article {0}, code:{1}'.format(
+                                            update_id, status))
+
 
                             # check for udpate solr status (update or delete)
                             if not args.debug and status != 0:
@@ -187,8 +187,10 @@ def main(settings, *args, **xargs):
 
                     # skip
                     else:
+                        '''
                         log.warning('Skipping articles due missing main article of SCL collection :{0}'.format(
                             [art['id'].encode('utf-8') for art in process_list]) )
+                        '''
                         # save list of ignored articles to csv file 
                         for art in process_list:
                             save_csv_entry(csv_writer, art, 'ignored due missing main article')
@@ -201,7 +203,7 @@ def main(settings, *args, **xargs):
         except Exception as e:
             log.critical('Unexpected error: {0}'.format(e))
 
-    summary(total_duplicated, total_updated, total_deleted, fail_list, args.debug)
+    summary(total_duplicated, fail_list, args.debug)
 
 
 if __name__ == "__main__":
