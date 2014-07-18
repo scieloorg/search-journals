@@ -187,10 +187,9 @@ def main(settings, *args, **xargs):
 
                     # skip
                     else:
-                        '''
-                        log.warning('Skipping articles due missing main article of SCL collection :{0}'.format(
+                        log.debug('Skipping articles due missing main article of SCL collection :{0}'.format(
                             [art['id'].encode('utf-8') for art in process_list]) )
-                        '''
+
                         # save list of ignored articles to csv file 
                         for art in process_list:
                             save_csv_entry(csv_writer, art, 'ignored due missing main article')
@@ -198,11 +197,12 @@ def main(settings, *args, **xargs):
                 # write a empty line for separate next group of duplication articles
                 csv_writer.writerow([' '])
 
-            #commit on any offset cycle
-            commit(solr, debug=args.debug)
         except Exception as e:
             log.critical('Unexpected error: {0}'.format(e))
 
+    # commit at end to avoid offset process gap
+    commit(solr, debug=args.debug)
+    # script summary
     summary(total_duplicated, fail_list, args.debug)
 
 
