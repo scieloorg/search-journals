@@ -72,8 +72,9 @@
 
                     {% if not collectionData.cluster_list.cluster or name in collectionData.cluster_list.cluster %}
 
-                        {% if name == 'acronym_sponsor' and params.where != 'SCL' %}
-                            {# hide acronym_sponsor cluster when not collection equal Brazil #}
+                        {% if (name == 'acronym_sponsor' and params.where != 'SCL') or name == 'dedup_signature' %}
+                            {# hide acronym_sponsor cluster when not collection equal Brazil  #}
+                            {# hide dedup_signature used in the process of delete duplication #}
                         {% else %}                        
                             <a name="{{ name }}"></a>
                             <div id="{{ name }}">

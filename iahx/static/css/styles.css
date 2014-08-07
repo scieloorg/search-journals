@@ -318,11 +318,12 @@ DIV.record DIV.data H3 A{
 DIV.record DIV.data A {
 	color: #333;
 	text-decoration: none;
+    border-bottom: 1px dotted #999;
 }
 DIV.record DIV.data A:hover {
 	color: #344c66;
-
 }
+
 .tags{font-weight:bold; color:#626465; margin-bottom: 10px;}
 DIV.record DIV.data DIV.source,DIV.record DIV.data DIV.language, DIV.record DIV.data DIV.description, DIV.record DIV.data DIV.tags {
 	color: #121212;

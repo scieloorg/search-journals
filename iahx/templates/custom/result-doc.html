@@ -13,7 +13,7 @@
             {% block data %}
                 <!-- title -->
                 <h3>
-                    <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</a>
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</a>
                 </h3>
 
             {% endblock %}

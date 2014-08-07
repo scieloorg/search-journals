@@ -6,8 +6,16 @@
 {% endif %}
 
 <div>
-    <span>
-        SciELO {{ translate(doc.in, 'REFINE_in') }} |
+    <span>        
+        SciELO 
+        {% if doc.in|length > 1 %}
+            {% for collection in doc.in %}
+                {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
+                {{ translate(collection, 'REFINE_in') }}
+            {% endfor %}
+        {% else %}
+            {{ translate(doc.in.0, 'REFINE_in') }}
+        {% endif %} | 
     </span>
     <span>
         {% if doc.la|length > 1 %}

@@ -1,0 +1,11 @@
+[endpoints]
+solr = http://<IP>/solr/scielo-articles
+
+[params]
+limit_offset = 1000
+
+[request]
+timeout = 60
+
+[csv]
+filename_prefix = articles-dup

@@ -197,6 +197,9 @@
          <str name="facet.field">acronym_sponsor</str>
          <str name="facet.limit">20</str>
          <str name="facet.mincount">1</str>
+
+         <str name="facet.field">dedup_signature</str>
+         <str name="f.dedup_signature.facet.mincount">2</str>
      </lst>
   </requestHandler>
 
@@ -226,13 +229,24 @@
     <!-- See below for information on defining
          updateRequestProcessorChains that can be used by name
          on each Update Request
-      -->
-    <!--
+    -->
        <lst name="defaults">
-         <str name="update.chain">dedupe</str>
+         <str name="update.chain">deduplication</str>
        </lst>
-       -->
   </requestHandler>
+
+  <!-- create a signature field for articles based on fields (used for process duplication)  -->
+  <updateRequestProcessorChain name="deduplication">
+        <processor class="org.apache.solr.update.processor.SignatureUpdateProcessorFactory">
+            <bool name="overwriteDupes">false</bool>
+            <str name="signatureField">dedup_signature</str>
+            <bool name="enabled">true</bool>
+            <str name="fields">fo,au</str>
+            <str name="signatureClass">org.apache.solr.update.processor.Lookup3Signature</str>
+        </processor>
+        <processor class="solr.LogUpdateProcessorFactory" />
+        <processor class="solr.RunUpdateProcessorFactory" />
+  </updateRequestProcessorChain>
 
   <!-- for back compat with clients using /update/json and /update/csv -->
   <requestHandler name="/update/json" class="solr.JsonUpdateRequestHandler">
