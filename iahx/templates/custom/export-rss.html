@@ -22,11 +22,6 @@
                         <source><![CDATA[{{ doc.fo.0 }}]]></source>
                     {% endif %}
 
-                    {% if doc.da != '' %}
-                        {% set pub_date = doc.da|slice(0,4) ~  '-' ~ doc.da|slice(4,2) ~ '-' ~ doc.da|slice(6,2) %}
-                        <pubDate>{{ date(pub_date)|date('D, d M Y h:i:s O') }}</pubDate>                        
-                    {% endif %}
-
                     <link><![CDATA[{{ constant("SEARCH_URL") }}{{ lang }}/{{ doc.id }}]]></link>
 
                     <description><![CDATA[
