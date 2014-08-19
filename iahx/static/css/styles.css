@@ -312,7 +312,7 @@ DIV.record DIV.data H3 {
 	font-size: 130%;
 	font-family: Arial;
 }
-DIV.record DIV.data H3 A{
+DIV.record DIV.data H3 A, .title {
 	color: #990000;
 }
 DIV.record DIV.data A {
