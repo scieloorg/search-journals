@@ -90,6 +90,11 @@ def update_main_article(solr, id, duplication_list):
                 field.text = value[0]
                 doc.append(field)
 
+    # fix bug that delete element TA at moment of update solr document
+    field_ta = etree.Element('field', name='ta', update='set')
+    field_ta.text = duplication_list[0]['ta'][0]
+    doc.append(field_ta)
+
     add.append(doc)
     update_xml = etree.tostring(add, pretty_print=True)
 
