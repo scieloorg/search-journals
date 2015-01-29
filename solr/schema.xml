@@ -79,6 +79,9 @@
  <copyField source="acronym_sponsor" dest="tw"/>
  <copyField source="wok_subject_categories" dest="tw"/>
  <copyField source="wok_citation_index" dest="tw"/>
+ <copyField source="ta_var" dest="tw"/>
+ <copyField source="ta" dest="tw"/>
+
  <copyField source="ti_*" dest="ti"/>
  <copyField source="ab_*" dest="ab"/>
 
