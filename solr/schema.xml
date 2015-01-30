@@ -82,6 +82,7 @@
  <copyField source="wok_citation_index" dest="tw"/>
  <copyField source="ta_var" dest="tw"/>
  <copyField source="ta" dest="tw"/>
+ <copyField source="id" dest="tw"/>
 
  <copyField source="ti_*" dest="ti"/>
  <copyField source="ab_*" dest="ab"/>
