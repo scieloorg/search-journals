@@ -4,7 +4,7 @@
 
         <li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
 
-            <a href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}"  class="c-results-a">
+            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}"  class="c-results-a">
                 {% block data %}  
                     <span class="c-results-tit">
                         <span class="c-results-num">{{ loop.index + pag.start }}.</span>
