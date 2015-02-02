@@ -2,6 +2,7 @@
 #coding: utf-8
 
 import json
+import time
 import utils
 import logging
 import requests
@@ -11,6 +12,31 @@ import logging.config
 from datetime import datetime, timedelta
 
 from SolrAPI import Solr
+
+
+def _fetch_data(resource):
+    """
+    Fetches any resource.
+
+    :param resource: any resource
+    :returns: response object
+    """
+
+    try:
+        log.debug('Get the resource: {0}'.format(resource))
+        return requests.get(resource)
+    except requests.exceptions.RequestException as e:
+
+        log.error('Connection error: {0}'.format(e))
+
+        while True:
+            try:
+                log.info('Try to get the resource again: {0}'.format(resource))
+                return requests.get(resource)
+            except requests.exceptions.RequestException as e:
+                log.error('Sleep for 10 second to try again: {0}'.format(resource))
+                time.sleep(10)
+
 
 def commit(solr, debug=False):
 
@@ -47,13 +73,9 @@ def get_identifiers(from_date, until_date, collection, offset):
 
     log.debug('URL used for retrieve id list: {0}'.format(ident_url))
 
-    try:
-        response = requests.get(ident_url)
-    except requests.exceptions.RequestException as e:
-        log.critical('Connection error: {0}'.format(e))
-    else:
-        response_json = json.loads(response.text)
-        return response_json['meta']['total'], list(response_json['objects'])
+    response_json = json.loads(_fetch_data(ident_url).text)
+
+    return response_json['meta']['total'], list(response_json['objects'])
 
 
 def main(settings, *args, **xargs):
@@ -142,26 +164,21 @@ def main(settings, *args, **xargs):
 
                 log.debug('URL used for retrieve solr xml of article {0}'.format(code_url))
 
-                try:
-                    response = requests.get(code_url)
-                except requests.exceptions.RequestException as e:
-                    log.critical('Connection error: {0}'.format(e))
-                    fail_list.append(article_code)
-                else:
-                    solr_xml = response.text
+                solr_xml = _fetch_data(code_url).text 
 
-                    log.info('Indexing article {0}'.format(article_code))
+                log.info('Indexing article {0}'.format(article_code))
 
-                    if not args.debug:
-                        status = solr.update(solr_xml)
+                if not args.debug:
+                    status = solr.update(solr_xml)
 
-                        if status != 0:
-                            log.error('Unable to index article {0}, code:{1}'.format(
-                                article_code, status))
-                            fail_list.append(article_code)
+                    if status != 0:
+                        log.error('Unable to index article {0}, code:{1}'.format(
+                            article_code, status))
+                        fail_list.append(article_code)
 
             #commit on any offset cycle
             commit(solr, debug=args.debug)
+
         except Exception as e:
             log.critical('Unexpected error: {0}'.format(e))
 
