@@ -1,64 +1,76 @@
-{% block format %}
-{% if collectionData.format_list.format|length > 1 %}
-    <div class="format">
-        <label for="displayFormat" class="hide">{{ texts.FORMAT_OPTIONS }}</label>
-        <select name="format" id="format" class="inputText" onchange="javascript:change_format(this);">
-            <option value="">{{ texts.FORMAT_OPTIONS }}</option>
-            {% for format in collectionData.format_list.format %}
-                {% set format_label = 'FORMAT_' ~ format.name %}
+<div class="col-md-9 col-sm-8">
+    <div class="searchOptions">
+        <div class="col-md-6 col-sm-12">
 
-                {% if params.format is defined %}
+            {% if collectionData.sort_list.sort|length > 1 %}
+                {{ texts.SORT_OPTIONS }}
+                <div class="selectBox inline" style="width: 225px;">
+                    <select name="sortBy" id="sortBy" onchange="javascript:change_sort(this);">
+                        {% for sort in collectionData.sort_list.sort %}
 
-                    {* ajusta a variavel de traducao *}
-                    {% if format.name == params.format %}
-                        <option value="{{ format.name }}" selected="true">{{ attribute(texts, format_label) }}</option>
-                    {% else %}
-                        <option value="{{ format.name }}" >{{ attribute(texts, format_label) }}</option>
-                    {% endif %}
-                {% else %}
-                    <option value="{{ format.name }}" >{{ attribute(texts, format_label) }}</option>
+                            {% if params.sort is defined %}
+
+                                {* ajusta a variavel de traducao *}
+                                {% if sort.name == params.sort %}
+                                    <option value="{{ sort.name }}" selected="true">{{ attribute(texts.SORT, sort.name) }}</option>
+                                {% else %}
+                                    <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
+                            {% endif %}
+
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
+
+        </div>
+        {% if pag.total_pages > 0 %} 
+            <div class="col-md-6 notTablet right">
+                {% if params.page is defined and params.page > 1 %}
+                    <a href="javascript:go_to_page('{{ params.page-1 }}')" class="pagePrev">{{ texts.PREVIOUS_PAGE }}</a>
                 {% endif %}
-
-            {% endfor %}
-        </select>
+                {{ texts.PAGE }} 
+                <input type="text" name="page" class="form-control" value="{% if params.page %}{{ params.page }} {% else %}1{% endif %}" id="goto_page"/>
+                {{ texts.PAGE_OF }}  {{ pag.total_pages }}
+                <a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
     </div>
-{% endif %}
-{% endblock %}
+    <div class="searchActions">
+        <div class="col-md-9 col-sm-6">
+            <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
+            <label class="checkbox" for="searchForm_selectAll">Selecionar esta página</label>
 
-{% block order %}
-{% if collectionData.sort_list.sort|length > 1 %}
-    <div class="orderBy">
-        <label for="sortBy">{{ texts.SORT_OPTIONS }}</label>
-        <select name="sortBy" id="sortBy" class="inputText" onchange="javascript:change_sort(this);">
-            {% for sort in collectionData.sort_list.sort %}
-
-                {% if params.sort is defined %}
-
-                    {* ajusta a variavel de traducao *}
-                    {% if sort.name == params.sort %}
-                        <option value="{{ sort.name }}" selected="true">{{ attribute(texts.SORT, sort.name) }}</option>
-                    {% else %}
-                        <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
-                    {% endif %}
-                {% else %}
-                    <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
-                {% endif %}
-
-            {% endfor %}
-        </select>
+            <div class="actionList notTablet">
+                <a href="print.html" class="openNewWindow">Imprimir</a>
+                |
+                <a href="" class="sendViaMail">Enviar por e-mail</a>
+                |
+                <a href="" data-toggle="modal" data-target="#Export">Exportar</a>
+                |
+                <div class="fixDrop">
+                    <a href="javascript:;" class="dropdownIcon dropdown-toggle" data-toggle="dropdown">Compartilhar</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="javascript:;" class="trigger" data-rel=".st_facebook .stButton">Facebook</a></li>
+                        <li><a href="javascript:;" class="trigger" data-rel=".st_delicious .stButton">Delicious</a></li>
+                        <li><a href="javascript:;" class="trigger" data-rel=".st_twitter .stButton">Twitter</a></li>
+                        <li><a href="javascript:;" class="trigger" data-rel=".st_googleplus .stButton">Google+</a></li>
+                        <li><a href="javascript:;" class="trigger" data-rel=".st_sharethis .stButton">Outras redes</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3  col-sm-6 right">
+            <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
+                <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
     </div>
-{% endif %}
-{% endblock %}
 
-{% block count %}
-<div class="orderBy">
-    <label for="countSelect">{{ texts.RESULT_QUANTITY }}</label>
-    <select name="countSelect" id="countSelect" onchange="change_count(this);">
-        <option value="10" {% if count is defined and count == 10 %}selected="true"{% endif %}>10</option>
-        <option value="20" {% if count is defined and count == 20 %}selected="true"{% endif %}>20</option>
-        <option value="30" {% if count is defined and count == 30 %}selected="true"{% endif %}>30</option>
-        <option value="50" {% if count is defined and count == 50 %}selected="true"{% endif %}>50</option>
-        <option value="100" {% if count is defined and count == 100 %}selected="true"{% endif %}>100</option>
-    </select>
-</div>
-{% endblock %}

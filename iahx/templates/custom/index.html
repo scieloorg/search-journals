@@ -25,31 +25,22 @@
                         </div>
 
                         {% block result_options %}
-                            <div class="col-md-9 col-sm-8">
 
-                                {% block results_bar %}
-                                    <div class="resultsBar">
-                                        {% block results_topbar %}
-                                            {% include custom_template("result-topbar.html") %}
-                                        {% endblock %}
-                                        {% block results_actions %}
-                                            {% include custom_template("result-actions.html") %}
-                                        {% endblock %}
-                                    </div>
-                                {% endblock %}
+                            {% block results_bar %}
+                                
+                                    {% block results_topbar %}
+                                        {% include custom_template("result-topbar.html") %}
+                                    {% endblock %}
+                                
+                            {% endblock %}
 
-                                {% block resultNavigation %}
-                                    <div class="resultNavigation">{% include custom_template("result-navigation.html") %}</div>
-                                {% endblock %}
-
-                                {% block result_set %}
-                                    <div class="results">
-                                        {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
-                                        {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
-                                    </div>
-                                {% endblock %}
-
-                            </div>
+                            {% block result_set %}
+                                <div class="results">
+                                    {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
+                                    {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
+                                </div>
+                            {% endblock %}
+                            
                         {% endblock %}
 
                     </div>

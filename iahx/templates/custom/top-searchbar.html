@@ -1,28 +1,14 @@
-<form name="search_form" action="{{ constant("SEARCH_URL") }}" method="get">
-    
-    <input type="hidden" name="q" id="q" value="">
+<form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}" method="get">
+
+    <input type="hidden" name="q" id="q" value="{{ q }}">
     <input type="hidden" name="lang" id="lang" value="{{ lang }}">
-    {% if output %}
-        <input type="hidden" name="output" id="output" value="{{ output }}">
-    {% endif %}
-    {% if from %}
-        <input type="hidden" name="from" id="from" value="{{ from }}">
-    {% endif %}
-    {% if sort %}
-        <input type="hidden" name="sort" id="sort" value="{{ sort }}">
-    {% endif %}
-    {% if format %}
-        <input type="hidden" name="format" id="format" value="{{ format }}">
-    {% endif %}
-    {% if count %}
-        <input type="hidden" name="count" id="count" value="{{ pag.count }}">
-    {% endif %}
-    {% if fb %}
-        <input type="hidden" name="fb" id="fb" value="">
-    {% endif %}
-    {% if page %}
-        <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
-    {% endif %}
+    <input type="hidden" name="count" id="count" value="{{ pag.count }}">
+    <input type="hidden" name="from" id="from" value="{{ from }}">
+    <input type="hidden" name="output" id="output" value="{{ output }}">
+    <input type="hidden" name="sort" id="sort" value="{{ sort }}">
+    <input type="hidden" name="format" id="format" value="{{ format }}">
+    <input type="hidden" name="fb" id="fb" value="">
+    <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 
     {% for name, items in filters if filters is defined %}
         {% for item in items %}
@@ -36,15 +22,17 @@
         <div class="container">
             <a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a>
 
-            <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
-                <h2>{{ texts.SEARCH_ARTICLES }}</h2>
-            </div>
-            <div class="col-md-2 col-sm-2">
-                
-            </div>
-            <div class="clearfix"></div>
+            {% if detailed_query == '' %}
+                <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
+                    <h2>{{ texts.SEARCH_ARTICLES }}</h2>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    
+                </div>
+                <div class="clearfix"></div>
+            {% endif %}
 
-            <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
+            <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="form-textarea">
                         <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control"></textarea>
@@ -248,6 +236,5 @@
         </div>
     {% endif %}
 </form>
-
 
 {% include custom_template('help-searchbar-' ~ lang ~ '.html') %}

@@ -1218,3 +1218,11 @@ $(function() {
 		Article.Init();
 
 });
+
+$("#goto_page").keyup(function(event){
+    if(event.keyCode == 13){
+    	new_page = $("#goto_page").val();
+    	alert(new_page);
+        go_to_page(new_page);
+    }
+});
