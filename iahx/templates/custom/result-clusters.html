@@ -118,14 +118,14 @@
 
                                                     </div>
                                                     <div class="col-xs-3 right">
-                                                        {{ item.1 }}
+                                                        <span>{{ item.1 }}</span>
                                                     </div>                                                
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
 
                                         {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
-                                            <li><b><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></b></li>
+                                            <li><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></li>
                                         {% endif %}
                                         <!-- <input type="submit" value="filtrar"> -->
                                     </div>
