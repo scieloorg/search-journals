@@ -98,7 +98,7 @@
 
                                             {% else %}
 
-                                                <li class="filterItem row">                
+                                                <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">                
                                                     <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
                                                         <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
                                                         {% for filter_name, filter in filters if filter_name == name %}

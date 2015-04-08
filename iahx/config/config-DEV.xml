@@ -12,12 +12,13 @@
 	<log_user_search>true</log_user_search>
 	<log_dir>./logs/</log_dir>
 	<environment>development</environment>
-	<addthis_pub></addthis_pub>
+	<addthis_pub></addthis_pub>    
 	<addthis_buttons>
 		<button>favorites</button>
 		<button>facebook</button>
 		<button>delicious</button>
 	</addthis_buttons>
+    <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
 	<google_analytics_tracking_id></google_analytics_tracking_id>
