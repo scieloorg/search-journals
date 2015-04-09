@@ -46,80 +46,8 @@
                     </div>
                 </div>
             {% endblock %}
-
-            <div class="modal fade" id="SendViaEmail" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title">{{ texts.SEND_RESULT }}</h4>
-                        </div>
-                        <form name="sendViaEmail" action="{{ current_url }}" method="post" class="validate">
-                            <input type="hidden" name="is_email" value="true" />
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label class="control-label">{{ texts.SEND_RESULT_TO }}*</label>
-                                    <input type="text" name="email" value="" class="form-control valid multipleMail" />
-
-                                    <p class="text-muted">
-                                        {{ texts.SEND_RESULT_TO_HELP }}
-                                    </p>
-                                </div>
-                                <div class="form-group">
-                                    <label>{{ texts.SEND_BY_EMAIL }}</label>
-                                    <div>
-                                        <input type="radio" name="selection" id="sendViaEmail_selection_page" value="page" checked class="radio">
-                                        <label class="radio" for="sendViaEmail_selection_page">{{ texts.THIS_PAGE }}</label>
-                                    </div>
-                                    <div class="selection" style="display: none;">
-                                        <input type="radio" name="selection" value="my_selection" class="radio" id="sendViaEmail_selection_my_selection" />
-                                        <label class="radio" for="sendViaEmail_selection_my_selection">Selected records <strong></strong></label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="selection" value="all_results" class="radio" id="sendViaEmail_selection_all_results" />
-                                        <label class="radio" for="sendViaEmail_selection_all_results">{{ texts.ALL_REFERENCES_LIMIT }} <span class="text-muted">(max. 300)</span></label>
-                                    </div>
-                                    <!--div>
-                                        <input type="radio" name="selection" value="between" class="radio" id="sendViaEmail_selection_between" />
-                                        <label class="radio" for="sendViaEmail_selection_between">Between:  
-                                            <div class="selectBox inline" style="width: 130px">
-                                                <select name="betweenValue">
-                                                    <option value="1">1 and 100</option>
-                                                    <option value="101">101 and 200</option>
-                                                    <option value="201">201 and 242</option>
-                                                </select>
-                                            </div>
-
-                                        </label>
-                                    </div-->
-                                </div>
-                                <div class="form-group extendForm">
-                                    <a href="javascript:;" class="showBlock" id="showBlock" data-rel="#extraFields" data-hide="#showBlock">{{ texts.SEND_RESULT_CHANGE }}</a>
-
-                                    <div id="extraFields" style="display: none;">
-                                        <div class="form-group">
-                                            <label>{{ texts.MAIL_FROM_EMAIL }}</label>
-                                            <input type="text" name="your_email" value="" class="form-control" placeholder="" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ texts.MAIL_SUBJECT }}</label>
-                                            <input type="text" name="subject" value="" class="form-control" placeholder="" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ texts.MAIL_COMMENT }}</label>
-                                            <textarea name="comment" class="form-control"></textarea>
-                                        </div>
-                                        <a href="javascript:;" class="showBlock" data-rel="#showBlock" data-hide="#extraFields">{{ texts.SEND_RESULT_CHANGE }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" value="{{ texts.SEND }}" class="btn">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            
+            {% include custom_template("result-actions.html") %}
 
             {% if flash_message is defined %}
                 {% if 'SUCCESS' in flash_message %}
