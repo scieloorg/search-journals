@@ -356,7 +356,7 @@ SearchForm = {
 			});
 		});
 
-		$("a.action",p+" .collapseBlock .title").on("click",function() {
+		$(".collapseBlock .title a.action").on("click",function() {
 			var t = $(this),
 				ctt = t.parent().next(".content");
 
