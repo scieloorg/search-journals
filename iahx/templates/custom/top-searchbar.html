@@ -121,7 +121,7 @@
         <div class="clearfix"></div>
     </div>
 
-    {% if detailed_query == '' %}
+    {% if detailed_query == '' or docs|length == 0 %}
         <div class="container">
             <div class="searchFilters col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
                 <div class="searchBlock">

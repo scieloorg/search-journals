@@ -106,15 +106,20 @@
             });
         </script>
     {% endif %}
-
+    {% if detailed_query != '' and docs|length == 0 %}
+        <script>
+            $(function() {
+                $("#NotFound").modal("show");
+            });
+        </script>
+    {% endif %}
     <!-- /custom scielo -->
 
     {% block script %}
-    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/decs_window.js"></script>
-
-    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/email.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/decs_window.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/bootstrap-affix.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/ready.js"></script>
     {% endblock %}
