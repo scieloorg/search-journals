@@ -398,6 +398,7 @@ SearchForm = {
 		$(".articleAction, .searchHistoryItem, .colActions .searchHistoryIcon",p).tooltip();
 
 		$(".selectAll",p).on("click",function() {
+			alert('selectAll');
 			var t = $(this),
 				itens = $(".results .item input.checkbox",p),
 				selCount = $("#selectedCount",p),
@@ -1224,4 +1225,26 @@ $("#goto_page").keyup(function(event){
     	new_page = $("#goto_page").val();
         go_to_page(new_page);
     }
+});
+
+/* select all from page */
+$(".selectAll").on("click",function() {
+	var t = $(this),
+		itens = $(".results .item input.checkbox"),
+		selCount = $("#selectedCount"),
+		selCountInt = parseInt(selCount.text());
+
+	if(t.is(":checked")) {
+		itens.each(function() {
+			$(this).prop("checked",true);
+			$(this).trigger("change");
+		});
+		t.data("all","1");
+	} else {
+		itens.each(function() {
+			$(this).prop("checked",false);
+			$(this).trigger("change");
+		});
+		t.data("all","0");
+	}	
 });

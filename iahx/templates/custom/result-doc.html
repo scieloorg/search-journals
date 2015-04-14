@@ -3,10 +3,9 @@
     <div id="{{ doc.id }}" class="item">
 
         <div class="col-md-1 col-sm-2 col-xs-1">
-            <label for="select_{{ doc.id }}" class="hide">{{ texts.SELECT }}</label>
-            <input type="checkbox" class="checkbox" value="{{ doc.id }}"
+            <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
             {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
-            <label class="checkbox" for="searchForm_resultItem_1">{{ loop.index + pag.start }}.</label>
+            <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">        
             {% block data %}
