@@ -3,8 +3,10 @@
     <div id="{{ doc.id }}" class="item">
 
         <div class="col-md-1 col-sm-2 col-xs-1">
-            <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
-            {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
+            {% if output != 'print' %}
+                <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
+                {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
+            {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">        
@@ -18,13 +20,15 @@
                             <strong class="title">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</strong>
                         </a>
                     {% endif %}
-                    <span class="socialLinks notTablet">
-                        <a href="" class="articleAction sendViaMail" data-toggle="tooltip" data-placement="top" title="Enviar link por e-mail">Enviar por e-mail</a>
-                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
-                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
-                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareDelicious" data-toggle="tooltip" data-placement="top" title="Compartilhar no Delicious">Delicious</a>
-                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareOtherNetworks" data-toggle="tooltip" data-placement="top" title="Compartilhar em outras redes">Outras redes</a>
-                    </span>                    
+                    {% if output != 'print' %}
+                        <span class="socialLinks notTablet">
+                            <a href="" class="articleAction sendViaMail" data-toggle="tooltip" data-placement="top" title="Enviar link por e-mail">Enviar por e-mail</a>
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareDelicious" data-toggle="tooltip" data-placement="top" title="Compartilhar no Delicious">Delicious</a>
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" class="articleAction shareOtherNetworks" data-toggle="tooltip" data-placement="top" title="Compartilhar em outras redes">Outras redes</a>
+                        </span>
+                    {% endif %}
                 </div>
 
             {% endblock %}

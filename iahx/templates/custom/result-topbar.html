@@ -43,10 +43,10 @@
     <div class="searchActions">
         <div class="col-md-9 col-sm-6">
             <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
-            <label class="checkbox" for="searchForm_selectAll">Selecionar esta página</label>
+            <label class="checkbox" for="searchForm_selectAll">{{ texts.SELECT_PAGE }}</label>
 
             <div class="actionList notTablet">
-                <a href="print.html" class="openNewWindow">Imprimir</a>
+                <a href="javascript:print('{{ pag.count }}');">{{ texts.PRINT }}</a>
                 |
                 <a href="" class="sendViaMail">{{ texts.SEND_BY_EMAIL }}</a>
                 |
