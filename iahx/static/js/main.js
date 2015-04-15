@@ -497,25 +497,6 @@ searchFormBuilder = {
 			window.open(this.href,'print','width=760,height=550');
 		});
 
-		$(".openStatistics",p).on("click",function(e) {
-			e.preventDefault();
-
-			var t = $(this),
-				title = t.data("cluster"),
-				chartType = t.data("type"),
-				csvLink = t.data("csv"),
-				chartSource = t.data("chartsource");
-
-			$("#Statistics").data({
-				"title": title,
-				"charttype": chartType,
-				"csvlink": csvLink,
-				"chartsource": chartSource
-			}).modal({
-				"show": true
-			});
-		});
-
 		$(".openSelectItens",p).on("click",function(e) {
 			e.preventDefault();
 
@@ -560,71 +541,6 @@ searchFormBuilder = {
 			});
 		});
 
-		$("#Statistics").on("shown.bs.modal",function() {
-			var t = $(this),
-				chartBlock = $(".chartBlock",this),
-				title = t.data("title"),
-				chartType = t.data("charttype"),
-				csvLink = t.data("csvlink"),
-				chartSource = t.data("chartsource");
-
-
-			t.find(".modal-title .cluster").text(title);
-			t.find(".link a").attr("href",csvLink);
-
-			chartBlock.html('<canvas id="chart" width="550" height="400"></canvas>');
-			
-			var canvas = $("#chart").get(0);
-
-			if(isOldIE) {
- 				canvas = G_vmlCanvasManager.initElement(canvas);
-			}
-
-			var ctx = canvas.getContext("2d");
-			ctx.clearRect(0,0,550,400);
-
-
-			$.ajax({
-				url: chartSource,
-				type: "POST",
-				dataType: "json",
-				beforeSend: function() {
-					chartBlock.addClass("loading");
-				}
-			}).done(function(data) {
-				chartBlock.removeClass("loading");
-				switch(chartType) {
-					case "doughnut":
-						window.graph = new Chart(ctx).Doughnut(data,{
-							scaleGridLineWidth : 1
-						});
-						break;
-					case "bar":
-						window.graph = new Chart(ctx).Bar(data,{
-							scaleGridLineWidth : 1
-						});
-						break;
-					case "line":
-						window.graph = new Chart(ctx).Line(data,{
-							scaleGridLineWidth : 1
-						});
-						break;
-					case "pie":
-						window.graph = new Chart(ctx).Pie(data,{
-							scaleGridLineWidth : 1
-						});
-						break;
-					default:
-						window.graph = new Chart(ctx).Pie(data,{
-							scaleGridLineWidth : 1
-						});
-						break;
-				}
-			});
-		}).on("hidden.bs.modal",function() {
-			window.graph.clear().destroy();
-			$(".chartBlock canvas",this).remove();
-		});
 
 		$("#SendViaEmail,#Export").on("shown.bs.modal",function() {
 			var t = $(this),
@@ -1254,4 +1170,108 @@ $(".selectAll").on("click",function() {
 		});
 		t.data("all","0");
 	}	
+});
+
+
+$(".openStatistics").on("click",function(e) {
+	e.preventDefault();
+
+	var t = $(this),
+		title = t.data("cluster"),
+		chartType = t.data("type"),
+		csvLink = t.data("csv"),
+		chartSource = t.data("chartsource");
+
+	$("#Statistics").data({
+		"title": title,
+		"charttype": chartType,
+		"csvlink": csvLink,
+		"chartsource": chartSource
+	}).modal({
+		"show": true
+	});
+});
+
+$("#Statistics").on("shown.bs.modal",function() {
+	var regex = /<span>\d+<\/span>/;
+	var chartDataUrl = "chartjs/";
+    var params= "";
+
+	var t = $(this),
+		chartBlock = $(".chartBlock",this),
+		title = t.data("title"),
+		chartType = t.data("charttype"),
+		csvLink = t.data("csvlink"),
+		chartSource = t.data("chartsource");
+
+	var grupo = $("#ul_" + chartSource);
+    var lista = grupo.find('li');
+
+    for (i = 0; i < lista.length; i++){
+        cluster = lista[i].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('a')[0].innerHTML;
+
+        ma = regex.exec(cluster);
+        if (ma != null) {
+            clusterTotal = ma[0].replace(/(<([^>]+)>)/ig,'');
+            params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
+        }
+    }
+    chartDataUrl += "?type=" + chartType + "&title=" + title + params;
+
+	t.find(".modal-title .cluster").text(title);
+	t.find(".link a").attr("href",csvLink);
+
+	chartBlock.html('<canvas id="chart" width="550" height="400"></canvas>');
+	
+	var canvas = $("#chart").get(0);
+
+	if(isOldIE) {
+			canvas = G_vmlCanvasManager.initElement(canvas);
+	}
+
+	var ctx = canvas.getContext("2d");
+	ctx.clearRect(0,0,550,400);
+
+
+	$.ajax({
+		url: chartDataUrl,
+		type: "POST",
+		dataType: "json",
+		beforeSend: function() {
+			chartBlock.addClass("loading");
+		}
+	}).done(function(data) {
+		chartBlock.removeClass("loading");
+		switch(chartType) {
+			case "doughnut":
+				window.graph = new Chart(ctx).Doughnut(data,{
+					scaleGridLineWidth : 1
+				});
+				break;
+			case "bar":
+				window.graph = new Chart(ctx).Bar(data,{
+					scaleGridLineWidth : 1
+				});
+				break;
+			case "line":
+				window.graph = new Chart(ctx).Line(data,{
+					scaleGridLineWidth : 1
+				});
+				break;
+			case "pie":
+				window.graph = new Chart(ctx).Pie(data,{
+					scaleGridLineWidth : 1
+				});
+				break;
+			default:
+				window.graph = new Chart(ctx).Pie(data,{
+					scaleGridLineWidth : 1
+				});
+				break;
+		}
+	});
+}).on("hidden.bs.modal",function() {
+	window.graph.clear().destroy();
+	$(".chartBlock canvas",this).remove();
 });

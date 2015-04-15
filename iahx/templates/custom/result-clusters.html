@@ -81,7 +81,9 @@
                                     <a href="javascript:;" title="{{ name }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
-                                    <a href="#" onclick="javascript:open_chart(this,'{{ attribute(texts.RESULT, cluster_label) }}','{{ name }}')" class="fancybox_iframe configs dropdown-toggle">
+                                    <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-csv="static/csv/export_cluster.csv" data-chartsource="{{ name }}">x
+
+                                    <!--a href="#" onclick="javascript:open_chart(this,'{{ attribute(texts.RESULT, cluster_label) }}','{{ name }}')" class="fancybox_iframe configs dropdown-toggle"-->
                                     </a>
                                 </div>
 
