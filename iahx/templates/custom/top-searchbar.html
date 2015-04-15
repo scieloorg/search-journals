@@ -7,7 +7,7 @@
     <input type="hidden" name="output" id="output" value="{{ output }}">
     <input type="hidden" name="sort" id="sort" value="{{ sort }}">
     <input type="hidden" name="format" id="format" value="{{ format }}">
-    <input type="hidden" name="fb" id="fb" value="">
+    <input type="hidden" name="fb" id="fb" value="">    
     <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 
     {% for name, items in filters if filters is defined %}
@@ -17,7 +17,7 @@
     {% endfor %}
 
 </form>
-<form name="advanced" id="advanced" onsubmit="return search();" class="searchForm"> 
+<form name="searchFormBuilder" class="searchFormBuilder searchForm"> 
     <div class="highlight {% if detailed_query != '' %}result{% endif %}">
         <div class="container">
             <a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a>
@@ -86,7 +86,7 @@
             <div class="col-md-1 col-sm-1 right">
                 <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
             </div>
-            <div class="col-md-7 col-sm-7">
+            <div class="{% if detailed_query != '' %}col-md-7 col-sm-7{% else %}col-md-8 col-sm-8{% endif %}">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="selectBox connector">
                         <select name="bool[]">
@@ -223,11 +223,11 @@
                     </div>
 
                     <div class="col-md-12">
-                        <input type="radio" name="filter[in][]" value="scl" class="radio" id="searchForm_colecao_br" checked />
+                        <input type="radio" name="where" value="scl" class="radio" id="searchForm_colecao_br" checked />
                         <label class="radio" for="searchForm_colecao_br"><strong>SciELO {{texts.COLLECTION_BR}}</strong></label>
                     </div>
                     <div class="col-md-12">
-                        <input type="radio" name="filter[in][]" value="" class="radio" id="searchForm_colecao_all" />
+                        <input type="radio" name="where" value="" class="radio" id="searchForm_colecao_all" />
                         <label class="radio" for="searchForm_colecao_all">{{ texts.COLLECTION_NETWORK|raw }}</strong></label>
                     </div>
 

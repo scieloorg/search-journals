@@ -236,17 +236,15 @@ var Portal = {
 			client = new ZeroClipboard($("input[name='link-share'], a.copyLink"));
 	}
 },
-SearchForm = {
+searchFormBuilder = {
 	SearchHistory: "",
 	Init: function() {
-		var p = "form.searchForm";
+		var p = "form.searchFormBuilder";
 
-		SearchForm.SearchHistory = Cookie.Get("searchHistory");
+		searchFormBuilder.SearchHistory = Cookie.Get("searchHistory");
 
-
-
-		$(p).on("submit",function(e) {
-			var expr = $("input[name='q[]']",p),
+		$(p).on("submit",function(e) {			
+			var expr = $("textarea[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
 				idx = $("select[name='index[]']",p),
 				searchQuery = "";
@@ -267,10 +265,19 @@ SearchForm = {
 					}
 				}
 			}
+			var where = $("input[name='where']:checked",p).val();
+
+			if (where !== undefined && where != ''){
+				searchQuery += ' AND in:"' + where + '"';
+			}
+
+			var searchForm = document.searchForm;
+			searchForm.q.value = $.trim(searchQuery);
+			searchForm.submit();
 
 			/*
 			if(searchQuery != "") {
-				var cHistory = SearchForm.SearchHistory,
+				var cHistory = searchFormBuilder.SearchHistory,
 					dHistory = [];
 
 				if(cHistory !== "") {
@@ -283,12 +290,12 @@ SearchForm = {
 				Cookie.Set("searchHistory",JSON.stringify(dHistory),1);
 			} */
 
-			return true;
+			return false;
 		});
 
 		/*
-		if(SearchForm.SearchHistory != "") {
-			var shObj = JSON.parse(SearchForm.SearchHistory),
+		if(searchFormBuilder.SearchHistory != "") {
+			var shObj = JSON.parse(searchFormBuilder.SearchHistory),
 				shDropdown = $("#searchHistory",p);
 
 			if(shObj.length > 0) {
@@ -307,10 +314,10 @@ SearchForm = {
 		$("#searchHistory").on("click","a.searchItem",function(e) {
 			e.preventDefault();
 			var ref = $("#searchHistory").data("rel");
-			SearchForm.SearchHistoryClick(this,ref);
+			searchFormBuilder.SearchHistoryClick(this,ref);
 		}).on("click","a.cleanSearchHistory",function(e) {
 			e.preventDefault();
-			SearchForm.SearchHistory = "";
+			searchFormBuilder.SearchHistory = "";
 			Cookie.Set("searchHistory","",0);
 			$("#searchHistory").empty();
 		});
@@ -318,14 +325,14 @@ SearchForm = {
 
 		/*
 		$("input[name='q[]']").on("focus",function() {
-			SearchForm.SearchHistoryFocusIn(this);
+			searchFormBuilder.SearchHistoryFocusIn(this);
 		}).on("blur",function() {
-			SearchForm.SearchHistoryFocusOut(this);
+			searchFormBuilder.SearchHistoryFocusOut(this);
 		});
 		*/
 
-		$("textarea.form-control:visible",p).on("keyup",SearchForm.TextareaAutoHeight).trigger("keyup");
-		$("a.clearIptText",p).on("click",SearchForm.ClearPrevInput);
+		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
+		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
 	
 		if($(".searchActions",p).length)
@@ -333,7 +340,7 @@ SearchForm = {
 		
 		$(".newSearchField",p).on("click",function(e) {
 			e.preventDefault();
-			SearchForm.InsertNewFieldRow(this,"#searchRow-matriz .searchRow",".searchForm .searchRow-container");
+			searchFormBuilder.InsertNewFieldRow(this,"#searchRow-matriz .searchRow",".searchFormBuilder .searchRow-container");
 		});
 
 		$("select.setMinValue").on("change",function() {
@@ -415,7 +422,7 @@ SearchForm = {
 				});
 				t.data("all","0");
 			}
-			SearchForm.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
+			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
 		$(".clusterSelectAll").on("click",function() {
@@ -450,7 +457,7 @@ SearchForm = {
 
 			// Executar aqui ações para adicionar item à "sua lista"
 
-			SearchForm.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
+			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
 		$("a.orderBy",p).on("click",function() {
@@ -659,11 +666,11 @@ SearchForm = {
 
 		$(".searchHistoryIcon.add",p).on("click",function() {
 			$("html, body").animate({ scrollTop: 0 }, "fast");
-			SearchForm.InsertSearchHistoryItem(this);
+			searchFormBuilder.InsertSearchHistoryItem(this);
 		});
 		$(".searchHistoryIcon.search",p).on("click",function() {
 			$("#iptQuery").empty();
-			SearchForm.InsertSearchHistoryItem(this);
+			searchFormBuilder.InsertSearchHistoryItem(this);
 			$("#searchHistoryForm").submit();
 		});
 		$(".searchHistoryIcon.erase",p).on("click",function(e) {
@@ -725,7 +732,7 @@ SearchForm = {
 
 			q.append(expr).focus();
 			$(this).effect("transfer", { to: q }, 1000);
-			SearchForm.PlaceCaretToEnd(document.getElementById("iptQuery"));
+			searchFormBuilder.PlaceCaretToEnd(document.getElementById("iptQuery"));
 		});
 
 		if(typeof ZeroClipboard != "undefined") {
@@ -803,9 +810,9 @@ SearchForm = {
 
 		$(window).scroll(function() {
 			if($(window).scrollTop() > window.searchActionsStart)
-				$(".searchForm .searchActions").addClass("fixed");
+				$(".searchFormBuilder .searchActions").addClass("fixed");
 			else 
-				$(".searchForm .searchActions").removeClass("fixed");
+				$(".searchFormBuilder .searchActions").removeClass("fixed");
 		});
 	},
 	InsertSearchHistoryItem: function(obj) {
@@ -817,7 +824,7 @@ SearchForm = {
 		q.append(shItem).focus();
 		q.find(".searchHistoryItem").tooltip();
 		$(obj).effect("transfer", { to: q.find(".searchHistoryItem:last-child") }, 1000);
-		SearchForm.PlaceCaretToEnd(document.getElementById("iptQuery"));
+		searchFormBuilder.PlaceCaretToEnd(document.getElementById("iptQuery"));
 	},
 	InsertNewFieldRow: function(t,matrix,container) {
 		t = $(t);
@@ -831,21 +838,21 @@ SearchForm = {
 
 		matrix.find(".eraseSearchField").on("click",function(e) {
 			e.preventDefault();
-			SearchForm.EraseFieldRow(this);
+			searchFormBuilder.EraseFieldRow(this);
 		});
 
-		if(SearchForm.SearchHistory != "") {
+		if(searchFormBuilder.SearchHistory != "") {
 			matrix.find("input[name='q[]']").on("focus",function() {
-				SearchForm.SearchHistoryFocusIn(this);
+				searchFormBuilder.SearchHistoryFocusIn(this);
 			}).on("blur",function() {
-				SearchForm.SearchHistoryFocusOut(this);
+				searchFormBuilder.SearchHistoryFocusOut(this);
 			});
 		}
 
 		matrix.appendTo(container).slideDown("fast");
 
-		matrix.find("textarea.form-control:visible").on("keyup",SearchForm.TextareaAutoHeight).trigger("keyup");
-		matrix.find("a.clearIptText").on("click",SearchForm.ClearPrevInput);
+		matrix.find("textarea.form-control:visible").on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
+		matrix.find("a.clearIptText").on("click",searchFormBuilder.ClearPrevInput);
 		matrix.find(".showTooltip").tooltip();
 
 		c = parseInt(c);
@@ -885,7 +892,7 @@ SearchForm = {
 			t.removeClass("highlighted");
 	},
 	SearchHistoryFocusIn: function(t) {
-		if(SearchForm.SearchHistory != "") {
+		if(searchFormBuilder.SearchHistory != "") {
 			var pos = $(t).offset();
 
 			$("#searchHistory").data("rel",t).css({
@@ -895,7 +902,7 @@ SearchForm = {
 		}
 	},
 	SearchHistoryFocusOut: function(t) {
-		if(SearchForm.SearchHistory != "") {
+		if(searchFormBuilder.SearchHistory != "") {
 			setTimeout(function() {
 				$("#searchHistory").slideUp("fast");
 			},100);
@@ -1212,8 +1219,8 @@ var Cookie = {
 $(function() {
 	Portal.Init();
 	
-	if($("form.searchForm").length)
-		SearchForm.Init();
+	if($("form.searchFormBuilder").length)
+		searchFormBuilder.Init();
 
 	if($("#articleText").length)
 		Article.Init();
