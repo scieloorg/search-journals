@@ -1179,13 +1179,11 @@ $(".openStatistics").on("click",function(e) {
 	var t = $(this),
 		title = t.data("cluster"),
 		chartType = t.data("type"),
-		csvLink = t.data("csv"),
 		chartSource = t.data("chartsource");
 
 	$("#Statistics").data({
 		"title": title,
 		"charttype": chartType,
-		"csvlink": csvLink,
 		"chartsource": chartSource
 	}).modal({
 		"show": true
@@ -1194,14 +1192,12 @@ $(".openStatistics").on("click",function(e) {
 
 $("#Statistics").on("shown.bs.modal",function() {
 	var regex = /<span>\d+<\/span>/;
-	var chartDataUrl = "chartjs/";
     var params= "";
 
 	var t = $(this),
 		chartBlock = $(".chartBlock",this),
 		title = t.data("title"),
-		chartType = t.data("charttype"),
-		csvLink = t.data("csvlink"),
+		chartType = t.data("charttype"),		
 		chartSource = t.data("chartsource");
 
 	var grupo = $("#ul_" + chartSource);
@@ -1217,7 +1213,8 @@ $("#Statistics").on("shown.bs.modal",function() {
             params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
         }
     }
-    chartDataUrl += "?type=" + chartType + "&title=" + title + params;
+    var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
+    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
 
 	t.find(".modal-title .cluster").text(title);
 	t.find(".link a").attr("href",csvLink);
