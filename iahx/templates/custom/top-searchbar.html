@@ -7,7 +7,7 @@
     <input type="hidden" name="output" id="output" value="{{ output }}">
     <input type="hidden" name="sort" id="sort" value="{{ sort }}">
     <input type="hidden" name="format" id="format" value="{{ format }}">
-    <input type="hidden" name="fb" id="fb" value="">    
+    <input type="hidden" name="fb" id="fb" value="">
     <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 
     {% for name, items in filters if filters is defined %}
@@ -17,7 +17,7 @@
     {% endfor %}
 
 </form>
-<form name="searchFormBuilder" class="searchFormBuilder searchForm"> 
+<form name="searchFormBuilder" class="searchFormBuilder searchForm">
     <div class="highlight {% if detailed_query != '' %}result{% endif %}">
         <div class="container">
             <a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a>
@@ -27,7 +27,7 @@
                     <h2>{{ texts.SEARCH_ARTICLES }}</h2>
                 </div>
                 <div class="col-md-2 col-sm-2">
-                    
+
                 </div>
                 <div class="clearfix"></div>
             {% endif %}
@@ -69,7 +69,7 @@
 
             </div>
 
-            <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">                       
+            <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
             </ul>
 
             <div class="col-md-8 col-sm-8 right">
@@ -82,7 +82,7 @@
             -->
             <div class="clearfix"></div>
         </div>
-    </div>  
+    </div>
     <div id="searchRow-matriz">
         <div class="searchRow" id="searchRow-@" style="display: none;">
             <div class="col-md-1 col-sm-1 right">
@@ -164,7 +164,7 @@
                                 <option>1997</option>
                             </select>
                         </div>
-                        
+
                     </div>
 
                     <div class="col-md-5 col-sm-6">
@@ -217,7 +217,7 @@
                                 <option>1997</option>
                             </select>
                         </div>
-                        
+
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="col-md-12">
                         <input type="radio" name="where" value="" class="radio" id="searchForm_colecao_all" />
-                        <label class="radio" for="searchForm_colecao_all">{{ texts.COLLECTION_NETWORK|raw }}</strong></label>
+                        <label class="radio" for="searchForm_colecao_all">{{ texts.COLLECTION_NETWORK_PREFIX }} <strong>{{ texts.COLLECTION_NETWORK }}</strong></label>
                     </div>
 
                 </div>
