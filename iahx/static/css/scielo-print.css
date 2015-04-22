@@ -1,0 +1,46 @@
+.mainNav,
+.language,
+.newSearchField,
+.searchFilters,
+.searchOptions,
+.searchActions,
+.highlight,
+.articleAction,
+.shLink {
+  display: none !important;
+}
+.searchForm .resultBlock {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dotted #ccc;
+}
+.searchForm .results .item {
+  padding: 20px;
+  border-bottom: 1px dotted #ccc;
+}
+.searchForm .results .item:last-child {
+  border-bottom: 0;
+}
+.searchForm .results input.checkbox + label.checkbox {
+  background: none;
+}
+.searchForm .results .versions {
+  padding: 7px 0 !important;
+  background: none;
+}
+.searchForm .results .metadata {
+  padding: 7px 0 !important;
+}
+.searchForm .results .metadata .col-md-9 {
+  padding: 0;
+}
+.colophon .container {
+  border-top: 1px dotted #ccc;
+  background: none;
+}
+.colophon a {
+  display: none;
+}
+.brandLogo {
+  width: 100%;
+}

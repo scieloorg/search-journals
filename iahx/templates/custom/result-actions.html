@@ -1,0 +1,188 @@
+            <div class="modal fade" id="Statistics" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.SHOW_STATISTICS }} <span class="cluster"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="chartBlock loading">
+                                
+                            </div>
+                            <div class="link">
+                                <a href="" target="_blank">{{ texts.CSV_DOWNLOAD }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="SendViaEmail" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.SEND_RESULT }}</h4>
+                        </div>
+                        <form name="sendViaEmail" action="{{ current_url }}" method="post" class="validate">
+                            <input type="hidden" name="is_email" value="true" />
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="control-label">{{ texts.SEND_RESULT_TO }}*</label>
+                                    <input type="text" name="email" value="" class="form-control valid multipleMail" />
+
+                                    <p class="text-muted">
+                                        {{ texts.SEND_RESULT_TO_HELP }}
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ texts.SEND_BY_EMAIL }}</label>
+                                    <div>
+                                        <input type="radio" name="selection" id="sendViaEmail_selection_page" value="page" checked class="radio">
+                                        <label class="radio" for="sendViaEmail_selection_page">{{ texts.THIS_PAGE }}</label>
+                                    </div>
+                                    <div class="selection" style="display: none;">
+                                        <input type="radio" name="selection" value="my_selection" class="radio" id="sendViaEmail_selection_my_selection" />
+                                        <label class="radio" for="sendViaEmail_selection_my_selection">{{ texts.SELETED_RECORDS }} <strong></strong></label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="selection" value="all_results" class="radio" id="sendViaEmail_selection_all_results" />
+                                        <label class="radio" for="sendViaEmail_selection_all_results">{{ texts.ALL_REFERENCES_LIMIT }} <span class="text-muted">(max. 300)</span></label>
+                                    </div>
+                                    <!--div>
+                                        <input type="radio" name="selection" value="between" class="radio" id="sendViaEmail_selection_between" />
+                                        <label class="radio" for="sendViaEmail_selection_between">Between:  
+                                            <div class="selectBox inline" style="width: 130px">
+                                                <select name="betweenValue">
+                                                    <option value="1">1 and 100</option>
+                                                    <option value="101">101 and 200</option>
+                                                    <option value="201">201 and 242</option>
+                                                </select>
+                                            </div>
+
+                                        </label>
+                                    </div-->
+                                </div>
+                                <div class="form-group extendForm">
+                                    <a href="javascript:;" class="showBlock" id="showBlock" data-rel="#extraFields" data-hide="#showBlock">{{ texts.SEND_RESULT_CHANGE }}</a>
+
+                                    <div id="extraFields" style="display: none;">
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_FROM_EMAIL }}</label>
+                                            <input type="text" name="your_email" value="" class="form-control" placeholder="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_SUBJECT }}</label>
+                                            <input type="text" name="subject" value="" class="form-control" placeholder="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_COMMENT }}</label>
+                                            <textarea name="comment" class="form-control"></textarea>
+                                        </div>
+                                        <a href="javascript:;" class="showBlock" data-rel="#showBlock" data-hide="#extraFields">{{ texts.SEND_RESULT_CHANGE }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" value="{{ texts.SEND }}" class="btn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="Export" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.EXPORT_RESULT }}</h4>
+                        </div>
+                        <form name="exportForm" id="exportForm">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <label class="col-xs-12">{{ texts.EXPORT_FORMAT }}:</label>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="ris" class="radio" id="export_format_ris" checked data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_ris">{{ texts.EXPORT_FORMAT_RIS }}</label>
+                                        </div>
+                                        <!-- 
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="bibtex" class="radio" id="export_format_bibtex" data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_bibtex">BibTex</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="json" class="radio" id="export_format_json" data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_json">JSON</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="nbib" class="radio" id="export_format_nbib" data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_nbib">NBIB</label>
+                                        </div>
+                                        -->
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="citation" class="radio" id="export_format_citation" data-show=".citationTypes" data-hide=".csvTypes" />
+                                            <label class="radio" for="export_format_citation">{{ texts.EXPORT_FORMAT_CITATION }}</label>
+                                        </div>
+                                        <!--
+                                        <div class="col-xs-11 col-xs-offset-1 citationTypes" style="display: none;">
+                                            <div class="col-xs-12">
+                                                <input type="radio" name="formatType" value="type1" class="radio" id="export_formatType_citation1" />
+                                                <label class="radio" for="export_formatType_citation1">Tipo 1</label>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <input type="radio" name="formatType" value="type2" class="radio" id="export_formatType_citation2" />
+                                                <label class="radio" for="export_formatType_citation2">Tipo 2</label>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="csv" class="radio" id="export_format_csv" data-hide=".citationTypes" data-show=".csvTypes" />
+                                            <label class="radio" for="export_format_csv">{{ texts.EXPORT_FORMAT_CSV }}</label>
+                                        </div>
+                                        <!--
+                                        <div class="col-xs-11 col-xs-offset-1 csvTypes" style="display: none;">
+                                            <div class="col-xs-12">
+                                                <input type="radio" name="formatType" value="type1" class="radio" id="export_formatType_csv1" />
+                                                <label class="radio" for="export_formatType_csv1">Registro curto: autor, título e fonte</label>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <input type="radio" name="formatType" value="type2" class="radio" id="export_formatType_csv2" />
+                                                <label class="radio" for="export_formatType_csv2">Registro longo: referência completa</label>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <input type="radio" name="formatType" value="type3" class="radio" id="export_formatType_csv3" />
+                                                <label class="radio" for="export_formatType_csv3">Registro longo: referência completa e referências das citações</label>
+                                            </div>
+                                        </div>
+                                        -->                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-xs-12">{{ texts.EXPORT}}:</label>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="{{ pag.count }}" class="radio" id="export_selection_current_page" checked="1" />
+                                            <label class="radio" for="export_selection_current_page">{{ texts.THIS_PAGE }} <strong></strong></label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="selection" class="radio" id="export_selection_user_selection" />
+                                            <label class="radio" for="export_selection_user_selection">{{ texts.YOUR_SELECTION }}</label>
+                                        </div>                                        
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="all_results" class="radio" id="export_selection_all_results" />
+                                            <label class="radio" for="export_selection_all_results">{{ texts.ALL_REFERENCES_LIMIT }} <span class="text-muted">(max. {{ config.max_export_records }})</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" name="s" value="{{ texts.EXPORT }}" class="btn" onclick="var select_val = $('input[name=selection]:checked','#exportForm').val(); if (select_val != 'all_results') { export_result(select_val) } else { export_result() }">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
