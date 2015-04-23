@@ -1,15 +1,33 @@
     <footer>
-        <div class="colophon">
-            <div class="container">
-                <div class="col-md-6">
-                    <a href="{{ config.home_url }}">{{ texts.GOTO_HOMEPAGE }}</a>
-                </div>
-                <div class="col-md-6 right">
-                    powered by iAHx-{% include("version.txt") %} SciELO
-                </div>
-            </div>
-        </div>
-    </footer>
+		<div class="collectionSignature">
+			<div class="container">
+				<div class="col-md-2 col-sm-2">
+					<img src="{{ constant("STATIC_URL") }}/image/logo-scielo-signature.png" alt="Logo SciELO" />
+				</div>
+				<div class="col-md-8 col-sm-9">
+					<strong>SciELO - Scientific Electronic Library Online</strong><br/>
+					Av. Onze de Junho, 269 - Vila Clementino 04041-050 São Paulo SP - Brasil<br/>
+					Tel.: (55 11) 5083-3639 - Email: scielo@scielo.org
+				</div>
+			</div>
+		</div>
+		<div class="partners">
+			<a href="http://www.fapesp.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-fapesp.png" alt="FAPESP"></a>
+			<a href="http://www.cnpq.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-cnpq.png" alt="CNPQ"></a>
+			<a href="http://regional.bvsalud.org/php/index.php?lang=pt" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bvs.png" alt="Biblioteca Virtual em Saúde"></a>
+			<a href="http://regional.bvsalud.org/bvs/bireme/homepage.htm" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bireme.png" alt="BIREME - OPAS - OMS"></a>
+			<img src="{{ constant("STATIC_URL") }}/image/partner-fap.png" alt="FAP UNIFESP">
+		</div>
+		<div class="container collectionLicense">
+			<a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">
+				<img src="{{ constant("STATIC_URL") }}/image/cc-license.png" alt="Creative Common - BY" />
+				<span>
+					Todo o conteúdo de www.scielo.org, exceto onde está identificado, está licenciado sob uma Licença Creative Commons.<br/>
+					<strong>saiba mais »</strong>
+				</span>
+			</a>
+
+		</div>
+	</footer>
 
 </div> <!-- div content -->
-
