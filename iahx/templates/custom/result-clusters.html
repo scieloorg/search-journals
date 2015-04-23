@@ -8,7 +8,7 @@
             <div class="query">
                 {{ detailed_query }}
             </div>
-        </div>    
+        </div>
 
         {% if filters_formatted|length > 0 %}
             <div class="collapseBlock">
@@ -25,7 +25,7 @@
                                  <span>{{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong></span>
                             </a>
                         {% endfor %}
-                    {% endfor %}        
+                    {% endfor %}
                 </div>
             </div>
         {% endif %}
@@ -66,7 +66,7 @@
                 {% for name, cluster in clusters if cluster|length > 0 %}
 
                     {% set cluster_labels = 'REFINE_' ~ name %}
-                    
+
                     {# check if config has a cluster list to show, if not show all #}
 
                     {% if not collectionData.cluster_list.cluster or name in collectionData.cluster_list.cluster %}
@@ -74,17 +74,14 @@
                         {% if (name == 'acronym_sponsor' and params.where != 'SCL') or name == 'dedup_signature' %}
                             {# hide acronym_sponsor cluster when not collection equal Brazil  #}
                             {# hide dedup_signature used in the process of delete duplication #}
-                        {% else %}                        
+                        {% else %}
                             <a name="{{ name }}"></a>
                             <div id="{{ name }}" class="collapseBlock">
-                                <div class="title">                                    
+                                <div class="title">
                                     <a href="javascript:;" title="{{ name }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
-                                    <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}">x
-
-                                    <!--a href="#" onclick="javascript:open_chart(this,'{{ attribute(texts.RESULT, cluster_label) }}','{{ name }}')" class="fancybox_iframe configs dropdown-toggle"-->
-                                    </a>
+                                    <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}">x</a>
                                 </div>
 
                                 <ul id="ul_{{ name }}">
@@ -100,7 +97,7 @@
 
                                             {% else %}
 
-                                                <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">                
+                                                <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
                                                     <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
                                                         <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
                                                         {% for filter_name, filter in filters if filter_name == name %}
@@ -121,7 +118,7 @@
                                                     </div>
                                                     <div class="col-xs-3 right">
                                                         <span>{{ item.1 }}</span>
-                                                    </div>                                                
+                                                    </div>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
@@ -129,12 +126,11 @@
                                         {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
                                             <li><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></li>
                                         {% endif %}
-                                        <!-- <input type="submit" value="filtrar"> -->
                                     </div>
                                 </ul>
                             </div>
                         {% endif %}
-                    {% endif %}                    
+                    {% endif %}
                 {% endfor %}
             </form>
 
