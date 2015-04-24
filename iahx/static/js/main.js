@@ -231,9 +231,6 @@ var Portal = {
 		}).mouseup(function(e) {
 			e.preventDefault();
 		});
-
-		if(typeof ZeroClipboard != "undefined")
-			client = new ZeroClipboard($("input[name='link-share'], a.copyLink"));
 	}
 },
 searchFormBuilder = {
@@ -597,18 +594,6 @@ searchFormBuilder = {
 			$(this).effect("transfer", { to: q }, 1000);
 			searchFormBuilder.PlaceCaretToEnd(document.getElementById("iptQuery"));
 		});
-
-		if(typeof ZeroClipboard != "undefined") {
-			var client = new ZeroClipboard( document.getElementById("CopyToClipboard"));
-			client.on("ready", function( readyEvent ) {
-				client.on( "aftercopy", function( event ) {
-					$("#CopyToClipboard").addClass("success");
-					var t = setTimeout(function() {
-						$("#CopyToClipboard").removeClass("success");
-					},2000);
-				});
-			});
-		}
 
 		$(".openCitationModal").on("click",function() {
 			var modal = $("#CitationModal"),
