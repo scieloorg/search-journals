@@ -1186,3 +1186,11 @@ $("#Statistics").on("shown.bs.modal",function() {
 	window.graph.clear().destroy();
 	$(".chartBlock canvas",this).remove();
 });
+
+$(".filterItem input.checkbox").on("change",function() {
+	var t = $(this);
+
+	$(this).attr('checked', !$(this).attr('checked'));
+
+	$('#form_clusters').submit();
+});

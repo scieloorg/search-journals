@@ -3,26 +3,6 @@
     padding-left: 0px;
 }
 
-/* affix que fixa o sidebar */
-.affix, .affix-top {
-    width: 285px;
-    margin: 0;
-    padding: 0;
-}
-.affix {
-    top: 0;
-    background: #fff;
-    position: fixed;
-    border-bottom: 2px solid #ccc !important;
-    margin: 0 0 0 -10px;
-}
-.affix-top button {
-    margin: 5px 2px;
-}
-.affix button {
-    margin: 10px 2px 10px 10px;
-}
-
 .filterItem a {
     color: #403d39;
 }
