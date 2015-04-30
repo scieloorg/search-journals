@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{{ texts.SEARCH_HOME }} | {{ texts.BVS_TITLE }}{% endblock %}</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+        <meta http-equiv="keywords" content="{{ texts.KEYWORDS }}">
+        <meta http-equiv="description" content="{{ texts.DESCRIPTION }} ">
+
+        <!-- css -->
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-portal.min.css">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-portal-custom.css">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-print.css" media="print">
+
+        <!--[if lt IE 9]>
+        	<script src="{{ constant("STATIC_URL") }}js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+        <![endif]-->
+
+        <!-- Page icon -->
+        <link rel="shortcut icon" href="{{ constant("STATIC_URL") }}image/favicon.ico">
+
+        {% if config.google_analytics_tracking_id != '' %}
+            <script type="text/javascript">
+              var _gaq = _gaq || [];
+              _gaq.push(['_setAccount', '{{ config.google_analytics_tracking_id }}']);
+              _gaq.push(['_trackPageview']);
+
+              (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              })();
+            </script>
+        {% endif %}
+
+        {% block extrahead %}{% endblock %}
+    {% endblock %}
+    </head>
+
+    <body {% block onload %}onload="document.searchForm.reset()"{% endblock %}>{% block body %}
+
+        <form name="language"><input type="hidden" name="lang" value="{{ lang }}"></form>
+        <header>
+            {% block top %}
+                {% include custom_template("top.html") %}
+            {% endblock %}
+        </header>
+
+        <section>
+            {% block container %}
+            <div class="content">
+                {% block content %}
+                        {% block searchbar %}{% include custom_template("top-searchbar.html") %}{% endblock %}
+                {% endblock %}
+                {% block footer %}
+                    {% include custom_template("footer.html") %}
+                {% endblock %}
+            </div>
+            {% endblock %}
+        </section>
+    {% endblock %}
+
+    <script language="javascript" type="text/javascript">
+        var SEARCH_URL = '{{ constant("SEARCH_URL") }}';
+        var STATIC_URL = '{{ constant("STATIC_URL") }}';
+    </script>
+
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/jquery-1.11.0.min.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/functions.js"></script>
+
+    <!-- custom scielo -->
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/bootstrap.min.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/jquery-ui.min.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/main.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/chart.min.js" defer></script>
+
+    {% if config.sharethis_pub != '' %}
+        <script type="text/javascript">var switchTo5x=true;</script>
+            <script type="text/javascript" src="//w.sharethis.com/button/buttons.js"></script>
+            <script type="text/javascript">stLight.options({
+                publisher: "{{ config.sharethis_pub }}",
+                doNotHash: false,
+                doNotCopy: false,
+                hashAddressBar: false});
+        </script>
+    {% endif %}
+
+    {% if flash_message is defined %}
+        <script>
+            $(function() {
+                $("#flash_message").modal("show");
+            });
+        </script>
+    {% endif %}
+    {% if detailed_query != '' and docs|length == 0 %}
+        <script>
+            $(function() {
+                $("#NotFound").modal("show");
+            });
+        </script>
+    {% endif %}
+    <!-- /custom scielo -->
+
+    {% block script %}
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/bootstrap-affix.js"></script>
+    {% endblock %}
+
+    </body>
+</html>

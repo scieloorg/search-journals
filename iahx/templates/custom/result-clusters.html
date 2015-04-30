@@ -1,48 +1,44 @@
-<div class="resultServices">
-    
-    <div class="mySelection filters" id="filters">
-        <h3>{{ texts.YOUR_SELECTION }} (<span class="my_selection_count">0</span>)</h3>
-        <ul>
-            <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
-             <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
-        </ul>
+    <div class="filterTitle">
+            {{ texts.RESULTS }}: <strong>{{ pag.total_formatted }}</strong>
+    </div>
+    <div class="filterContent" id="refineSearch">
+
+        <div class="searchQuery">
+            <div class="searchHistoryItem" data-original-title="" title="">#1</div>
+            <div class="query">
+                {{ detailed_query }}
+            </div>
+        </div>
+
+        {% if filters_formatted|length > 0 %}
+            <div class="collapseBlock">
+                <div class="title">
+                    <a href="javascript:;" class="action opened">{{ texts.SELECTED_FILTERS }}</a>
+                </div>
+                <div class="content">
+                    {% for cluster, items in filters_formatted %}
+                        {% set texts_group = 'REFINE_' ~ cluster %}
+                        {% for item in items %}
+                            {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
+
+                            <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}" class="selectedFilter">
+                                 <span>{{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong></span>
+                            </a>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 
-    {% if filters_formatted|length > 0 %}
-        <div class="division"></div>
-        <div class="filters" id="filters">
-            <h3>{{ texts.SELECTED_FILTERS }}</h3>
-            <ul>
-                {% for cluster, items in filters_formatted %}
-                    {% set texts_group = 'REFINE_' ~ cluster %}
+    <div class="filterTitle">
+        <strong>{{ texts.FILTERS }}</strong>
+    </div>
 
-                    <li class="filter">{{ attribute(texts.REFINE, cluster) }} 
-                        <ul>
-                            {% for item in items %}
-                                {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
-
-                                <li>
-                                    {{ translate(item, texts_group) }} <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}">(remover)</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    <div class="refineSearch" id="refineSearch">
-
-        <div class="bContent" id="refine_facet">
+    <div class="filterContent" id="refineSearch">
 
             <form action="" id="form_clusters" method="GET">
-                <div class="buttons" data-spy="affix" id="affix" data-offset-top="300">
-                    <button type="submit" class="submit">{{texts.FILTER}}</button>
-                </div>
-                <div class="expand_retract">
-                    <a href="javascript:show_all_clusters();" title="{{texts.EXPAND_ALL}}"><i class="icon-plus-sign"></i>{{texts.EXPAND_ALL}}</a>
-                    <a href="javascript:hide_all_clusters();" title="{{texts.RETRACT_ALL}}"><i class="icon-minus-sign"></i>{{texts.RETRACT_ALL}}</a>
-                </div>
                 <!-- used for show more values (facet browse)-->
                 <input type="hidden" name="fb" value="">
 
@@ -67,7 +63,7 @@
                 {% for name, cluster in clusters if cluster|length > 0 %}
 
                     {% set cluster_labels = 'REFINE_' ~ name %}
-                    
+
                     {# check if config has a cluster list to show, if not show all #}
 
                     {% if not collectionData.cluster_list.cluster or name in collectionData.cluster_list.cluster %}
@@ -75,62 +71,66 @@
                         {% if (name == 'acronym_sponsor' and params.where != 'SCL') or name == 'dedup_signature' %}
                             {# hide acronym_sponsor cluster when not collection equal Brazil  #}
                             {# hide dedup_signature used in the process of delete duplication #}
-                        {% else %}                        
+                        {% else %}
                             <a name="{{ name }}"></a>
-                            <div id="{{ name }}">
-                                <a href="javascript:toggle_cluster('{{ name }}');" title="{{ name }}">
-                                    <strong>
+                            <div id="{{ name }}" class="collapseBlock">
+                                <div class="title">
+                                    <a href="javascript:;" title="{{ name }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
-                                    </strong>
-                                </a>
-                                <a href="#" onclick="javascript:open_chart(this,'{{ attribute(texts.RESULT, cluster_label) }}','{{ name }}')" class="fancybox_iframe">
-                                    <img src="{{ constant("STATIC_URL") }}image/common/chart.gif" alt="{{ texts.CHART }}">
-                                </a>
+                                    </a>
+                                    <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}">x</a>
+                                </div>
 
                                 <ul id="ul_{{ name }}">
-                                    {% for item in cluster if item.0 != '' %}
-                                        {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
+                                    <div id="colletion_{{ name }}">
+                                        {% for item in cluster if item.0 != '' %}
+                                            {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
 
-                                        {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
-                                           {# hide cluster for document_type that dont have translation #}
+                                            {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
+                                               {# hide cluster for document_type that dont have translation #}
 
-                                        {% elseif name == 'la' and attribute(texts.REFINE_la, item.0|slugify) == '' %}
-                                           {# hide cluster for languages that dont have translation #}
+                                            {% elseif name == 'la' and attribute(texts.REFINE_la, item.0|slugify) == '' %}
+                                               {# hide cluster for languages that dont have translation #}
 
-                                        {% else %}
-                                            <li class="{% if '/' in item.0 %}subtopic{% endif %}">
-                                                <label for="{{ cluster_item_id }}"></label>
-                                                <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
-                                                {% for filter_name, filter in filters if filter_name == name %}
-                                                    {% if item.0 in filter %}checked="true"{% endif %}
-                                                {% endfor %}
-                                                >
+                                            {% else %}
 
-                                                <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
-                                                    {% if '/' in item.0 %}
-                                                        {% set item_part = item.0|split('/') %}
-                                                        {{ translate(item_part.1, cluster_labels ) }}
-                                                    {% else %}
-                                                        {{ translate(item.0, cluster_labels ) }}
-                                                    {% endif %}
-                                                </a> ({{ item.1 }})
+                                                <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
+                                                    <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
+                                                        <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
+                                                        {% for filter_name, filter in filters if filter_name == name %}
+                                                            {% if item.0 in filter %}checked="true"{% endif %}
+                                                        {% endfor %}
+                                                        class="checkbox">
+                                                        <label class="checkbox" for="{{ cluster_item_id }}">
+                                                            <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
+                                                                {% if '/' in item.0 %}
+                                                                    {% set item_part = item.0|split('/') %}
+                                                                    {{ translate(item_part.1, cluster_labels ) }}
+                                                                {% else %}
+                                                                    {{ translate(item.0, cluster_labels ) }}
+                                                                {% endif %}
+                                                            </a>
+                                                        </label>
 
-                                            </li>
+                                                    </div>
+                                                    <div class="col-xs-3 right">
+                                                        <span>{{ item.1 }}</span>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
+                                            <li><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></li>
                                         {% endif %}
-                                    {% endfor %}
-
-                                    {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
-                                        <li><b><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></b></li>
-                                    {% endif %}
-                                    <!-- <input type="submit" value="filtrar"> -->
+                                    </div>
                                 </ul>
                             </div>
                         {% endif %}
-                    {% endif %}                    
+                    {% endif %}
                 {% endfor %}
             </form>
 
-        </div>
+
 
     </div>
-</div>
