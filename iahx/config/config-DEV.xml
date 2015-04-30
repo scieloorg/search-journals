@@ -12,7 +12,7 @@
 	<log_user_search>true</log_user_search>
 	<log_dir>./logs/</log_dir>
 	<environment>development</environment>
-	<addthis_pub></addthis_pub>    
+	<addthis_pub></addthis_pub>
 	<addthis_buttons>
 		<button>favorites</button>
 		<button>facebook</button>
@@ -26,6 +26,7 @@
 	<feedback_id></feedback_id>
 	<browse_index_url></browse_index_url>
 	<mobile_version>false</mobile_version>
+	<publication_year_start>1997</publication_year_start>
 
 	<search_collection_list>
 		<collection>
