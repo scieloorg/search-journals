@@ -20,7 +20,7 @@ from SolrAPI import Solr
 from xylose.scielodocument import Article
 
 
-URL_SOLR = "http://homolog.search.scielo.org:8080/solr/scielo-articles"
+URL_SOLR = "<URL>/solr/scielo-articles"
 
 
 class UpdateSearch(object):
