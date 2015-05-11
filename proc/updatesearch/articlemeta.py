@@ -31,7 +31,7 @@ def get_identifiers(collection=None, issn=None, _from=None, _until=None,
     :param offset_range: paging through RCP result, default:1000
     :param onlyid: default=False returns only SciELO ID
 
-    :returns: return a generator with a tuple ``(collection, PID)`` or just ``PID`
+    :returns: return a generator with a tuple ``(collection, PID)`` or just ``PID``
     ex.: (mex, S0036-36342014000100009)
     """
 
@@ -60,14 +60,12 @@ def get_identifiers(collection=None, issn=None, _from=None, _until=None,
 
 def get_article(code, collection):
     """
-    Get article meta data by code
+    Get article meta data by code and collection
 
     :param code: SciELO PID(Publisher Identifier)
-    :param collection: collection acronym
+    :param collection: collection acronym, ex.: scl, cub, mex, ury
 
-    Endpoint: ``/api/v1/pid/?q=S0101-31222002000100038``
-
-    :returns: Article JSON
+    :returns: JSON (Java Script Object Notation)
     """
     logger.debug('Get article with code: %s by collection %s' % (code, collection))
 
