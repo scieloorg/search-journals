@@ -189,6 +189,9 @@ class UpdateSearch(object):
         else:
             self.solr.delete(self.args.delete, commit=True)
 
+        # optimize the index
+        self.solr.optimize()
+
 
 def main():
 
