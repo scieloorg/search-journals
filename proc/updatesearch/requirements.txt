@@ -4,4 +4,3 @@ requests==2.7.0
 -e git+git://github.com/picleslivre/solrapi.git#egg=solrapi
 -e git+git://github.com/scieloorg/xylose.git#egg=xylose
 -e git+git://github.com/gustavofonseca/plumber.git#egg=plumber
-

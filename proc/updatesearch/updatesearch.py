@@ -3,11 +3,13 @@
 
 from __future__ import print_function
 
+import os
 import sys
 import time
 import json
 import argparse
 import textwrap
+import itertools
 from datetime import datetime, timedelta
 
 from lxml import etree as ET
@@ -18,9 +20,6 @@ import articlemeta as art_meta
 
 from SolrAPI import Solr
 from xylose.scielodocument import Article
-
-
-URL_SOLR = "<URL>/solr/scielo-articles"
 
 
 class UpdateSearch(object):
@@ -48,13 +47,13 @@ class UpdateSearch(object):
                         dest='from_date',
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
                         nargs='?',
-                        help='index articles from specific date. YYYY-MM-DD')
+                        help='index articles from specific date. YYYY-MM-DD.')
 
     parser.add_argument('-u', '--until',
                         dest='until_date',
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d'),
                         nargs='?',
-                        help='index articles until this specific date. YYYY-MM-DD (default today)',
+                        help='index articles until this specific date. YYYY-MM-DD (default today).',
                         default=datetime.now())
 
     parser.add_argument('-c', '--collection',
@@ -65,18 +64,22 @@ class UpdateSearch(object):
     parser.add_argument('-i', '--issn',
                         dest='issn',
                         default=None,
-                        help='journal issn')
+                        help='journal issn.')
 
     parser.add_argument('-d', '--delete',
                         dest='delete',
                         default=None,
-                        help='delete query ex.: q=*:* (Lucene Syntax)')
+                        help='delete query ex.: q=*:* (Lucene Syntax).')
 
     parser.add_argument('-r', '--range',
                         type=int,
                         dest='chunk_range',
                         default=1000,
-                        help='range of chenks, send to solr, default:1000')
+                        help='range of chunks, send to solr, default:1000.')
+
+    parser.add_argument('-url', '--url',
+                        dest='solr_url',
+                        help='Solr RESTFul URL, processing try to get the variable from environment ``SOLR_URL`` otherwise use --url to set the url(preferable).')
 
     parser.add_argument('-v', '--version',
                         action='version',
@@ -84,9 +87,17 @@ class UpdateSearch(object):
 
     def __init__(self):
 
-        self.solr = Solr(URL_SOLR, timeout=10)
-
         self.args = self.parser.parse_args()
+
+        solr_url = os.environ.get('SOLR_URL')
+
+        if not solr_url and not self.args.solr_url:
+            raise argparse.ArgumentTypeError('--url or ``SOLR_URL`` enviroment variable must be the set, use --help.')
+
+        if not solr_url:
+            self.solr = Solr(self.args.solr_url, timeout=10)
+        else:
+            self.solr = Solr(solr_url, timeout=10)
 
         if self.args.period:
             self.args.from_date = datetime.now() - timedelta(days=self.args.period)
@@ -103,17 +114,6 @@ class UpdateSearch(object):
             return None
 
         return date.strftime('%Y-%m-%d')
-
-    def chunks(self, _list, step):
-        """
-        Yield successive n-sized chunks from list.
-
-        :param _list: python object list
-        :param step: block of the list
-        """
-
-        for i in xrange(0, len(_list), step):
-            yield _list[i:i+step]
 
     def pipeline_to_xml(self, list_dict):
         """
@@ -170,20 +170,21 @@ class UpdateSearch(object):
                                                _from=self._format_date(self.args.from_date),
                                                _until=self._format_date(self.args.until_date))
 
-            list_ids = [ident for ident in art_ids]
+            print("Indexing in {0}".format(self.solr.url))
 
-            chunk_list = self.chunks(list_ids, self.args.chunk_range)
+            list_article = []
+            while True:
+                lst = list(itertools.islice(art_ids, 0, self.args.chunk_range))
 
-            print('Indexing {0} article(s), please wait, it`s may take a while...'.format(len(list_ids)))
+                if not lst:
+                    break
 
-            for chunk in chunk_list:
-
-                list_article = []
-
-                for ident in chunk:
+                for ident in lst:
                     list_article.append(json.loads(art_meta.get_article(*ident)))
 
                 self.solr.update(self.pipeline_to_xml(list_article), commit=True)
+
+                print("Updated {0} articles.".format(len(list_article)))
 
         else:
             self.solr.delete(self.args.delete, commit=True)
