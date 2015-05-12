@@ -31,6 +31,14 @@
    <field name="filename" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="ur" type="string" indexed="false" stored="true" multiValued="true"/>
 
+   <!-- source fields -->
+   <field name="abrev_source" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="volume" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="number" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="start_page" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="end_page" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="publication_date" type="string" indexed="false" stored="true" multiValued="false"/>
+
    <!-- sort -->
    <field name="order_sjr" type="string" indexed="true" stored="true" multiValued="false"/>
 
@@ -54,7 +62,7 @@
         via copyField further on in this schema  -->
    <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
 
-   <!-- --> 
+   <!-- -->
    <field name="dedup_signature" type="string" stored="true" indexed="true" multiValued="false" />
 
    <!-- uncomment the following to ignore any fields that don't already match an existing
@@ -174,7 +182,7 @@
       <analyzer type="query">
         <tokenizer class="solr.KeywordTokenizerFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>      
+      </analyzer>
     </fieldType>
 
     <!-- since fields of this type are by default not stored or indexed,
