@@ -1,0 +1,6 @@
+lxml==3.4.4
+thriftpy==0.2.0
+requests==2.7.0
+-e git+git://github.com/picleslivre/solrapi.git@v1.0#egg=citedby
+-e git+https://github.com/scieloorg/xylose@v0.5b#egg=xylose
+-e git+git://github.com/gustavofonseca/plumber.git#egg=plumber
