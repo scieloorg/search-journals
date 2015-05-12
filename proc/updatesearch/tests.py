@@ -20,7 +20,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, None]
 
-        xmlarticle = pipeline_xml.SetupDocumentPipe()
+        xmlarticle = pipeline_xml.SetupDocument()
         raw, xml = xmlarticle.transform(data)
 
         self.assertEqual('<doc />', ET.tostring(xml))
@@ -31,7 +31,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLDocumentIDPipe()
+        xmlarticle = pipeline_xml.DocumentID()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="id"]').text
@@ -44,7 +44,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLCollectionPipe()
+        xmlarticle = pipeline_xml.Collection()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="in"]').text
@@ -57,7 +57,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLKnowledgeAreaPipe()
+        xmlarticle = pipeline_xml.KnowledgeArea()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ac"]').text
@@ -72,7 +72,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLDOIPipe()
+        xmlarticle = pipeline_xml.DOI()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -88,7 +88,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLDOIPipe()
+        xmlarticle = pipeline_xml.DOI()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -110,7 +110,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLKnowledgeAreaPipe()
+        xmlarticle = pipeline_xml.KnowledgeArea()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -126,7 +126,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLKnowledgeAreaPipe()
+        xmlarticle = pipeline_xml.KnowledgeArea()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -146,7 +146,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLCenterPipe()
+        xmlarticle = pipeline_xml.Center()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="cc"]').text
@@ -159,7 +159,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLDocumentTypePipe()
+        xmlarticle = pipeline_xml.DocumentType()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="type"]').text
@@ -172,7 +172,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLURPipe()
+        xmlarticle = pipeline_xml.UR()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ur"]').text
@@ -185,7 +185,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAuthorsPipe()
+        xmlarticle = pipeline_xml.Authors()
         raw, xml = xmlarticle.transform(data)
 
         result = '; '.join([ac.text for ac in xml.findall('./field[@name="au"]')])
@@ -200,7 +200,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLAuthorsPipe()
+        xmlarticle = pipeline_xml.Authors()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -220,7 +220,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLTitlePipe()
+        xmlarticle = pipeline_xml.Title()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ti_pt"]').text[0:20]
@@ -240,7 +240,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLTitlePipe()
+        xmlarticle = pipeline_xml.Title()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -260,7 +260,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLPagesPipe()
+        xmlarticle = pipeline_xml.Pages()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="pg"]').text
@@ -275,7 +275,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLPagesPipe()
+        xmlarticle = pipeline_xml.Pages()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -295,7 +295,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKCIPipe()
+        xmlarticle = pipeline_xml.WOKCI()
         raw, xml = xmlarticle.transform(data)
 
         result = ', '.join([i.text for i in xml.findall('./field[@name="wok_citation_index"]')])
@@ -310,7 +310,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKCIPipe()
+        xmlarticle = pipeline_xml.WOKCI()
         raw, xml = xmlarticle.transform(data)
 
         result = ', '.join([i.text for i in xml.findall('./field[@name="wok_citation_index"]')])
@@ -325,7 +325,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKCIPipe()
+        xmlarticle = pipeline_xml.WOKCI()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -345,7 +345,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKSCPipe()
+        xmlarticle = pipeline_xml.WOKSC()
         raw, xml = xmlarticle.transform(data)
 
         result = ', '.join([i.text for i in xml.findall('./field[@name="wok_subject_categories"]')])
@@ -360,7 +360,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKSCPipe()
+        xmlarticle = pipeline_xml.WOKSC()
         raw, xml = xmlarticle.transform(data)
 
         result = ', '.join([i.text for i in xml.findall('./field[@name="wok_subject_categories"]')])
@@ -376,7 +376,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLWOKSCPipe()
+        xmlarticle = pipeline_xml.WOKSC()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -396,7 +396,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLIssueLabelPipe()
+        xmlarticle = pipeline_xml.IssueLabel()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="fo"]').text
@@ -409,7 +409,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLJournalTitlePipe()
+        xmlarticle = pipeline_xml.JournalTitle()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="journal_title"]').text
@@ -422,7 +422,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLJournalAbbrevTitlePipe()
+        xmlarticle = pipeline_xml.JournalAbbrevTitle()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ta"]').text
@@ -436,7 +436,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAvailableLanguagesPipe()
+        xmlarticle = pipeline_xml.AvailableLanguages()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="la"]').text
@@ -450,7 +450,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAvailableLanguagesPipe()
+        xmlarticle = pipeline_xml.AvailableLanguages()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="la"]').text
@@ -472,7 +472,7 @@ class ExportTests(unittest.TestCase):
         }
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLFulltextsPipe()
+        xmlarticle = pipeline_xml.Fulltexts()
         raw, xml = xmlarticle.transform(data)
 
         result_pdf = xml.find('./field[@name="fulltext_pdf_en"]').text
@@ -496,7 +496,7 @@ class ExportTests(unittest.TestCase):
         }
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAvailableLanguagesPipe()
+        xmlarticle = pipeline_xml.AvailableLanguages()
         raw, xml = xmlarticle.transform(data)
 
         result = sorted([i.text for i in xml.findall('./field[@name="la"]')])
@@ -509,7 +509,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLPublicationDatePipe()
+        xmlarticle = pipeline_xml.PublicationDate()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="da"]').text
@@ -522,7 +522,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAbstractPipe()
+        xmlarticle = pipeline_xml.Abstract()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ab_pt"]').text[0:20]
@@ -540,7 +540,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAffiliationCountryPipe()
+        xmlarticle = pipeline_xml.AffiliationCountry()
         raw, xml = xmlarticle.transform(data)
 
         result = [i.text for i in xml.findall('./field[@name="aff_country"]')]
@@ -555,7 +555,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLAffiliationCountryPipe()
+        xmlarticle = pipeline_xml.AffiliationCountry()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -576,7 +576,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLAffiliationInstitutionPipe()
+        xmlarticle = pipeline_xml.AffiliationInstitution()
         raw, xml = xmlarticle.transform(data)
 
         result = [i.text for i in xml.findall('./field[@name="aff_institution"]')]
@@ -594,7 +594,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLAffiliationInstitutionPipe()
+        xmlarticle = pipeline_xml.AffiliationInstitution()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -614,7 +614,7 @@ class ExportTests(unittest.TestCase):
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.XMLSponsorPipe()
+        xmlarticle = pipeline_xml.Sponsor()
         raw, xml = xmlarticle.transform(data)
 
         result = [i.text for i in xml.findall('./field[@name="sponsor"]')]
@@ -629,7 +629,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.XMLSponsorPipe()
+        xmlarticle = pipeline_xml.Sponsor()
 
         raw, xml = xmlarticle.transform(data)
 
