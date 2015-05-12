@@ -279,8 +279,8 @@ searchFormBuilder = {
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
 
-		if($(".searchActions",p).length)
-			window.searchActionsStart = $(".searchActions",p).offset().top;
+		if($(".searchActions").length)
+			window.searchActionsStart = $(".searchActions").offset().top;
 
 		$(".newSearchField",p).on("click",function(e) {
 			e.preventDefault();
@@ -658,9 +658,9 @@ searchFormBuilder = {
 
 		$(window).scroll(function() {
 			if($(window).scrollTop() > window.searchActionsStart)
-				$(".searchFormBuilder .searchActions").addClass("fixed");
+				$(".searchActions").addClass("fixed");
 			else
-				$(".searchFormBuilder .searchActions").removeClass("fixed");
+				$(".searchActions").removeClass("fixed");
 		});
 	},
 	InsertSearchHistoryItem: function(obj) {
