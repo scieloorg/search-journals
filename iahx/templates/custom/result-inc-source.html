@@ -4,25 +4,3 @@
         <i>{{ doc.fo.0 }}</i>
     </div>
 {% endif %}
-
-<div class="line versions">
-    <span>        
-        SciELO 
-        {% if doc.in|length > 1 %}
-            {% for collection in doc.in %}
-                {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
-                {{ translate(collection, 'REFINE_in') }}
-            {% endfor %}
-        {% else %}
-            {{ translate(doc.in.0, 'REFINE_in') }}
-        {% endif %} | 
-    </span>
-    <span>
-        {% if doc.la|length > 1 %}
-            {{ texts.RESULT.LABEL_LANGUAGES }}:
-        {% else %}
-            {{ texts.RESULT.LABEL_LANGUAGE }}:
-        {% endif %}
-        {{ occ( {'element': doc.la,  'translate': true, 'group': 'REFINE_la'} ) }}
-    </span>
-</div>
