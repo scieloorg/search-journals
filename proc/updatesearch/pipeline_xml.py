@@ -4,7 +4,7 @@ from lxml import etree as ET
 import plumber
 
 
-class SetupDocumentPipe(plumber.Pipe):
+class SetupDocument(plumber.Pipe):
 
     def transform(self, data):
         xml = ET.Element('doc')
@@ -12,7 +12,7 @@ class SetupDocumentPipe(plumber.Pipe):
         return data, xml
 
 
-class XMLDocumentIDPipe(plumber.Pipe):
+class DocumentID(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -26,7 +26,21 @@ class XMLDocumentIDPipe(plumber.Pipe):
         return data
 
 
-class XMLCollectionPipe(plumber.Pipe):
+class Journal(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.journal.title
+        field.set('name', 'journal')
+
+        xml.find('.').append(field)
+
+        return data
+
+
+class Collection(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -40,7 +54,7 @@ class XMLCollectionPipe(plumber.Pipe):
         return data
 
 
-class XMLKnowledgeAreaPipe(plumber.Pipe):
+class KnowledgeArea(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -62,7 +76,7 @@ class XMLKnowledgeAreaPipe(plumber.Pipe):
         return data
 
 
-class XMLCenterPipe(plumber.Pipe):
+class Center(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -76,7 +90,7 @@ class XMLCenterPipe(plumber.Pipe):
         return data
 
 
-class XMLDocumentTypePipe(plumber.Pipe):
+class DocumentType(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -90,7 +104,7 @@ class XMLDocumentTypePipe(plumber.Pipe):
         return data
 
 
-class XMLURPipe(plumber.Pipe):
+class URL(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -104,7 +118,7 @@ class XMLURPipe(plumber.Pipe):
         return data
 
 
-class XMLAuthorsPipe(plumber.Pipe):
+class Authors(plumber.Pipe):
 
     def precond(data):
 
@@ -134,7 +148,7 @@ class XMLAuthorsPipe(plumber.Pipe):
         return data
 
 
-class XMLTitlePipe(plumber.Pipe):
+class Title(plumber.Pipe):
 
     def precond(data):
 
@@ -164,7 +178,7 @@ class XMLTitlePipe(plumber.Pipe):
         return data
 
 
-class XMLPagesPipe(plumber.Pipe):
+class Pages(plumber.Pipe):
 
     def precond(data):
 
@@ -193,7 +207,7 @@ class XMLPagesPipe(plumber.Pipe):
         return data
 
 
-class XMLDOIPipe(plumber.Pipe):
+class DOI(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -213,7 +227,7 @@ class XMLDOIPipe(plumber.Pipe):
         return data
 
 
-class XMLWOKCIPipe(plumber.Pipe):
+class WOKCI(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -234,7 +248,7 @@ class XMLWOKCIPipe(plumber.Pipe):
         return data
 
 
-class XMLWOKSCPipe(plumber.Pipe):
+class WOKSC(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -255,39 +269,91 @@ class XMLWOKSCPipe(plumber.Pipe):
         return data
 
 
-class XMLIssueLabelPipe(plumber.Pipe):
+class Volume(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
 
-        label = []
-        if raw.journal_abbreviated_title:
-            label.append(raw.journal_abbreviated_title)
-
-        issue = "{0}{1}({2}{3})".format(raw.volume or '', raw.supplement_volume or '', raw.issue or '', raw.supplement_issue or '')
-        label.append(issue)
-
-        pages = []
-
-        if raw.start_page:
-            pages.append(raw.start_page)
-
-        if raw.end_page:
-            pages.append(raw.end_page)
-
-        label.append('-'.join(pages))
-
-        label.append(raw.publication_date)
-
-        field = ET.Element('field')
-        field.text = '; '.join(label)
-        field.set('name', 'fo')
-        xml.find('.').append(field)
+        if raw.volume:
+            field = ET.Element('field')
+            field.text = raw.volume
+            field.set('name', 'volume')
+            xml.find('.').append(field)
 
         return data
 
 
-class XMLJournalTitlePipe(plumber.Pipe):
+class SupplementVolume(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        if raw.supplement_volume:
+            field = ET.Element('field')
+            field.text = raw.supplement_volume
+            field.set('name', 'supplement_volume')
+            xml.find('.').append(field)
+
+        return data
+
+
+class Issue(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        if raw.issue:
+            field = ET.Element('field')
+            field.text = raw.issue
+            field.set('name', 'issue')
+            xml.find('.').append(field)
+
+        return data
+
+
+class SupplementIssue(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        if raw.supplement_issue:
+            field = ET.Element('field')
+            field.text = raw.supplement_issue
+            field.set('name', 'supplement_issue')
+            xml.find('.').append(field)
+
+        return data
+
+
+class StartPage(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        if raw.start_page:
+            field = ET.Element('field')
+            field.text = raw.start_page
+            field.set('name', 'start_page')
+            xml.find('.').append(field)
+
+        return data
+
+
+class EndPage(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        if raw.end_page:
+            field = ET.Element('field')
+            field.text = raw.end_page
+            field.set('name', 'end_page')
+            xml.find('.').append(field)
+
+        return data
+
+
+class JournalTitle(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -300,7 +366,7 @@ class XMLJournalTitlePipe(plumber.Pipe):
         return data
 
 
-class XMLJournalAbbrevTitlePipe(plumber.Pipe):
+class JournalAbbrevTitle(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -313,7 +379,7 @@ class XMLJournalAbbrevTitlePipe(plumber.Pipe):
         return data
 
 
-class XMLAvailableLanguagesPipe(plumber.Pipe):
+class AvailableLanguages(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -330,7 +396,7 @@ class XMLAvailableLanguagesPipe(plumber.Pipe):
         return data
 
 
-class XMLFulltextsPipe(plumber.Pipe):
+class Fulltexts(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -343,24 +409,27 @@ class XMLFulltextsPipe(plumber.Pipe):
 
         ft = raw.fulltexts()
 
-        for language, url in ft['pdf'].items():
+        # There is articles that does not have pdf
+        if 'pdf' in ft:
+            for language, url in ft['pdf'].items():
 
-            field = ET.Element('field')
-            field.text = url
-            field.set('name', 'fulltext_pdf_%s' % language)
-            xml.find('.').append(field)
+                field = ET.Element('field')
+                field.text = url
+                field.set('name', 'fulltext_pdf_%s' % language)
+                xml.find('.').append(field)
 
-        for language, url in ft['html'].items():
+        if 'html' in ft:
+            for language, url in ft['html'].items():
 
-            field = ET.Element('field')
-            field.text = url
-            field.set('name', 'fulltext_html_%s' % language)
-            xml.find('.').append(field)
+                field = ET.Element('field')
+                field.text = url
+                field.set('name', 'fulltext_html_%s' % language)
+                xml.find('.').append(field)
 
         return data
 
 
-class XMLPublicationDatePipe(plumber.Pipe):
+class PublicationDate(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -373,7 +442,7 @@ class XMLPublicationDatePipe(plumber.Pipe):
         return data
 
 
-class XMLAbstractPipe(plumber.Pipe):
+class Abstract(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -402,7 +471,7 @@ class XMLAbstractPipe(plumber.Pipe):
         return data
 
 
-class XMLAffiliationCountryPipe(plumber.Pipe):
+class AffiliationCountry(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -428,7 +497,7 @@ class XMLAffiliationCountryPipe(plumber.Pipe):
         return data
 
 
-class XMLAffiliationInstitutionPipe(plumber.Pipe):
+class AffiliationInstitution(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -454,7 +523,7 @@ class XMLAffiliationInstitutionPipe(plumber.Pipe):
         return data
 
 
-class XMLSponsorPipe(plumber.Pipe):
+class Sponsor(plumber.Pipe):
 
     def precond(data):
         raw, xml = data
@@ -480,7 +549,7 @@ class XMLSponsorPipe(plumber.Pipe):
         return data
 
 
-class XMLTearDownPipe(plumber.Pipe):
+class TearDown(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
