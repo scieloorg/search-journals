@@ -17,3 +17,7 @@
   text-indent: -5000px;
   background: url(../image/button.glyphs.png) -10px -419px no-repeat;
 }
+
+.item .authors A{
+    color: #000;
+}

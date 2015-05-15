@@ -1,34 +1,31 @@
 
 {% block btn_fulltext %}
-    <div>
-        {% if doc.in|length > 1 %}
-            <span style="display: inline-block;"><img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" /></span> {{ texts.FULLTEXT_AVAILABLE_IN }} (
-            {% for collection in doc.in %}
-                {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
-                <a href="{{ attribute(config.scielo_urls, collection) }}/scielo.php?script=sci_arttext&pid={{doc.ur[loop.index0]|substring_after}}&lang={{lang}}">{{ translate(collection, 'REFINE_in') }}
+    <div class="line versions">
+        <span>            
+            {% for language in doc.la %}
+                · {{ translate(language, 'REFINE_la') }}:
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0|substring_after}}&lang={{language}}">
+                    {{ texts.RESULT.LABEL_ABSTRACT }}
+                </a> |
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{language}}">
+                    {{ texts.TEXT }}
+                </a> |
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0|substring_after}}&lang={{language}}">
+                    PDF
                 </a>
             {% endfor %}
-            )
-        {% else %}
-            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}">
-                <img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}
-            </a>
-        {% endif %}
+        </span>
+        <span>
+            · SciELO
+            {% if doc.in|length > 1 %}
+                {% for collection in doc.in %}
+                    {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
+                    {{ translate(collection, 'REFINE_in') }}
+                {% endfor %}
+            {% else %}
+                {{ translate(doc.in.0, 'REFINE_in') }}
+            {% endif %}
+        </span>
     </div>
-{% endblock %}
-<!-- {% block btn_share %}
-<div>
-    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}"><img src="{{ constant("STATIC_URL") }}image/common/sm-share-en.gif"></a>
-</div>
-{% endblock %} -->
 
-{% block btn_related %}
-    {% if config.show_related_docs == 'true' %}
-    	<div class="related">
-           	<a href="{{ constant("SEARCH_URL") }}related/{{ lang }}/{{ doc.id }}{% if debug == "true"  %}?debug=true{% endif %}" class="fancybox_iframe" title="{{ texts.RELATED_DOCUMENTS }}">
-        	    <img src="{{ constant("STATIC_URL") }}image/common/icon_related.gif" alt="{{ texts.RELATED_DOCUMENTS }}" />
-        	   {{ texts.RELATED_DOCUMENTS }}
-        	</a>
-        </div>
-    {% endif %}
 {% endblock %}
