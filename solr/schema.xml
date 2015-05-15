@@ -46,7 +46,7 @@
               </analyzer>
             </fieldType>
 
-            <fieldtype name="dateiso" class="solr.TextField">
+            <fieldtype name="year_filter" class="solr.TextField">
                 <analyzer type="index">
                     <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1"/>
                 </analyzer>
@@ -56,9 +56,9 @@
             <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
             <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
 
-            <fieldType name="PID" class="solr.TextField">
+            <fieldType name="publisher_id" class="solr.TextField">
               <analyzer type="index">
-                <tokenizer class="solr.PatternTokenizerFactory" pattern="^art-(.*)-[a-z]+" group="1"/>
+                <tokenizer class="solr.PatternTokenizerFactory" pattern="(.*)-[a-z]+" group="1"/>
                 <filter class="solr.LowerCaseFilterFactory"/>
               </analyzer>
               <analyzer type="query">
@@ -72,70 +72,136 @@
 
         <fields>
             <field name="_version_" type="long" indexed="true" stored="true"/>
+
+            <!-- Id used from Solr as a unique key:<uniqueKey>id</uniqueKey> -->
             <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
-            <field name="pid" type="PID" indexed="true" stored="false" multiValued="false"/>
+
+            <!-- Publisher ID = consist of 'S' + ISSN + numbers + '-' + and the abbreviation of collection, in the future it can be anything -->
+            <field name="pid" type="publisher_id" indexed="true" stored="false" multiValued="false"/>
+
+            <!-- Abbreviation of collection **from:in to:collection** -->
             <field name="in" type="string" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Document Type **from:type to:document_type** -->
             <field name="type" type="string" indexed="true" stored="true"/>
+
+            <!-- Author **from:au to:author** -->
             <field name="au" type="text" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Original Title **from:ti to:original_title** -->
             <field name="ti" type="text" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Abbreviation Title **from:ab to:abbreviation_title** -->
             <field name="ab" type="text" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Language **from:la to:languages** list of languages -->
             <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Area Knowledge **from:ac to:area_knowledge** list of area knowledge -->
             <field name="ac" type="string" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Short title **from:ta to:short_title** list of short title -->
             <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
-            <field name="ta_var" type="text" indexed="true" stored="false" multiValued="true"/>
-            <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Publication year da/publication_year **from:da to:publication_year**  ex.: 2004 -->
+            <field name="da" type="year_filter" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Format page **from:pg to:format_page** ex.: 209-294 -->
             <field name="pg" type="string" indexed="false" stored="true" multiValued="true"/>
-            <field name="pub_year" type="tint" indexed="true" stored="false" multiValued="false"/>
+
+            <!-- Sponsor of the research -->
             <field name="sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
-            <field name="cc" type="string" indexed="false" stored="true" multiValued="true"/>
-            <field name="pr" type="string" indexed="false" stored="true" multiValued="false"/>
-            <field name="filename" type="string" indexed="false" stored="true" multiValued="false"/>
+
+            <!-- Uniform Resource Locator of the research article **from:url to:research_url** ex.: http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202013000200003&lng=en&nrm=iso&tlng=pt -->
             <field name="ur" type="string" indexed="false" stored="true" multiValued="true"/>
-            <field name="order_sjr" type="string" indexed="true" stored="true" multiValued="false"/>
-            <field name="year_cluster" type="dateiso" indexed="true" stored="false" multiValued="true"/>
-            <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false"/>
-            <field name="acronym_sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
-            <field name="wok_subject_categories" type="string" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- Copy of ta/short_title -->
+            <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Copy of da/da_cluster -->
+            <field name="year_cluster" type="year_filter" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- This field is baseed in Web of Science subject category:
+            https://images.webofknowledge.com/WOKRS57B4/help/WOS/hp_subject_category_terms_tasca.html -->
+            <!-- Subject category **from:wok_subject_categories to:subject_categories** -->
+            <field name="wok_subject_categories" type="lowercase" indexed="true" stored="true" multiValued="true"/>
+
+            <!-- This field indicates that index the article is indexed in Web of Science -->
+            <!-- We use de convertion:
+                SCIE=Science Citation Index Expanded
+                SSCI=Social Sciences Citation Index
+                AHCI=Arts Humanities Citation Index
+             -->
             <field name="wok_citation_index" type="string" indexed="true" stored="true" multiValued="true"/>
-            <field name="document_type" type="string" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Country Affiliation **from:aff_country to:country_affiliation** -->
             <field name="aff_country" type="string" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Institution Affiliation **from:aff_country to:institution_affiliation** -->
             <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Volume -->
             <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Supplement of Volume -->
             <field name="supplement_volume" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Issue -->
             <field name="issue" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Supplement of Issue -->
             <field name="supplement_issue" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Start Page -->
             <field name="start_page" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- End Page -->
             <field name="end_page" type="string" indexed="true" stored="true" multiValued="false"/>
-            <field name="source" type="string" indexed="true" stored="true" multiValued="false"/>
-            <field name="journal" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Journal title of this research article -->
+            <field name="journal_title" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Digital Object Identifier DOI -->
+            <field name="doi" type="text" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Text Words -->
             <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
-            <field name="dedup_signature" type="string" stored="true" indexed="true" multiValued="false" />
+
+            <!-- Uniform Resource Location for the PDF file ex.:
+            http://www.scielo.br/scielo.php?script=sci_pdf&pid=S0102-67202013000200003&lng=en&nrm=iso&tlng=en -->
+            <!-- Dynamic Field to know the URL of PDF in any languages **from:fulltext_pdf_* to:pdf_url_* **-->
             <dynamicField name="fulltext_pdf_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Dynamic Field to Abstract in any languages **from:ab_* to:abstract_in_* ** -->
             <dynamicField name="ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Dynamic Field to Title in any languages **from:title_in_* to:title_in_* ** -->
             <dynamicField name="ti_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Ignore all others fields -->
             <dynamicField name="*" type="ignored" />
         </fields>
 
-        <uniqueKey>id</uniqueKey>
-
+        <copyField source="id" dest="tw"/>
+        <copyField source="id" dest="pid"/>
         <copyField source="ti" dest="tw"/>
         <copyField source="ti_*" dest="tw"/>
+        <copyField source="ti_*" dest="ti"/>
         <copyField source="au" dest="tw"/>
-        <copyField source="sponsor" dest="tw"/>
         <copyField source="ab" dest="tw"/>
         <copyField source="ab_*" dest="tw"/>
-        <copyField source="acronym_sponsor" dest="tw"/>
-        <copyField source="wok_subject_categories" dest="tw"/>
-        <copyField source="wok_citation_index" dest="tw"/>
-        <copyField source="ta_var" dest="tw"/>
         <copyField source="ta" dest="tw"/>
-        <copyField source="id" dest="tw"/>
-        <copyField source="ti_*" dest="ti"/>
-        <copyField source="ab_*" dest="ab"/>
-        <copyField source="pt" dest="pt_cluster"/>
-        <copyField source="da" dest="year_cluster"/>
+        <copyField source="doi" dest="tw"/>
+        <copyField source="sponsor" dest="tw"/>
         <copyField source="ta" dest="ta_cluster"/>
-        <copyField source="ta_var" dest="ta"/>
-        <copyField source="id" dest="pid"/>
+        <copyField source="da" dest="year_cluster"/>
+        <copyField source="wok_citation_index" dest="tw"/>
+        <copyField source="wok_subject_categories" dest="tw"/>
+
+        <uniqueKey>id</uniqueKey>
+
+        <solrQueryParser defaultOperator="AND"/>
+
+        <defaultSearchField>tw</defaultSearchField>
 
     </schema>
