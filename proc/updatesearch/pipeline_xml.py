@@ -4,6 +4,40 @@ from lxml import etree as ET
 import plumber
 
 
+"""
+Full example output of this pipeline:
+
+    <doc>
+        <field name="id">art-S0102-695X2015000100053-scl</field>
+        <field name="journal_title">Revista Ambiente & Água</field>
+        <field name="in">scl</field>
+        <field name="ac">Agricultural Sciences</field>
+        <field name="type">editorial</field>
+        <field name="ur">art-S1980-993X2015000200234</field>
+        <field name="authors">Marcelo dos Santos, Targa</field>
+        <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
+        <field name="pg">234-239</field>
+        <field name="doi">10.1590/S0102-67202014000200011</field>
+        <field name="wok_citation_index">SCIE</field>
+        <field name="volume">48</field>
+        <field name="supplement_volume">48</field>
+        <field name="issue">7</field>
+        <field name="supplement_issue">suppl. 2</field>
+        <field name="start_page">216</field>
+        <field name="end_page">218</field>
+        <field name="ta">Rev. Ambient. Água</field>
+        <field name="la">en</field>
+        <field name="fulltext_pdf_pt">http://www.scielo.br/pdf/ambiagua/v10n2/1980-993X-ambiagua-10-02-00234.pdf</field>
+        <field name="fulltext_pdf_pt">http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202014000200138&lng=en&nrm=iso&tlng=pt</field>
+        <field name="da">2015-06</field>
+        <field name="ab_*">In this editorial, we reflect on the benefits and legacy of the water crisis....</field>
+        <field name="aff_country">Brasil</field>
+        <field name="aff_institution">usp</field>
+        <field name="sponsor">CNPQ</field>
+    </doc>
+"""
+
+
 class SetupDocument(plumber.Pipe):
 
     def transform(self, data):
@@ -18,7 +52,7 @@ class DocumentID(plumber.Pipe):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = 'art-{0}-{1}'.format(raw.publisher_id, raw.collection_acronym)
+        field.text = '{0}-{1}'.format(raw.publisher_id, raw.collection_acronym)
         field.set('name', 'id')
 
         xml.find('.').append(field)
@@ -26,14 +60,14 @@ class DocumentID(plumber.Pipe):
         return data
 
 
-class Journal(plumber.Pipe):
+class JournalTitle(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
         field.text = raw.journal.title
-        field.set('name', 'journal')
+        field.set('name', 'journal_title')
 
         xml.find('.').append(field)
 
@@ -76,20 +110,6 @@ class KnowledgeArea(plumber.Pipe):
         return data
 
 
-class Center(plumber.Pipe):
-
-    def transform(self, data):
-        raw, xml = data
-
-        field = ET.Element('field')
-        field.text = 'br1.1'
-        field.set('name', 'cc')
-
-        xml.find('.').append(field)
-
-        return data
-
-
 class DocumentType(plumber.Pipe):
 
     def transform(self, data):
@@ -110,7 +130,7 @@ class URL(plumber.Pipe):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = 'art-{0}'.format(raw.publisher_id)
+        field.text = '{0}'.format(raw.publisher_id)
         field.set('name', 'ur')
 
         xml.find('.').append(field)
@@ -148,7 +168,28 @@ class Authors(plumber.Pipe):
         return data
 
 
-class Title(plumber.Pipe):
+class OriginalTitle(plumber.Pipe):
+
+    def precond(data):
+
+        raw, xml = data
+
+        if not raw.original_title():
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.original_title()
+        field.set('name', 'ti')
+        xml.find('.').append(field)
+
+        return data
+
+
+class Titles(plumber.Pipe):
 
     def precond(data):
 
@@ -220,7 +261,7 @@ class DOI(plumber.Pipe):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = raw.doi.upper().replace('HTTP://DX.DOI.ORG/', '')
+        field.text = raw.doi
         field.set('name', 'doi')
         xml.find('.').append(field)
 
@@ -349,19 +390,6 @@ class EndPage(plumber.Pipe):
             field.text = raw.end_page
             field.set('name', 'end_page')
             xml.find('.').append(field)
-
-        return data
-
-
-class JournalTitle(plumber.Pipe):
-
-    def transform(self, data):
-        raw, xml = data
-
-        field = ET.Element('field')
-        field.text = raw.journal_title
-        field.set('name', 'journal_title')
-        xml.find('.').append(field)
 
         return data
 

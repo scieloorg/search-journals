@@ -36,7 +36,7 @@ class ExportTests(unittest.TestCase):
 
         result = xml.find('./field[@name="id"]').text
 
-        self.assertEqual(u'art-S0034-89102010000400007-scl', result)
+        self.assertEqual(u'S0034-89102010000400007-scl', result)
 
     def test_xml_document_collection_pipe(self):
 
@@ -66,7 +66,7 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_document_doi_data_pipe(self):
 
-        fakexylosearticle = Article({'title': {}, 'doi': 'http://dx.doi.org/10.1590/s0036-36342011000900009'})
+        fakexylosearticle = Article({'title': {}, 'doi': '10.1590/S0036-36342011000900009'})
 
         pxml = ET.Element('doc')
 
@@ -140,18 +140,6 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_document_center_pipe(self):
-
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.Center()
-        raw, xml = xmlarticle.transform(data)
-
-        result = xml.find('./field[@name="cc"]').text
-
-        self.assertEqual(u'br1.1', result)
 
     def test_xml_document_type_pipe(self):
 
@@ -177,7 +165,7 @@ class ExportTests(unittest.TestCase):
 
         result = xml.find('./field[@name="ur"]').text
 
-        self.assertEqual(u'art-S0034-89102010000400007', result)
+        self.assertEqual(u'S0034-89102010000400007', result)
 
     def test_xml_document_authors_pipe(self):
 
@@ -214,13 +202,53 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_document_title_pipe(self):
+    def test_xml_document_original_title_pipe(self):
 
         pxml = ET.Element('doc')
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.Title()
+        xmlarticle = pipeline_xml.OriginalTitle()
+        raw, xml = xmlarticle.transform(data)
+
+        # This try except is a trick to test the expected result of the
+        # piped XML, once the precond method don't raise an exception
+        # we try to check if the preconditioned pipe was called or not.
+        try:
+            xml.find('./field[name="ti"]').text
+        except AttributeError:
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
+    def test_xml_document_original_title_without_data_pipe(self):
+
+        fakexylosearticle = Article({'article': {}, 'title': {}})
+
+        pxml = ET.Element('doc')
+
+        data = [fakexylosearticle, pxml]
+
+        xmlarticle = pipeline_xml.OriginalTitle()
+        raw, xml = xmlarticle.transform(data)
+
+        # This try except is a trick to test the expected result of the
+        # piped XML, once the precond method don't raise an exception
+        # we try to check if the preconditioned pipe was called or not.
+        try:
+            xml.find('./field[name="ti"]').text
+        except AttributeError:
+            self.assertTrue(True)
+        else:
+            self.assertTrue(False)
+
+    def test_xml_document_titles_pipe(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.Titles()
         raw, xml = xmlarticle.transform(data)
 
         result = xml.find('./field[@name="ti_pt"]').text[0:20]
@@ -232,7 +260,7 @@ class ExportTests(unittest.TestCase):
         result = xml.find('./field[@name="ti_es"]').text[0:20]
         self.assertEqual(u'Perfil epidemiológic', result)
 
-    def test_xml_document_title_without_data_pipe(self):
+    def test_xml_document_titles_without_data_pipe(self):
 
         fakexylosearticle = Article({'article': {}, 'title': {}})
 
@@ -240,7 +268,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.Title()
+        xmlarticle = pipeline_xml.Titles()
 
         raw, xml = xmlarticle.transform(data)
 
@@ -630,7 +658,7 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_journal_pipe(self):
+    def test_xml_journal_title_pipe(self):
 
         fakexylosearticle = Article({'article': {}, 'title': {"v100": [{"_": "Revista de Sa\u00fade P\u00fablica"}]}})
 
@@ -638,7 +666,7 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.Journal()
+        xmlarticle = pipeline_xml.JournalTitle()
 
         raw, xml = xmlarticle.transform(data)
 

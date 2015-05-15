@@ -127,15 +127,14 @@ class UpdateSearch(object):
                                pipeline_xml.DOI(),
                                pipeline_xml.Collection(),
                                pipeline_xml.KnowledgeArea(),
-                               pipeline_xml.Center(),
                                pipeline_xml.DocumentType(),
                                pipeline_xml.URL(),
                                pipeline_xml.Authors(),
-                               pipeline_xml.Title(),
+                               pipeline_xml.Titles(),
+                               pipeline_xml.OriginalTitle(),
                                pipeline_xml.Pages(),
                                pipeline_xml.WOKCI(),
                                pipeline_xml.WOKSC(),
-                               pipeline_xml.JournalTitle(),
                                pipeline_xml.JournalAbbrevTitle(),
                                pipeline_xml.AvailableLanguages(),
                                pipeline_xml.Fulltexts(),
@@ -150,7 +149,7 @@ class UpdateSearch(object):
                                pipeline_xml.SupplementIssue(),
                                pipeline_xml.StartPage(),
                                pipeline_xml.EndPage(),
-                               pipeline_xml.Journal(),
+                               pipeline_xml.JournalTitle(),
                                pipeline_xml.TearDown())
 
         xmls = ppl.run([Article(article) for article in list_dict])
