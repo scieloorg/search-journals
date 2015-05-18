@@ -177,19 +177,23 @@ class UpdateSearch(object):
 
             print("Indexing in {0}".format(self.solr.url))
 
-            list_article = []
+            count = 0
             while True:
-                lst = list(itertools.islice(art_ids, 0, self.args.chunk_range))
+                lst_ids = list(itertools.islice(art_ids, 0, self.args.chunk_range))
 
-                if not lst:
+                if not lst_ids:
                     break
 
-                for ident in lst:
+                list_article = []
+
+                for ident in lst_ids:
                     list_article.append(json.loads(art_meta.get_article(*ident)))
 
                 self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
-                print("Updated {0} articles.".format(len(list_article)))
+                count += len(list_article)
+
+                print("Updated {0} articles.".format(count))
 
         else:
             self.solr.delete(self.args.delete, commit=True)
