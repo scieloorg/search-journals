@@ -8,6 +8,8 @@ import sys
 import time
 import json
 import argparse
+import logging
+import logging.config
 import textwrap
 import itertools
 from datetime import datetime, timedelta
@@ -20,6 +22,8 @@ import articlemeta as art_meta
 
 from SolrAPI import Solr
 from xylose.scielodocument import Article
+
+logger = logging.getLogger('updatesearch')
 
 
 class UpdateSearch(object):
@@ -102,7 +106,7 @@ class UpdateSearch(object):
         if self.args.period:
             self.args.from_date = datetime.now() - timedelta(days=self.args.period)
 
-    def _format_date(self, date):
+    def format_date(self, date):
         """
         Convert datetime.datetime to str return: ``2000-05-12``.
 
@@ -172,10 +176,10 @@ class UpdateSearch(object):
             # Get article identifiers
             art_ids = art_meta.get_identifiers(collection=self.args.collection,
                                                issn=self.args.issn,
-                                               _from=self._format_date(self.args.from_date),
-                                               _until=self._format_date(self.args.until_date))
+                                               _from=self.format_date(self.args.from_date),
+                                               _until=self.format_date(self.args.until_date))
 
-            print("Indexing in {0}".format(self.solr.url))
+            logger.info("Indexing in {0}".format(self.solr.url))
 
             count = 0
             while True:
@@ -193,7 +197,7 @@ class UpdateSearch(object):
 
                 count += len(list_article)
 
-                print("Updated {0} articles.".format(count))
+                logger.info("Updated {0} articles".format(count))
 
         else:
             self.solr.delete(self.args.delete, commit=True)
@@ -204,17 +208,23 @@ class UpdateSearch(object):
 
 def main():
 
-    # Start time
-    start = time.time()
+    try:
+        # set log
+        logging.config.fileConfig('logging.conf')
 
-    # run the process
-    UpdateSearch().run()
+        # Start time
+        start = time.time()
 
-    # End Time
-    end = time.time()
+        # run the process
+        UpdateSearch().run()
 
-    print("Duration {0} seconds.".format(end-start))
+        # End Time
+        end = time.time()
 
+        print("Duration {0} seconds.".format(end-start))
+
+    except KeyboardInterrupt:
+        logger.critical("Interrupt by user")
 
 if __name__ == "__main__":
 

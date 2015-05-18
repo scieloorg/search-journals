@@ -9,9 +9,6 @@ from thriftpy.rpc import make_client
 
 logger = logging.getLogger(__name__)
 
-logger.addHandler(logging.NullHandler())
-
-
 articlemeta_thrift = thriftpy.load(os.path.join(os.path.dirname(
                                os.path.abspath(__file__)), 'thrift/articlemeta.thrift'))
 
