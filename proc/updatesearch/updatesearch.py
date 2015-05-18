@@ -179,23 +179,31 @@ class UpdateSearch(object):
 
             count = 0
             while True:
-                lst_ids = list(itertools.islice(art_ids, 0, self.args.chunk_range))
+                try:
+                    lst_ids = list(itertools.islice(art_ids, 0, self.args.chunk_range))
 
-                if not lst_ids:
-                    break
+                    if not lst_ids:
+                        break
 
-                list_article = []
+                    list_article = []
 
-                for ident in lst_ids:
-                    list_article.append(json.loads(art_meta.get_article(*ident)))
+                    for ident in lst_ids:
+                        list_article.append(json.loads(art_meta.get_article(*ident)))
 
-                self.solr.update(self.pipeline_to_xml(list_article), commit=True)
+                    self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
-                count += len(list_article)
+                    count += len(list_article)
 
-                print("Updated {0} articles.".format(count))
+                    logger.info("Updated {0} articles".format(count))
 
+                except ValueError as e:
+                    logger.error("Error: {0}".format(e))
+                    continue
+                except Exception as e:
+                    logger.error("Error: {0}".format(e))
+                    sys.exit(0)
         else:
+
             self.solr.delete(self.args.delete, commit=True)
 
         # optimize the index
