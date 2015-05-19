@@ -141,7 +141,7 @@
 			</sort_list>
             <format_list>
             	<format>
-            		<name>abstract</name>
+            		<name>summary</name>
             	</format>
             </format_list>
             <!-- restrict list of clusters to show on result. If not set show all availables on solrconf.xml -->
