@@ -272,13 +272,13 @@ searchFormBuilder = {
 			if (search_by_year == "1"){
 				var pub_year_start =  $("select[name='y1Start'] option:selected",p).val();
 				if (pub_year_start != ''){
-					searchQuery += ' AND pub_year:[' + pub_year_start + ' TO *]';
+					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO *]';
 				}
 			}else if(search_by_year == "2"){
 				var pub_year_start =  $("select[name='y2Start'] option:selected",p).val();
 				var pub_year_end =  $("select[name='y2End'] option:selected",p).val();
 				if (pub_year_start != '' && pub_year_end != ''){
-					searchQuery += ' AND pub_year:[' + pub_year_start + ' TO ' + pub_year_end + ']';
+					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO ' + pub_year_end + ']';
 				}
 			}
 
