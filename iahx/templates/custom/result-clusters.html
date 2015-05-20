@@ -81,8 +81,8 @@
                                     <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}">x</a>
                                 </div>
 
-                                <ul id="ul_{{ name }}">
-                                    <div id="colletion_{{ name }}">
+                                <div id="colletion_{{ name }}" class="content filterCollapsedLis" style="display: block">
+                                    <ul id="ul_{{ name }}">
                                         {% for item in cluster if item.0 != '' %}
                                             {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
 
@@ -123,8 +123,8 @@
                                         {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
                                             <li><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></li>
                                         {% endif %}
-                                    </div>
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
                         {% endif %}
                     {% endif %}
