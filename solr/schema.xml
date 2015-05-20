@@ -103,8 +103,11 @@
             <!-- Short title **from:ta to:short_title** list of short title -->
             <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
 
-            <!-- Publication year da/publication_year **from:da to:publication_year**  ex.: 2004 -->
-            <field name="da" type="year_filter" indexed="true" stored="true" multiValued="false"/>
+            <!-- Publication date da/publication_date **from:da to:publication_date**  ex.: 200401 -->
+            <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Publication year ex.: 2004 -->
+            <field name="publication_year" type="tint" indexed="true" stored="false" multiValued="false"/>
 
             <!-- Format page **from:pg to:format_page** ex.: 209-294 -->
             <field name="pg" type="string" indexed="false" stored="true" multiValued="true"/>
@@ -140,8 +143,14 @@
             <!-- Institution Affiliation **from:aff_country to:institution_affiliation** -->
             <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
 
+            <!-- Abreviation Source. Ex. Sci. agric. (Piracicaba, Braz.) -->
+            <field name="abrev_source" type="string" indexed="true" stored="true" multiValued="false"/>
+
             <!-- Volume -->
             <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
+
+            <!-- Number -->
+            <field name="number" type="string" indexed="false" stored="true" multiValued="false"/>
 
             <!-- Supplement of Volume -->
             <field name="supplement_volume" type="string" indexed="true" stored="true" multiValued="false"/>
