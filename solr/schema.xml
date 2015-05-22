@@ -143,9 +143,6 @@
             <!-- Institution Affiliation **from:aff_country to:institution_affiliation** -->
             <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
 
-            <!-- Abreviation Source. Ex. Sci. agric. (Piracicaba, Braz.) -->
-            <field name="abrev_source" type="string" indexed="true" stored="true" multiValued="false"/>
-
             <!-- Volume -->
             <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
 
