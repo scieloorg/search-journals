@@ -1,11 +1,20 @@
 <!-- source -->
 <div class="line source">
-    <span style="margin: 0">{{ doc.journal_title }}</span>
-    <span style="margin: 0">{{ doc.da|date("M Y") }}</span>
-    <small>{{ texts.RESULT.LABEL_VOLUME }}</small>
-    <span>{{ doc.volume }}</span>
-    <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
-    <span>{{ doc.number }}</span>
-    <small>{{ texts.RESULT.LABEL_PAGES }}</small>
-    <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
+    <span style="margin: 0">{{ doc.journal_title }}, </span>
+    {% if doc.da %}
+        <span style="margin: 0">{{ translate(doc.da|slice(4,2), 'MONTHS') }}</span>
+        <span style="margin: 0">{{ doc.da|slice(0,4) }}, </span>
+    {% endif %}
+    {% if doc.volume %}
+        <small>{{ texts.RESULT.LABEL_VOLUME }}</small>
+        <span>{{ doc.volume }}</span>
+    {% endif %}
+    {% if doc.issue %}
+        <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
+        <span>{{ doc.issue }}</span>
+    {% endif %}
+    {% if doc.start_page %}
+        <small>{{ texts.RESULT.LABEL_PAGES }}</small>
+        <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
+    {% endif %}
 </div>
