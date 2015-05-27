@@ -146,9 +146,6 @@
             <!-- Volume -->
             <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
 
-            <!-- Number -->
-            <field name="number" type="string" indexed="false" stored="true" multiValued="false"/>
-
             <!-- Supplement of Volume -->
             <field name="supplement_volume" type="string" indexed="true" stored="true" multiValued="false"/>
 
