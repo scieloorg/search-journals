@@ -9,15 +9,15 @@
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
         </div>
-        <div class="col-md-11 col-sm-10 col-xs-11">        
+        <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
                 <!-- title -->
                 <div class="line">
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</strong>
+                        <strong class="title">{{ doc.ti.0 }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</strong>
+                            <strong class="title">{{ doc.ti.0 }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
