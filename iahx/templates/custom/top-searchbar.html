@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="col-md-2 col-sm-2">
-                <input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+                <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
             </div>
             {% if detailed_query != '' %}
                 <div class="col-md-2 col-sm-2">
@@ -182,11 +182,11 @@
                     </div>
 
                     <div class="col-md-12">
-                        <input type="radio" name="where" value="scl" class="radio" id="searchForm_colecao_br" checked />
+                        <input type="radio" name="collection" value="scl" class="radio" id="searchForm_colecao_br" checked />
                         <label class="radio" for="searchForm_colecao_br"><strong>SciELO {{texts.COLLECTION_BR}}</strong></label>
                     </div>
                     <div class="col-md-12">
-                        <input type="radio" name="where" value="" class="radio" id="searchForm_colecao_all" />
+                        <input type="radio" name="collection" value="" class="radio" id="searchForm_colecao_all" />
                         <label class="radio" for="searchForm_colecao_all">{{ texts.COLLECTION_NETWORK_PREFIX }} <strong>{{ texts.COLLECTION_NETWORK }}</strong></label>
                     </div>
 

@@ -262,10 +262,13 @@ searchFormBuilder = {
 					}
 				}
 			}
-			var where = $("input[name='where']:checked",p).val();
+			var where = $("input[name='collection']:checked",p).val();
 
 			if (where !== undefined && where != ''){
-				searchQuery += ' AND in:"' + where + '"';
+				// check if filter by collection is not defined
+				if ( $("input[name='filter[in][]']").length == 0){
+					initial_filter_in = $('<input>').attr({type: 'hidden', name: 'filter[in][]', value:'scl'}).appendTo('#searchForm');
+				}
 			}
 
 			var search_by_year = $("input[name='publicationYear']:checked",p).val();
@@ -284,6 +287,10 @@ searchFormBuilder = {
 
 			if (searchQuery.substring(0,5) == ' AND '){
 				searchQuery = searchQuery.substr(4);
+			}
+
+			if (searchQuery == ''){
+				searchQuery = '*';
 			}
 
 			var searchForm = document.searchForm;
