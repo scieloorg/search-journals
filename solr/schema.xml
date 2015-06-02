@@ -103,7 +103,7 @@
             <!-- Short title **from:ta to:short_title** list of short title -->
             <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
 
-            <!-- Publication date da/publication_date **from:da to:publication_date**  ex.: 200401 -->
+            <!-- Publication date da/publication_date **from:da to:publication_date**  ex.: 2004-01 -->
             <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
 
             <!-- Publication year ex.: 2004 -->
@@ -145,9 +145,6 @@
 
             <!-- Volume -->
             <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
-
-            <!-- Number -->
-            <field name="number" type="string" indexed="false" stored="true" multiValued="false"/>
 
             <!-- Supplement of Volume -->
             <field name="supplement_volume" type="string" indexed="true" stored="true" multiValued="false"/>
