@@ -81,6 +81,12 @@ class UpdateSearch(object):
                         default=1000,
                         help='range of chunks, send to solr, default:1000.')
 
+    parser.add_argument('-s', '--sanitization',
+                        dest='sanitization',
+                        default=False,
+                        action='store_true',
+                        help='Remove objects from the index that are no longer present in the database.')
+
     parser.add_argument('-url', '--url',
                         dest='solr_url',
                         help='Solr RESTFul URL, processing try to get the variable from environment ``SOLR_URL`` otherwise use --url to set the url(preferable).')
@@ -171,7 +177,35 @@ class UpdateSearch(object):
         Run the process for update article in Solr.
         """
 
-        if not self.args.delete:
+        if self.args.delete:
+
+            self.solr.delete(self.args.delete, commit=True)
+
+        elif self.args.sanitization:
+
+            # set of index ids
+            ind_ids = set()
+
+            # set of articlemeta ids
+            art_ids = set()
+
+            # all ids in index
+            list_ids = json.loads(self.solr.select(
+                                    {'q': '*:*', 'fl': 'id', 'rows': 1000000}))['response']['docs']
+
+            for id in list_ids:
+                ind_ids.add(id['id'])
+
+            # all ids in articlemeta
+            for acron, id in art_meta.get_identifiers():
+                art_ids.add('%s-%s' % (id, acron))
+
+            # Ids to remove
+            remove_ids = ind_ids - art_ids
+
+            self.solr.delete('OR '.join(['id:%s' % id for id in remove_ids]), commit=True)
+
+        else:
 
             # Get article identifiers
             art_ids = art_meta.get_identifiers(collection=self.args.collection,
@@ -206,9 +240,6 @@ class UpdateSearch(object):
                 except Exception as e:
                     logger.error("Error: {0}".format(e))
                     sys.exit(0)
-        else:
-
-            self.solr.delete(self.args.delete, commit=True)
 
         # optimize the index
         self.solr.optimize()
