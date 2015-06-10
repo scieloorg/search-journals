@@ -241,6 +241,9 @@ searchFormBuilder = {
 		searchFormBuilder.SearchHistory = Cookie.Get("searchHistory");
 
 		$(p).on("submit",function(e) {
+
+			var historyQuery = $.trim($("#iptQuery").text());
+
 			var expr = $("textarea[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
 				idx = $("select[name='index[]']",p),
@@ -285,9 +288,14 @@ searchFormBuilder = {
 				}
 			}
 
-			if (searchQuery.substring(0,5) == ' AND '){
-				searchQuery = searchQuery.substr(4);
+
+			// check is user is submiting from history query form
+			if (searchQuery == '' && historyQuery !== '' ){
+				searchQuery = historyQuery;
 			}
+
+			// remove boolean operators from begining or end of query
+			searchQuery = searchQuery.replace(/^AND|AND$|^OR|OR$/g, "");
 
 			if (searchQuery == ''){
 				searchQuery = '*';
@@ -575,15 +583,6 @@ searchFormBuilder = {
 		$("#iptQuery").on("keypress",function(e) {
 			if(e.keyCode == 13)
 				$("#searchHistoryForm").submit();
-		});
-
-		$("#searchHistoryForm").on("submit",function() {
-			var q = $.trim($("#iptQuery").text()),
-				ipt = $("#query");
-
-			ipt.val(q);
-
-			return true;
 		});
 
 		$(".showTooltip").tooltip();

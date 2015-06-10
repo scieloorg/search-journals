@@ -12,16 +12,10 @@
 		    <input type="hidden" name="sort" id="sort" value="{{ sort }}">
 		    <input type="hidden" name="format" id="format" value="{{ format }}">
 		    <input type="hidden" name="fb" id="fb" value="">
-		    <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
-
-		    {% for name, items in filters if filters is defined %}
-		        {% for item in items %}
-		            <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
-		        {% endfor %}
-		    {% endfor %}
+	    	<input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 		</form>
 
-		<form name="searchFormBuilder" action="resultados.html" method="post" class="searchFormBuilder searchForm searchHistoryContainer" id="searchHistoryForm">
+		<form name="searchHistoryForm" action="{{ constant("SEARCH_URL") }}" method="get" class="searchFormBuilder searchForm searchHistoryContainer" id="searchHistoryForm">
 			<div class="highlight result">
 				<div class="container">
 					<a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a>
@@ -29,7 +23,7 @@
 					<div class="col-md-8 col-sm-8">
 						<div class="input-group col-md-12 col-sm-12">
 							<div class="form-control full-input" contenteditable="true" id="iptQuery"></div>
-							<input type="hidden" name="q[]" value="" autocomplete="off" id="query">
+							<input type="hidden" name="q" value="" autocomplete="off" id="query">
 						</div>
 					</div>
 					<div class="col-md-2 col-sm-2">
@@ -83,10 +77,10 @@
 									{% endfor %}
 								</td>
 								<td class="colResults">
-									<a href="resultados.html" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
 								</td>
 								<td class="colActions">
-									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}>{{ texts.HISTORY_ADD }}</a>
+									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
 									<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
 									<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
 								</td>
