@@ -262,10 +262,35 @@ searchFormBuilder = {
 					}
 				}
 			}
-			var where = $("input[name='where']:checked",p).val();
+			var where = $("input[name='collection']:checked",p).val();
 
 			if (where !== undefined && where != ''){
-				searchQuery += ' AND in:"' + where + '"';
+				// check if filter by collection is not defined
+				if ( $("input[name='filter[in][]']").length == 0){
+					initial_filter_in = $('<input>').attr({type: 'hidden', name: 'filter[in][]', value:'scl'}).appendTo('#searchForm');
+				}
+			}
+
+			var search_by_year = $("input[name='publicationYear']:checked",p).val();
+			if (search_by_year == "1"){
+				var pub_year_start =  $("select[name='y1Start'] option:selected",p).val();
+				if (pub_year_start != ''){
+					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO *]';
+				}
+			}else if(search_by_year == "2"){
+				var pub_year_start =  $("select[name='y2Start'] option:selected",p).val();
+				var pub_year_end =  $("select[name='y2End'] option:selected",p).val();
+				if (pub_year_start != '' && pub_year_end != ''){
+					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO ' + pub_year_end + ']';
+				}
+			}
+
+			if (searchQuery.substring(0,5) == ' AND '){
+				searchQuery = searchQuery.substr(4);
+			}
+
+			if (searchQuery == ''){
+				searchQuery = '*';
 			}
 
 			var searchForm = document.searchForm;
