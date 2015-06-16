@@ -190,6 +190,7 @@
         <copyField source="ti" dest="tw"/>
         <copyField source="ti_*" dest="tw"/>
         <copyField source="ti_*" dest="ti"/>
+        <copyField source="ab_*" dest="ab"/>
         <copyField source="au" dest="tw"/>
         <copyField source="ab" dest="tw"/>
         <copyField source="ab_*" dest="tw"/>
