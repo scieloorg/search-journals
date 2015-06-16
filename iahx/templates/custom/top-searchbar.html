@@ -60,7 +60,7 @@
             </div>
             {% if detailed_query != '' %}
                 <div class="col-md-2 col-sm-2">
-                    <a href="{{ constant("SEARCH_URL") }}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
+                    <a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
                 </div>
             {% endif %}
             <div class="clearfix"></div>
@@ -76,7 +76,7 @@
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
             <div class="col-md-4 col-sm-4">
-                <a href="{{ constant("SEARCH_URL") }}history/{{ lang }}/" class="shLink">{{ texts.HISTORY }}</a>
+                <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
             </div>
             <div class="clearfix"></div>
         </div>
