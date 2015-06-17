@@ -311,6 +311,11 @@ searchFormBuilder = {
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
+		$(p).on("keypress",function(e) {
+			if(e.keyCode == 13)
+				$(p).submit();
+		});
+
 
 		if($(".searchActions").length)
 			window.searchActionsStart = $(".searchActions").offset().top;
@@ -1135,7 +1140,7 @@ $(".exportCSV").on("click",function(e) {
     }
     var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
 	export_win = window.open(csvLink);
-	
+
 });
 
 
