@@ -15,6 +15,13 @@
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
+
+                            {% for name, items in filters if filters is defined %}
+                                {% for item in items %}
+                                    <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+                                {% endfor %}
+                            {% endfor %}
+
     						<div class="modal-body">
     							<div class="filterHead row">
     								<div class="col-xs-9">

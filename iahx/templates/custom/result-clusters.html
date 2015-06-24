@@ -103,14 +103,12 @@
                                                         {% endfor %}
                                                         class="checkbox">
                                                         <label class="checkbox" for="{{ cluster_item_id }}">
-                                                            <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
-                                                                {% if '/' in item.0 %}
-                                                                    {% set item_part = item.0|split('/') %}
-                                                                    {{ translate(item_part.1, cluster_labels ) }}
-                                                                {% else %}
-                                                                    {{ translate(item.0, cluster_labels ) }}
-                                                                {% endif %}
-                                                            </a>
+                                                            {% if '/' in item.0 %}
+                                                                {% set item_part = item.0|split('/') %}
+                                                                {{ translate(item_part.1, cluster_labels ) }}
+                                                            {% else %}
+                                                                {{ translate(item.0, cluster_labels ) }}
+                                                            {% endif %}
                                                         </label>
 
                                                     </div>
