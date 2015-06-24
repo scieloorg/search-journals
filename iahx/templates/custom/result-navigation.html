@@ -9,7 +9,7 @@
                 <option value="50" {% if count is defined and count == 50 %}selected="true"{% endif %}>50</option>
 			</select>
 		</div>
-        {{ texts.ITENS_PER_PAGE }}    
+        {{ texts.ITENS_PER_PAGE }}
 	</div>
     {% if pag.total_pages > 0 %}
         <div class="col-md-6 notTablet right">
@@ -19,7 +19,9 @@
             {{ texts.PAGE }}
             <input type="text" name="page" class="form-control" value="{% if params.page %}{{ params.page }} {% else %}1{% endif %}" id="goto_page"/>
             {{ texts.PAGE_OF }}  {{ pag.total_pages }}
-            <a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+			{% if params.page < pag.total_pages %}
+            	<a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+			{% endif %}
         </div>
     {% endif %}
 	<div class="clearfix"></div>
