@@ -311,6 +311,11 @@ searchFormBuilder = {
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
+		$(p).on("keypress",function(e) {
+			if(e.keyCode == 13)
+				$(p).submit();
+		});
+
 
 		if($(".searchActions").length)
 			window.searchActionsStart = $(".searchActions").offset().top;
@@ -437,7 +442,7 @@ searchFormBuilder = {
 			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
-		$("a.orderBy",p).on("click",function() {
+		$("a.orderBy").on("click",function() {
 			var t = $(this),
 				field = t.data("field"),
 				container = $(t.data("rel")),
@@ -474,7 +479,7 @@ searchFormBuilder = {
 			window.open(this.href,'print','width=760,height=550');
 		});
 
-		$(".openSelectItens",p).on("click",function(e) {
+		$(".openSelectItens").on("click",function(e) {
 			e.preventDefault();
 
 			var t = $(this),
@@ -1108,6 +1113,34 @@ $(".selectAll").on("click",function() {
 		});
 		t.data("all","0");
 	}
+});
+
+
+$(".exportCSV").on("click",function(e) {
+	e.preventDefault();
+
+	var t = $(this),
+		title = t.data("cluster"),
+		chartSource = t.data("chartsource");
+
+	var grupo = $("#ul_" + chartSource);
+    var lista = grupo.find('li');
+	var regex = /<span>\d+<\/span>/;
+	var params= "";
+
+    for (i = 0; i < lista.length; i++){
+        cluster = lista[i].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('a')[0].innerHTML;
+
+        ma = regex.exec(cluster);
+        if (ma != null) {
+            clusterTotal = ma[0].replace(/(<([^>]+)>)/ig,'');
+            params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
+        }
+    }
+    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
+	export_win = window.open(csvLink);
+
 });
 
 

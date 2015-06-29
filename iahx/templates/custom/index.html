@@ -1,7 +1,7 @@
 {% extends custom_template("base.html") %}
 
 {% block content %}
-    
+
     {{ parent() }}
 
     {% if flash_message is defined %}
@@ -11,13 +11,13 @@
     {% if config.maintenance == 'true' %}
         <div class="noResults">
             {{ texts.MAINTENANCE }}
-        </div >   
+        </div >
     {% else %}
         {% if detailed_query != '' and docs|length > 0 %}
             {% block results %}
                 <div class="searchForm">
                     <div class="container resultBlock">
-                        
+
                         <div class="searchFilters col-md-3 col-sm-4">
                             {% block clusters %}
                                 {% include custom_template("result-clusters.html") %}
@@ -27,11 +27,9 @@
                         {% block result_options %}
 
                             {% block results_bar %}
-                                
-                                    {% block results_topbar %}
-                                        {% include custom_template("result-topbar.html") %}
-                                    {% endblock %}
-                                
+                                {% block results_topbar %}
+                                    {% include custom_template("result-topbar.html") %}
+                                {% endblock %}
                             {% endblock %}
 
                             {% block result_set %}
@@ -40,13 +38,13 @@
                                     {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
                                 </div>
                             {% endblock %}
-                            
+
                         {% endblock %}
 
                     </div>
                 </div>
             {% endblock %}
-            
+
             {% include custom_template("result-actions.html") %}
 
             {% if flash_message is defined %}
@@ -78,7 +76,7 @@
                 <span class='st_twitter' displayText='Tweet'></span>
                 <span class='st_googleplus' displayText='Google+'></span>
                 <span class='st_sharethis' displayText='ShareThis'></span>
-            </div>    
+            </div>
 
         {% elseif detailed_query != '' %}
 
@@ -99,6 +97,6 @@
             </div>
         {% endif %}
 
-    {% endif %}        
+    {% endif %}
 
 {% endblock %}

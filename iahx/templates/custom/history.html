@@ -27,10 +27,10 @@
 						</div>
 					</div>
 					<div class="col-md-2 col-sm-2">
-						<input type="submit" value="Buscar" class="btn btn-primary glyph glyph-search">
+						<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
 					</div>
 					<div class="col-md-2 col-sm-2">
-						<a href="{{ constant("SEARCH_URL") }}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
+						<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-md-8 col-sm-8">
@@ -77,7 +77,7 @@
 									{% endfor %}
 								</td>
 								<td class="colResults">
-									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
 								</td>
 								<td class="colActions">
 									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
@@ -110,9 +110,10 @@
 					{{ texts.HISTORY_REMOVE_ITEM }} #<span class="item"></span>?
 				</div>
 				<div class="modal-footer">
-					<form action="{{ constant("SEARCH_URL") }}history/{{ lang }}/" method="get">
+					<form action="{{ constant("SEARCH_URL") }}history/" method="get">
 						<input type="hidden" name="remove" value="1" />
 						<input type="hidden" name="item" value="" class="item" />
+						<input type="hidden" name="lang" value="{{lang}}" />
 						<button type="button" class="btn btn-default" data-dismiss="modal">{{ texts.HISTORY_CONFIRM_CANCEL }}</button>
 						<input type="submit" name="s" value="{{ texts.HISTORY_CONFIRM_YES }}" class="btn">
 					</form>
@@ -132,8 +133,9 @@
 					{{ texts.HISTORY_REMOVE_ALL }}
 				</div>
 				<div class="modal-footer">
-					<form action="{{ constant("SEARCH_URL") }}history/{{ lang }}/" method="get">
+					<form action="{{ constant("SEARCH_URL") }}history/" method="get">
 						<input type="hidden" name="clear" value="true" />
+						<input type="hidden" name="lang" value="{{lang}}" />
 						<button type="button" class="btn btn-default" data-dismiss="modal">{{ texts.HISTORY_CONFIRM_CANCEL }}</button>
 						<input type="submit" name="s" value="{{ texts.HISTORY_CONFIRM_YES }}" class="btn">
 					</form>
