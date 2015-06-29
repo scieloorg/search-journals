@@ -1087,9 +1087,9 @@ $(function() {
 
 });
 
-$("#goto_page").keyup(function(event){
+$(".goto_page").keyup(function(event){
     if(event.keyCode == 13){
-    	new_page = $("#goto_page").val();
+    	new_page = $(this).val();
         go_to_page(new_page);
     }
 });
