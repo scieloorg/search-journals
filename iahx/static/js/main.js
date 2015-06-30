@@ -1130,7 +1130,7 @@ $(".exportCSV").on("click",function(e) {
 
     for (i = 0; i < lista.length; i++){
         cluster = lista[i].innerHTML;
-        clusterLabel = lista[i].getElementsByTagName('a')[0].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 
         ma = regex.exec(cluster);
         if (ma != null) {
@@ -1176,7 +1176,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 
     for (i = 0; i < lista.length; i++){
         cluster = lista[i].innerHTML;
-        clusterLabel = lista[i].getElementsByTagName('a')[0].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 
         ma = regex.exec(cluster);
         if (ma != null) {
