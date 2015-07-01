@@ -77,7 +77,7 @@
 									{% endfor %}
 								</td>
 								<td class="colResults">
-									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
 								</td>
 								<td class="colActions">
 									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
