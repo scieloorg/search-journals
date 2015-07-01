@@ -7,35 +7,19 @@ AU  - {{ author }}
 {% for title in doc.ti %}
 T1  - {{ title }}
 {% endfor %}
-{% if doc.ta %}
-JO  - {{ doc.ta.0 }}
-{% endif %}
-{% if doc.vi %}
-VL  - {{ doc.vi.0 }} 
-{% endif %}
-{% if doc.ip %}
-IS  - {{ doc.ip.0 }}
-{% endif %}
-DB  - SciELO {{ translate(doc.in, 'REFINE_in') }}
-DP  - {{ config.bvs_url }}
-ID  - {{ doc.id|substring_after('-') }}
-LA  - {{ doc.la[0] }}
-{% if doc.pg.0  %}
-{% if "-" in doc.pg.0 %}
-SP  - {{ doc.pg.0|substring_before('-')|trim }}
-EP  - {{ doc.pg.0|substring_after('-')|trim }}
-{% else %}
-SP  - {{ doc.pg.0 }}
-EP  - {{ doc.pg.0 }}
-{% endif %}
-{% endif %}
+JO  - {{ doc.journal_title }}
+DB  - SciELO {{ translate(doc.in.0, 'REFINE_in') }}
+DP  - {{ config.home_url }}
+ID  - {{ doc.id }}
+{% for language in doc.la %}
+LA  - {{ language }}
+{% endfor %}
+SP  - {{ doc.start_page }}
+EP  - {{ doc.end_page }}
 {% if doc.da %}
-DA  - {{ doc.da|slice(0,4) }}/{{ doc.da|slice(4,2) }}{% if doc.da|slice(6,2) %}/{{ doc.da|slice(6,2) }}{% endif %}
+DA  - {{ doc.da }}
 PY  - {{ doc.da|slice(0,4) }}
 {% endif %}
-{% for mesh in doc.mh %}
-KW  - {{ mesh }}
-{% endfor %}
 {% if doc.ab_en %}
 N2  - {{ doc.ab_en.0 }}
 {% endif %}
@@ -45,8 +29,8 @@ N2  - {{ doc.ab_es.0 }}
 {% if doc.ab_pt %}
 N2  - {{ doc.ab_pt.0 }}
 {% endif %}
-UR  - {{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}
-ER  - 
+UR  - {{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}
+ER  -
 
 {% endfor %}
 {% endspaceless %}

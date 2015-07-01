@@ -56,9 +56,17 @@
         <section>
             {% block container %}
             <div class="content">
-                {% block content %}
+                {% if config.maintenance == 'true' %}
+                    <div class="jumbotron">
+                        <div class="container">
+                            <h2>{{ texts.MAINTENANCE }}</h2>
+                        </div>
+                    </div>
+                {% else %}
+                    {% block content %}
                         {% block searchbar %}{% include custom_template("top-searchbar.html") %}{% endblock %}
-                {% endblock %}
+                    {% endblock %}
+                {% endif %}
                 {% block footer %}
                     {% include custom_template("footer.html") %}
                 {% endblock %}
