@@ -91,7 +91,7 @@
             <!-- Original Title **from:ti to:original_title** -->
             <field name="ti" type="text" indexed="true" stored="true" multiValued="true"/>
 
-            <!-- Abbreviation Title **from:ab to:abbreviation_title** -->
+            <!-- Abstract **from:ab to:abstract** -->
             <field name="ab" type="text" indexed="true" stored="false" multiValued="true"/>
 
             <!-- Language **from:la to:languages** list of languages -->
