@@ -72,10 +72,10 @@
             <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
             </ul>
 
-            <div class="col-md-8 col-sm-8 right">
+            <div class="{% if detailed_query != '' %}col-md-8 col-sm-8 right{% else %}col-md-9 col-sm-9 right{% endif %}">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
-            <div class="col-md-4 col-sm-4">
+            <div class="{% if detailed_query != '' %}col-md-4 col-sm-4{% else %}col-md-3 col-sm-3{% endif%}">
                 <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
             </div>
             <div class="clearfix"></div>
