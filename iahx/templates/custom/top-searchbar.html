@@ -35,7 +35,7 @@
             <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="form-textarea">
-                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control"></textarea>
+                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control">{% if docs|length == 0 %}{{ params.q }}{% endif %}</textarea>
                         <a href="javascript:;" class="clearIptText showTooltip" title="{{ texts.CLEAN_SEARCHFIELD }}" style="display: none;"></a>
                     </div>
                     <div class="selectBox index">
@@ -72,10 +72,10 @@
             <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
             </ul>
 
-            <div class="col-md-8 col-sm-8 right">
+            <div class="{% if detailed_query != '' %}col-md-8 col-sm-8 right{% else %}col-md-9 col-sm-9 right{% endif %}">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
-            <div class="col-md-4 col-sm-4">
+            <div class="{% if detailed_query != '' %}col-md-4 col-sm-4{% else %}col-md-3 col-sm-3{% endif%}">
                 <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
             </div>
             <div class="clearfix"></div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-md-3 col-sm-12">
                         <input type="radio" name="publicationYear" value="0" class="radio" id="publicationYear_0" checked />
-                        <label class="radio eq" for="searchForm_dataPublicacao_0">{{ texts.PUBLICATION_YEAR_ALL }}</label>
+                        <label class="radio eq" for="publicationYear_0">{{ texts.PUBLICATION_YEAR_ALL }}</label>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <input type="radio" name="publicationYear" value="1" class="radio" id="publicationYear_1" />
