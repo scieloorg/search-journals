@@ -241,6 +241,9 @@ searchFormBuilder = {
 		searchFormBuilder.SearchHistory = Cookie.Get("searchHistory");
 
 		$(p).on("submit",function(e) {
+
+			var historyQuery = $.trim($("#iptQuery").text());
+
 			var expr = $("textarea[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
 				idx = $("select[name='index[]']",p),
@@ -285,9 +288,14 @@ searchFormBuilder = {
 				}
 			}
 
-			if (searchQuery.substring(0,5) == ' AND '){
-				searchQuery = searchQuery.substr(4);
+
+			// check is user is submiting from history query form
+			if (searchQuery == '' && historyQuery !== '' ){
+				searchQuery = historyQuery;
 			}
+
+			// remove boolean operators from begining or end of query
+			searchQuery = searchQuery.replace(/^AND|AND$|^OR|OR$/g, "");
 
 			if (searchQuery == ''){
 				searchQuery = '*';
@@ -302,6 +310,11 @@ searchFormBuilder = {
 
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
+
+		$(p).on("keypress",function(e) {
+			if(e.keyCode == 13)
+				$(p).submit();
+		});
 
 
 		if($(".searchActions").length)
@@ -429,7 +442,7 @@ searchFormBuilder = {
 			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
-		$("a.orderBy",p).on("click",function() {
+		$("a.orderBy").on("click",function() {
 			var t = $(this),
 				field = t.data("field"),
 				container = $(t.data("rel")),
@@ -466,7 +479,7 @@ searchFormBuilder = {
 			window.open(this.href,'print','width=760,height=550');
 		});
 
-		$(".openSelectItens",p).on("click",function(e) {
+		$(".openSelectItens").on("click",function(e) {
 			e.preventDefault();
 
 			var t = $(this),
@@ -575,15 +588,6 @@ searchFormBuilder = {
 		$("#iptQuery").on("keypress",function(e) {
 			if(e.keyCode == 13)
 				$("#searchHistoryForm").submit();
-		});
-
-		$("#searchHistoryForm").on("submit",function() {
-			var q = $.trim($("#iptQuery").text()),
-				ipt = $("#query");
-
-			ipt.val(q);
-
-			return true;
 		});
 
 		$(".showTooltip").tooltip();
@@ -1083,9 +1087,9 @@ $(function() {
 
 });
 
-$("#goto_page").keyup(function(event){
+$(".goto_page").keyup(function(event){
     if(event.keyCode == 13){
-    	new_page = $("#goto_page").val();
+    	new_page = $(this).val();
         go_to_page(new_page);
     }
 });
@@ -1109,6 +1113,34 @@ $(".selectAll").on("click",function() {
 		});
 		t.data("all","0");
 	}
+});
+
+
+$(".exportCSV").on("click",function(e) {
+	e.preventDefault();
+
+	var t = $(this),
+		title = t.data("cluster"),
+		chartSource = t.data("chartsource");
+
+	var grupo = $("#ul_" + chartSource);
+    var lista = grupo.find('li');
+	var regex = /<span>\d+<\/span>/;
+	var params= "";
+
+    for (i = 0; i < lista.length; i++){
+        cluster = lista[i].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
+
+        ma = regex.exec(cluster);
+        if (ma != null) {
+            clusterTotal = ma[0].replace(/(<([^>]+)>)/ig,'');
+            params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
+        }
+    }
+    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
+	export_win = window.open(csvLink);
+
 });
 
 
@@ -1144,7 +1176,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 
     for (i = 0; i < lista.length; i++){
         cluster = lista[i].innerHTML;
-        clusterLabel = lista[i].getElementsByTagName('a')[0].innerHTML;
+        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 
         ma = regex.exec(cluster);
         if (ma != null) {

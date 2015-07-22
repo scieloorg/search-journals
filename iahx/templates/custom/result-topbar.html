@@ -27,15 +27,17 @@
 
 
         </div>
-        {% if pag.total_pages > 0 %} 
+        {% if pag.total_pages > 0 %}
             <div class="col-md-6 notTablet right">
                 {% if params.page is defined and params.page > 1 %}
                     <a href="javascript:go_to_page('{{ params.page-1 }}')" class="pagePrev">{{ texts.PREVIOUS_PAGE }}</a>
                 {% endif %}
-                {{ texts.PAGE }} 
-                <input type="text" name="page" class="form-control" value="{% if params.page %}{{ params.page }} {% else %}1{% endif %}" id="goto_page"/>
+                {{ texts.PAGE }}
+                <input type="text" name="page" class="form-control goto_page" value="{% if params.page %}{{ params.page }}{% else %}1{% endif %}"/>
                 {{ texts.PAGE_OF }}  {{ pag.total_pages }}
-                <a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+                {% if params.page < pag.total_pages %}
+                    <a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+                {% endif %}
             </div>
         {% endif %}
         <div class="clearfix"></div>
@@ -73,4 +75,3 @@
         </div>
         <div class="clearfix"></div>
     </div>
-

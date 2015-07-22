@@ -4,7 +4,7 @@
     <div class="filterContent" id="refineSearch">
 
         <div class="searchQuery">
-            <div class="searchHistoryItem" data-original-title="" title="">#1</div>
+            <div class="searchHistoryItem" data-original-title="" title="">#{{history|length}}</div>
             <div class="query">
                 {{ detailed_query }}
             </div>
@@ -49,14 +49,6 @@
                         {% else %}
                             <input type="hidden" name="{{ key }}" value="{{ value }}">
                         {% endif %}
-                    {% else %}
-                        {# FIX (make more generic): decs locator filters 'mh' must be populated as they don't appears as regular cluster list #}
-                        {% for name, items in filters if name == 'mh' %}
-                            {% for item in items %}
-                                <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
-                            {% endfor %}
-                        {% endfor %}
-
                     {% endif %}
                 {% endfor %}
 
@@ -78,10 +70,20 @@
                                     <a href="javascript:;" title="{{ name }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
-                                    <a href="javascript:;" class="icon stats openStatistics stats dropdown-toggle" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}">x</a>
+                                    <a href="javascript:;" class="configs dropdown-toggle" title="{{ texts.SETTINGS }}" data-toggle="dropdown">{{ texts.SETTINGS }}</a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}"><strong>{{ texts.SELECT }}</strong></a></li>
+										<li class="divider"></li>
+										<li><strong class="icon order">{{ texts.ORDER_BY }}:</strong></li>
+										<li><a href="javascript:;" class="orderBy" data-field="count" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_RESULTS }}</a></li>
+										<li><a href="javascript:;" class="orderBy" data-field="item" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_ALPHA }}</a></li>
+										<li class="divider"></li>
+                                        <li><a href="javascript:;" class="icon stats openStatistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
+										<li><a href="javascript:;" class="icon download exportCSV" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
+									</ul>
                                 </div>
 
-                                <div id="colletion_{{ name }}" class="content filterCollapsedLis" style="display: block">
+                                <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
                                     <ul id="ul_{{ name }}">
                                         {% for item in cluster if item.0 != '' %}
                                             {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
@@ -93,7 +95,6 @@
                                                {# hide cluster for languages that dont have translation #}
 
                                             {% else %}
-
                                                 <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
                                                     <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
                                                         <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
@@ -102,14 +103,12 @@
                                                         {% endfor %}
                                                         class="checkbox">
                                                         <label class="checkbox" for="{{ cluster_item_id }}">
-                                                            <a href="javascript: add_filter('{{ cluster_item_id }}');" title="">
-                                                                {% if '/' in item.0 %}
-                                                                    {% set item_part = item.0|split('/') %}
-                                                                    {{ translate(item_part.1, cluster_labels ) }}
-                                                                {% else %}
-                                                                    {{ translate(item.0, cluster_labels ) }}
-                                                                {% endif %}
-                                                            </a>
+                                                            {% if '/' in item.0 %}
+                                                                {% set item_part = item.0|split('/') %}
+                                                                {{ translate(item_part.1, cluster_labels ) }}
+                                                            {% else %}
+                                                                {{ translate(item.0, cluster_labels ) }}
+                                                            {% endif %}
                                                         </label>
 
                                                     </div>
@@ -119,11 +118,10 @@
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
-
-                                        {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
-                                            <li><a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a></li>
-                                        {% endif %}
                                     </ul>
+                                    {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
+                                        <a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}

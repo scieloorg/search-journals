@@ -21,6 +21,7 @@
 
         <!--[if lt IE 9]>
         	<script src="{{ constant("STATIC_URL") }}js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+            <script src="{{ constant("STATIC_URL") }}js/vendor/excanvas.min.js"></script>
         <![endif]-->
 
         <!-- Page icon -->
@@ -56,9 +57,17 @@
         <section>
             {% block container %}
             <div class="content">
-                {% block content %}
+                {% if config.maintenance == 'true' %}
+                    <div class="jumbotron">
+                        <div class="container">
+                            <h2>{{ texts.MAINTENANCE }}</h2>
+                        </div>
+                    </div>
+                {% else %}
+                    {% block content %}
                         {% block searchbar %}{% include custom_template("top-searchbar.html") %}{% endblock %}
-                {% endblock %}
+                    {% endblock %}
+                {% endif %}
                 {% block footer %}
                     {% include custom_template("footer.html") %}
                 {% endblock %}

@@ -1,16 +1,19 @@
 
 {% block btn_fulltext %}
     <div class="line versions">
-        <span>            
+        <span>
             {% for language in doc.la %}
                 · {{ translate(language, 'REFINE_la') }}:
-                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0|substring_after}}&lang={{language}}">
-                    {{ texts.RESULT.LABEL_ABSTRACT }}
-                </a> |
-                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{language}}">
+                {% set ab_lang = 'ab_' ~ language %}
+                {% if attribute(doc, ab_lang) %}
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0}}&lang={{language}}">
+                        {{ texts.RESULT.LABEL_ABSTRACT }}
+                    </a> |
+                {% endif %}
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{language}}">
                     {{ texts.TEXT }}
                 </a> |
-                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0|substring_after}}&lang={{language}}">
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lang={{language}}">
                     PDF
                 </a>
             {% endfor %}

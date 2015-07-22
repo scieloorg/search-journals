@@ -7,15 +7,8 @@
     color: #403d39;
 }
 
-.searchForm .resultBlock .collapseBlock a.stats {
-  display: inline-block;
-  position: absolute;
-  top: 2px;
-  right: 0;
-  width: 25px;
-  height: 25px;
-  text-indent: -5000px;
-  background: url(../image/button.glyphs.png) -10px -419px no-repeat;
+.filterBody .filterItem {
+    line-height: 12px;
 }
 
 .item .authors A{
