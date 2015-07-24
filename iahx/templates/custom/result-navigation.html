@@ -12,7 +12,7 @@
         {{ texts.ITENS_PER_PAGE }}
 	</div>
     {% if pag.total_pages > 0 %}
-        <div class="col-md-6 notTablet right">
+        <div class="col-md-6 right">
             {% if params.page is defined and params.page > 1 %}
                 <a href="javascript:go_to_page('{{ params.page-1 }}')" class="pagePrev">{{ texts.PREVIOUS_PAGE }}</a>
             {% endif %}
