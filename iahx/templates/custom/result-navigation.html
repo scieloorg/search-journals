@@ -1,0 +1,28 @@
+<div class="searchOptions">
+	<div class="col-md-6 col-sm-12 notTablet">
+		{{ texts.SHOWING }}
+		<div class="selectBox inline" style="width: 60px;">
+			<select name="countSelect" id="countSelect" onchange="change_count(this);">
+                <option value="10" {% if count is defined and count == 10 %}selected="true"{% endif %}>10</option>
+                <option value="20" {% if count is defined and count == 20 %}selected="true"{% endif %}>20</option>
+                <option value="30" {% if count is defined and count == 30 %}selected="true"{% endif %}>30</option>
+                <option value="50" {% if count is defined and count == 50 %}selected="true"{% endif %}>50</option>
+			</select>
+		</div>
+        {{ texts.ITENS_PER_PAGE }}
+	</div>
+    {% if pag.total_pages > 0 %}
+        <div class="col-md-6 right">
+            {% if params.page is defined and params.page > 1 %}
+                <a href="javascript:go_to_page('{{ params.page-1 }}')" class="pagePrev">{{ texts.PREVIOUS_PAGE }}</a>
+            {% endif %}
+            {{ texts.PAGE }}
+            <input type="text" name="page" class="form-control goto_page" value="{% if params.page %}{{ params.page }}{% else %}1{% endif %}"/>
+            {{ texts.PAGE_OF }}  {{ pag.total_pages }}
+			{% if params.page < pag.total_pages %}
+            	<a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+			{% endif %}
+        </div>
+    {% endif %}
+	<div class="clearfix"></div>
+</div>

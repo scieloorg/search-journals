@@ -1,0 +1,152 @@
+{% extends custom_template("base.html") %}
+
+{% block content %}
+
+	<section>
+		<form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}" method="get">
+		    <input type="hidden" name="q" id="q" value="{{ q }}">
+		    <input type="hidden" name="lang" id="lang" value="{{ lang }}">
+		    <input type="hidden" name="count" id="count" value="{{ pag.count }}">
+		    <input type="hidden" name="from" id="from" value="{{ from }}">
+		    <input type="hidden" name="output" id="output" value="{{ output }}">
+		    <input type="hidden" name="sort" id="sort" value="{{ sort }}">
+		    <input type="hidden" name="format" id="format" value="{{ format }}">
+		    <input type="hidden" name="fb" id="fb" value="">
+	    	<input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
+		</form>
+
+		<form name="searchHistoryForm" action="{{ constant("SEARCH_URL") }}" method="get" class="searchFormBuilder searchForm searchHistoryContainer" id="searchHistoryForm">
+			<div class="highlight result">
+				<div class="container">
+					<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
+
+					<div class="col-md-8 col-sm-8">
+						<div class="input-group col-md-12 col-sm-12">
+							<div class="form-control full-input" contenteditable="true" id="iptQuery"></div>
+							<input type="hidden" name="q" value="" autocomplete="off" id="query">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-8 col-sm-8">
+						<small>{{ texts.HISTORY_COMBINE }}</small>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="col-md-12 col-sm-12">
+					<div class="row dashline">
+						<div class="col-md-8 col-sm-8">
+							<h2>{{ texts.HISTORY_LIST }}</h2>
+						</div>
+						<div class="col-md-4 col-sm-4 right">
+							<a href="javascript:;" class="searchHistoryIcon eraseAll">{{ texts.HISTORY_CLEAN }}</a>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="row">
+						<table>
+							<tr>
+								<th class="colId">Id.</th>
+								<th class="colSearch">{{ texts.HISTORY_QUERY }}</th>
+								<th class="colResults">{{ texts.HISTORY_TOTAL }}</th>
+								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
+							</tr>
+
+							{% for index, history in history_list %}
+							{% set history_id = index+1 %}
+							<tr>
+								<td class="colId">
+									<span>#{{ history_id }}</span>
+								</td>
+								<td class="colSearch">
+									<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
+									<strong>{{ texts.HISTORY_FILTERS }}:</strong>
+									{% for cluster, items in history.filter %}
+										{% set texts_group = 'REFINE_' ~ cluster %}
+										{% for item in items %}
+											{% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
+											({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+										{% endfor %}
+									{% endfor %}
+								</td>
+								<td class="colResults">
+									{% if history.total > 0 %}
+										<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									{% else %}
+										{{ history.total }}
+									{% endif %}
+								</td>
+								<td class="colActions">
+									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
+									<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
+									<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+
+{% endblock %}
+
+{% block footer %}
+
+	{{ parent () }}
+
+	<div class="modal fade" id="confirmEraseItem" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">{{ texts.HISTORY_REMOVE_CONFIRM }}</h4>
+				</div>
+				<div class="modal-body">
+					{{ texts.HISTORY_REMOVE_ITEM }} #<span class="item"></span>?
+				</div>
+				<div class="modal-footer">
+					<form action="{{ constant("SEARCH_URL") }}history/" method="get">
+						<input type="hidden" name="remove" value="1" />
+						<input type="hidden" name="item" value="" class="item" />
+						<input type="hidden" name="lang" value="{{lang}}" />
+						<button type="button" class="btn btn-default" data-dismiss="modal">{{ texts.HISTORY_CONFIRM_CANCEL }}</button>
+						<input type="submit" name="s" value="{{ texts.HISTORY_CONFIRM_YES }}" class="btn">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="confirmEraseAll" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">{{ texts.HISTORY_REMOVE_CONFIRM }}</h4>
+				</div>
+				<div class="modal-body">
+					{{ texts.HISTORY_REMOVE_ALL }}
+				</div>
+				<div class="modal-footer">
+					<form action="{{ constant("SEARCH_URL") }}history/" method="get">
+						<input type="hidden" name="clear" value="true" />
+						<input type="hidden" name="lang" value="{{lang}}" />
+						<button type="button" class="btn btn-default" data-dismiss="modal">{{ texts.HISTORY_CONFIRM_CANCEL }}</button>
+						<input type="submit" name="s" value="{{ texts.HISTORY_CONFIRM_YES }}" class="btn">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

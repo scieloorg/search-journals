@@ -18,6 +18,7 @@
 		<button>facebook</button>
 		<button>delicious</button>
 	</addthis_buttons>
+    <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
 	<google_analytics_tracking_id></google_analytics_tracking_id>
@@ -25,6 +26,7 @@
 	<feedback_id></feedback_id>
 	<browse_index_url></browse_index_url>
 	<mobile_version>false</mobile_version>
+	<publication_year_start>1997</publication_year_start>
 
 	<search_collection_list>
 		<collection>
@@ -121,10 +123,6 @@
 			</where_list>
 			<sort_list>
 				 <sort>
-					 <name>RELEVANCE</name>
-					 <value>score desc</value>
-				 </sort>
-				 <sort>
 					 <name>YEAR_DESC</name>
 					 <value>da desc</value>
 				 </sort>
@@ -133,13 +131,17 @@
 					 <value>da asc</value>
 				 </sort>
                  <sort>
+                     <name>RELEVANCE</name>
+                     <value>score desc</value>
+                 </sort>
+                 <sort>
                      <name>SJR</name>
                      <value>order_sjr desc</value>
                  </sort>
 			</sort_list>
             <format_list>
             	<format>
-            		<name>abstract</name>
+            		<name>summary</name>
             	</format>
             </format_list>
             <!-- restrict list of clusters to show on result. If not set show all availables on solrconf.xml -->

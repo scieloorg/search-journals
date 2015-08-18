@@ -1,186 +1,211 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="scielo_articles" version="1.5">
- <fields>
 
+    <schema name="scielo_articles" version="1.5">
 
-   <field name="_version_" type="long" indexed="true" stored="true"/>
+        <types>
+            <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+            <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+            <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+            <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+            <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+            <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+            <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
+            <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
+            <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
+            <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+            <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+            <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+            <fieldtype name="binary" class="solr.BinaryField"/>
+            <fieldType name="random" class="solr.RandomSortField" indexed="true" />
 
-   <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="pid" type="PID" indexed="true" stored="false" multiValued="false"/>
-   <field name="in" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="type" type="string" indexed="true" stored="true"/>
-   <field name="au" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="ti" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="ab" type="text" indexed="true" stored="false" multiValued="true"/>
-   <field name="fo" type="text" indexed="false" stored="true" multiValued="true"/>
-   <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true"/>
-   <field name="ac" type="string" indexed="true" stored="true" multiValued="true"/>
+            <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
+              <analyzer>
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+              </analyzer>
+            </fieldType>
 
-   <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="ta_var" type="text" indexed="true" stored="false" multiValued="true"/>
+            <fieldtype name="text" class="solr.TextField" positionIncrementGap="100">
+              <analyzer type="index">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="solr.ASCIIFoldingFilterFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+              </analyzer>
+              <analyzer type="query">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="solr.ASCIIFoldingFilterFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+              </analyzer>
+            </fieldtype>
 
-   <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="pg" type="string" indexed="false" stored="true" multiValued="true"/>
+            <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+              <analyzer>
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory" />
+              </analyzer>
+            </fieldType>
 
-   <!--Sponsor-->
-   <field name="sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
-   <!--Sponsor-->
+            <fieldtype name="year_filter" class="solr.TextField">
+                <analyzer type="index">
+                    <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1"/>
+                </analyzer>
+            </fieldtype>
 
-   <field name="cc" type="string" indexed="false" stored="true" multiValued="true"/>
-   <field name="pr" type="string" indexed="false" stored="true" multiValued="false"/>
-   <field name="filename" type="string" indexed="false" stored="true" multiValued="false"/>
-   <field name="ur" type="string" indexed="false" stored="true" multiValued="true"/>
+            <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
+            <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+            <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
 
-   <!-- sort -->
-   <field name="order_sjr" type="string" indexed="true" stored="true" multiValued="false"/>
+            <fieldType name="publisher_id" class="solr.TextField">
+              <analyzer type="index">
+                <tokenizer class="solr.PatternTokenizerFactory" pattern="(.*)-[a-z]+" group="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+              </analyzer>
+              <analyzer type="query">
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+              </analyzer>
+            </fieldType>
 
-   <!-- cluster list -->
-   <field name="year_cluster" type="dateiso" indexed="true" stored="false" multiValued="true"/>
-   <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true" required="false"/>
-   <field name="acronym_sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
-   <field name="wok_subject_categories" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="wok_citation_index" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="document_type" type="string" indexed="true" stored="false" multiValued="true"/>
-   <field name="aff_country" type="string" indexed="true" stored="false" multiValued="true"/>
-   <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
-   <!-- END cluster list -->
+            <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+        </types>
 
-   <!-- Dynamic field definitions -->
-   <dynamicField name="ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-   <dynamicField name="ti_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-   <dynamicField name="*" type="ignored" />
+        <fields>
+            <field name="_version_" type="long" indexed="true" stored="true"/>
 
-   <!-- catchall field, containing all other searchable text fields (implemented
-        via copyField further on in this schema  -->
-   <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
+            <!-- Id used from Solr as a unique key:<uniqueKey>id</uniqueKey> -->
+            <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
 
-   <!-- --> 
-   <field name="dedup_signature" type="string" stored="true" indexed="true" multiValued="false" />
+            <!-- Publisher ID = consist of 'S' + ISSN + numbers + '-' + and the abbreviation of collection, in the future it can be anything -->
+            <field name="pid" type="publisher_id" indexed="true" stored="false" multiValued="false"/>
 
-   <!-- uncomment the following to ignore any fields that don't already match an existing
-        field name or dynamic field, rather than reporting them as an error.
-        alternately, change the type="ignored" to some other type e.g. "text" if you want
-        unknown fields indexed and/or stored by default -->
-   <!--dynamicField name="*" type="ignored" multiValued="true" /-->
+            <!-- Abbreviation of collection **from:in to:collection** -->
+            <field name="in" type="string" indexed="true" stored="true" multiValued="true"/>
 
- </fields>
+            <!-- Document Type **from:type to:document_type** -->
+            <field name="type" type="string" indexed="true" stored="true"/>
 
+            <!-- Author **from:au to:author** -->
+            <field name="au" type="text" indexed="true" stored="true" multiValued="true"/>
 
- <!-- Field to use to determine and enforce document uniqueness.
-      Unless this field is marked with required="false", it will be a required field
-   -->
- <uniqueKey>id</uniqueKey>
+            <!-- Original Title **from:ti to:original_title** -->
+            <field name="ti" type="text" indexed="true" stored="true" multiValued="true"/>
 
- <copyField source="ti" dest="tw"/>
- <copyField source="ti_*" dest="tw"/>
- <copyField source="au" dest="tw"/>
- <copyField source="sponsor" dest="tw"/>
- <copyField source="ab" dest="tw"/>
- <copyField source="ab_*" dest="tw"/>
- <copyField source="acronym_sponsor" dest="tw"/>
- <copyField source="wok_subject_categories" dest="tw"/>
- <copyField source="wok_citation_index" dest="tw"/>
- <copyField source="ta_var" dest="tw"/>
- <copyField source="ta" dest="tw"/>
- <copyField source="id" dest="tw"/>
+            <!-- Abstract **from:ab to:abstract** -->
+            <field name="ab" type="text" indexed="true" stored="false" multiValued="true"/>
 
- <copyField source="ti_*" dest="ti"/>
- <copyField source="ab_*" dest="ab"/>
+            <!-- Language **from:la to:languages** list of languages -->
+            <field name="la" type="lowercase" indexed="true" stored="true" multiValued="true"/>
 
- <!-- copia os codigos decs para o campo de cluster  -->
- <copyField source="pt" dest="pt_cluster"/>
- <copyField source="da" dest="year_cluster"/>
- <copyField source="ta" dest="ta_cluster"/>
+            <!-- Area Knowledge **from:ac to:area_knowledge** list of area knowledge -->
+            <field name="ac" type="string" indexed="true" stored="true" multiValued="true"/>
 
- <!-- indice de revista -->
- <copyField source="ta_var" dest="ta"/>
+            <!-- Short title **from:ta to:short_title** list of short title -->
+            <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
 
- <!-- allow search by article PID -->
- <copyField source="id" dest="pid"/>
+            <!-- Publication date da/publication_date **from:da to:publication_date**  ex.: 2004-01 -->
+            <field name="da" type="string" indexed="true" stored="true" multiValued="false"/>
 
- <types>
-    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+            <!-- Publication year ex.: 2004 -->
+            <field name="publication_year" type="tint" indexed="true" stored="false" multiValued="false"/>
 
-    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+            <!-- Format page **from:pg to:format_page** ex.: 209-294 -->
+            <field name="pg" type="string" indexed="false" stored="true" multiValued="true"/>
 
-    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+            <!-- Sponsor of the research -->
+            <field name="sponsor" type="text" indexed="true" stored="true" multiValued="true"/>
 
-    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+            <!-- Uniform Resource Locator of the research article **from:url to:research_url** ex.: http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202013000200003&lng=en&nrm=iso&tlng=pt -->
+            <field name="ur" type="string" indexed="false" stored="true" multiValued="true"/>
 
-    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+            <!-- Copy of ta/short_title -->
+            <field name="ta_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
 
-    <!-- A Trie based date field for faster date range queries and date faceting. -->
-    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+            <!-- Copy of da/da_cluster -->
+            <field name="year_cluster" type="year_filter" indexed="true" stored="false" multiValued="true"/>
 
-    <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
-    <fieldtype name="binary" class="solr.BinaryField"/>
+            <!-- This field is baseed in Web of Science subject category:
+            https://images.webofknowledge.com/WOKRS57B4/help/WOS/hp_subject_category_terms_tasca.html -->
+            <!-- Subject category **from:wok_subject_categories to:subject_categories** -->
+            <field name="wok_subject_categories" type="lowercase" indexed="true" stored="true" multiValued="true"/>
 
-    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+            <!-- This field indicates that index the article is indexed in Web of Science -->
+            <!-- We use de convertion:
+                SCIE=Science Citation Index Expanded
+                SSCI=Social Sciences Citation Index
+                AHCI=Arts Humanities Citation Index
+             -->
+            <field name="wok_citation_index" type="string" indexed="true" stored="true" multiValued="true"/>
 
-    <!-- A text field that only splits on whitespace for exact matching of words -->
-    <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-      </analyzer>
-    </fieldType>
+            <!-- Country Affiliation **from:aff_country to:country_affiliation** -->
+            <field name="aff_country" type="string" indexed="true" stored="false" multiValued="true"/>
 
-    <fieldtype name="text" class="solr.TextField" positionIncrementGap="100">
-      <analyzer type="index">
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.ASCIIFoldingFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-      <analyzer type="query">
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <filter class="solr.ASCIIFoldingFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-    </fieldtype>
+            <!-- Institution Affiliation **from:aff_country to:institution_affiliation** -->
+            <field name="aff_institution" type="string" indexed="true" stored="false" multiValued="true"/>
 
-    <!-- lowercases the entire field value, keeping it as a single token.  -->
-    <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
+            <!-- Volume -->
+            <field name="volume" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <fieldtype name="dateiso" class="solr.TextField">
-        <analyzer type="index">
-            <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1"/>
-        </analyzer>
-    </fieldtype>
+            <!-- Supplement of Volume -->
+            <field name="supplement_volume" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
+            <!-- Issue -->
+            <field name="issue" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
-    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+            <!-- Supplement of Issue -->
+            <field name="supplement_issue" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
+            <!-- Start Page -->
+            <field name="start_page" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <fieldType name="PID" class="solr.TextField">
-      <analyzer type="index">
-        <tokenizer class="solr.PatternTokenizerFactory" pattern="^art-(.*)-[a-z]+" group="1"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>      
-    </fieldType>
+            <!-- End Page -->
+            <field name="end_page" type="string" indexed="true" stored="true" multiValued="false"/>
 
-    <!-- since fields of this type are by default not stored or indexed,
-         any data added to them will be ignored outright.  -->
-    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+            <!-- Journal title of this research article -->
+            <field name="journal_title" type="string" indexed="true" stored="true" multiValued="false"/>
 
- </types>
+            <!-- Digital Object Identifier DOI -->
+            <field name="doi" type="text" indexed="true" stored="true" multiValued="false"/>
 
-</schema>
+            <!-- Text Words -->
+            <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Uniform Resource Location for the PDF file ex.:
+            http://www.scielo.br/scielo.php?script=sci_pdf&pid=S0102-67202013000200003&lng=en&nrm=iso&tlng=en -->
+            <!-- Dynamic Field to know the URL of PDF in any languages **from:fulltext_pdf_* to:pdf_url_* **-->
+            <dynamicField name="fulltext_pdf_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Dynamic Field to Abstract in any languages **from:ab_* to:abstract_in_* ** -->
+            <dynamicField name="ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Dynamic Field to Title in any languages **from:title_in_* to:title_in_* ** -->
+            <dynamicField name="ti_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Ignore all others fields -->
+            <dynamicField name="*" type="ignored" />
+        </fields>
+
+        <copyField source="id" dest="tw"/>
+        <copyField source="id" dest="pid"/>
+        <copyField source="ti" dest="tw"/>
+        <copyField source="ti_*" dest="tw"/>
+        <copyField source="ti_*" dest="ti"/>
+        <copyField source="ab_*" dest="ab"/>
+        <copyField source="au" dest="tw"/>
+        <copyField source="ab" dest="tw"/>
+        <copyField source="ab_*" dest="tw"/>
+        <copyField source="ta" dest="tw"/>
+        <copyField source="doi" dest="tw"/>
+        <copyField source="sponsor" dest="tw"/>
+        <copyField source="ta" dest="ta_cluster"/>
+        <copyField source="da" dest="year_cluster"/>
+        <copyField source="wok_citation_index" dest="tw"/>
+        <copyField source="wok_subject_categories" dest="tw"/>
+
+        <uniqueKey>id</uniqueKey>
+
+        <solrQueryParser defaultOperator="AND"/>
+
+        <defaultSearchField>tw</defaultSearchField>
+
+    </schema>
