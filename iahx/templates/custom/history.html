@@ -18,7 +18,7 @@
 		<form name="searchHistoryForm" action="{{ constant("SEARCH_URL") }}" method="get" class="searchFormBuilder searchForm searchHistoryContainer" id="searchHistoryForm">
 			<div class="highlight result">
 				<div class="container">
-					<a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a>
+					<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
 
 					<div class="col-md-8 col-sm-8">
 						<div class="input-group col-md-12 col-sm-12">
@@ -60,10 +60,11 @@
 								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
 							</tr>
 
-							{% for history in history_list %}
+							{% for index, history in history_list %}
+							{% set history_id = index+1 %}
 							<tr>
 								<td class="colId">
-									<span>#{{loop.index}}</span>
+									<span>#{{ history_id }}</span>
 								</td>
 								<td class="colSearch">
 									<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
@@ -77,12 +78,16 @@
 									{% endfor %}
 								</td>
 								<td class="colResults">
-									<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									{% if history.total > 0 %}
+										<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+									{% else %}
+										{{ history.total }}
+									{% endif %}
 								</td>
 								<td class="colActions">
-									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
-									<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
-									<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{loop.index}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
+									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
+									<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
+									<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
 								</td>
 							</tr>
 							{% endfor %}

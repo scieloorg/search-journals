@@ -177,6 +177,11 @@
             <!-- Dynamic Field to know the URL of PDF in any languages **from:fulltext_pdf_* to:pdf_url_* **-->
             <dynamicField name="fulltext_pdf_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
 
+            <!-- Uniform Resource Location for the HTML ex.:
+            http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-67202013000200002&lng=en&nrm=iso&tlng=pt -->
+            <!-- Dynamic Field to know the URL of htnl in any languages **from:fulltext_html_* to:html_url_* **-->
+            <dynamicField name="fulltext_html_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
             <!-- Dynamic Field to Abstract in any languages **from:ab_* to:abstract_in_* ** -->
             <dynamicField name="ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
 

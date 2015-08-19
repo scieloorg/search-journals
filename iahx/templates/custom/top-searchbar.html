@@ -20,7 +20,7 @@
 <form name="searchFormBuilder" class="searchFormBuilder searchForm">
     <div class="highlight {% if detailed_query != '' %}result{% endif %}">
         <div class="container">
-            <a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a>
+            <!--a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a-->
 
             {% if detailed_query == '' %}
                 <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
@@ -194,4 +194,4 @@
     {% endif %}
 </form>
 
-{% include custom_template('help-searchbar-' ~ lang ~ '.html') %}
+{# % include custom_template('help-searchbar-' ~ lang ~ '.html') % #}
