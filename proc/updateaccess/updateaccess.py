@@ -48,10 +48,11 @@ class UpdateAccess(object):
     def commit(self):
         return urllib2.urlopen('%s/update?commit=true' % self.url).read()
 
+    def optimize(self):
+        return urllib2.urlopen('%s/update?optimize=true' % self.url).read()
+
     def run(self):
         logger.info('Update access on search %s' % self.url)
-
-        offset = 0
 
         logger.info('Get all ids of articlemeta...')
 
@@ -71,7 +72,8 @@ class UpdateAccess(object):
                 jdoc = json.loads(doc)
                 logger.info(self.update('%s-%s' % (code, col), jdoc['access_total']['value']))
 
-        self.commit()
+        logger.info(self.commit())
+        logger.info(self.optimize())
 
 
 def main():
