@@ -32,8 +32,9 @@ logger = logging.getLogger('updateaccess')
 
 class UpdateAccess(object):
 
-    def __init__(self, url):
+    def __init__(self, url, collection):
         self.url = url
+        self.collection = collection
 
     def update(self, code, total):
         data = '{"add":{ "doc":{"id" : "%s", "total_access":{"set":"%s"}}}}' % (code, int(total))
@@ -54,7 +55,8 @@ class UpdateAccess(object):
 
         logger.info('Get all ids of articlemeta...')
 
-        ids = articlemeta.get_identifiers(limit=10000,
+        ids = articlemeta.get_identifiers(collection=self.collection,
+                                          limit=10000,
                                           offset_range=10000,
                                           onlyid=False)
 
@@ -84,10 +86,15 @@ def main():
         help='URL Sorl'
     )
 
+    parser.add_argument('-c', '--collection',
+                        dest='collection',
+                        default=None,
+                        help='use the acronym of the collection eg.: spa, scl, col.')
+
     args = parser.parse_args()
 
     start = time.time()
-    UpdateAccess(args.url).run()
+    UpdateAccess(args.url, args.collection).run()
     end = time.time()
 
     logger.info('Duration: %s' % str(end-start))
