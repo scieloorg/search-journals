@@ -27,7 +27,7 @@ class UpdateCitation(object):
         resp = urllib2.urlopen(self.curl + 'api/v1/pid/?q=%s&metaonly=true' % id).read()
         return id, resp
 
-    def update_search(self, id, citations):
+    def update(self, id, citations):
         req = urllib2.Request(url='%s/update?wt=json' % self.surl,
                               data='{"add":{ "doc":{"id" : "%s", "total_received":{"set":"%s"}}}}' % (id, citations))
         req.add_header('Content-type', 'application/json')
@@ -37,43 +37,49 @@ class UpdateCitation(object):
     def commit(self):
         return urllib2.urlopen('%s/update?commit=true' % self.surl).read()
 
+    def get_data(self, id, resp):
+        cit = json.loads(resp)
+
+        return '%s-%s' % (id, cit['article']['collection']), cit['article']['total_received']
+
     def run(self, itens=10, limit=10):
-        print('Warm-up Citedby cache from url %s' % self.curl)
+        print('Update citation %s' % self.surl)
 
         offset = 0
-        limit = limit
-        itens = itens
 
-        ids = articlemeta.get_identifiers(limit=10000, offset_range=10000,
-                                          onlyid=True)
+        print('Get all ids of articlemeta...')
 
+        ids = [id for id in articlemeta.get_identifiers(limit=10000,
+                                                        offset_range=10000,
+                                                        onlyid=True)]
         while True:
 
             id_slice = itertools.islice(ids, offset, limit)
 
             print('From %d to %d' % (offset, limit))
 
-            if not id_slice:
+            fjobs = [gevent.spawn(self.fetch, id) for id in id_slice if id]
+
+            if not fjobs:
                 break
 
-            jobs = [gevent.spawn(self.fetch, id) for id in id_slice]
+            gevent.joinall(fjobs)
 
-            gevent.joinall(jobs)
-
-            for job in jobs:
-
+            for job in fjobs:
+                job_list = []
                 if job.value:
-                    id, resp = job.value
-                    cit = json.loads(resp)
-                    resp = self.update_search('%s-%s' % (id, cit['article']['collection']), cit['article']['total_received'])
-                    print('%s-%s' % (id, cit['article']['collection']), resp, cit['article']['total_received'])
+                    id, total_received = self.get_data(*job.value)
+                    job_list.append(gevent.spawn(self.update, id, total_received))
+                    print(id, total_received)
 
-            self.commit()
+            gevent.joinall(job_list)
 
             offset += itens
             limit += itens
 
-            gevent.sleep(2)
+            gevent.sleep(0)
+
+        self.commit()
 
 
 def main():
@@ -98,10 +104,10 @@ def main():
     args = parser.parse_args()
 
     start = time.time()
-    UpdateCitation(args.citation_url, args.search_url).run(itens=20, limit=20)
+    UpdateCitation(args.citation_url, args.search_url).run(itens=10, limit=10)
     end = time.time()
 
-    print('Ducration: %d' (end-start))
+    print('Duration: %d' (end-start))
 
 
 if __name__ == '__main__':
