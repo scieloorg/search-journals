@@ -37,6 +37,22 @@
             <div class="user-actions">
                 {% include custom_template("result-doc-actions.html") %}
             </div>
+            <div class="line metadata">
+				<div class="col-md-9 col-sm-9">
+                    {% if doc.total_received %}
+    					<span>
+    						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}
+    					</span>
+                    {% endif %}
+                    {% if doc.total_access %}
+					    <span>
+						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong> {{ texts.DOWNLOADS_IN }}
+					    </span>
+                    {% endif %}
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
         </div>
         <div class="clearfix"></div>
     </div>

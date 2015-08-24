@@ -31,7 +31,7 @@
 	<search_collection_list>
 		<collection>
 			<name>articles</name>
-			<cluster_items_limit>10</cluster_items_limit>
+			<cluster_items_limit>5</cluster_items_limit>
 			<initial_filter></initial_filter>
 			<index_list>
 				<index>
@@ -129,6 +129,14 @@
 				 <sort>
 					 <name>YEAR_ASC</name>
 					 <value>da asc</value>
+				 </sort>
+				 <sort>
+					 <name>CITED_DESC</name>
+					 <value>total_received desc</value>
+				 </sort>
+				 <sort>
+					 <name>CITED_ASC</name>
+					 <value>total_received asc</value>
 				 </sort>
                  <sort>
                      <name>RELEVANCE</name>
