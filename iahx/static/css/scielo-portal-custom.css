@@ -18,3 +18,13 @@
 .searchForm .resultBlock .collapseBlock .content {
     max-height: none;
 }
+
+.st_email_custom {
+    display: inline-block;
+    text-align: left;
+    text-indent: -5000px;
+    width: 20px;
+    height: 17px;
+    margin: 0 3px -4px;
+    background: url(../image/button.glyphs.png) -15px -555px no-repeat;
+}
