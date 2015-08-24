@@ -387,7 +387,7 @@ searchFormBuilder = {
 		$(".articleAction, .searchHistoryItem, .colActions .searchHistoryIcon",p).tooltip();
 
 		$(".selectAll",p).on("click",function() {
-			alert('selectAll');
+
 			var t = $(this),
 				itens = $(".results .item input.checkbox",p),
 				selCount = $("#selectedCount",p),
@@ -1125,22 +1125,25 @@ $(".exportCSV").on("click",function(e) {
 
 	var grupo = $("#ul_" + chartSource);
     var lista = grupo.find('li');
-	var regex = /<span>\d+<\/span>/;
+	var regex = /<span>\d+<\/span>/i;
 	var params= "";
 
     for (i = 0; i < lista.length; i++){
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
+		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
 
         ma = regex.exec(cluster);
         if (ma != null) {
-            clusterTotal = ma[0].replace(/(<([^>]+)>)/ig,'');
-            params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
+            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
+            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
         }
     }
-    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
+    var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
+	if(isOldIE) {
+		csvLink = encodeURI(csvLink);
+	}
 	export_win = window.open(csvLink);
-
 });
 
 
@@ -1162,7 +1165,7 @@ $(".openStatistics").on("click",function(e) {
 });
 
 $("#Statistics").on("shown.bs.modal",function() {
-	var regex = /<span>\d+<\/span>/;
+	var regex = /<span>\d+<\/span>/i;
     var params= "";
 
 	var t = $(this),
@@ -1177,15 +1180,21 @@ $("#Statistics").on("shown.bs.modal",function() {
     for (i = 0; i < lista.length; i++){
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
+		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
 
         ma = regex.exec(cluster);
         if (ma != null) {
-            clusterTotal = ma[0].replace(/(<([^>]+)>)/ig,'');
-            params += "&l[]=" + clusterLabel.trim() + "&d[]=" + clusterTotal.trim();
+            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
+            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
         }
     }
     var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
     var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
+
+	if(isOldIE) {
+		chartDataUrl = encodeURI(chartDataUrl);
+		csvLink = encodeURI(csvLink);
+	}
 
 	t.find(".modal-title .cluster").text(title);
 	t.find(".link a").attr("href",csvLink);
@@ -1195,12 +1204,11 @@ $("#Statistics").on("shown.bs.modal",function() {
 	var canvas = $("#chart").get(0);
 
 	if(isOldIE) {
-			canvas = G_vmlCanvasManager.initElement(canvas);
+		canvas = G_vmlCanvasManager.initElement(canvas);
 	}
 
 	var ctx = canvas.getContext("2d");
 	ctx.clearRect(0,0,550,400);
-
 
 	$.ajax({
 		url: chartDataUrl,
