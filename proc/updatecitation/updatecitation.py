@@ -22,7 +22,7 @@ logging.config.fileConfig(os.path.join(os.path.dirname(
                           os.path.abspath(__file__)), 'logging.conf'))
 
 # set logger
-logger = logging.getLogger('updateaccess')
+logger = logging.getLogger('updatecitation')
 
 
 class UpdateCitation(object):
@@ -33,7 +33,7 @@ class UpdateCitation(object):
         self.collection = collection
 
     def fetch(self, id):
-        resp = urllib2.urlopen(self.curl + 'api/v1/pid/?q=%s&metaonly=true' % id).read()
+        resp = urllib2.urlopen(self.curl + 'api/v1/pid/?q=%s' % id).read()
         return id, resp
 
     def update(self, id, citations):
