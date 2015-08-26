@@ -48,7 +48,7 @@ class UpdateCitation(object):
         return urllib2.urlopen('%s/update?commit=true' % self.surl).read()
 
     def optimize(self):
-        return urllib2.urlopen('%s/update?optimize=true' % self.url).read()
+        return urllib2.urlopen('%s/update?optimize=true' % self.surl).read()
 
     def get_data(self, id, resp):
         cit = json.loads(resp)
