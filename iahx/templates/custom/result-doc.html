@@ -22,7 +22,7 @@
                     {% endif %}
                     {% if output != 'print' %}
                         <span class="socialLinks notTablet">
-                            <span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span>
+                            <a href="javascript:void()"><span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span></a>
 
                             <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
                             <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
@@ -45,7 +45,7 @@
                     {% endif %}
                     {% if doc.total_access %}
 					    <span>
-						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong> {{ texts.DOWNLOADS_IN }}
+						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong>
 					    </span>
                     {% endif %}
 				</div>
