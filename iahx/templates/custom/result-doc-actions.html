@@ -14,12 +14,13 @@
                     </a>
                 {% endif %}
                 {% if attribute(doc, fulltext_lang) %}
-                    | <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{language}}">
+                    {% if attribute(doc, ab_lang) %} | {% endif %}
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{language}}">
                         {{ texts.TEXT }}
                     </a>
                 {% endif %}
                 {% if attribute(doc, pdf_lang) %}
-                    {% if attribute(doc, fulltext_lang) %} | {% endif %}
+                    {% if attribute(doc, ab_lang) or attribute(doc, fulltext_lang) %} | {% endif %}
                     <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lang={{language}}">
                         PDF
                     </a>
