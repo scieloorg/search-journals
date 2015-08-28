@@ -23,7 +23,7 @@
                     {% if output != 'print' %}
                         <span class="socialLinks notTablet">
                             <span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span>
-                        
+
                             <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
                             <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
                             <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareDelicious" data-toggle="tooltip" data-placement="top" title="Compartilhar no Delicious">Delicious</a>
@@ -38,9 +38,9 @@
             </div>
             <div class="line metadata">
 				<div class="col-md-9 col-sm-9">
-                    {% if doc.total_received %}
+                    {% if doc.total_received is not null %}
     					<span>
-    						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}
+    						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received == 0 or doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}
     					</span>
                     {% endif %}
                     {% if doc.total_access %}
