@@ -53,7 +53,7 @@ class UpdateCitation(object):
     def get_data(self, id, resp):
         cit = json.loads(resp)
 
-        return '%s-%s' % (id, cit['article']['collection']), cit['article']['total_received']
+        return '%s-%s' % (id, cit['article']['collection']), cit['article']['total_received'], cit['document_type']
 
     def run(self, itens=10, limit=10):
         logger.info('Update citation %s' % self.surl)
@@ -82,9 +82,10 @@ class UpdateCitation(object):
             for job in fjobs:
                 job_list = []
                 if job.value:
-                    id, total_received = self.get_data(*job.value)
-                    job_list.append(gevent.spawn(self.update, id, total_received))
-                    logger.info('%s, %s' % (id, total_received))
+                    id, total_received, document_type = self.get_data(*job.value)
+                    if document_type in ['research-article', 'review-article']:
+                        job_list.append(gevent.spawn(self.update, id, total_received))
+                        logger.info('%s, %s, %s' % (id, total_received, document_type))
 
             gevent.joinall(job_list)
 
