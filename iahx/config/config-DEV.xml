@@ -6,7 +6,7 @@
 	<home_url>http://www.scielo.org/</home_url>
 	<search_server>localhost:8080</search_server>
 	<photocopy_url/>
-	<documents_per_page>20</documents_per_page>
+	<documents_per_page>15</documents_per_page>
     <max_export_records>2000</max_export_records>
 	<default_lang>pt</default_lang>
 	<log_user_search>true</log_user_search>
@@ -129,6 +129,14 @@
 				 <sort>
 					 <name>YEAR_ASC</name>
 					 <value>da asc</value>
+				 </sort>
+				 <sort>
+					 <name>CITED_DESC</name>
+					 <value>total_received desc</value>
+				 </sort>
+				 <sort>
+					 <name>CITED_ASC</name>
+					 <value>total_received asc</value>
 				 </sort>
                  <sort>
                      <name>RELEVANCE</name>
