@@ -66,7 +66,7 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_document_doi_data_pipe(self):
 
-        fakexylosearticle = Article({'title': {}, 'doi': '10.1590/S0036-36342011000900009'})
+        fakexylosearticle = Article({'article': {}, 'title': {}, 'doi': '10.1590/S0036-36342011000900009'})
 
         pxml = ET.Element('doc')
 
