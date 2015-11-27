@@ -44,7 +44,7 @@ def get_identifiers(collection=None, issn=None, _from=None, _until=None,
             raise StopIteration
 
         for ident in idents:
-            logger.debug('code: %s collection: %s' %
+            logger.debug('Get article with code: %s from: %s' %
                          (ident.code, ident.collection))
 
             if onlyid:
