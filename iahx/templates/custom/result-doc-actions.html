@@ -5,29 +5,27 @@
             {% for language in doc.la %}
                 · {{ translate(language, 'REFINE_la') }}:
                 {% set ab_lang = 'ab_' ~ language %}
+                {% set fulltext_lang = 'fulltext_html_' ~ language %}
+                {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+
                 {% if attribute(doc, ab_lang) %}
-                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0}}&lang={{language}}">
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
                         {{ texts.RESULT.LABEL_ABSTRACT }}
-                    </a> |
+                    </a>
                 {% endif %}
-                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{language}}">
-                    {{ texts.TEXT }}
-                </a> |
-                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lang={{language}}">
-                    PDF
-                </a>
+                {% if attribute(doc, fulltext_lang) %}
+                    {% if attribute(doc, ab_lang) %} | {% endif %}
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
+                        {{ texts.TEXT }}
+                    </a>
+                {% endif %}
+                {% if attribute(doc, pdf_lang) %}
+                    {% if attribute(doc, ab_lang) or attribute(doc, fulltext_lang) %} | {% endif %}
+                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
+                        PDF
+                    </a>
+                {% endif %}
             {% endfor %}
-        </span>
-        <span>
-            · SciELO
-            {% if doc.in|length > 1 %}
-                {% for collection in doc.in %}
-                    {% if loop.last %} {{ texts.AND }} {% elseif not loop.first %}, {% endif %}
-                    {{ translate(collection, 'REFINE_in') }}
-                {% endfor %}
-            {% else %}
-                {{ translate(doc.in.0, 'REFINE_in') }}
-            {% endif %}
         </span>
     </div>
 

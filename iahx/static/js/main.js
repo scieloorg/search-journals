@@ -1191,8 +1191,8 @@ $("#Statistics").on("shown.bs.modal",function() {
     var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
     var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
 
+	chartDataUrl = encodeURI(chartDataUrl);
 	if(isOldIE) {
-		chartDataUrl = encodeURI(chartDataUrl);
 		csvLink = encodeURI(csvLink);
 	}
 

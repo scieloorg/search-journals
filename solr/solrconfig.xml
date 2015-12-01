@@ -192,7 +192,7 @@
          <str name="facet.field">document_type</str>
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
-         <str name="facet.limit">5</str>
+         <str name="facet.limit">10</str>
          <str name="facet.mincount">1</str>
      </lst>
   </requestHandler>
