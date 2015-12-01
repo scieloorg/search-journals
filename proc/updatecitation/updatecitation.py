@@ -32,8 +32,16 @@ class UpdateCitation(object):
         self.surl = surl
         self.collection = collection
 
-    def fetch(self, id):
-        resp = urllib2.urlopen(self.curl + 'api/v1/pid/?q=%s' % id).read()
+    def fetch(self, url):
+        try:
+            resp = urllib2.urlopen(url).read()
+        except urllib2.HTTPError as e:
+            logger.error('HTTP error: %s' % e)
+        else:
+            return resp
+
+    def get_article(self, id):
+        resp = self.fetch(self.curl + 'api/v1/pid/?q=%s' % id)
         return id, resp
 
     def update(self, id, citations):
@@ -45,15 +53,19 @@ class UpdateCitation(object):
         return urllib2.urlopen(req).read()
 
     def commit(self):
-        return urllib2.urlopen('%s/update?commit=true' % self.surl).read()
+        return self.fetch('%s/update?commit=true' % self.surl)
 
     def optimize(self):
-        return urllib2.urlopen('%s/update?optimize=true' % self.surl).read()
+        return self.fetch('%s/update?optimize=true' % self.surl)
 
     def get_data(self, id, resp):
-        cit = json.loads(resp)
-
-        return '%s-%s' % (id, cit['article']['collection']), cit['article']['total_received'], cit['document_type']
+        try:
+            cit = json.loads(resp)
+        except TypeError as e:
+            logger.error('TypeError: %s, response: %s' % (e, resp))
+        else:
+            if cit:
+                return '%s-%s' % (id, cit['article']['collection']), cit['article']['total_received']
 
     def run(self, itens=10, limit=10):
         logger.info('Update citation %s' % self.surl)
@@ -72,7 +84,7 @@ class UpdateCitation(object):
 
             logger.info('From %d to %d' % (offset, limit))
 
-            fjobs = [gevent.spawn(self.fetch, id) for id in id_slice if id]
+            fjobs = [gevent.spawn(self.get_article, id) for id in id_slice if id]
 
             if not fjobs:
                 break
@@ -81,11 +93,13 @@ class UpdateCitation(object):
 
             for job in fjobs:
                 job_list = []
-                if job.value:
-                    id, total_received, document_type = self.get_data(*job.value)
-                    if document_type in ['research-article', 'review-article']:
-                        job_list.append(gevent.spawn(self.update, id, total_received))
-                        logger.info('%s, %s, %s' % (id, total_received, document_type))
+
+                data = self.get_data(*job.value)
+
+                if data:
+                    id, total_received = data
+                    job_list.append(gevent.spawn(self.update, id, total_received))
+                    logger.info('%s, %s' % (id, total_received))
 
             gevent.joinall(job_list)
 
