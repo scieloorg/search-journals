@@ -484,23 +484,31 @@ searchFormBuilder = {
 
 			var t = $(this),
 				rel = t.data("rel"),
+				filter_id = t.data("filter"),
+				filter_label = t.data("label"),
 				mod = $("#selectClusterItens"),
 				modContainer = $(".filterBody",mod),
 				modTitle = $(".modal-title",mod);
 
-			modTitle.html(t.text());
+			$("#orderby_results").data("rel", "#filter_" + filter_id);
+			$("#orderby_alpha").data("rel", "#filter_" + filter_id);
+
+			modTitle.html(filter_label);
 			modContainer.empty();
 
-			var c = $(".filterItem",rel).clone();
-			modContainer.append(c);
-			modContainer.find(".checkbox").each(function() {
-				var cId = $(this).attr("id"),
-					nId = cId+"cf";
+			var select_form = $("#selectClusterItensForm");
+			console.log(select_form.serialize());
 
-				$(this).attr("id",nId);
-				modContainer.find("label[for='"+cId+"']").attr("for",nId);
-			});
 
+		    $.ajax({ // create an AJAX call...
+		        data: select_form.serialize(), // get the form data
+		        type: select_form.attr('method'), // GET or POST
+		        url: 'list-filter/' + filter_id, // the file to call
+		        success: function(response) { // on success..
+					console.log("sucess");
+					$('.filterBody').html(response); // update the DIV
+		        }
+		    });
 			mod.modal("show");
 
 		});

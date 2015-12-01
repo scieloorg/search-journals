@@ -1,6 +1,10 @@
-#form_clusters div ul{
+#form_clusters div ul, ul.list-unstyled{
     list-style-type: none;
     padding-left: 0px;
+}
+
+ul.list-inline li{
+    display: inline-block;
 }
 
 .filterItem a {

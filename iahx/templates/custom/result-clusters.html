@@ -72,7 +72,7 @@
                                     </a>
                                     <a href="javascript:;" class="configs dropdown-toggle" title="{{ texts.SETTINGS }}" data-toggle="dropdown">{{ texts.SETTINGS }}</a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}"><strong>{{ texts.SELECT }}</strong></a></li>
+										<li><a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}"><strong>{{ texts.SELECT }}</strong></a></li>
 										<li class="divider"></li>
 										<li><strong class="icon order">{{ texts.ORDER_BY }}:</strong></li>
 										<li><a href="javascript:;" class="orderBy" data-field="count" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_RESULTS }}</a></li>
