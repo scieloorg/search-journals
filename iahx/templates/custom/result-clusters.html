@@ -70,17 +70,6 @@
                                     <a href="javascript:;" title="{{ attribute(texts.REFINE, name) }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
-                                    <a href="javascript:;" class="configs dropdown-toggle" title="{{ texts.SETTINGS }}" data-toggle="dropdown">{{ texts.SETTINGS }}</a>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}"><strong>{{ texts.SELECT }}</strong></a></li>
-										<li class="divider"></li>
-										<li><strong class="icon order">{{ texts.ORDER_BY }}:</strong></li>
-										<li><a href="javascript:;" class="orderBy" data-field="count" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_RESULTS }}</a></li>
-										<li><a href="javascript:;" class="orderBy" data-field="item" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_ALPHA }}</a></li>
-										<li class="divider"></li>
-                                        <li><a href="javascript:;" class="icon stats openStatistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
-										<li><a href="javascript:;" class="icon download exportCSV" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
-									</ul>
                                 </div>
 
                                 <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
