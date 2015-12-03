@@ -157,6 +157,7 @@ class UpdateSearch(object):
                                pipeline_xml.SupplementVolume(),
                                pipeline_xml.Issue(),
                                pipeline_xml.SupplementIssue(),
+                               pipeline_xml.ElocationPage(),
                                pipeline_xml.StartPage(),
                                pipeline_xml.EndPage(),
                                pipeline_xml.JournalTitle(),
