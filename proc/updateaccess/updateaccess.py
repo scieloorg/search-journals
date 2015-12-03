@@ -19,7 +19,7 @@ access_stats_thrift = thriftpy.load(
     module_name='access_stats_thrift'
 )
 
-client = make_client(access_stats_thrift.AccessStats, 'ratchet.scielo.org', 11640)
+client = make_client(access_stats_thrift.AccessStats, 'ratchet.scielo.org', 11660)
 
 
 # config logger file

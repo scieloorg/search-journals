@@ -15,7 +15,7 @@ if __name__ == '__main__':
     client = make_client(
         access_stats_thrift.AccessStats,
         'ratchet.scielo.org',
-        11640
+        11660
     )
 
     print json.loads(client.document('S1807-86212013000200003', 'scl'))
