@@ -155,6 +155,9 @@
             <!-- Supplement of Issue -->
             <field name="supplement_issue" type="string" indexed="true" stored="true" multiValued="false"/>
 
+            <!-- Elocation -->
+            <field name="elocation" type="string" indexed="true" stored="true" multiValued="false"/>
+
             <!-- Start Page -->
             <field name="start_page" type="string" indexed="true" stored="true" multiValued="false"/>
 
