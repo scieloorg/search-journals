@@ -93,6 +93,13 @@ class UpdateCitation(object):
 
             for job in fjobs:
                 job_list = []
+                if job.value:
+                    data = self.get_data(*job.value)
+
+                    if data:
+                        id, total_received = data
+                        job_list.append(gevent.spawn(self.update, id, total_received))
+                        logger.info('%s, %s' % (id, total_received))
 
                 data = self.get_data(*job.value)
 
