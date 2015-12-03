@@ -2,7 +2,6 @@
 import os
 import thriftpy
 import json
-
 access_stats_thrift = thriftpy.load(
     os.path.dirname(__file__) + 'access_stats.thrift',
     module_name='access_stats_thrift'
