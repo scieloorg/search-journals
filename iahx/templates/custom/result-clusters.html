@@ -19,7 +19,7 @@
                     {% for cluster, items in filters_formatted %}
                         {% set texts_group = 'REFINE_' ~ cluster %}
                         {% for item in items %}
-                            {% set item_value = cluster ~ '_' ~ item ~ '' %}
+                            {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
 
                             <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}" class="selectedFilter">
                                  <span>{{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong></span>
@@ -86,12 +86,15 @@
                                 <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
                                     <ul id="ul_{{ name }}">
                                         {% for item in cluster if item.0 != '' %}
-                                            {% set cluster_item_id = name ~ '_' ~ item.0 %}
+                                            {% set cluster_item_id = name ~ '_'
+~ item.0|slugify %}
 
-                                            {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0) == '' %}
+                                            {% if name == 'document_type' and
+attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
                                                {# hide cluster for document_type that dont have translation #}
 
-                                            {% elseif name == 'la' and attribute(texts.REFINE_la, item.0) == '' %}
+                                            {% elseif name == 'la' and
+attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                {# hide cluster for languages that dont have translation #}
 
                                             {% else %}
