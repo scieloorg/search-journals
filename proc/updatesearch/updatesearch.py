@@ -146,6 +146,7 @@ class UpdateSearch(object):
                                pipeline_xml.WOKCI(),
                                pipeline_xml.WOKSC(),
                                pipeline_xml.JournalAbbrevTitle(),
+                               pipeline_xml.Languages(),
                                pipeline_xml.AvailableLanguages(),
                                pipeline_xml.Fulltexts(),
                                pipeline_xml.PublicationDate(),
@@ -230,6 +231,8 @@ class UpdateSearch(object):
                         list_article.append(json.loads(art_meta.get_article(*ident)))
 
                     self.solr.update(self.pipeline_to_xml(list_article), commit=True)
+
+                    print(self.pipeline_to_xml(list_article))
 
                     count += len(list_article)
 

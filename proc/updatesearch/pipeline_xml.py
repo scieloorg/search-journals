@@ -442,7 +442,7 @@ class JournalAbbrevTitle(plumber.Pipe):
         return data
 
 
-class AvailableLanguages(plumber.Pipe):
+class Languages(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -454,6 +454,27 @@ class AvailableLanguages(plumber.Pipe):
             field = ET.Element('field')
             field.text = language
             field.set('name', 'la')
+            xml.find('.').append(field)
+
+        return data
+
+
+class AvailableLanguages(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        langs = set([i for i in raw.languages()])
+        langs.add(raw.original_language())
+
+        if raw.translated_abstracts():
+            for lang in raw.translated_abstracts().keys():
+                langs.add(lang)
+
+        for language in langs:
+            field = ET.Element('field')
+            field.text = language
+            field.set('name', 'available_languages')
             xml.find('.').append(field)
 
         return data
