@@ -230,7 +230,7 @@ class UpdateSearch(object):
                     for ident in lst_ids:
                         list_article.append(json.loads(art_meta.get_article(*ident)))
 
-                    logger.error("Processed ids list: {0}".format(lst_ids))
+                    logger.info("Processed ids list: {0}".format(lst_ids))
 
                     self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
