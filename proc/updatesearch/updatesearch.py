@@ -230,6 +230,8 @@ class UpdateSearch(object):
                     for ident in lst_ids:
                         list_article.append(json.loads(art_meta.get_article(*ident)))
 
+                    logger.error("Processed ids list: {0}".format(lst_ids))
+
                     self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
                     count += len(list_article)
@@ -237,7 +239,7 @@ class UpdateSearch(object):
                     logger.info("Updated {0} articles".format(count))
 
                 except ValueError as e:
-                    logger.error("Error: {0}".format(e))
+                    logger.error("ValueError: {0}".format(e))
                     continue
                 except Exception as e:
                     logger.error("Error: {0}".format(e))
