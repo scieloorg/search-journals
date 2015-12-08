@@ -72,7 +72,8 @@
 									{% for cluster, items in history.filter %}
 										{% set texts_group = 'REFINE_' ~ cluster %}
 										{% for item in items %}
-											{% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
+											{% set item_value = cluster ~ '_' ~
+item|slugify ~ '' %}
 											({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
 										{% endfor %}
 									{% endfor %}
