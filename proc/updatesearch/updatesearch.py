@@ -232,8 +232,6 @@ class UpdateSearch(object):
 
                     self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
-                    print(self.pipeline_to_xml(list_article))
-
                     count += len(list_article)
 
                     logger.info("Updated {0} articles".format(count))
