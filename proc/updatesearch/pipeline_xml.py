@@ -538,10 +538,11 @@ class Abstract(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        field = ET.Element('field')
-        field.text = raw.original_abstract()
-        field.set('name', 'ab_%s' % raw.original_language())
-        xml.find('.').append(field)
+        if raw.original_abstract():
+            field = ET.Element('field')
+            field.text = raw.original_abstract()
+            field.set('name', 'ab_%s' % raw.original_language())
+            xml.find('.').append(field)
 
         if not raw.translated_abstracts():
             return data
