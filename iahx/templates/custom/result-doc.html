@@ -37,7 +37,14 @@
                 {% include custom_template("result-doc-actions.html") %}
             </div>
             <div class="line metadata">
-				<div class="col-md-9 col-sm-9">
+				<div class="col-md-12 col-sm-12">
+                                  {% if doc.doi %}
+                                    <span>
+				      <span>
+                                        <strong class="DOIResults">DOI: 10.1590/S0074-02762012000800022</strong>
+                                      </span>
+                                    </span>
+                                  {% endif %}
                     {% if doc.total_received is not null %}
     					<span>
     						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received == 0 or doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}

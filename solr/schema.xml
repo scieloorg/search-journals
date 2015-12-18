@@ -214,6 +214,8 @@
         <copyField source="da" dest="year_cluster"/>
         <copyField source="wok_citation_index" dest="tw"/>
         <copyField source="wok_subject_categories" dest="tw"/>
+        <copyField source="journal_title" dest="tw"/>
+        <copyField source="journal_title" dest="ta"/>        
 
         <uniqueKey>id</uniqueKey>
 
