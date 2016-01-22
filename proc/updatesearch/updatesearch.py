@@ -205,7 +205,10 @@ class UpdateSearch(object):
             # Ids to remove
             remove_ids = ind_ids - art_ids
 
-            self.solr.delete('OR '.join(['id:%s' % id for id in remove_ids]), commit=True)
+            for id in remove_ids:
+                self.solr.delete('id:%s' % id, commit=True)
+
+            logger.info("List of removed ids: %s" % remove_ids)
 
         else:
 
@@ -247,6 +250,7 @@ class UpdateSearch(object):
 
         # optimize the index
         self.solr.optimize()
+        self.solr.commit()
 
 
 def main():
