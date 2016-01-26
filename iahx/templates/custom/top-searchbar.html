@@ -35,7 +35,7 @@
             <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="form-textarea">
-                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control">{% if docs|length == 0 %}{{ params.q }}{% endif %}</textarea>
+                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control">{% if docs|length > 0 %}{{ params.q }}{% endif %}</textarea>
                         <a href="javascript:;" class="clearIptText showTooltip" title="{{ texts.CLEAN_SEARCHFIELD }}" style="display: none;"></a>
                     </div>
                     <div class="selectBox index">
