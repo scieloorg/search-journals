@@ -32,3 +32,11 @@ ul.list-inline li{
     margin: 0 3px -4px;
     background: url(../image/button.glyphs.png) -15px -555px no-repeat;
 }
+
+.configsText{
+    position: absolute;
+    top: 7px;
+    right: 0;
+    width: auto;
+    height: 25px;
+}
