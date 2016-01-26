@@ -366,30 +366,65 @@ class SupplementIssue(plumber.Pipe):
         return data
 
 
-class StartPage(plumber.Pipe):
+class ElocationPage(plumber.Pipe):
 
+    def precond(data):
+
+        raw, xml = data
+
+        if not raw.elocation:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
-        if raw.start_page:
-            field = ET.Element('field')
-            field.text = raw.start_page
-            field.set('name', 'start_page')
-            xml.find('.').append(field)
+        field = ET.Element('field')
+        field.text = raw.elocation
+        field.set('name', 'elocation')
+        xml.find('.').append(field)
+
+        return data
+
+
+class StartPage(plumber.Pipe):
+
+    def precond(data):
+
+        raw, xml = data
+
+        if not raw.start_page:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.start_page
+        field.set('name', 'start_page')
+        xml.find('.').append(field)
 
         return data
 
 
 class EndPage(plumber.Pipe):
 
+    def precond(data):
+
+        raw, xml = data
+
+        if not raw.end_page:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
-        if raw.end_page:
-            field = ET.Element('field')
-            field.text = raw.end_page
-            field.set('name', 'end_page')
-            xml.find('.').append(field)
+        field = ET.Element('field')
+        field.text = raw.end_page
+        field.set('name', 'end_page')
+        xml.find('.').append(field)
 
         return data
 
@@ -407,7 +442,7 @@ class JournalAbbrevTitle(plumber.Pipe):
         return data
 
 
-class AvailableLanguages(plumber.Pipe):
+class Languages(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
@@ -419,6 +454,27 @@ class AvailableLanguages(plumber.Pipe):
             field = ET.Element('field')
             field.text = language
             field.set('name', 'la')
+            xml.find('.').append(field)
+
+        return data
+
+
+class AvailableLanguages(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        langs = set([i for i in raw.languages()])
+        langs.add(raw.original_language())
+
+        if raw.translated_abstracts():
+            for lang in raw.translated_abstracts().keys():
+                langs.add(lang)
+
+        for language in langs:
+            field = ET.Element('field')
+            field.text = language
+            field.set('name', 'available_languages')
             xml.find('.').append(field)
 
         return data
@@ -482,10 +538,11 @@ class Abstract(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        field = ET.Element('field')
-        field.text = raw.original_abstract()
-        field.set('name', 'ab_%s' % raw.original_language())
-        xml.find('.').append(field)
+        if raw.original_abstract():
+            field = ET.Element('field')
+            field.text = raw.original_abstract()
+            field.set('name', 'ab_%s' % raw.original_language())
+            xml.find('.').append(field)
 
         if not raw.translated_abstracts():
             return data

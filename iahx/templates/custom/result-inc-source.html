@@ -13,7 +13,11 @@
         <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
         <span>{{ doc.issue }}</span>
     {% endif %}
-    {% if doc.start_page %}
+
+    {% if doc.elocation %}
+        <small>elocation</small>
+        <span>{{ doc.elocation }}</span>
+    {% elseif doc.start_page %}
         <small>{{ texts.RESULT.LABEL_PAGES }}</small>
         <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
     {% endif %}

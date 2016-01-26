@@ -15,7 +15,8 @@
 
         <!-- css -->
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-portal.min.css">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL")
+}}css/scielo-portal.min.css">
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-portal-custom.css">
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo-print.css" media="print">
 
@@ -97,6 +98,7 @@
                 publisher: "{{ config.sharethis_pub }}",
                 doNotHash: false,
                 doNotCopy: false,
+                onhover: false,
                 hashAddressBar: false});
         </script>
     {% endif %}

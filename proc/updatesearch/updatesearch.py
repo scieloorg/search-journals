@@ -146,6 +146,7 @@ class UpdateSearch(object):
                                pipeline_xml.WOKCI(),
                                pipeline_xml.WOKSC(),
                                pipeline_xml.JournalAbbrevTitle(),
+                               pipeline_xml.Languages(),
                                pipeline_xml.AvailableLanguages(),
                                pipeline_xml.Fulltexts(),
                                pipeline_xml.PublicationDate(),
@@ -157,6 +158,7 @@ class UpdateSearch(object):
                                pipeline_xml.SupplementVolume(),
                                pipeline_xml.Issue(),
                                pipeline_xml.SupplementIssue(),
+                               pipeline_xml.ElocationPage(),
                                pipeline_xml.StartPage(),
                                pipeline_xml.EndPage(),
                                pipeline_xml.JournalTitle(),
@@ -203,7 +205,10 @@ class UpdateSearch(object):
             # Ids to remove
             remove_ids = ind_ids - art_ids
 
-            self.solr.delete('OR '.join(['id:%s' % id for id in remove_ids]), commit=True)
+            for id in remove_ids:
+                self.solr.delete('id:%s' % id, commit=True)
+
+            logger.info("List of removed ids: %s" % remove_ids)
 
         else:
 
@@ -228,6 +233,8 @@ class UpdateSearch(object):
                     for ident in lst_ids:
                         list_article.append(json.loads(art_meta.get_article(*ident)))
 
+                    logger.info("Processed ids list: {0}".format(lst_ids))
+
                     self.solr.update(self.pipeline_to_xml(list_article), commit=True)
 
                     count += len(list_article)
@@ -235,7 +242,7 @@ class UpdateSearch(object):
                     logger.info("Updated {0} articles".format(count))
 
                 except ValueError as e:
-                    logger.error("Error: {0}".format(e))
+                    logger.error("ValueError: {0}".format(e))
                     continue
                 except Exception as e:
                     logger.error("Error: {0}".format(e))
@@ -243,6 +250,7 @@ class UpdateSearch(object):
 
         # optimize the index
         self.solr.optimize()
+        self.solr.commit()
 
 
 def main():

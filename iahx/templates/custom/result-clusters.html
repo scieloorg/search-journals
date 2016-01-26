@@ -67,31 +67,23 @@
                             <a name="{{ name }}"></a>
                             <div id="{{ name }}" class="collapseBlock">
                                 <div class="title">
-                                    <a href="javascript:;" title="{{ name }}" class="action opened">
+                                    <a href="javascript:;" title="{{ attribute(texts.REFINE, name) }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
-                                    <a href="javascript:;" class="configs dropdown-toggle" title="{{ texts.SETTINGS }}" data-toggle="dropdown">{{ texts.SETTINGS }}</a>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}"><strong>{{ texts.SELECT }}</strong></a></li>
-										<li class="divider"></li>
-										<li><strong class="icon order">{{ texts.ORDER_BY }}:</strong></li>
-										<li><a href="javascript:;" class="orderBy" data-field="count" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_RESULTS }}</a></li>
-										<li><a href="javascript:;" class="orderBy" data-field="item" data-rel="#ul_{{ name }}">• {{ texts.ORDER_BY_ALPHA }}</a></li>
-										<li class="divider"></li>
-                                        <li><a href="javascript:;" class="icon stats openStatistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
-										<li><a href="javascript:;" class="icon download exportCSV" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="{{ name }}"><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
-									</ul>
                                 </div>
 
                                 <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
                                     <ul id="ul_{{ name }}">
                                         {% for item in cluster if item.0 != '' %}
-                                            {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
+                                            {% set cluster_item_id = name ~ '_'
+~ item.0|slugify %}
 
-                                            {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
+                                            {% if name == 'document_type' and
+attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
                                                {# hide cluster for document_type that dont have translation #}
 
-                                            {% elseif name == 'la' and attribute(texts.REFINE_la, item.0|slugify) == '' %}
+                                            {% elseif name == 'la' and
+attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                {# hide cluster for languages that dont have translation #}
 
                                             {% else %}
