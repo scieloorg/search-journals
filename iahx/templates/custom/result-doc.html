@@ -14,10 +14,10 @@
                 <!-- title -->
                 <div class="line">
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ doc.ti.0 }}</strong>
+                        <strong class="title">{{ doc.ti.0|raw }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ doc.ti.0 }}</strong>
+                            <strong class="title">{{ doc.ti.0|raw }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
