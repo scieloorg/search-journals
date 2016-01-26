@@ -60,8 +60,8 @@
 								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
 							</tr>
 
-							{% for index, history in history_list %}
-							{% set history_id = index+1 %}
+							{% for index, history in history_list|reverse %}
+							{% set history_id = history_list|length-index %}
 							<tr>
 								<td class="colId">
 									<span>#{{ history_id }}</span>
