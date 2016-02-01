@@ -497,15 +497,12 @@ searchFormBuilder = {
 			modContainer.empty();
 
 			var select_form = $("#selectClusterItensForm");
-			console.log(select_form.serialize());
-
-
 		    $.ajax({ // create an AJAX call...
 		        data: select_form.serialize(), // get the form data
 		        type: select_form.attr('method'), // GET or POST
 		        url: 'list-filter/' + filter_id, // the file to call
 		        success: function(response) { // on success..
-					console.log("sucess");
+					console.log(select_form.serialize());
 					$('.filterBody').html(response); // update the DIV
 		        }
 		    });
