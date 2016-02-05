@@ -70,6 +70,9 @@
                                     <a href="javascript:;" title="{{ attribute(texts.REFINE, name) }}" class="action opened">
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
+                                    {% if cluster|length > 1 %}
+                                        <a href="javascript:;" class="icon select openSelectItens pull-right configsText" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{texts.LIST_ALL}}</a>
+                                    {% endif %}
                                 </div>
 
                                 <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
@@ -111,8 +114,8 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
-                                    {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
-                                        <a href="javascript:show_more_clusters('{{ name }}', {{ collectionData.cluster_items_limit + cluster|length }});">{{ texts.SHOW_MORE_ITEMS }}...</a>
+                                    {% if cluster|length > 1 %}
+                                        <a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{ texts.SHOW_ALL_ITEMS }}...</a>
                                     {% endif %}
                                 </div>
                             </div>

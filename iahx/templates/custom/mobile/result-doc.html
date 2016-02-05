@@ -1,16 +1,16 @@
 <div class="simplePagerContainer">
     <ul class="c-results-list">
-    {% for doc in docs %}        
+    {% for doc in docs %}
 
         <li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
 
-            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}"  class="c-results-a">
-                {% block data %}  
+            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"  class="c-results-a">
+                {% block data %}
                     <span class="c-results-tit">
                         <span class="c-results-num">{{ loop.index + pag.start }}.</span>
-                            {{ occ( {'element': doc.ti, separator: ' / '} ) }}
+                            {{ doc.ti.0|raw }}
                     </span>
-                {% endblock %}                 
+                {% endblock %}
                 <span class="i-results-arrow"></span>
             </a>
         </li>
