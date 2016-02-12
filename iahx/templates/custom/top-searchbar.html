@@ -1,4 +1,5 @@
-<form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}" method="get">
+<form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}"
+                        method="{% if detailed_query|length > 2048 %}post{% else %}get{% endif %}">
 
     <input type="hidden" name="q" id="q" value="{{ q }}">
     <input type="hidden" name="lang" id="lang" value="{{ lang }}">

@@ -12,7 +12,7 @@
 
     					</div>
 
-    					<form name="formSubmit" action="" id="selectClusterItensForm">
+    					<form name="formSubmit" action="{{ constant("SEARCH_URL") }}" id="selectClusterItensForm" method="post">
                             {% for key, value in params %}
                                 {% if key != "filter" and key != "submit" and key != "fb" and "_submit" not in key  %}
                                     {% if key == "from" or key == "page" %}

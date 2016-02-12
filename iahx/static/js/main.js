@@ -499,7 +499,7 @@ searchFormBuilder = {
 			var select_form = $("#selectClusterItensForm");
 		    $.ajax({ // create an AJAX call...
 		        data: select_form.serialize(), // get the form data
-		        type: select_form.attr('method'), // GET or POST
+		        type: 'GET', 				   // GET or POST
 		        url: 'list-filter/' + filter_id, // the file to call
 		        success: function(response) { // on success..
 					console.log(select_form.serialize());
