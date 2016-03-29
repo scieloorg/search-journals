@@ -154,11 +154,12 @@ class Authors(plumber.Pipe):
         for author in raw.authors:
             field = ET.Element('field')
             name = []
-            if 'given_names' in author:
-                name.append(author['given_names'])
 
             if 'surname' in author:
                 name.append(author['surname'])
+
+            if 'given_names' in author:
+                name.append(author['given_names'])
 
             field.text = ', '.join(name)
 
