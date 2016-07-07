@@ -73,7 +73,7 @@
             <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
             </ul>
 
-            <div class="{% if detailed_query != '' %}col-md-8 col-sm-8 right{% else %}col-md-9 col-sm-9 right{% endif %}">
+            <div class="{% if detailed_query != '' %}col-md-5 col-sm-5 right{% else %}col-md-9 col-sm-9 right{% endif %}">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
             <div class="{% if detailed_query != '' %}col-md-4 col-sm-4{% else %}col-md-3 col-sm-3{% endif%}">
@@ -121,78 +121,6 @@
         </div>
         <div class="clearfix"></div>
     </div>
-
-    {% if detailed_query == '' or docs|length == 0 %}
-        <div class="container">
-            <div class="searchFilters col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
-
-                <!-- set start and end year to search -->
-                {% set current_year = "now"|date("Y") %}
-                {% set start_year = config.publication_year_start%}
-
-                <div class="searchBlock">
-                    <div class="col-md-12 col-sm-12">
-                        <h3>{{ texts.PUBLICATION_YEAR }}</h3>
-                    </div>
-                    <div class="col-md-3 col-sm-12">
-                        <input type="radio" name="publicationYear" value="0" class="radio" id="publicationYear_0" checked />
-                        <label class="radio eq" for="publicationYear_0">{{ texts.PUBLICATION_YEAR_ALL }}</label>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <input type="radio" name="publicationYear" value="1" class="radio" id="publicationYear_1" />
-                        <label class="radio eq" for="publicationYear_1">{{ texts.PUBLICATION_YEAR_FROM }}</label>
-                        <div class="selectBox inline">
-                            <select name="y1Start">
-                                <option value="">{{ texts.PUBLICATION_YEAR_SELECT }}</option>
-                                {% for i in current_year..start_year %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-sm-6">
-                        <input type="radio" name="publicationYear" value="2" class="radio" id="publicationYear_2" />
-                        <label class="radio eq" for="publicationYear_2">{{ texts.PUBLICATION_YEAR_RANGE_FROM }}</label>
-                        <div class="selectBox inline">
-                            <select name="y2Start" class="setMinValue" data-rel="#select_y2End">
-                                <option value="0">{{ texts.PUBLICATION_YEAR_SELECT }}</option>
-                                {% for i in current_year..start_year %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        {{ texts.PUBLICATION_YEAR_RANGE_TO }}
-                        <div class="selectBox inline">
-                            <select name="y2End" id="select_y2End">
-                                <option value="0">{{ texts.PUBLICATION_YEAR_SELECT }}</option>
-                                {% for i in current_year..start_year %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-
-                <div class="searchBlock">
-                    <div class="col-md-12 col-sm-12">
-                        <h3>{{ texts.COLLECTION_WHERE }}</h3>
-                    </div>
-
-                    <div class="col-md-12">
-                        <input type="radio" name="collection" value="" class="radio" id="searchForm_colecao_all" checked />
-                        <label class="radio" for="searchForm_colecao_all">{{ texts.COLLECTION_NETWORK_PREFIX }} <strong>{{ texts.COLLECTION_NETWORK }}</strong></label>
-                    </div>
-                    <div class="col-md-12">
-                        <input type="radio" name="collection" value="scl" class="radio" id="searchForm_colecao_br" />
-                        <label class="radio" for="searchForm_colecao_br"><strong>SciELO {{texts.COLLECTION_BR}}</strong></label>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    {% endif %}
 </form>
 
 {# % include custom_template('help-searchbar-' ~ lang ~ '.html') % #}
