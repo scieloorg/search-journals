@@ -490,8 +490,15 @@ searchFormBuilder = {
 				modContainer = $(".filterBody",mod),
 				modTitle = $(".modal-title",mod);
 
-			$("#orderby_results").data("rel", "#filter_" + filter_id);
-			$("#orderby_alpha").data("rel", "#filter_" + filter_id);
+			// get itens from modal window
+			var modal_filter_id = "#filter_" + filter_id
+
+			$("#orderby_results").data("rel", modal_filter_id);
+			$("#orderby_alpha").data("rel", modal_filter_id);
+			$("#statistics").data("cluster", filter_label);
+			$("#statistics").data("chartsource", modal_filter_id);
+			$("#exportcsv").data("cluster", filter_label);
+			$("#exportcsv").data("chartsource", modal_filter_id);
 
 			modTitle.html(filter_label);
 			modContainer.empty();
@@ -1128,7 +1135,7 @@ $(".exportCSV").on("click",function(e) {
 		title = t.data("cluster"),
 		chartSource = t.data("chartsource");
 
-	var grupo = $("#ul_" + chartSource);
+	var grupo = $(chartSource);
     var lista = grupo.find('li');
 	var regex = /<span>\d+<\/span>/i;
 	var params= "";
@@ -1160,6 +1167,7 @@ $(".openStatistics").on("click",function(e) {
 		chartType = t.data("type"),
 		chartSource = t.data("chartsource");
 
+	console.log("chartsource: " + chartSource);
 	$("#Statistics").data({
 		"title": title,
 		"charttype": chartType,
@@ -1167,6 +1175,7 @@ $(".openStatistics").on("click",function(e) {
 	}).modal({
 		"show": true
 	});
+
 });
 
 $("#Statistics").on("shown.bs.modal",function() {
@@ -1179,7 +1188,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 		chartType = t.data("charttype"),
 		chartSource = t.data("chartsource");
 
-	var grupo = $("#ul_" + chartSource);
+	var grupo = $(chartSource);
     var lista = grupo.find('li');
 
     for (i = 0; i < lista.length; i++){
@@ -1204,7 +1213,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 	t.find(".modal-title .cluster").text(title);
 	t.find(".link a").attr("href",csvLink);
 
-	chartBlock.html('<canvas id="chart" width="550" height="400"></canvas>');
+	chartBlock.html('<canvas id="chart" width="950" height="400"></canvas>');
 
 	var canvas = $("#chart").get(0);
 
