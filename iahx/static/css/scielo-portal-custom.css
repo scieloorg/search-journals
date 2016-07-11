@@ -56,3 +56,10 @@ ul.list-inline li{
     float: left;
     margin-right: 20px;
 }
+.searchForm .selectBox.index {
+    width: 26% !important;
+}
+.searchForm .normalizeButton {
+    padding-top: 3px;
+    white-space: nowrap;
+}

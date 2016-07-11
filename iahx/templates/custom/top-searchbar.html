@@ -33,7 +33,7 @@
                 <div class="clearfix"></div>
             {% endif %}
 
-            <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
+            <div class="col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="form-textarea">
                         <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control">{% if docs|length > 0 %}{{ params.q }}{% endif %}</textarea>
@@ -60,7 +60,7 @@
                 <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
             </div>
             {% if detailed_query != '' %}
-                <div class="col-md-2 col-sm-2">
+                <div class="col-md-1 col-sm-1">
                     <a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
                 </div>
             {% endif %}
@@ -73,10 +73,10 @@
             <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
             </ul>
 
-            <div class="{% if detailed_query != '' %}col-md-5 col-sm-5 right{% else %}col-md-9 col-sm-9 right{% endif %}">
+            <div class="col-md-7 col-sm-7 right">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
-            <div class="{% if detailed_query != '' %}col-md-4 col-sm-4{% else %}col-md-3 col-sm-3{% endif%}">
+            <div class="col-md-3  col-md-offset-2 col-sm-3">
                 <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
             </div>
             <div class="clearfix"></div>
@@ -87,7 +87,7 @@
             <div class="col-md-1 col-sm-1 right">
                 <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
             </div>
-            <div class="{% if detailed_query != '' %}col-md-7 col-sm-7{% else %}col-md-8 col-sm-8{% endif %}">
+            <div class="col-md-8 col-sm-8">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="selectBox connector">
                         <select name="bool[]">
