@@ -28,6 +28,10 @@
         <!-- Page icon -->
         <link rel="shortcut icon" href="{{ constant("STATIC_URL") }}image/favicon.ico">
 
+        <script language="javascript" type="text/javascript">
+            var RESULT_PAGE = {% if pag.total %}true{% else %}false{% endif %};
+        </script>
+
         {% if config.google_analytics_tracking_id != '' %}
             <script type="text/javascript">
               var _gaq = _gaq || [];
