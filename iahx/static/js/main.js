@@ -15,7 +15,7 @@ var Portal = {
 				t.removeClass("opened");
 				d.slideUp("fast");
 			} else {
-				t.addClass("opened");
+				t.Class("opened");
 				d.slideDown("fast");
 			}
 		});
@@ -244,13 +244,17 @@ searchFormBuilder = {
 
 			var historyQuery = $.trim($("#iptQuery").text());
 
-			var expr = $("textarea[name='q[]']",p),
+			var expr = $("*[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
 				idx = $("select[name='index[]']",p),
 				searchQuery = "";
 
 			for(var i=0,l=expr.length;i<l;i++) {
-				var v = $(expr[i]).val();
+				if ( $(expr[i]).attr('id') == 'iptQuery' ){
+					var v = $(expr[i]).text();
+				}else{
+					var v = $(expr[i]).val();
+				}
 				if(v != "") {
 					var ci = $("option:selected",idx[i]).val();
 
@@ -286,12 +290,6 @@ searchFormBuilder = {
 				if (pub_year_start != '' && pub_year_end != ''){
 					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO ' + pub_year_end + ']';
 				}
-			}
-
-
-			// check is user is submiting from history query form
-			if (searchQuery == '' && historyQuery !== '' ){
-				searchQuery = historyQuery;
 			}
 
 			// remove boolean operators from begining or end of query

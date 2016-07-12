@@ -70,9 +70,6 @@
 
             </div>
 
-            <ul class="dropdown-menu searchHistory" id="searchHistory" data-title="Suas 10 buscas mais recentes">
-            </ul>
-
             <div class="col-md-7 col-sm-7 right">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
@@ -97,7 +94,7 @@
                         </select>
                     </div>
                     <div class="form-textarea no-divisor">
-                        <textarea name="q[]" placeholder="Entre uma ou mais palavras" rows="1" class="form-control"></textarea>
+                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control"></textarea>
                         <a href="javascript:;" class="clearIptText showTooltip" title="Limpar expressão" style="display: none;"></a>
                     </div>
                     <div class="selectBox index">
