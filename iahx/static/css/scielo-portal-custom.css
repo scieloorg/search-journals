@@ -40,3 +40,26 @@ ul.list-inline li{
     width: auto;
     height: 25px;
 }
+
+.modal.large .modal-dialog{
+    width: 80%;
+}
+
+.cluster-actions-menu{
+    width: 70%;
+    float: left;
+}
+.cluster-actions-menu ul{
+    margin: 0px;
+}
+.cluster-actions-menu li{
+    float: left;
+    margin-right: 20px;
+}
+.searchForm .selectBox.index {
+    width: 26% !important;
+}
+.searchForm .normalizeButton {
+    padding-top: 3px;
+    white-space: nowrap;
+}
