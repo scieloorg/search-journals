@@ -7,7 +7,7 @@ AU  - {{ author }}
 TI  - {{ doc.ti.0 }}
 {% for title in doc.ti %}
 {% if not loop.first %}
-T1  - {{ title }}
+TT  - {{ title }}
 {% endif %}
 {% endfor %}
 JO  - {{ doc.journal_title }}
