@@ -63,3 +63,6 @@ ul.list-inline li{
     padding-top: 3px;
     white-space: nowrap;
 }
+.author:hover{
+    border-bottom: 1px dotted #6789d3;
+}
