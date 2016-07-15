@@ -507,7 +507,6 @@ searchFormBuilder = {
 		        type: 'GET', 				   // GET or POST
 		        url: 'list-filter/' + filter_id, // the file to call
 		        success: function(response) { // on success..
-					console.log(select_form.serialize());
 					$('.filterBody').html(response); // update the DIV
 		        }
 		    });
@@ -1139,6 +1138,10 @@ $(".exportCSV").on("click",function(e) {
 	var params= "";
 
     for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (!clusterSelection.checked){
+			continue;
+		}
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
@@ -1149,6 +1152,11 @@ $(".exportCSV").on("click",function(e) {
             params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
         }
     }
+	if (params == ""){
+		$("#no_cluster_selected").show();
+		return;
+	}
+
     var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
 	if(isOldIE) {
 		csvLink = encodeURI(csvLink);
@@ -1165,7 +1173,22 @@ $(".openStatistics").on("click",function(e) {
 		chartType = t.data("type"),
 		chartSource = t.data("chartsource");
 
-	console.log("chartsource: " + chartSource);
+	// check if has any item selected
+	var grupo = $(chartSource);
+	var lista = grupo.find('li');
+	var any_selected = false;
+	for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (clusterSelection.checked){
+			any_selected = true;
+			break;
+		}
+	}
+	if (any_selected == false){
+		$("#no_cluster_selected").show();
+		return;
+	}
+
 	$("#Statistics").data({
 		"title": title,
 		"charttype": chartType,
@@ -1190,6 +1213,10 @@ $("#Statistics").on("shown.bs.modal",function() {
     var lista = grupo.find('li');
 
     for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (!clusterSelection.checked){
+			continue;
+		}		
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');

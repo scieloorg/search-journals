@@ -67,3 +67,6 @@ ul.list-inline li{
     float: right;
     margin-top: 3px;
 }
+.author:hover{
+    border-bottom: 1px dotted #6789d3;
+}

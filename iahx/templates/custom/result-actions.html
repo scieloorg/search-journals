@@ -46,11 +46,16 @@
     						<div class="modal-footer" style="margin-top: 0;">
                                 <div class="cluster-actions-menu">
                                     <ul>
-                                        <li><a href="javascript:;" class="icon stats openStatistics" id="statistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
-                                        <li><a href="javascript:;" class="icon download exportCSV" id="exportcsv" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
+                                        <li><a href="javascript:;" class="openStatistics" id="statistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
+                                        <li><a href="javascript:;" class="exportCSV" id="exportcsv" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
                                     </ul>
                                 </div>
     							<input type="submit" class="btn" value="{{ texts.APPLY_FILTERS }}" />
+
+                                <div class="clearfix"></div>
+                                <div id="no_cluster_selected" style="display:none; text-align: center;">
+                                    <div class="alert alert-warning" role="alert">{{ texts.SELECT_ONE_OR_MORE }}</div>
+                                </div>
     						</div>
     					</form>
     				</div>

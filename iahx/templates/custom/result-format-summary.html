@@ -6,7 +6,7 @@
     {% if doc.au is defined %}
         <div class="line authors">
             {% for author in doc.au %}
-                <a href='{{ constant("SEARCH_URL") }}?lang={{ lang }}&q=au:"{{ author }}"'>{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+                <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
             {% endfor %}
         </div>
     {% endif %}
