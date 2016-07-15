@@ -63,6 +63,10 @@ ul.list-inline li{
     padding-top: 3px;
     white-space: nowrap;
 }
+.altmetric-embed{
+    float: right;
+    margin-top: 3px;
+}
 .author:hover{
     border-bottom: 1px dotted #6789d3;
 }

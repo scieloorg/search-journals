@@ -38,7 +38,11 @@
                                 <li><a target="_blank" href="http://www.citeulike.org/posturl?url={{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
                                 <li><a target="_blank" href="https://www.mendeley.com/import/?url={{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
                             </ul>
+                            {% if doc.doi %}
+                                <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
+                            {% endif %}
                         </span>
+
                     {% endif %}
                 </div>
 
