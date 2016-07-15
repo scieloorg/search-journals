@@ -65,7 +65,7 @@ ul.list-inline li{
 }
 .altmetric-embed{
     float: right;
-    margin-top: 3px;
+    margin-right: 30px;
 }
 .author:hover{
     border-bottom: 1px dotted #6789d3;
