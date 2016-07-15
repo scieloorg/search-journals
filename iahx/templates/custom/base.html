@@ -123,6 +123,12 @@
     {% endif %}
     <!-- /custom scielo -->
 
+    {% if docs|length > 0 %}
+        <!-- altmetric -->
+        <script language="javascript" type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+        <!-- /altmetric -->
+    {% endif %}
+
     {% block script %}
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
