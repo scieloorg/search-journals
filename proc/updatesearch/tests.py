@@ -14,7 +14,24 @@ class ExportTests(unittest.TestCase):
 
     def setUp(self):
         self._raw_json = json.loads(open(os.path.dirname(__file__)+'/fixtures/article_meta.json').read())
+
         self._article_meta = Article(self._raw_json)
+
+    def test_xml_document_permission_pipe(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.Permission()
+        raw, xml = xmlarticle.transform(data)
+
+        result = xml.find('./field[@name="use_license"]').text
+        result1 = xml.find('./field[@name="use_license_text"]').text
+        result2 = xml.find('./field[@name="use_license_uri"]').text
+        self.assertEqual(u'by-nc/4.0', result)
+        self.assertEqual(u'This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.', result1)
+        self.assertEqual(u'http://creativecommons.org/licenses/by-nc/4.0/', result2)
 
     def test_setuppipe_element_name(self):
 
@@ -454,23 +471,9 @@ class ExportTests(unittest.TestCase):
         xmlarticle = pipeline_xml.AvailableLanguages()
         raw, xml = xmlarticle.transform(data)
 
-        result = xml.find('./field[@name="la"]').text
+        result = xml.findall('./field[@name="available_languages"]')
 
-        self.assertEqual(u'pt', result)
-
-    def test_xml_document_available_languages_pipe(self):
-
-        pxml = ET.Element('doc')
-        pxml.append(ET.Element('doc'))
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.AvailableLanguages()
-        raw, xml = xmlarticle.transform(data)
-
-        result = xml.find('./field[@name="la"]').text
-
-        self.assertEqual(u'pt', result)
+        self.assertEqual(['en', 'es', 'pt'], sorted([i.text for i in result]))
 
     def test_xml_document_fulltexts_pipe(self):
 
@@ -514,9 +517,9 @@ class ExportTests(unittest.TestCase):
         xmlarticle = pipeline_xml.AvailableLanguages()
         raw, xml = xmlarticle.transform(data)
 
-        result = sorted([i.text for i in xml.findall('./field[@name="la"]')])
+        result = sorted([i.text for i in xml.findall('./field[@name="available_languages"]')])
 
-        self.assertEqual([u'en', u'pt'], result)
+        self.assertEqual([u'en', u'es', u'pt'], result)
 
     def test_xml_document_publication_date_pipe(self):
 
@@ -680,35 +683,13 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_journal_without_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.Journal()
-
-        raw, xml = xmlarticle.transform(data)
-
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="journal"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
-
     def test_xml_volume_pipe(self):
 
-        fakexylosearticle = Article({'article': {"v31": [{"_": "37"}]}, 'title': {}})
+        self._article_meta.data['issue']['issue'] = {"v31": [{"_": "37"}]}
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.Volume()
 
@@ -724,35 +705,13 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_journal_without_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.Volume()
-
-        raw, xml = xmlarticle.transform(data)
-
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="volune"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
-
     def test_xml_supplement_volume_pipe(self):
 
-        fakexylosearticle = Article({'article': {"v131": [{"_": "suppl. 2"}]}, 'title': {}})
+        self._article_meta.data['issue']['issue'] = {"v131": [{"_": "suppl. 2"}]}
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.SupplementVolume()
 
@@ -770,11 +729,11 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_supplement_volume_without_data_pipe(self):
 
-        fakexylosearticle = Article({'article': {}, 'title': {}})
+        del(self._article_meta.data['issue']['issue']['v31'])
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.SupplementVolume()
 
@@ -792,11 +751,9 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_issue_pipe(self):
 
-        fakexylosearticle = Article({'article': {"v32": [{"_": "23"}]}, 'title': {}})
-
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.Issue()
 
@@ -814,11 +771,11 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_issue_without_data_pipe(self):
 
-        fakexylosearticle = Article({'article': {}, 'title': {}})
+        del(self._article_meta.data['issue']['issue']['v32'])
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.Issue()
 
@@ -836,11 +793,11 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_supplement_issue_pipe(self):
 
-        fakexylosearticle = Article({'article': {"v132": [{"_": "suppl. issue 3"}]}, 'title': {}})
+        self._article_meta.data['issue']['issue'] = {"v132": [{"_": "suppl. issue 3"}]}
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.SupplementIssue()
 
@@ -858,11 +815,10 @@ class ExportTests(unittest.TestCase):
 
     def test_xml_supplement_issue_without_data_pipe(self):
 
-        fakexylosearticle = Article({'article': {}, 'title': {}})
 
         pxml = ET.Element('doc')
 
-        data = [fakexylosearticle, pxml]
+        data = [self._article_meta, pxml]
 
         xmlarticle = pipeline_xml.SupplementIssue()
 

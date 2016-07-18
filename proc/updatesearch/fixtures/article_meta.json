@@ -7,6 +7,7 @@
         "1e8b399129eb4793ca02fee5f8e66d66",
         "96497b0183a6b8a3ff7c333d6c9e5fd6"
     ],
+    "license": "by-nc/4.0",
     "title": {
         "v992": [
             {
@@ -402,6 +403,291 @@
     "code_title": [
         "0034-8910"
     ],
+    "issue": {
+        "code": "0034-891020100004",
+        "_shard_id": "e78048893fea4e95816686aea1ad203b",
+        "collection": "scl",
+        "code_title": [
+            "0034-8910",
+            "1518-8787"
+        ],
+        "publication_year": "2010",
+        "issue_type": "regular",
+        "publication_date": "2010-08",
+        "issue": {
+            "v30": [
+                {
+                    "_": "Rev. Saúde Pública"
+                }
+            ],
+            "v31": [
+                {
+                    "_": "44"
+                }
+            ],
+            "v32": [
+                {
+                    "_": "4"
+                }
+            ],
+            "v999": [
+                {
+                    "_": "../bases-work/rsp/rsp"
+                }
+            ],
+            "v36": [
+                {
+                    "_": "20104"
+                }
+            ],
+            "v991": [
+                {
+                    "_": "1"
+                }
+            ],
+            "v992": [
+                {
+                    "_": "scl"
+                }
+            ],
+            "v151": [
+                {
+                    "_": "Rev. saúde pública"
+                }
+            ],
+            "v930": [
+                {
+                    "_": "RSP"
+                }
+            ],
+            "v880": [
+                {
+                    "_": "0034-891020100004"
+                }
+            ],
+            "v935": [
+                {
+                    "_": "0034-8910"
+                }
+            ],
+            "v480": [
+                {
+                    "_": "Faculdade de Saúde Pública da Universidade de São Paulo"
+                }
+            ],
+            "v35": [
+                {
+                    "_": "0034-8910"
+                }
+            ],
+            "v421": [
+                {
+                    "_": "Rev Saude Publica"
+                }
+            ],
+            "v541": [
+                {
+                    "_": "BY-NC"
+                }
+            ],
+            "v540": [
+                {
+                    "t": "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" /></a> Todo el contenido de esta revista, excepto dónde está identificado, est&#225; bajo una <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\">Licencia Creative Commons</a>",
+                    "_": "",
+                    "l": "es"
+                },
+                {
+                    "t": "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" /></a> Todo o conteúdo deste periódico, exceto onde est&#225 identificado, est&#225; licenciado sob uma <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\">Licen&#231;a Creative Commons</a>",
+                    "_": "",
+                    "l": "pt"
+                },
+                {
+                    "t": "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" /></a> All the contents of %SITE_NAME%, except where otherwise noted, is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\">Creative Commons Attribution License</a>",
+                    "_": "",
+                    "l": "en"
+                }
+            ],
+            "v130": [
+                {
+                    "_": "Revista de Saúde Pública"
+                }
+            ],
+            "v117": [
+                {
+                    "_": "vancouv"
+                }
+            ],
+            "v43": [
+                {
+                    "a": "2010",
+                    "c": "São Paulo",
+                    "m": "ago.",
+                    "l": "es",
+                    "n": "no.4",
+                    "t": "Rev. Saúde Pública",
+                    "v": "vol.44",
+                    "_": ""
+                },
+                {
+                    "a": "2010",
+                    "c": "São Paulo",
+                    "m": "ago.",
+                    "l": "pt",
+                    "n": "no.4",
+                    "t": "Rev. Saúde Pública",
+                    "v": "vol.44",
+                    "_": ""
+                },
+                {
+                    "a": "2010",
+                    "c": "São Paulo",
+                    "m": "Aug.",
+                    "l": "en",
+                    "n": "no.4",
+                    "t": "Rev. Saúde Pública",
+                    "v": "vol.44",
+                    "_": ""
+                }
+            ],
+            "v42": [
+                {
+                    "_": "1"
+                }
+            ],
+            "v85": [
+                {
+                    "_": "decs"
+                }
+            ],
+            "v48": [
+                {
+                    "h": "Sumario",
+                    "l": "es",
+                    "_": ""
+                },
+                {
+                    "h": "Sumário",
+                    "l": "pt",
+                    "_": ""
+                },
+                {
+                    "h": "Table of Contents",
+                    "l": "en",
+                    "_": ""
+                }
+            ],
+            "v230": [
+                {
+                    "_": "Journal of Public Health"
+                }
+            ],
+            "v65": [
+                {
+                    "_": "20100800"
+                }
+            ],
+            "v49": [
+                {
+                    "c": "RSP010",
+                    "l": "pt",
+                    "_": "",
+                    "t": "Artigos Originais"
+                },
+                {
+                    "c": "RSP010",
+                    "l": "en",
+                    "_": "",
+                    "t": "Original Articles"
+                },
+                {
+                    "c": "RSP140",
+                    "l": "pt",
+                    "_": "",
+                    "t": "Revisão"
+                },
+                {
+                    "c": "RSP140",
+                    "l": "en",
+                    "_": "",
+                    "t": "Review"
+                },
+                {
+                    "c": "RSP150",
+                    "l": "pt",
+                    "_": "",
+                    "t": "Informes Técnicos Institucionais"
+                },
+                {
+                    "c": "RSP150",
+                    "l": "en",
+                    "_": "",
+                    "t": "Technical Institutional Reports"
+                },
+                {
+                    "c": "RSP670",
+                    "l": "pt",
+                    "_": "",
+                    "t": "Comentários"
+                },
+                {
+                    "c": "RSP670",
+                    "l": "en",
+                    "_": "",
+                    "t": "Comments"
+                },
+                {
+                    "c": "RSP680",
+                    "l": "pt",
+                    "_": "",
+                    "t": "Revisão Sistemática"
+                },
+                {
+                    "c": "RSP680",
+                    "l": "en",
+                    "_": "",
+                    "t": "Sistematic Review"
+                }
+            ],
+            "v6": [
+                {
+                    "_": "252"
+                }
+            ],
+            "v122": [
+                {
+                    "_": "22"
+                }
+            ],
+            "v701": [
+                {
+                    "_": "1"
+                }
+            ],
+            "v700": [
+                {
+                    "_": "0"
+                }
+            ],
+            "v706": [
+                {
+                    "_": "i"
+                }
+            ],
+            "v91": [
+                {
+                    "_": "20100824"
+                }
+            ],
+            "v200": [
+                {
+                    "_": "1"
+                }
+            ]
+        },
+        "created_at": "2010-08-24",
+        "processing_date": "2010-08-24"
+
+    },
     "citations": [
         {
             "v30": [
