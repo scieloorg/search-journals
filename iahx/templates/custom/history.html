@@ -20,25 +20,92 @@
 				<div class="container">
 					<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
 
-					<div class="col-md-8 col-sm-8">
+					<div class="col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
 						<div class="input-group col-md-12 col-sm-12">
-							<div class="form-control full-input" contenteditable="true" id="iptQuery"></div>
-							<input type="hidden" name="q" value="" autocomplete="off" id="query">
+							<div class="form-textarea">
+								<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
+								<!--div class="form-control full-input" contenteditable="true" id="iptQuery"></div-->
+								<!--input type="hidden" name="q" value="" autocomplete="off" id="query"-->
+							</div>
+							<div class="selectBox index">
+		                        <select name="index[]">
+		                            {% for index in collectionData.index_list.index if not index.advanced %}
+		                                {% if params.index is defined %}
+		                                    {% if index.prefix == params.index %}
+		                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                    {% else %}
+		                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                    {% endif %}
+		                                {% else %}
+		                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                {% endif %}
+		                            {% endfor %}
+		                        </select>
+		                    </div>
 						</div>
 					</div>
 					<div class="col-md-2 col-sm-2">
 						<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
 					</div>
-					<div class="col-md-2 col-sm-2">
+					<div class="col-md-1 col-sm-1">
 						<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
 					</div>
 					<div class="clearfix"></div>
+
+		            <div class="searchRow-container">
+		            </div>
+
+		            <div class="col-md-7 col-sm-7 right">
+		                <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
+		            </div>
+		            <div class="clearfix"></div>
 					<div class="col-md-8 col-sm-8">
 						<small>{{ texts.HISTORY_COMBINE }}</small>
 					</div>
 
 				</div>
 			</div>
+
+			<div id="searchRow-matriz">
+		        <div class="searchRow" id="searchRow-@" style="display: none;">
+		            <div class="col-md-1 col-sm-1 right">
+		                <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+		            </div>
+		            <div class="col-md-8 col-sm-8">
+		                <div class="input-group col-md-12 col-sm-12">
+		                    <div class="selectBox connector">
+		                        <select name="bool[]">
+		                            <option>AND</option>
+		                            <option>OR</option>
+		                            <option>AND NOT</option>
+		                        </select>
+		                    </div>
+		                    <div class="form-textarea no-divisor">
+		                        <textarea name="q[]" rows="1" class="form-control"></textarea>
+		                        <a href="javascript:;" class="clearIptText showTooltip" title="Limpar expressão" style="display: none;"></a>
+		                    </div>
+		                    <div class="selectBox index">
+		                        <select name="index[]">
+		                            {% for index in collectionData.index_list.index if not index.advanced %}
+		                                {% if params.index is defined %}
+		                                    {% if index.prefix == params.index %}
+		                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                    {% else %}
+		                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                    {% endif %}
+		                                {% else %}
+		                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+		                                {% endif %}
+		                            {% endfor %}
+		                        </select>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="clearfix"></div>
+		        </div>
+		        <div class="clearfix"></div>
+			</div>
+
 
 			<div class="container">
 				<div class="col-md-12 col-sm-12">
@@ -60,8 +127,8 @@
 								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
 							</tr>
 
-							{% for index, history in history_list %}
-							{% set history_id = index+1 %}
+							{% for index, history in history_list|reverse %}
+							{% set history_id = history_list|length-index %}
 							<tr>
 								<td class="colId">
 									<span>#{{ history_id }}</span>

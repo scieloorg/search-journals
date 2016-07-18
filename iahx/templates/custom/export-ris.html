@@ -4,10 +4,18 @@ TY  - JOUR
 {% for author in doc.au %}
 AU  - {{ author }}
 {% endfor %}
+TI  - {{ doc.ti.0 }}
 {% for title in doc.ti %}
-T1  - {{ title }}
+{% if not loop.first %}
+TT  - {{ title }}
+{% endif %}
 {% endfor %}
 JO  - {{ doc.journal_title }}
+VL  - {{ doc.volume }}
+IS  - {{ doc.issue }}
+{% if doc.doi %}
+DO  - {{ doc.doi }}
+{% endif %}
 DB  - SciELO {{ translate(doc.in.0, 'REFINE_in') }}
 DP  - {{ config.home_url }}
 ID  - {{ doc.id }}
@@ -21,13 +29,13 @@ DA  - {{ doc.da }}
 PY  - {{ doc.da|slice(0,4) }}
 {% endif %}
 {% if doc.ab_en %}
-N2  - {{ doc.ab_en.0 }}
+AB  - {{ doc.ab_en.0 }}
 {% endif %}
 {% if doc.ab_es %}
-N2  - {{ doc.ab_es.0 }}
+AB  - {{ doc.ab_es.0 }}
 {% endif %}
 {% if doc.ab_pt %}
-N2  - {{ doc.ab_pt.0 }}
+AB  - {{ doc.ab_pt.0 }}
 {% endif %}
 UR  - {{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}
 ER  -

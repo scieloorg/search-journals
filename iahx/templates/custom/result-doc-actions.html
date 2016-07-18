@@ -2,7 +2,7 @@
 {% block btn_fulltext %}
     <div class="line versions">
         <span>
-            {% for language in doc.la %}
+            {% for language in doc.available_languages %}
                 · {{ translate(language, 'REFINE_la') }}:
                 {% set ab_lang = 'ab_' ~ language %}
                 {% set fulltext_lang = 'fulltext_html_' ~ language %}

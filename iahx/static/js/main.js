@@ -15,7 +15,7 @@ var Portal = {
 				t.removeClass("opened");
 				d.slideUp("fast");
 			} else {
-				t.addClass("opened");
+				t.Class("opened");
 				d.slideDown("fast");
 			}
 		});
@@ -244,13 +244,17 @@ searchFormBuilder = {
 
 			var historyQuery = $.trim($("#iptQuery").text());
 
-			var expr = $("textarea[name='q[]']",p),
+			var expr = $("*[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
 				idx = $("select[name='index[]']",p),
 				searchQuery = "";
 
 			for(var i=0,l=expr.length;i<l;i++) {
-				var v = $(expr[i]).val();
+				if ( $(expr[i]).attr('id') == 'iptQuery' ){
+					var v = $(expr[i]).text();
+				}else{
+					var v = $(expr[i]).val();
+				}
 				if(v != "") {
 					var ci = $("option:selected",idx[i]).val();
 
@@ -286,12 +290,6 @@ searchFormBuilder = {
 				if (pub_year_start != '' && pub_year_end != ''){
 					searchQuery += ' AND publication_year:[' + pub_year_start + ' TO ' + pub_year_end + ']';
 				}
-			}
-
-
-			// check is user is submiting from history query form
-			if (searchQuery == '' && historyQuery !== '' ){
-				searchQuery = historyQuery;
 			}
 
 			// remove boolean operators from begining or end of query
@@ -484,23 +482,34 @@ searchFormBuilder = {
 
 			var t = $(this),
 				rel = t.data("rel"),
+				filter_id = t.data("filter"),
+				filter_label = t.data("label"),
 				mod = $("#selectClusterItens"),
 				modContainer = $(".filterBody",mod),
 				modTitle = $(".modal-title",mod);
 
-			modTitle.html(t.text());
+			// get itens from modal window
+			var modal_filter_id = "#filter_" + filter_id
+
+			$("#orderby_results").data("rel", modal_filter_id);
+			$("#orderby_alpha").data("rel", modal_filter_id);
+			$("#statistics").data("cluster", filter_label);
+			$("#statistics").data("chartsource", modal_filter_id);
+			$("#exportcsv").data("cluster", filter_label);
+			$("#exportcsv").data("chartsource", modal_filter_id);
+
+			modTitle.html(filter_label);
 			modContainer.empty();
 
-			var c = $(".filterItem",rel).clone();
-			modContainer.append(c);
-			modContainer.find(".checkbox").each(function() {
-				var cId = $(this).attr("id"),
-					nId = cId+"cf";
-
-				$(this).attr("id",nId);
-				modContainer.find("label[for='"+cId+"']").attr("for",nId);
-			});
-
+			var select_form = $("#selectClusterItensForm");
+		    $.ajax({ // create an AJAX call...
+		        data: select_form.serialize(), // get the form data
+		        type: 'GET', 				   // GET or POST
+		        url: 'list-filter/' + filter_id, // the file to call
+		        success: function(response) { // on success..
+					$('.filterBody').html(response); // update the DIV
+		        }
+		    });
 			mod.modal("show");
 
 		});
@@ -1123,12 +1132,16 @@ $(".exportCSV").on("click",function(e) {
 		title = t.data("cluster"),
 		chartSource = t.data("chartsource");
 
-	var grupo = $("#ul_" + chartSource);
+	var grupo = $(chartSource);
     var lista = grupo.find('li');
 	var regex = /<span>\d+<\/span>/i;
 	var params= "";
 
     for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (!clusterSelection.checked){
+			continue;
+		}
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
@@ -1139,6 +1152,11 @@ $(".exportCSV").on("click",function(e) {
             params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
         }
     }
+	if (params == ""){
+		$("#no_cluster_selected").show();
+		return;
+	}
+
     var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
 	if(isOldIE) {
 		csvLink = encodeURI(csvLink);
@@ -1155,6 +1173,22 @@ $(".openStatistics").on("click",function(e) {
 		chartType = t.data("type"),
 		chartSource = t.data("chartsource");
 
+	// check if has any item selected
+	var grupo = $(chartSource);
+	var lista = grupo.find('li');
+	var any_selected = false;
+	for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (clusterSelection.checked){
+			any_selected = true;
+			break;
+		}
+	}
+	if (any_selected == false){
+		$("#no_cluster_selected").show();
+		return;
+	}
+
 	$("#Statistics").data({
 		"title": title,
 		"charttype": chartType,
@@ -1162,6 +1196,7 @@ $(".openStatistics").on("click",function(e) {
 	}).modal({
 		"show": true
 	});
+
 });
 
 $("#Statistics").on("shown.bs.modal",function() {
@@ -1174,10 +1209,14 @@ $("#Statistics").on("shown.bs.modal",function() {
 		chartType = t.data("charttype"),
 		chartSource = t.data("chartsource");
 
-	var grupo = $("#ul_" + chartSource);
+	var grupo = $(chartSource);
     var lista = grupo.find('li');
 
     for (i = 0; i < lista.length; i++){
+		clusterSelection = lista[i].getElementsByTagName('input')[0];
+		if (!clusterSelection.checked){
+			continue;
+		}		
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
@@ -1199,7 +1238,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 	t.find(".modal-title .cluster").text(title);
 	t.find(".link a").attr("href",csvLink);
 
-	chartBlock.html('<canvas id="chart" width="550" height="400"></canvas>');
+	chartBlock.html('<canvas id="chart" width="950" height="400"></canvas>');
 
 	var canvas = $("#chart").get(0);
 

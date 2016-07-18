@@ -1532,7 +1532,7 @@ button.btn:active {
   display: inline-block;
   content: '';
   top: -7px;
-  left: 5%;
+  right: 10px;
   border-right: 7px solid transparent;
   border-bottom: 7px solid #fff;
   border-left: 7px solid transparent;
@@ -1582,7 +1582,11 @@ button.btn:active {
 }
 .searchForm .results span.socialLinks {
   display: inline-block;
+  position: relative;
   white-space: nowrap;
+}
+.articleShare {
+  left: -55px;
 }
 .searchForm .results .articleAction {
   display: inline-block;

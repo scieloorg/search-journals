@@ -1,6 +1,10 @@
-#form_clusters div ul{
+#form_clusters div ul, ul.list-unstyled{
     list-style-type: none;
     padding-left: 0px;
+}
+
+ul.list-inline li{
+    display: inline-block;
 }
 
 .filterItem a {
@@ -27,4 +31,42 @@
     height: 17px;
     margin: 0 3px -4px;
     background: url(../image/button.glyphs.png) -15px -555px no-repeat;
+}
+
+.configsText{
+    position: absolute;
+    top: 7px;
+    right: 0;
+    width: auto;
+    height: 25px;
+}
+
+.modal.large .modal-dialog{
+    width: 80%;
+}
+
+.cluster-actions-menu{
+    width: 70%;
+    float: left;
+}
+.cluster-actions-menu ul{
+    margin: 0px;
+}
+.cluster-actions-menu li{
+    float: left;
+    margin-right: 20px;
+}
+.searchForm .selectBox.index {
+    width: 26% !important;
+}
+.searchForm .normalizeButton {
+    padding-top: 3px;
+    white-space: nowrap;
+}
+.altmetric-embed{
+    float: right;
+    margin-top: 3px;
+}
+.author:hover{
+    border-bottom: 1px dotted #6789d3;
 }

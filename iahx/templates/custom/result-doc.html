@@ -14,21 +14,35 @@
                 <!-- title -->
                 <div class="line">
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ doc.ti.0 }}</strong>
+                        <strong class="title">{{ doc.ti.0|raw }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ doc.ti.0 }}</strong>
+                            <strong class="title">{{ doc.ti.0|raw }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
-                        <span class="socialLinks notTablet">
+                        {% set share_url = attribute(config.scielo_urls, doc.in.0) ~ '/scielo.php?script=sci_arttext&pid=' ~ doc.ur.0 ~ '&lang=' ~lang %}
+                        <span class="socialLinks articleShareLink">
                             <a href="javascript:void()"><span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span></a>
-
-                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
-                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
-                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareDelicious" data-toggle="tooltip" data-placement="top" title="Compartilhar no Delicious">Delicious</a>
-                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" class="articleAction shareOtherNetworks" data-toggle="tooltip" data-placement="top" title="Compartilhar em outras redes">Outras redes</a>
+                            <a href="{{share_url}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="Compartilhar no Facebook">Facebook</a>
+                            <a href="{{share_url}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="Compartilhar no Twitter">Twitter</a>
+                            <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" title="" data-original-title="Compartilhar em outras redes">
+                                <span class="glyphBtn otherNetworks"></span>
+                            </a>
+                            <ul class="dropdown-menu articleShare">
+                                <li class="dropdown-header">Outras redes sociais</li>
+                                <li><a target="_blank" href="https://plus.google.com/share?url={{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
+                                <li><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
+                                <li><a target="_blank" href="https://www.reddit.com/login?dest={{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
+                                <li><a target="_blank" href="http://www.stumbleupon.com/submit?url={{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
+                                <li><a target="_blank" href="http://www.citeulike.org/posturl?url={{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
+                                <li><a target="_blank" href="https://www.mendeley.com/import/?url={{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
+                            </ul>
+                            {% if doc.doi %}
+                                <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
+                            {% endif %}
                         </span>
+
                     {% endif %}
                 </div>
 
@@ -37,7 +51,14 @@
                 {% include custom_template("result-doc-actions.html") %}
             </div>
             <div class="line metadata">
-				<div class="col-md-9 col-sm-9">
+				<div class="col-md-12 col-sm-12">
+                                  {% if doc.doi %}
+                                    <span>
+				      <span>
+                                        <strong class="DOIResults">DOI: {{ doc.doi }}</strong>
+                                      </span>
+                                    </span>
+                                  {% endif %}
                     {% if doc.total_received is not null %}
     					<span>
     						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received == 0 or doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}

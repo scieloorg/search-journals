@@ -1,0 +1,18 @@
+{% set texts_group = 'REFINE_' ~ filter_id %}
+
+<ul id="filter_{{filter_id}}" class="list-unstyled">
+    {% for item in filter_list %}
+        {% set item_id = item.0|slugify %}
+        {% set item_text = translate(item.0, texts_group) %}
+
+        <li class="filterItem row" data-item="{{item_text}}" data-count="{{item.1}}">
+            <div class=" col-xs-9">
+                <input type="checkbox" name="filter[{{filter_id}}][]" value="{{item.0}}" id="select_{{filter_id}}_{{item_id}}" class="checkbox">
+                <label class="checkbox" for="select_{{filter_id}}_{{item_id}}">{{ translate(item.0, texts_group) }}</label>
+            </div>
+            <div class="col-xs-3 right">
+                <span>{{item.1}}</span>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
