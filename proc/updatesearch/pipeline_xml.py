@@ -74,6 +74,51 @@ class JournalTitle(plumber.Pipe):
         return data
 
 
+class JournalTitle(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.journal.title
+        field.set('name', 'journal_title')
+
+        xml.find('.').append(field)
+
+        return data
+
+
+class Permission(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+
+        if not raw.permissions:
+            raise plumber.UnmetPrecondition()
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.permissions.get('id', '')
+        field.set('name', 'use_license')
+        xml.append(field)
+
+        if raw.permissions.get('text', None):
+            field = ET.Element('field')
+            field.text = raw.permissions.get('text', '')
+            field.set('name', 'use_license_text')
+            xml.append(field)
+
+        if raw.permissions.get('url', None):
+            field = ET.Element('field')
+            field.text = raw.permissions.get('url', '')
+            field.set('name', 'use_license_uri')
+            xml.append(field)
+
+        return data
+
+
 class Collection(plumber.Pipe):
 
     def transform(self, data):
@@ -93,14 +138,14 @@ class KnowledgeArea(plumber.Pipe):
     def precond(data):
         raw, xml = data
 
-        if not raw.subject_areas:
+        if not raw.journal.subject_areas:
             raise plumber.UnmetPrecondition()
 
     @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
-        for item in raw.subject_areas:
+        for item in raw.journal.subject_areas:
             field = ET.Element('field')
             field.text = item
             field.set('name', 'ac')
@@ -273,14 +318,14 @@ class WOKCI(plumber.Pipe):
     def precond(data):
         raw, xml = data
 
-        if not raw.wos_citation_indexes:
+        if not raw.journal.wos_citation_indexes:
             raise plumber.UnmetPrecondition()
 
     @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
-        for index in raw.wos_citation_indexes:
+        for index in raw.journal.wos_citation_indexes:
             field = ET.Element('field')
             field.text = index.replace('&', '')
             field.set('name', 'wok_citation_index')
@@ -294,14 +339,14 @@ class WOKSC(plumber.Pipe):
     def precond(data):
         raw, xml = data
 
-        if not raw.wos_subject_areas:
+        if not raw.journal.wos_subject_areas:
             raise plumber.UnmetPrecondition()
 
     @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
-        for index in raw.wos_subject_areas:
+        for index in raw.journal.wos_subject_areas:
             field = ET.Element('field')
             field.text = index
             field.set('name', 'wok_subject_categories')
@@ -315,9 +360,9 @@ class Volume(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        if raw.volume:
+        if raw.issue.volume:
             field = ET.Element('field')
-            field.text = raw.volume
+            field.text = raw.issue.volume
             field.set('name', 'volume')
             xml.find('.').append(field)
 
@@ -329,9 +374,9 @@ class SupplementVolume(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        if raw.supplement_volume:
+        if raw.issue.supplement_volume:
             field = ET.Element('field')
-            field.text = raw.supplement_volume
+            field.text = raw.issue.supplement_volume
             field.set('name', 'supplement_volume')
             xml.find('.').append(field)
 
@@ -343,9 +388,9 @@ class Issue(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        if raw.issue:
+        if raw.issue.number:
             field = ET.Element('field')
-            field.text = raw.issue
+            field.text = raw.issue.number
             field.set('name', 'issue')
             xml.find('.').append(field)
 
@@ -357,9 +402,9 @@ class SupplementIssue(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        if raw.supplement_issue:
+        if raw.issue.supplement_number:
             field = ET.Element('field')
-            field.text = raw.supplement_issue
+            field.text = raw.issue.supplement_number
             field.set('name', 'supplement_issue')
             xml.find('.').append(field)
 
@@ -435,7 +480,7 @@ class JournalAbbrevTitle(plumber.Pipe):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = raw.journal_abbreviated_title
+        field.text = raw.journal.abbreviated_title
         field.set('name', 'ta')
         xml.find('.').append(field)
 
