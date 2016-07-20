@@ -488,6 +488,7 @@ searchFormBuilder = {
 				modContainer = $(".filterBody",mod),
 				modTitle = $(".modal-title",mod);
 
+			var lang = document.language.lang.value;
 			// get itens from modal window
 			var modal_filter_id = "#filter_" + filter_id
 
@@ -505,7 +506,7 @@ searchFormBuilder = {
 		    $.ajax({ // create an AJAX call...
 		        data: select_form.serialize(), // get the form data
 		        type: 'GET', 				   // GET or POST
-		        url: 'list-filter/' + filter_id, // the file to call
+		        url: 'list-filter/' + filter_id + '?lang=' + lang, // the file to call
 		        success: function(response) { // on success..
 					$('.filterBody').html(response); // update the DIV
 		        }
