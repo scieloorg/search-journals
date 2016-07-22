@@ -70,3 +70,6 @@ ul.list-inline li{
 .author:hover{
     border-bottom: 1px dotted #6789d3;
 }
+.abstract{
+    margin: 5px 0 10px 10px;
+}

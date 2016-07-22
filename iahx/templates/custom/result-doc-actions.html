@@ -9,7 +9,7 @@
                 {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
                 {% if attribute(doc, ab_lang) %}
-                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_abstract&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
+                    <a href="#" onclick="$('#{{doc.id}}_{{language}}').toggle(); return false;">
                         {{ texts.RESULT.LABEL_ABSTRACT }}
                     </a>
                 {% endif %}
@@ -28,5 +28,11 @@
             {% endfor %}
         </span>
     </div>
+    {% for language in doc.available_languages %}
+        {% set ab_lang = 'ab_' ~ language %}
+        <div id="{{doc.id}}_{{language}}" class="abstract" style="display:none">
+            {{ attribute(doc, ab_lang).0 }}
+        </div>
+    {% endfor %}
 
 {% endblock %}
