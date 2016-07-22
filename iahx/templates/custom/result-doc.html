@@ -38,9 +38,6 @@
                                 <li><a target="_blank" href="http://www.citeulike.org/posturl?url={{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
                                 <li><a target="_blank" href="https://www.mendeley.com/import/?url={{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
                             </ul>
-                            {% if doc.doi %}
-                                <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
-                            {% endif %}
                         </span>
 
                     {% endif %}
@@ -52,13 +49,13 @@
             </div>
             <div class="line metadata">
 				<div class="col-md-12 col-sm-12">
-                                  {% if doc.doi %}
-                                    <span>
-				      <span>
-                                        <strong class="DOIResults">DOI: {{ doc.doi }}</strong>
-                                      </span>
-                                    </span>
-                                  {% endif %}
+                    {% if doc.doi %}
+                        <span>
+                            <span>
+                               <strong class="DOIResults">DOI: {{ doc.doi }}</strong>
+                            </span>
+                        </span>
+                    {% endif %}
                     {% if doc.total_received is not null %}
     					<span>
     						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received == 0 or doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}
@@ -68,6 +65,9 @@
 					    <span>
 						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong>
 					    </span>
+                    {% endif %}
+                    {% if doc.doi %}
+                        <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
                     {% endif %}
 				</div>
 				<div class="clearfix"></div>
