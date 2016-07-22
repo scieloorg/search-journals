@@ -160,6 +160,10 @@
                                             <label class="radio" for="export_format_ris">{{ texts.EXPORT_FORMAT_RIS }}</label>
                                         </div>
                                         <div class="col-xs-12">
+                                            <input type="radio" name="format" value="bibtex" class="radio" id="export_format_bibtex" data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_bibtex">BibTeX</label>
+                                        </div>
+                                        <div class="col-xs-12">
                                             <input type="radio" name="format" value="citation" class="radio" id="export_format_citation" data-show=".citationTypes" data-hide=".csvTypes" />
                                             <label class="radio" for="export_format_citation">{{ texts.EXPORT_FORMAT_CITATION }}</label>
                                         </div>
