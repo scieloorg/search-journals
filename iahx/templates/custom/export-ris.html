@@ -6,11 +6,12 @@ AU  - {{ author }}
 {% endfor %}
 TI  - {{ doc.ti.0 }}
 {% for title in doc.ti %}
-{% if not loop.first %}
+{% if not loop.first and title != doc.ti.0 %}
 TT  - {{ title }}
 {% endif %}
 {% endfor %}
 JO  - {{ doc.journal_title }}
+J2  - {{ doc.ta.0 }}
 VL  - {{ doc.volume }}
 IS  - {{ doc.issue }}
 {% if doc.doi %}
