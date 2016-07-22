@@ -521,6 +521,7 @@ searchFormBuilder = {
 					selAll = $(".clusterSelectAll",container),
 					itensCount = $(".itensCount",container);
 
+				$("#no_cluster_selected").hide();
 				if(!t.is(":checked")) {
 					var all = selAll.data("all");
 					if(all == "1") {
@@ -1216,7 +1217,7 @@ $("#Statistics").on("shown.bs.modal",function() {
 		clusterSelection = lista[i].getElementsByTagName('input')[0];
 		if (!clusterSelection.checked){
 			continue;
-		}		
+		}
         cluster = lista[i].innerHTML;
         clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
 		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
