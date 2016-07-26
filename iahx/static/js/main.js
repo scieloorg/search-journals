@@ -444,7 +444,7 @@ searchFormBuilder = {
 			var t = $(this),
 				field = t.data("field"),
 				container = $(t.data("rel")),
-				sort = [];
+				sort_items = [];
 
 			$(".filterItem",container).each(function() {
 				var ti = $(this),
@@ -456,17 +456,19 @@ searchFormBuilder = {
 				}
 				arr.push(val);
 				arr.push(ti);
-				sort.push(arr);
+				sort_items.push(arr);
 				ti.remove();
 			});
 
-			if(typeof sort[0][0] === "number")
-				sort.sort(function(a, b){return b[0]-a[0]});
+			if(typeof sort_items[0][0] === "number")
+				sort_items.sort(function(a, b){return b[0]-a[0]});
 			else
-				sort.sort();
+				sort_items.sort(function (a, b) {
+    				return a.toString().localeCompare(b);
+				});
 
-			for(var i=0;i<sort.length;i++) {
-				container.append(sort[i][1]);
+			for(var i=0;i<sort_items.length;i++) {
+				container.append(sort_items[i][1]);
 			}
 		});
 
