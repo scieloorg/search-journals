@@ -298,10 +298,21 @@ searchFormBuilder = {
 			if (searchQuery == ''){
 				searchQuery = '*';
 			}
+			searchQuery = $.trim(searchQuery);
 
-			var searchForm = document.searchForm;
-			searchForm.q.value = $.trim(searchQuery);
-			searchForm.submit();
+			var total = 0;
+			get_result_total(searchQuery, function(total){
+				if (total == 0){
+					$("#NotFound").modal("show");
+				}else{
+					// delete filters and other form parameters
+					$("input[type='hidden']").remove();
+					var searchForm = document.searchForm;
+					// execute search
+					$('<input>').attr({type: 'hidden', name: 'q', value:searchQuery}).appendTo('#searchForm');
+					searchForm.submit();
+				}
+			});
 
 			return false;
 		});
@@ -1302,3 +1313,16 @@ $(".filterItem input.checkbox").on("change",function() {
 
 	$('#form_clusters').submit();
 });
+
+function get_result_total(searchQuery, callback){
+	// query iAHx and return total
+	$.ajax({
+		type: 'GET',
+		url: document.searchForm.action + '?q=' + searchQuery + '&output=metasearch',
+		success: function(response) { // on success..
+			total = $(response).find('total').text();
+			total = parseInt(total);
+			callback(total);
+		}
+	});
+}
