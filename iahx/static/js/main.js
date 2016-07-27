@@ -301,7 +301,11 @@ searchFormBuilder = {
 			searchQuery = $.trim(searchQuery);
 
 			var total = 0;
-			get_result_total(searchQuery, function(total){
+			var form = document.searchForm;
+			var form_action = form.action;
+			var form_params = 'q=' + searchQuery;
+
+			get_result_total(form_action, form_params, function(total){
 				if (total == 0){
 					$("#NotFound").modal("show");
 				}else{
@@ -313,7 +317,6 @@ searchFormBuilder = {
 					searchForm.submit();
 				}
 			});
-
 			return false;
 		});
 
@@ -683,6 +686,22 @@ searchFormBuilder = {
 				modal.find(".modal-title strong").html(title);
 				modal.modal("show");
 			}
+		});
+
+		$("#apply_filters_button").on("click",function(e) {
+			var form = $("#form_clusters");
+			var form_action = form.attr('action');
+			var form_params = form.serialize();
+
+			var total = 0;
+			get_result_total(form_action, form_params, function(total){
+				if (total == 0){
+					$("#NotFound").modal("show");
+				}else{
+					form.submit();
+				}
+			});
+			return false;
 		});
 
 		$("input.onlyNumbers").on("keydown",function(e) {
@@ -1306,19 +1325,12 @@ $("#Statistics").on("shown.bs.modal",function() {
 	$(".chartBlock canvas",this).remove();
 });
 
-$(".filterItem input.checkbox").on("change",function() {
-	var t = $(this);
-
-	$(this).attr('checked', !$(this).attr('checked'));
-
-	$('#form_clusters').submit();
-});
-
-function get_result_total(searchQuery, callback){
+function get_result_total(form_action, form_params, callback){
 	// query iAHx and return total
 	$.ajax({
 		type: 'GET',
-		url: document.searchForm.action + '?q=' + searchQuery + '&output=metasearch',
+		data: form_params + '&output=metasearch',
+		url: form_action,
 		success: function(response) { // on success..
 			total = $(response).find('total').text();
 			total = parseInt(total);
