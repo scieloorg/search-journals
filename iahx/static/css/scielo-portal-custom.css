@@ -73,3 +73,23 @@ ul.list-inline li{
 .abstract{
     margin: 5px 0 10px 10px;
 }
+/* affix que fixa o sidebar */
+.affix, .affix-top {
+    width: 285px;
+    margin: 0;
+    padding: 0;
+    z-index: 99;
+}
+.affix {
+    top: 0;
+    background: #fff;
+    position: fixed;
+    border-bottom: 2px solid #ccc !important;
+    margin: 0 0 0 -10px;
+}
+.affix-top button {
+    margin: 5px 2px;
+}
+.affix button {
+    margin: 6px 2px 6px 10px;
+}
