@@ -37,6 +37,14 @@ Full example output of this pipeline:
     </doc>
 """
 
+CITABLE_DOCUMENT_TYPES = (
+    u'article-commentary',
+    u'brief-report',
+    u'case-report',
+    u'rapid-communication',
+    u'research-article',
+    u'review-article'
+)
 
 class SetupDocument(plumber.Pipe):
 
@@ -45,6 +53,84 @@ class SetupDocument(plumber.Pipe):
 
         return data, xml
 
+class SubjectAreas(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+
+        if not raw.journal.subject_areas:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        for subject_area in raw.journal.subject_areas:
+            field = ET.Element('field')
+            field.text = subject_area
+            field.set('name', 'subject_area')
+
+            xml.find('.').append(field)
+
+        return data
+
+class Keywords(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+
+        if not raw.keywords():
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        for language, keywords in raw.keywords().items():
+            for keyword in keywords:
+                field = ET.Element('field')
+                field.text = keyword
+                field.set('name', 'keyword_%s' % language)
+
+                xml.find('.').append(field)
+
+        return data
+
+class IsCitable(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = 'True' if raw.document_type in CITABLE_DOCUMENT_TYPES else 'False'
+        field.set('name', 'is_citable')
+
+        xml.find('.').append(field)
+
+        return data
+
+class JournalISSNs(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        issns = set()
+        if raw.electronic_issn:
+            issns.add(raw.journal.electronic_issn)
+
+        if raw.print_issn:
+            issns.add(raw.journal.print_issn)
+
+        issns.add(raw.journal.scielo_issn)
+
+        for issn in issns:
+            field = ET.Element('field')
+            field.text = issn
+            field.set('name', 'issn')
+
+            xml.find('.').append(field)
+
+        return data
 
 class DocumentID(plumber.Pipe):
 
@@ -96,6 +182,7 @@ class Permission(plumber.Pipe):
         if not raw.permissions:
             raise plumber.UnmetPrecondition()
 
+    @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 

@@ -33,6 +33,65 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(u'This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.', result1)
         self.assertEqual(u'http://creativecommons.org/licenses/by-nc/4.0/', result2)
 
+    def test_subject_areas(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.SubjectAreas()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = sorted([i.text for i in xml.findall('./field[@name="subject_area"]')])
+
+        self.assertEqual([u'Health Sciences'], result)
+
+    def test_without_subject_areas(self):
+
+        pxml = ET.Element('doc')
+
+        del(self._article_meta.data['title']['v441'])
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.SubjectAreas()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = xml.find('./field[@name="subject_area"]')
+
+        self.assertEqual(None, result)
+
+    def test_keywords(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.Keywords()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = sorted([i.text for i in xml.findall('./field[@name="keyword_pt"]')])
+
+        self.assertEqual([u'Insuficiência Renal Crônica', u'Registros de Mortalidade', u'Sistemas de Informação Hospitalar', u'Terapia de Substituição Renal'], result)
+
+    def test_without_keywords(self):
+
+        pxml = ET.Element('doc')
+
+        del(self._article_meta.data['article']['v85'])
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.Keywords()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = xml.find('./field[@name="keyword_pt"]')
+
+        self.assertEqual(None, result)
+
     def test_setuppipe_element_name(self):
 
         data = [self._article_meta, None]
@@ -41,6 +100,49 @@ class ExportTests(unittest.TestCase):
         raw, xml = xmlarticle.transform(data)
 
         self.assertEqual('<doc />', ET.tostring(xml))
+
+    def test_is_citable_false(self):
+
+        pxml = ET.Element('doc')
+
+        self._article_meta.data['article']['v71'] = [{'_': 'xx'}]
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.IsCitable()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = xml.find('./field[@name="is_citable"]').text
+
+        self.assertEqual('False', result)
+
+    def test_is_citable_true(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.IsCitable()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = xml.find('./field[@name="is_citable"]').text
+
+        self.assertEqual('True', result)
+
+    def test_xmljournalissn(self):
+
+        pxml = ET.Element('doc')
+
+        data = [self._article_meta, pxml]
+
+        xmlarticle = pipeline_xml.JournalISSNs()
+
+        raw, xml = xmlarticle.transform(data)
+
+        result = [i.text for i in xml.findall('./field[@name="issn"]')]
+
+        self.assertEqual(['0034-8910'], result)
 
     def test_xml_document_id_pipe(self):
 
@@ -195,7 +297,7 @@ class ExportTests(unittest.TestCase):
 
         result = '; '.join([ac.text for ac in xml.findall('./field[@name="au"]')])
 
-        self.assertEqual(u'Mariangela Leal, Cherchiglia; Elaine Leandro, Machado; Daniele Ara\xfajo Campo, Szuster; Eli Iola Gurgel, Andrade; Francisco de Assis, Ac\xfarcio; Waleska Teixeira, Caiaffa; Ricardo, Sesso; Augusto A, Guerra Junior; Odilon Vanni de, Queiroz; Isabel Cristina, Gomes', result)
+        self.assertEqual(u'Cherchiglia, Mariangela Leal; Machado, Elaine Leandro; Szuster, Daniele Araújo Campo; Andrade, Eli Iola Gurgel; Acúrcio, Francisco de Assis; Caiaffa, Waleska Teixeira; Sesso, Ricardo; Guerra Junior, Augusto A; Queiroz, Odilon Vanni de; Gomes, Isabel Cristina', result)
 
     def test_xml_document_authors_without_data_pipe(self):
 
