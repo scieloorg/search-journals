@@ -250,10 +250,12 @@ class UpdateSearch(object):
 
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))
+                    logger.exception(e)
                     continue
                 except Exception as e:
                     logger.error("Error: {0}".format(e))
-                    sys.exit(0)
+                    logger.exception(e)
+                    continue
 
         # optimize the index
         self.solr.optimize()

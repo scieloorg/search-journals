@@ -32,7 +32,7 @@ def get_identifiers(collection=None, issn=None, _from=None, _until=None,
     ex.: (mex, S0036-36342014000100009)
     """
 
-    offset = 0
+    offset = 20300
 
     logger.debug('Get all identifiers from Article Meta, please wait... this while take while!')
 
