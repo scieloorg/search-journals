@@ -240,6 +240,9 @@
          <str name="facet.field">document_type</str>
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
+         <str name="facet.field">subject_area</str>
+         <str name="facet.field">is_citable</str>
+         <str name="facet.field">use_license</str>
          <str name="facet.limit">15</str>
          <str name="facet.mincount">1</str>
       </lst>

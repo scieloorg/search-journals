@@ -195,6 +195,27 @@
             <!-- Dynamic Field to Title in any languages **from:title_in_* to:title_in_* ** -->
             <dynamicField name="ti_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
 
+            <!-- Field to journal CNPQ subject areas -->
+            <field name="subject_area"  type="string" indexed="true" stored="true"  multiValued="true"/>
+
+            <!-- Dynamic Field to Article Keywords in any languages -->
+            <dynamicField name="keyword_*"  type="text" indexed="true" stored="true"  multiValued="true"/>
+
+            <!-- Field that identifies if an article is citable or not -->
+            <field name="is_citable"  type="string" indexed="true" stored="true"  multiValued="false"/>
+
+            <!-- Field that list all the journal ISSN's -->
+            <field name="issn"  type="string" indexed="true" stored="true"  multiValued="true"/>
+
+            <!-- Field that identify the article use license -->
+            <field name="use_license"  type="string" indexed="true" stored="true"  multiValued="false"/>
+
+            <!-- Field that identify the article use license -->
+            <field name="use_license_text"  type="string" indexed="false" stored="true"  multiValued="false"/>
+
+            <!-- Field that identify the article use license -->
+            <field name="use_license_uri"  type="string" indexed="false" stored="true"  multiValued="false"/>
+
             <!-- Ignore all others fields -->
             <dynamicField name="*" type="ignored" />
         </fields>
