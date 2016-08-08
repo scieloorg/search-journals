@@ -50,11 +50,7 @@
             <div class="line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
-                        <span>
-                            <span>
-                               <strong class="DOIResults">DOI: {{ doc.doi }}</strong>
-                            </span>
-                        </span>
+                       <span class="DOIResults">DOI: {{ doc.doi }}</span>
                     {% endif %}
                     {% if doc.total_received is not null %}
     					<span>
