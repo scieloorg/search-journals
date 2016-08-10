@@ -13,11 +13,17 @@
             {% block data %}
                 <!-- title -->
                 <div class="line">
+                    {% if doc.ti %}
+                        {% set article_title = doc.ti.0|raw %}
+                    {% else %}
+                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                    {% endif %}
+
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ doc.ti.0|raw }}</strong>
+                        <strong class="title">{{ article_title }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ doc.ti.0|raw }}</strong>
+                            <strong class="title">{{ article_title }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
