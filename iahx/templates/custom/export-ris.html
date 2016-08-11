@@ -39,6 +39,12 @@ AB  - {{ doc.ab_es.0|raw }}
 AB  - {{ doc.ab_pt.0|raw }}
 {% endif %}
 UR  - {{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}
+{% for language in doc.available_languages %}
+{% set pdf_lang = 'fulltext_pdf_' ~ language %}
+{% if attribute(doc, pdf_lang) %}
+L1  - {{ attribute(doc, pdf_lang).0 }}
+{% endif %}
+{% endfor %}
 ER  -
 
 {% endfor %}
