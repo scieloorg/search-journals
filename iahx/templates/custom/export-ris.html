@@ -11,7 +11,10 @@ TT  - {{ title }}
 {% endif %}
 {% endfor %}
 JO  - {{ doc.journal_title }}
+{% if doc.issn %}
 J2  - {{ doc.ta.0 }}
+SN  - {{ doc.issn.0 }}
+{% endif %}
 VL  - {{ doc.volume }}
 IS  - {{ doc.issue }}
 {% if doc.doi %}
@@ -43,6 +46,12 @@ UR  - {{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttex
 {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 {% if attribute(doc, pdf_lang) %}
 L1  - {{ attribute(doc, pdf_lang).0 }}
+{% endif %}
+{% endfor %}
+{% for language in doc.available_languages %}
+{% set kw_lang = 'keyword_' ~ language %}
+{% if attribute(doc, kw_lang) %}
+KW  - {{ attribute(doc, kw_lang).0 }}
 {% endif %}
 {% endfor %}
 ER  -
