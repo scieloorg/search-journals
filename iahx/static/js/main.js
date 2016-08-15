@@ -312,8 +312,11 @@ searchFormBuilder = {
 					// delete filters and other form parameters
 					$("input[type='hidden']").remove();
 					var searchForm = document.searchForm;
+					// clear my_selection list
+					manipulate_bookmark('c');
 					// execute search
 					$('<input>').attr({type: 'hidden', name: 'q', value:searchQuery}).appendTo('#searchForm');
+					$('<input>').attr({type: 'hidden', name: 'page', value:'1'}).appendTo('#searchForm');
 					searchForm.submit();
 				}
 			});
@@ -698,6 +701,8 @@ searchFormBuilder = {
 				if (total == 0){
 					$("#NotFound").modal("show");
 				}else{
+					// clear my_selection list
+					manipulate_bookmark('c');
 					form.submit();
 				}
 			});
