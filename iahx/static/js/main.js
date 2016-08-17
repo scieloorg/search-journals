@@ -320,6 +320,7 @@ searchFormBuilder = {
 					searchForm.submit();
 				}
 			});
+
 			return false;
 		});
 
@@ -526,6 +527,9 @@ searchFormBuilder = {
 		        data: select_form.serialize(), // get the form data
 		        type: 'GET', 				   // GET or POST
 		        url: 'list-filter/' + filter_id + '?lang=' + lang, // the file to call
+				beforeSend: function() {
+					$('.filterBody').html('<img src="' + STATIC_URL + 'image/loading.gif" style="margin-left:190px"/>');
+				},
 		        success: function(response) { // on success..
 					$('.filterBody').html(response); // update the DIV
 		        }
