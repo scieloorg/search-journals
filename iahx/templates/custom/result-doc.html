@@ -21,10 +21,10 @@
                     {% endif %}
 
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ article_title }}</strong>
+                        <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ article_title }}</strong>
+                            <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
@@ -69,6 +69,7 @@
 						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong>
 					    </span>
                     {% endif %}
+                    <span> <a href="#" class="openCitedBy" data-pid="{{doc.ur.0}}">{{ texts.CITED }} {{ texts.CITED_IN }}</a></span>
 				</div>
 				<div class="clearfix"></div>
 			</div>
