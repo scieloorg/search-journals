@@ -1873,7 +1873,7 @@ button.btn:active {
   color: #6789d3;
 }
 .DOIResults {
-    font-weight: bolder!important;
+    color: #000;
 }
 .journal .mainNav {
   margin-top: 15px;
