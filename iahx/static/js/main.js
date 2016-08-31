@@ -458,6 +458,27 @@ searchFormBuilder = {
 			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
+		$("#form_clusters input.checkbox").on("change",function() {
+			var t = $(this);
+			var tvalue = t.val();
+			var tid = t.attr('id');
+			var cluster_id = tid.substr(0, tid.lastIndexOf('_'));
+			var tall_option = $("#" + cluster_id + "_ALL");
+			var itens = $("#form_clusters #ul_" + cluster_id + " input.checkbox");
+
+
+			if (tvalue != '*' && tall_option.is(":checked")){
+				tall_option.prop("checked", false);
+			} else if (tvalue == '*') {
+				itens.each(function() {
+					if ( $(this).val() != '*' ){
+						$(this).prop("checked",false);
+					}
+				});
+			}
+
+		});
+
 		$("a.orderBy").on("click",function() {
 			var t = $(this),
 				field = t.data("field"),
