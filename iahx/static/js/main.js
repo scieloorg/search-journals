@@ -307,7 +307,11 @@ searchFormBuilder = {
 
 			get_result_total(form_action, form_params, function(total){
 				if (total == 0){
-					$("#NotFound").modal("show");
+					$("#ResultArea").hide();
+					$("#NoResults").removeClass('hide');
+					$("#TotalHits").html('0');
+					// send query again to register in history
+					send_query_to_history(form_action, form_params);
 				}else{
 					// delete filters and other form parameters
 					$("input[type='hidden']").remove();
@@ -724,7 +728,14 @@ searchFormBuilder = {
 			var total = 0;
 			get_result_total(form_action, form_params, function(total){
 				if (total == 0){
-					$("#NotFound").modal("show");
+					$("#ResultArea").hide();
+					$("#NoResults").removeClass('hide');
+					$("#TotalHits").html('0');
+					$('html,body').animate({
+					    scrollTop: 0
+					}, 700);
+					// send query again to register in history
+					send_query_to_history(form_action, form_params);
 				}else{
 					// clear my_selection list
 					manipulate_bookmark('c');
@@ -1368,6 +1379,16 @@ function get_result_total(form_action, form_params, callback){
 		}
 	});
 }
+
+// make a request that only include a query in history
+function send_query_to_history(form_action, form_params){
+	$.ajax({
+		type: 'GET',
+		data: form_params,
+		url: form_action,
+	});
+}
+
 $(".openCitedBy").on("click",function(e) {
 	e.preventDefault();
 	var t = $(this),
