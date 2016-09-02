@@ -1,5 +1,5 @@
     <div class="filterTitle">
-            {{ texts.RESULTS }}: <strong>{{ pag.total_formatted|replace({".": " "}) }}</strong>
+            {{ texts.RESULTS }}: <strong id="TotalHits">{{ pag.total_formatted|replace({".": " "}) }}</strong>
     </div>
     <div class="filterContent" id="refineSearch">
 
@@ -22,7 +22,13 @@
                             {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
 
                             <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}" class="selectedFilter">
-                                 <span>{{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong></span>
+                                 <span>{{ attribute(texts.REFINE, cluster) }}: <strong>
+                                 {% if item == '*' %}
+                                    {{ texts.ALL_ITEMS }}
+                                 {% else %}
+                                     {{ translate(item, texts_group) }}
+                                 {% endif %}
+                                 </strong></span>
                             </a>
                         {% endfor %}
                     {% endfor %}
@@ -80,6 +86,17 @@
 
                                 <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
                                     <ul id="ul_{{ name }}">
+                                        <li class="filterItem row">
+                                            <div class="col-xs-9">
+
+                                                <input type="checkbox" name="filter[{{ name }}][]" value='*' id="{{name}}_ALL"
+                                                {% for filter_name, filter in filters if filter_name == name %}
+                                                    {% if filter.0 == '*' %}checked="true"{% endif %}
+                                                {% endfor %}
+                                                class="checkbox">
+                                                <label class="checkbox" for="{{name}}_ALL">{{ texts.ALL_ITEMS }}</label>
+                                            </div>
+                                        </li>
                                         {% for item in cluster if item.0 != '' %}
                                             {% set cluster_item_id = name ~ '_'
 ~ item.0|slugify %}

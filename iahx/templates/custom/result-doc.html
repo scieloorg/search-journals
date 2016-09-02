@@ -13,11 +13,18 @@
             {% block data %}
                 <!-- title -->
                 <div class="line">
+                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" width="13" height="16" title="{{ doc.use_license }}">
+                    {% if doc.ti %}
+                        {% set article_title = doc.ti.0|raw %}
+                    {% else %}
+                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                    {% endif %}
+
                     {% if doc.in|length > 1 %}
-                        <strong class="title">{{ doc.ti.0|raw }}</strong>
+                        <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
                     {% else %}
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title">{{ doc.ti.0|raw }}</strong>
+                            <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
                         </a>
                     {% endif %}
                     {% if output != 'print' %}
@@ -50,11 +57,7 @@
             <div class="line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
-                        <span>
-                            <span>
-                               <strong class="DOIResults">DOI: {{ doc.doi }}</strong>
-                            </span>
-                        </span>
+                       <span class="DOIResults">DOI: {{ doc.doi }}</span>
                     {% endif %}
                     {% if doc.total_received is not null %}
     					<span>
@@ -66,6 +69,7 @@
 						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong>
 					    </span>
                     {% endif %}
+                    <span> <a href="#" class="openCitedBy" data-pid="{{doc.ur.0}}">{{ texts.CITED }} {{ texts.CITED_IN }}</a></span>
 				</div>
 				<div class="clearfix"></div>
 			</div>

@@ -24,6 +24,11 @@
                     <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
                         PDF
                     </a>
+                    {% if doc.doi and doc.in.0 == 'scl' %}
+                    | <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/readcube/epdf.php?doi={{doc.doi}}&pid={{doc.ur.0}}&pdf_path={{ attribute(doc, pdf_lang).0|substring_after('pdf/') }}&lang={{language}}">
+                        ePDF
+                    </a>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </span>

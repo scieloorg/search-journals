@@ -307,16 +307,24 @@ searchFormBuilder = {
 
 			get_result_total(form_action, form_params, function(total){
 				if (total == 0){
-					$("#NotFound").modal("show");
+					$("#ResultArea").hide();
+					$("#NoResults").removeClass('hide');
+					$("#TotalHits").html('0');
+					// send query again to register in history
+					send_query_to_history(form_action, form_params);
 				}else{
 					// delete filters and other form parameters
 					$("input[type='hidden']").remove();
 					var searchForm = document.searchForm;
+					// clear my_selection list
+					manipulate_bookmark('c');
 					// execute search
 					$('<input>').attr({type: 'hidden', name: 'q', value:searchQuery}).appendTo('#searchForm');
+					$('<input>').attr({type: 'hidden', name: 'page', value:'1'}).appendTo('#searchForm');
 					searchForm.submit();
 				}
 			});
+
 			return false;
 		});
 
@@ -454,6 +462,27 @@ searchFormBuilder = {
 			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
+		$("#form_clusters input.checkbox").on("change",function() {
+			var t = $(this);
+			var tvalue = t.val();
+			var tid = t.attr('id');
+			var cluster_id = tid.substr(0, tid.lastIndexOf('_'));
+			var tall_option = $("#" + cluster_id + "_ALL");
+			var itens = $("#form_clusters #ul_" + cluster_id + " input.checkbox");
+
+
+			if (tvalue != '*' && tall_option.is(":checked")){
+				tall_option.prop("checked", false);
+			} else if (tvalue == '*') {
+				itens.each(function() {
+					if ( $(this).val() != '*' ){
+						$(this).prop("checked",false);
+					}
+				});
+			}
+
+		});
+
 		$("a.orderBy").on("click",function() {
 			var t = $(this),
 				field = t.data("field"),
@@ -523,6 +552,9 @@ searchFormBuilder = {
 		        data: select_form.serialize(), // get the form data
 		        type: 'GET', 				   // GET or POST
 		        url: 'list-filter/' + filter_id + '?lang=' + lang, // the file to call
+				beforeSend: function() {
+					$('.filterBody').html('<img src="' + STATIC_URL + 'image/loading.gif" style="margin-left:190px"/>');
+				},
 		        success: function(response) { // on success..
 					$('.filterBody').html(response); // update the DIV
 		        }
@@ -696,8 +728,17 @@ searchFormBuilder = {
 			var total = 0;
 			get_result_total(form_action, form_params, function(total){
 				if (total == 0){
-					$("#NotFound").modal("show");
+					$("#ResultArea").hide();
+					$("#NoResults").removeClass('hide');
+					$("#TotalHits").html('0');
+					$('html,body').animate({
+					    scrollTop: 0
+					}, 700);
+					// send query again to register in history
+					send_query_to_history(form_action, form_params);
 				}else{
+					// clear my_selection list
+					manipulate_bookmark('c');
 					form.submit();
 				}
 			});
@@ -1338,3 +1379,57 @@ function get_result_total(form_action, form_params, callback){
 		}
 	});
 }
+
+// make a request that only include a query in history
+function send_query_to_history(form_action, form_params){
+	$.ajax({
+		type: 'GET',
+		data: form_params,
+		url: form_action,
+	});
+}
+
+$(".openCitedBy").on("click",function(e) {
+	e.preventDefault();
+	var t = $(this),
+		pid = t.data("pid");
+
+	var article_title = $("#title-" + pid).html();
+	$("#CitedBy").modal("show");
+	$("#CitedBy #article_cited").html(article_title);
+	// make request to citedby service
+	$.ajax({
+		type: "get",
+		url: 'http://citedby.scielo.org/api/v1/pid/',
+		data: '&q=' + pid,
+		dataType: 'jsonp',
+		beforeSend: function() {
+			$('#CitedBy .modal-body').html('<img src="' + STATIC_URL + 'image/loading_dots.gif" style="margin-left:190px"/>');
+		},
+		success: function(response) { // on success..
+			articles = response.cited_by;
+			modal_body = $('#CitedBy .modal-body');
+			label_cited = modal_body.data("label-cited");
+			label_nocited = modal_body.data("label-nocited");
+			if (articles.length == 0){
+				modal_body.html('<h3>' + label_nocited + '</h3>');
+			}else{
+				modal_body.html('<strong>' + label_cited + '</strong>:');
+				modal_body.append('<ul>');
+				for (i = 0; i < articles.length; i++){
+					article = articles[i];
+					var author_list = '';
+					var author_total = article.authors.length;
+					for (var a = 0; a < author_total; a++){
+						var author  = article.authors[a];
+						author_list += author.surname + ', ' + author.given_names;
+						if (a < (author_total-1)) author_list += '; ';
+					}
+					modal_body.append('<li><a href="' + article.url + '" target="_blank">' +
+					article.titles[0] + '</a> ' + author_list + '<br/><i>' + article.source + '</i></li><br/>');
+				}
+				modal_body.append('</ul>');
+			}
+		}
+	});
+});
