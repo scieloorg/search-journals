@@ -51,7 +51,9 @@ L1  - {{ attribute(doc, pdf_lang).0 }}
 {% for language in doc.available_languages %}
 {% set kw_lang = 'keyword_' ~ language %}
 {% if attribute(doc, kw_lang) %}
-KW  - {{ attribute(doc, kw_lang).0 }}
+{% for kw in attribute(doc, kw_lang) %}
+KW  - {{ kw }}
+{% endfor %}
 {% endif %}
 {% endfor %}
 ER  -
