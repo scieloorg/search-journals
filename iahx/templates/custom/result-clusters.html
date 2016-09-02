@@ -4,8 +4,8 @@
     <div class="filterContent" id="refineSearch">
 
         <div class="searchQuery">
-            <div class="searchHistoryItem" data-original-title="" title="">#{{history|length}}</div>
-            <div class="query">
+            <div class="searchHistoryItem" data-original-title="" title="" data-history="{{history|length}}">#{{history|length}}</div>
+            <div class="query" id="searchHistoryQuery">
                 {{ detailed_query }}
             </div>
         </div>
