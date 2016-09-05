@@ -170,19 +170,6 @@ class ExportTests(unittest.TestCase):
 
         self.assertEqual(u'scl', result)
 
-    def test_xml_document_knowledge_area_pipe(self):
-
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.KnowledgeArea()
-        raw, xml = xmlarticle.transform(data)
-
-        result = xml.find('./field[@name="ac"]').text
-
-        self.assertEqual(u'Health Sciences', result)
-
     def test_xml_document_doi_data_pipe(self):
 
         fakexylosearticle = Article({'article': {}, 'title': {}, 'doi': '10.1590/S0036-36342011000900009'})
@@ -220,45 +207,6 @@ class ExportTests(unittest.TestCase):
             self.assertTrue(True)
         else:
             self.assertTrue(False)
-
-    def test_xml_document_knowledge_area_multiple_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {'v441': [{'_': 'Health Sciences'}, {'_': 'Human Sciences'}]}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.KnowledgeArea()
-
-        raw, xml = xmlarticle.transform(data)
-
-        result = ', '.join([ac.text for ac in xml.findall('./field[@name="ac"]')])
-
-        self.assertEqual(u'Health Sciences, Human Sciences', result)
-
-    def test_xml_document_knowledge_area_without_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.KnowledgeArea()
-
-        raw, xml = xmlarticle.transform(data)
-
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="ac"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
-
 
     def test_xml_document_type_pipe(self):
 

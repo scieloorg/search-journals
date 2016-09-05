@@ -226,28 +226,6 @@ class Collection(plumber.Pipe):
         return data
 
 
-class KnowledgeArea(plumber.Pipe):
-
-    def precond(data):
-        raw, xml = data
-
-        if not raw.journal.subject_areas:
-            raise plumber.UnmetPrecondition()
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        for item in raw.journal.subject_areas:
-            field = ET.Element('field')
-            field.text = item
-            field.set('name', 'ac')
-
-            xml.find('.').append(field)
-
-        return data
-
-
 class DocumentType(plumber.Pipe):
 
     def transform(self, data):
