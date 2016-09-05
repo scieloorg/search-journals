@@ -55,12 +55,17 @@
                 <a href="" data-toggle="modal" data-target="#Export">{{ texts.EXPORT }}</a>
                 |
                 <div class="fixDrop">
+                    {% set share_page_url = app.request.requestUri %}
                     <a href="javascript:;" class="dropdownIcon dropdown-toggle" data-toggle="dropdown">{{ texts.SHARE }}</a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="javascript:;" class="trigger" data-rel=".st_facebook .stButton">Facebook</a></li>
-                        <li><a href="javascript:;" class="trigger" data-rel=".st_twitter .stButton">Twitter</a></li>
-                        <li><a href="javascript:;" class="trigger" data-rel=".st_googleplus .stButton">Google+</a></li>
-                        <li><a href="javascript:;" class="trigger" data-rel=".st_sharethis .stButton">{{ texts.OTHER_NETWORKS }}</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareFacebook"><span class="glyphBtn facebook"></span> Facebook</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareTwitter"><span class="glyphBtn twitter"></span> Twitter</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
                     </ul>
                 </div>
             </div>

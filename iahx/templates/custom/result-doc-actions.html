@@ -36,7 +36,7 @@
     {% for language in doc.available_languages %}
         {% set ab_lang = 'ab_' ~ language %}
         <div id="{{doc.id}}_{{language}}" class="abstract" style="display:none">
-            {{ attribute(doc, ab_lang).0 }}
+            {{ attribute(doc, ab_lang).0|raw }}
         </div>
     {% endfor %}
 
