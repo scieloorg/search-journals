@@ -312,11 +312,19 @@ searchFormBuilder = {
 					$("#TotalHits").html('0');
 					// send query again to register in history
 					send_query_to_history(form_action, form_params);
-					// increment history data on page
-					var history_number = parseInt($(".searchHistoryItem").data("history"));
-					$(".searchHistoryItem").data("history", history_number + 1);
-					$(".searchHistoryItem").html("#" + (history_number + 1));
-					$("#searchHistoryQuery").html(searchQuery);
+					// update same page with no result message
+					if (historyQuery != ''){
+						var form = document.updateHistoryPage;
+						$("#updateHistoryPage #clear").val("");
+						$("#updateHistoryPage #noresult").val("true");
+    					$("#updateHistoryPage").submit();
+					}else{
+						// increment history data on page
+						var history_number = parseInt($(".searchHistoryItem").data("history"));
+						$(".searchHistoryItem").data("history", history_number + 1);
+						$(".searchHistoryItem").html("#" + (history_number + 1));
+						$("#searchHistoryQuery").html(searchQuery);
+					}
 				}else{
 					// delete filters and other form parameters
 					$("input[type='hidden']").remove();

@@ -65,12 +65,12 @@
 
 				</div>
 
-				<div class="row hide" id="NoResults">
+				<div class="row {%if not app.request.query.all.noresult %}hide{% endif %}" id="NoResults">
 		            <div class="col-md-8 col-sm-8 col-md-offset-4 col-sm-offset-4">
 		                <h2>{{ texts.NO_RESULTS }}</h2>
 		            </div>
 		        </div>
-				
+
 			</div>
 
 			<div id="searchRow-matriz">
@@ -213,9 +213,10 @@ item|slugify ~ '' %}
 					{{ texts.HISTORY_REMOVE_ALL }}
 				</div>
 				<div class="modal-footer">
-					<form action="{{ constant("SEARCH_URL") }}history/" method="get">
-						<input type="hidden" name="clear" value="true" />
+					<form action="{{ constant("SEARCH_URL") }}history/" method="get" id="updateHistoryPage">
+						<input type="hidden" name="clear" value="true" id="clear"/>
 						<input type="hidden" name="lang" value="{{lang}}" />
+						<input type="hidden" id="noresult" name="noresult" value="" />
 						<button type="button" class="btn btn-default" data-dismiss="modal">{{ texts.HISTORY_CONFIRM_CANCEL }}</button>
 						<input type="submit" name="s" value="{{ texts.HISTORY_CONFIRM_YES }}" class="btn">
 					</form>
