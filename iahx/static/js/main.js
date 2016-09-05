@@ -446,13 +446,10 @@ searchFormBuilder = {
 
 			if(t.is(":checked")) {
 				itens.each(function() {
-					$(this).prop("checked",true);
+					$(this).prop("checked",false);
 				});
 				t.data("all","1");
 			} else {
-				itens.each(function() {
-					$(this).prop("checked",false);
-				});
 				t.data("all","0");
 			}
 		});
@@ -556,6 +553,15 @@ searchFormBuilder = {
 			$("#statistics").data("chartsource", modal_filter_id);
 			$("#exportcsv").data("cluster", filter_label);
 			$("#exportcsv").data("chartsource", modal_filter_id);
+			var selAll = $("#selectClusterItens_all");
+			var filter_all = $("#" + filter_id + "_ALL");
+
+			selAll.attr("name", "filter[" + filter_id + "][]");
+			if ( filter_all.is(":checked") ) {
+				selAll.prop("checked",true).data("all","1");
+			}else{
+				selAll.prop("checked",false).data("all","0");
+			}
 
 			modTitle.html(filter_label);
 			modContainer.empty();
@@ -584,7 +590,7 @@ searchFormBuilder = {
 					itensCount = $(".itensCount",container);
 
 				$("#no_cluster_selected").hide();
-				if(!t.is(":checked")) {
+				if(t.is(":checked")) {
 					var all = selAll.data("all");
 					if(all == "1") {
 						selAll.prop("checked",false).data("all","0");

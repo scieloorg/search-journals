@@ -21,7 +21,7 @@
                         {% for item in items %}
                             {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
 
-                            <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}" class="selectedFilter">
+                            <a href="javascript:remove_filter('{{ item_value }}{% if item == '*' %}ALL{% endif %}')" title="Remover cluster: {{ item }}" class="selectedFilter">
                                  <span>{{ attribute(texts.REFINE, cluster) }}: <strong>
                                  {% if item == '*' %}
                                     {{ texts.ALL_ITEMS }}
