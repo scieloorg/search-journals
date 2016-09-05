@@ -114,7 +114,7 @@ class ExportTests(unittest.TestCase):
 
         result = xml.find('./field[@name="is_citable"]').text
 
-        self.assertEqual('False', result)
+        self.assertEqual('is_false', result)
 
     def test_is_citable_true(self):
 
@@ -128,7 +128,7 @@ class ExportTests(unittest.TestCase):
 
         result = xml.find('./field[@name="is_citable"]').text
 
-        self.assertEqual('True', result)
+        self.assertEqual('is_true', result)
 
     def test_xmljournalissn(self):
 

@@ -46,12 +46,14 @@ CITABLE_DOCUMENT_TYPES = (
     u'review-article'
 )
 
+
 class SetupDocument(plumber.Pipe):
 
     def transform(self, data):
         xml = ET.Element('doc')
 
         return data, xml
+
 
 class SubjectAreas(plumber.Pipe):
 
@@ -73,6 +75,7 @@ class SubjectAreas(plumber.Pipe):
             xml.find('.').append(field)
 
         return data
+
 
 class Keywords(plumber.Pipe):
 
@@ -96,18 +99,20 @@ class Keywords(plumber.Pipe):
 
         return data
 
+
 class IsCitable(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = 'True' if raw.document_type in CITABLE_DOCUMENT_TYPES else 'False'
+        field.text = 'is_true' if raw.document_type in CITABLE_DOCUMENT_TYPES else 'is_false'
         field.set('name', 'is_citable')
 
         xml.find('.').append(field)
 
         return data
+
 
 class JournalISSNs(plumber.Pipe):
 
@@ -131,6 +136,7 @@ class JournalISSNs(plumber.Pipe):
             xml.find('.').append(field)
 
         return data
+
 
 class DocumentID(plumber.Pipe):
 
