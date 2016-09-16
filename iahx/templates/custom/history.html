@@ -133,39 +133,46 @@
 								<th class="colResults">{{ texts.HISTORY_TOTAL }}</th>
 								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
 							</tr>
-
-							{% for index, history in history_list|reverse %}
-							{% set history_id = history_list|length-index %}
-							<tr>
-								<td class="colId">
-									<span>#{{ history_id }}</span>
-								</td>
-								<td class="colSearch">
-									<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
-									<strong>{{ texts.HISTORY_FILTERS }}:</strong>
-									{% for cluster, items in history.filter %}
-										{% set texts_group = 'REFINE_' ~ cluster %}
-										{% for item in items %}
-											{% set item_value = cluster ~ '_' ~
-item|slugify ~ '' %}
-											({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+							{% if history_list|length > 0 %}
+								{% for index, history in history_list|reverse %}
+								{% set history_id = history_list|length-index %}
+								<tr>
+									<td class="colId">
+										<span>#{{ history_id }}</span>
+									</td>
+									<td class="colSearch">
+										<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
+										<strong>{{ texts.HISTORY_FILTERS }}:</strong>
+										{% for cluster, items in history.filter %}
+											{% set texts_group = 'REFINE_' ~ cluster %}
+											{% for item in items %}
+												{% set item_value = cluster ~ '_' ~
+	item|slugify ~ '' %}
+												({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+											{% endfor %}
 										{% endfor %}
-									{% endfor %}
-								</td>
-								<td class="colResults">
-									{% if history.total > 0 %}
-										<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
-									{% else %}
-										{{ history.total }}
-									{% endif %}
-								</td>
-								<td class="colActions">
-									<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
-									<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
-									<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
-								</td>
-							</tr>
-							{% endfor %}
+									</td>
+									<td class="colResults">
+										{% if history.total > 0 %}
+											<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+										{% else %}
+											{{ history.total }}
+										{% endif %}
+									</td>
+									<td class="colActions">
+										<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
+										<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
+										<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
+									</td>
+								</tr>
+								{% endfor %}
+							{% else %}
+								<tr>
+									<td colspan="5" >
+										<h4><i>{{ texts.HISTORY_EMPTY }}</i></h4>
+									</td>
+								</tr>
+							{% endif %}
 						</table>
 					</div>
 				</div>
