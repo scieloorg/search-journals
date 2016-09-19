@@ -3479,3 +3479,12 @@ button.btn:active {
 .lt-ie9 .articleTxt .refList.full {
   border-bottom: 0;
 }
+.articleShare {
+  left: -55px;
+}
+.articleShare:before {
+  left: 74%!important;
+}
+.socialLinks.articleShareLink {
+  position: absolute;
+}
