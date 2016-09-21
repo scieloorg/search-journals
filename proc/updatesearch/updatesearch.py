@@ -137,7 +137,6 @@ class UpdateSearch(object):
             pipeline_xml.DocumentID(),
             pipeline_xml.DOI(),
             pipeline_xml.Collection(),
-            pipeline_xml.KnowledgeArea(),
             pipeline_xml.DocumentType(),
             pipeline_xml.URL(),
             pipeline_xml.Authors(),
