@@ -8,7 +8,12 @@
                 {% block data %}
                     <span class="c-results-tit">
                         <span class="c-results-num">{{ loop.index + pag.start }}.</span>
-                            {{ doc.ti.0|raw }}
+                        {% if doc.ti %}
+                            {% set article_title = doc.ti.0|raw %}
+                        {% else %}
+                            {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                        {% endif %}
+                        {{ article_title }}
                     </span>
                 {% endblock %}
                 <span class="i-results-arrow"></span>
