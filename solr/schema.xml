@@ -100,9 +100,6 @@
             <!-- Distinct between abstract and fulltext languages ``ISO 639-1` -->
             <field name="available_languages" type="lowercase" indexed="true" stored="true" multiValued="true"/>
 
-            <!-- Area Knowledge **from:ac to:area_knowledge** list of area knowledge -->
-            <field name="ac" type="string" indexed="true" stored="true" multiValued="true"/>
-
             <!-- Short title **from:ta to:short_title** list of short title -->
             <field name="ta" type="text" indexed="true" stored="true" multiValued="true"/>
 
@@ -175,7 +172,7 @@
 
             <field name="total_received" type="int" indexed="true" stored="true" multiValued="false"/>
             <field name="total_access" type="int" indexed="true" stored="true" multiValued="false"/>
-            
+
             <!-- Text Words -->
             <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
 
@@ -237,7 +234,7 @@
         <copyField source="wok_citation_index" dest="tw"/>
         <copyField source="wok_subject_categories" dest="tw"/>
         <copyField source="journal_title" dest="tw"/>
-        <copyField source="journal_title" dest="ta"/>        
+        <copyField source="journal_title" dest="ta"/>
 
         <uniqueKey>id</uniqueKey>
 

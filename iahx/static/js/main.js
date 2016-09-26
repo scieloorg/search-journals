@@ -237,6 +237,7 @@ searchFormBuilder = {
 	SearchHistory: "",
 	Init: function() {
 		var p = "form.searchFormBuilder";
+		var lang = document.language.lang.value;
 
 		searchFormBuilder.SearchHistory = Cookie.Get("searchHistory");
 
@@ -312,11 +313,19 @@ searchFormBuilder = {
 					$("#TotalHits").html('0');
 					// send query again to register in history
 					send_query_to_history(form_action, form_params);
-					// increment history data on page
-					var history_number = parseInt($(".searchHistoryItem").data("history"));
-					$(".searchHistoryItem").data("history", history_number + 1);
-					$(".searchHistoryItem").html("#" + (history_number + 1));
-					$("#searchHistoryQuery").html(searchQuery);
+					// update same page with no result message
+					if (historyQuery != ''){
+						var form = document.updateHistoryPage;
+						$("#updateHistoryPage #clear").val("");
+						$("#updateHistoryPage #noresult").val("true");
+    					$("#updateHistoryPage").submit();
+					}else{
+						// increment history data on page
+						var history_number = parseInt($(".searchHistoryItem").data("history"));
+						$(".searchHistoryItem").data("history", history_number + 1);
+						$(".searchHistoryItem").html("#" + (history_number + 1));
+						$("#searchHistoryQuery").html(searchQuery);
+					}
 				}else{
 					// delete filters and other form parameters
 					$("input[type='hidden']").remove();
@@ -325,6 +334,7 @@ searchFormBuilder = {
 					manipulate_bookmark('c');
 					// execute search
 					$('<input>').attr({type: 'hidden', name: 'q', value:searchQuery}).appendTo('#searchForm');
+					$('<input>').attr({type: 'hidden', name: 'lang', value:lang}).appendTo('#searchForm');
 					$('<input>').attr({type: 'hidden', name: 'page', value:'1'}).appendTo('#searchForm');
 					searchForm.submit();
 				}
@@ -438,13 +448,11 @@ searchFormBuilder = {
 
 			if(t.is(":checked")) {
 				itens.each(function() {
-					$(this).prop("checked",true);
+					$(this).prop("checked",false);
+					$(this).trigger("change");
 				});
 				t.data("all","1");
 			} else {
-				itens.each(function() {
-					$(this).prop("checked",false);
-				});
 				t.data("all","0");
 			}
 		});
@@ -474,7 +482,6 @@ searchFormBuilder = {
 			var cluster_id = tid.substr(0, tid.lastIndexOf('_'));
 			var tall_option = $("#" + cluster_id + "_ALL");
 			var itens = $("#form_clusters #ul_" + cluster_id + " input.checkbox");
-
 
 			if (tvalue != '*' && tall_option.is(":checked")){
 				tall_option.prop("checked", false);
@@ -548,6 +555,17 @@ searchFormBuilder = {
 			$("#statistics").data("chartsource", modal_filter_id);
 			$("#exportcsv").data("cluster", filter_label);
 			$("#exportcsv").data("chartsource", modal_filter_id);
+			var selAll = $("#selectClusterItens_all");
+			var filter_all = $("#" + filter_id + "_ALL");
+
+			selAll.attr("name", "filter[" + filter_id + "][]");
+			if ( filter_all.is(":checked") ) {
+				selAll.prop("checked",true);
+				selAll.data("all", "1");
+			}else{
+				selAll.prop("checked",false);
+				selAll.data("all", "0");
+			}
 
 			modTitle.html(filter_label);
 			modContainer.empty();
@@ -568,23 +586,18 @@ searchFormBuilder = {
 
 		});
 
-		$("#selectClusterItens").on("shown.bs.modal",function() {
-			var container = this;
-			$(".filterBody input.checkbox",container).on("click",function() {
-				var t = $(this),
-					selAll = $(".clusterSelectAll",container),
-					itensCount = $(".itensCount",container);
+		$("#selectClusterItens").on("click", ".filterBody input.checkbox", function() {
+			var t = $(this);
+			var selAll = $(".clusterSelectAll");
 
-				$("#no_cluster_selected").hide();
-				if(!t.is(":checked")) {
-					var all = selAll.data("all");
-					if(all == "1") {
-						selAll.prop("checked",false).data("all","0");
-					}
+			$("#no_cluster_selected").hide();
+			if(t.is(":checked")) {
+				var all = selAll.data("all");
+				if(all == "1") {
+					selAll.prop("checked",false);
+					selAll.data("all","0");
 				}
-
-
-			});
+			}
 		});
 
 
