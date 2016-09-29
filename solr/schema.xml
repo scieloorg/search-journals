@@ -196,7 +196,10 @@
             <field name="subject_area"  type="string" indexed="true" stored="true"  multiValued="true"/>
 
             <!-- Dynamic Field to Article Keywords in any languages -->
-            <dynamicField name="keyword_*"  type="text" indexed="true" stored="true"  multiValued="true"/>
+            <dynamicField name="keyword_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
+
+            <!-- Allow search for keywords in different languages -->
+            <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
 
             <!-- Field that identifies if an article is citable or not -->
             <field name="is_citable"  type="string" indexed="true" stored="true"  multiValued="false"/>
@@ -235,6 +238,7 @@
         <copyField source="wok_subject_categories" dest="tw"/>
         <copyField source="journal_title" dest="tw"/>
         <copyField source="journal_title" dest="ta"/>
+        <copyField source="keyword_*" dest="kw"/>
 
         <uniqueKey>id</uniqueKey>
 
