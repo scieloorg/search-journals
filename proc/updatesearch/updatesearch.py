@@ -257,9 +257,8 @@ class UpdateSearch(object):
                     continue
 
         # optimize the index
-        self.solr.optimize()
         self.solr.commit()
-
+        self.solr.optimize()
 
 def main():
 
