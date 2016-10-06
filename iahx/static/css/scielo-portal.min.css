@@ -3494,3 +3494,12 @@ button.btn:active {
 .socialLinks.articleShareLink {
   position: absolute;
 }
+.openAccessIcon{
+    width: 13px;
+    height: 16px;
+    margin-bottom: 8px;
+    opacity: 0.5;
+}
+.openAccessIcon:hover{
+    opacity: 1;
+}

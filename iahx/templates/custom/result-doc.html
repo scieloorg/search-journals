@@ -13,7 +13,7 @@
             {% block data %}
                 <!-- title -->
                 <div class="line">
-                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" width="13" height="16" title="{{ doc.use_license }}">
+                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="{{ doc.use_license }}" class="openAccessIcon">
                     {% if doc.ti %}
                         {% set article_title = doc.ti.0|raw %}
                     {% else %}
