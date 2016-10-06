@@ -961,6 +961,12 @@ button.btn:active {
   border-right: 1px solid #b5c4e5;
   border-radius: 4px;
 }
+#iptQuery:focus {
+  outline: none;
+  border: none;
+  height: 20px;
+  box-shadow: 0 0 0 transparent;
+}
 .searchForm div.form-control {
   padding: 7px 7px;
   line-height: 26px;

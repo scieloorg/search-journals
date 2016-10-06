@@ -18,7 +18,7 @@
 		<button>facebook</button>
 		<button>delicious</button>
 	</addthis_buttons>
-    <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
+    <sharethis_pub></sharethis_pub>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
 	<google_analytics_tracking_id></google_analytics_tracking_id>
@@ -38,13 +38,25 @@
 					<name>ALL</name>
 					<prefix></prefix>
 				</index>
+				<index>
+                    <name>TI</name>
+                    <prefix>ti</prefix>
+                </index>
+				<index>
+                    <name>AU</name>
+                    <prefix>au</prefix>
+                </index>
+				<index>
+                    <name>AFF_COUNTRY</name>
+                    <prefix>aff_country</prefix>
+                </index>
+				<index>
+                    <name>KW</name>
+                    <prefix>kw</prefix>
+                </index>				
                 <index>
                     <name>YEAR</name>
                     <prefix>year_cluster</prefix>
-                </index>
-                <index>
-                    <name>AU</name>
-                    <prefix>au</prefix>
                 </index>
 				<index>
 					<name>SP</name>
@@ -53,10 +65,6 @@
                 <index>
                     <name>TA</name>
                     <prefix>ta</prefix>
-                </index>
-                <index>
-                    <name>TI</name>
-                    <prefix>ti</prefix>
                 </index>
                 <index>
                     <name>AB</name>
