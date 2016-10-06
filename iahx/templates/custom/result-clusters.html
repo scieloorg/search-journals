@@ -133,9 +133,9 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
-                                        {% if cluster|length > 1 %}
+                                        {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
                                             <a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{ texts.SHOW_ALL_ITEMS }}...</a>
-                                        {% endif %}                                        
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
