@@ -117,12 +117,13 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                             {% if item.0 in filter %}checked="true"{% endif %}
                                                         {% endfor %}
                                                         class="checkbox">
-                                                        <label class="checkbox" for="{{ cluster_item_id }}">
+                                                        {% set item_label = translate(item.0, cluster_labels ) %}
+                                                        <label class="checkbox" for="{{ cluster_item_id }}" {% if item_label|length > 30 %}title="{{item_label}}" {% endif %}>
                                                             {% if '/' in item.0 %}
                                                                 {% set item_part = item.0|split('/') %}
                                                                 {{ translate(item_part.1, cluster_labels ) }}
                                                             {% else %}
-                                                                {{ translate(item.0, cluster_labels ) }}
+                                                                {{ item_label }}
                                                             {% endif %}
                                                         </label>
 
