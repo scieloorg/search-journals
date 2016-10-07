@@ -1455,3 +1455,13 @@ $(".openCitedBy").on("click",function(e) {
 		}
 	});
 });
+
+$(".openExport").on("click",function(e) {
+	selection_count = $(".my_selection_count").html();
+	total = parseInt(selection_count);
+    if(total > 0) {
+		$("#export_selection_user_selection").prop('checked', true);
+	}else{
+		$("#export_selection_current_page").prop('checked', true);
+	}
+});
