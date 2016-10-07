@@ -233,10 +233,10 @@
       <lst name="invariants">
          <str name="facet">true</str>
          <str name="facet.field">in</str>
-         <str name="facet.field">ta_cluster</str>
+         <str name="facet.field">journal_title</str>
          <str name="facet.field">la</str>
          <str name="facet.field">year_cluster</str>
-         <str name="facet.field">subject_area</str>         
+         <str name="facet.field">subject_area</str>
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
          <str name="facet.field">is_citable</str>
