@@ -167,6 +167,9 @@
             <!-- Journal title of this research article -->
             <field name="journal_title" type="string" indexed="true" stored="true" multiValued="false"/>
 
+            <!-- Journal publisher -->
+            <field name="publisher" type="string" indexed="false" stored="true" multiValued="false"/>
+
             <!-- Digital Object Identifier DOI -->
             <field name="doi" type="text" indexed="true" stored="true" multiValued="false"/>
 
