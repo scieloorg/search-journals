@@ -1467,3 +1467,42 @@ $(".openExport, .sendViaMail").on("click",function(e) {
 		$("#sendViaEmail_selection_page").prop('checked', true);
 	}
 });
+
+$(".openJournalInfo").on("click",function(e) {
+	e.preventDefault();
+	var t = $(this),
+		issn = t.data("issn"),
+		publisher = t.data("publisher");
+
+	var journal_title = t.html();
+	$("#JournalInfo").modal("show");
+	modal_body = $('#JournalInfo .modal-body');
+	modal_footer = $('#JournalInfo .modal-footer');
+	modal_body.html('<h2>' + journal_title + '</h2>');
+
+	modal_body.append('<p>' + publisher + '</p>');
+	modal_body.append('<strong>ISSN:</strong> ' + issn + '<br/>');
+
+	// make request to citedby service
+	$.ajax({
+		type: "get",
+		url: 'http://analytics.scielo.org/ajx/bibliometrics/journal/google_h5m5_chart?',
+		data: 'journal=' + issn,
+		dataType: 'jsonp',
+		success: function(response) { // on success..
+			console.log("sucess");
+			h5_serie = response.options.series[0].data;
+			h5_last = h5_serie[h5_serie.length-1];
+			m5_serie = response.options.series[1].data;
+			m5_last = m5_serie[h5_serie.length-1];
+			year_list = response.options.xAxis.categories;
+			last_year = year_list[year_list.length-1];
+			modal_body.append('<strong>Google Scholar</strong><br/>');
+			modal_body.append('<strong>' + last_year + '</strong><br/>');
+			modal_body.append('<strong>índice h5:</strong> <a href="' +  h5_last.ownURL + '" target="_blank">' + h5_last.y + '</a><br/>');
+			modal_body.append('<strong>mediana h5:</strong> <a href="' +  m5_last.ownURL + '" target="_blank">' + m5_last.y + '</a><br/>');
+		}
+	});
+	modal_footer.append('<p><a href="http://analytics.scielo.org/?journal=' + issn + '" target="_blank">Mais ...</a></p>');
+
+});
