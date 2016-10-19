@@ -47,12 +47,16 @@
                     <prefix>au</prefix>
                 </index>
 				<index>
-                    <name>AFF_COUNTRY</name>
-                    <prefix>aff_country</prefix>
-                </index>
-				<index>
                     <name>KW</name>
                     <prefix>kw</prefix>
+                </index>
+				<index>
+                    <name>SUBJECT</name>
+                    <prefix>subject</prefix>
+                </index>
+				<index>
+                    <name>TA</name>
+                    <prefix>ta</prefix>
                 </index>
                 <index>
                     <name>YEAR</name>
@@ -62,14 +66,6 @@
 					<name>SP</name>
 					<prefix>sponsor</prefix>
 				</index>
-                <index>
-                    <name>TA</name>
-                    <prefix>ta</prefix>
-                </index>
-                <index>
-                    <name>AB</name>
-                    <prefix>ab</prefix>
-                </index>
 			</index_list>
 			<where_list>
 				<where>

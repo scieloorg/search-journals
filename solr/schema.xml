@@ -176,8 +176,11 @@
             <field name="total_received" type="int" indexed="true" stored="true" multiValued="false"/>
             <field name="total_access" type="int" indexed="true" stored="true" multiValued="false"/>
 
-            <!-- Text Words -->
+            <!-- Text Words (All indexes) -->
             <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
+
+            <!-- Subject indexes -->
+            <field name="subject" type="text" indexed="true" stored="false" multiValued="true"/>
 
             <!-- Uniform Resource Location for the PDF file ex.:
             http://www.scielo.br/scielo.php?script=sci_pdf&pid=S0102-67202013000200003&lng=en&nrm=iso&tlng=en -->
@@ -223,25 +226,43 @@
             <dynamicField name="*" type="ignored" />
         </fields>
 
+        <!-- All indexes -->
         <copyField source="id" dest="tw"/>
-        <copyField source="id" dest="pid"/>
         <copyField source="ti" dest="tw"/>
         <copyField source="ti_*" dest="tw"/>
-        <copyField source="ti_*" dest="ti"/>
-        <copyField source="ab_*" dest="ab"/>
         <copyField source="au" dest="tw"/>
         <copyField source="ab" dest="tw"/>
         <copyField source="ab_*" dest="tw"/>
         <copyField source="ta" dest="tw"/>
         <copyField source="doi" dest="tw"/>
         <copyField source="sponsor" dest="tw"/>
+        <copyField source="journal_title" dest="tw"/>
+        <copyField source="keyword_*" dest="tw"/>
+        <!-- /All indexes -->
+
+        <!-- Subject index -->
+        <copyField source="ti" dest="subject"/>
+        <copyField source="ti_*" dest="subject"/>
+        <copyField source="ab" dest="subject"/>
+        <copyField source="ab_*" dest="subject"/>
+        <copyField source="keyword_*" dest="subject"/>
+        <!-- /Subject index -->
+
+        <!-- Language fields  -->
+        <copyField source="ab_*" dest="ab"/>
+        <copyField source="ti_*" dest="ti"/>
+        <copyField source="keyword_*" dest="kw"/>
+        <!-- /Language fields -->
+
+        <!-- Cluster indexes -->
         <copyField source="ta" dest="ta_cluster"/>
         <copyField source="da" dest="year_cluster"/>
-        <copyField source="wok_citation_index" dest="tw"/>
-        <copyField source="wok_subject_categories" dest="tw"/>
-        <copyField source="journal_title" dest="tw"/>
+        <!-- /Cluster indexes -->
+
+        <!-- Additional indexes -->
         <copyField source="journal_title" dest="ta"/>
-        <copyField source="keyword_*" dest="kw"/>
+        <copyField source="id" dest="pid"/>
+        <!-- /Additional indexes -->
 
         <uniqueKey>id</uniqueKey>
 
