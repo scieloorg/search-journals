@@ -1,0 +1,119 @@
+{% if email.name is defined or email.your_email is defined %}
+    <p>{{ texts.SEND_BY }} {{ email.name }} {{ email.your_email }}.</p>
+{% endif %}
+
+<a href="http://{{ constant("SERVERNAME") }}{{ current_url }}">{{ texts.SEARCH_HOME }} | {{ texts.BVS_TITLE }} {% if params.q %}| {{ params.q|truncate(90) }} {% endif %}</a>
+
+{% if email.comment %}
+    <hr>
+    {{ email.comment }}
+    <hr>
+{% endif %}
+
+<div class="results">
+    <div class="resultSet">
+    {% for doc in docs %}
+            <table width="90%">
+                <tr valign="top">
+                    <td colspan="2">
+                        <br/>
+                        <font size="4" color="#0068CF">
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}">
+                                {{ doc.ti.0|raw }}
+                            </a>
+                        </font>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td width="15%">
+                        <b>
+                            {{ texts.RESULT.LABEL_AUTHOR }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.au if doc.au is defined and doc.au|length > 0 %}
+                            {{ item }}{% if loop.index != doc.au|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td>
+                        <b>
+                            {{ texts.RESULT.LABEL_SOURCE }}
+                        </b>
+                    </td>
+                    <td>
+                        {{ doc.journal_title }},
+                        {% if doc.da %}
+                            <span style="margin: 0">{{ translate(doc.da|slice(5,2), 'MONTHS') }}</span>
+                            <span style="margin: 0">{{ doc.da|slice(0,4) }}, </span>
+                        {% endif %}
+                        {% if doc.volume %}
+                            {{ texts.RESULT.LABEL_VOLUME }}
+                            {{ doc.volume }}
+                        {% endif %}
+                        {% if doc.issue %}
+                            {{ texts.RESULT.LABEL_NUMBER }}
+                            {{ doc.issue }}
+                        {% endif %}
+
+                        {% if doc.elocation %}
+                            elocation
+                            {{ doc.elocation }}
+                        {% elseif doc.start_page %}
+                            {{ texts.RESULT.LABEL_PAGES }}
+                            {{ doc.start_page }} - {{ doc.end_page }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if doc.ab is defined %}
+                <tr valign="top">
+                    <td>
+                        <b>
+                            {{ texts.RESULT.LABEL_ABSTRACT }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.ab if doc.ab is defined and doc.ab|length > 0 %}
+                            {{ item }}{% if loop.index != doc.ab|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr valign="top">
+                    <td colspan="2">
+                        {% for language in doc.available_languages %}
+                            · {{ translate(language, 'REFINE_la') }}:
+                            {% set ab_lang = 'ab_' ~ language %}
+                            {% set fulltext_lang = 'fulltext_html_' ~ language %}
+                            {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+
+                            {% if attribute(doc, ab_lang) %}
+                                <a href="#" onclick="$('#{{doc.id}}_{{language}}').toggle(); return false;">
+                                    {{ texts.RESULT.LABEL_ABSTRACT }}
+                                </a>
+                            {% endif %}
+                            {% if attribute(doc, fulltext_lang) %}
+                                {% if attribute(doc, ab_lang) %} | {% endif %}
+                                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
+                                    {{ texts.TEXT }}
+                                </a>
+                            {% endif %}
+                            {% if attribute(doc, pdf_lang) %}
+                                {% if attribute(doc, ab_lang) or attribute(doc, fulltext_lang) %} | {% endif %}
+                                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}">
+                                    PDF
+                                </a>
+                                {% if doc.doi and doc.in.0 == 'scl' %}
+                                | <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/readcube/epdf.php?doi={{doc.doi}}&pid={{doc.ur.0}}&pdf_path={{ attribute(doc, pdf_lang).0|substring_after('pdf/') }}&lang={{language}}">
+                                    ePDF
+                                </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+    {% endfor %}
+    </div>
+</div>
