@@ -1481,7 +1481,9 @@ $(".openJournalInfo").on("click",function(e) {
 	modal_body.html('<h2>' + journal_title + '</h2>');
 
 	modal_body.append('<p>' + publisher + '</p>');
-	modal_body.append('<strong>ISSN:</strong> ' + issn + '<br/>');
+	if (issn != ''){
+		modal_body.append('<strong>ISSN:</strong> ' + issn + '<br/>');
+	}
 
 	// make request to citedby service
 	$.ajax({
@@ -1503,6 +1505,6 @@ $(".openJournalInfo").on("click",function(e) {
 			modal_body.append('<strong>mediana h5:</strong> <a href="' +  m5_last.ownURL + '" target="_blank">' + m5_last.y + '</a><br/>');
 		}
 	});
-	modal_footer.append('<p><a href="http://analytics.scielo.org/?journal=' + issn + '" target="_blank">Mais ...</a></p>');
+	$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn);
 
 });
