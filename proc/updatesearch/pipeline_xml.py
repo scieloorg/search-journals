@@ -67,6 +67,16 @@ class SubjectAreas(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
+        if len(raw.journal.subject_areas) > 2:
+
+            field = ET.Element('field')
+            field.text = 'multidisciplinary'
+            field.set('name', 'subject_area')
+            xml.find('.').append(field)
+
+            return data
+
+
         for subject_area in raw.journal.subject_areas:
             field = ET.Element('field')
             field.text = subject_area
