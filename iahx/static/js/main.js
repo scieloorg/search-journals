@@ -1472,7 +1472,8 @@ $(".openJournalInfo").on("click",function(e) {
 	e.preventDefault();
 	var t = $(this),
 		issn = t.data("issn"),
-		publisher = t.data("publisher");
+		publisher = t.data("publisher"),
+		collection = t.data("collection");
 
 	var journal_title = t.html();
 	$("#JournalInfo").modal("show");
@@ -1505,6 +1506,6 @@ $(".openJournalInfo").on("click",function(e) {
 			modal_body.append('<strong>mediana h5:</strong> <a href="' +  m5_last.ownURL + '" target="_blank">' + m5_last.y + '</a><br/>');
 		}
 	});
-	$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn);
+	$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
 
 });
