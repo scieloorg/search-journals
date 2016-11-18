@@ -2,7 +2,10 @@
 from lxml import etree as ET
 
 import plumber
+from citedby import client
 
+
+CITEDBY = client.ThriftClient(domain='citedby.scielo.org:11610')
 
 """
 Full example output of this pipeline:
@@ -648,6 +651,47 @@ class PublicationDate(plumber.Pipe):
         field = ET.Element('field')
         field.text = raw.publication_date
         field.set('name', 'da')
+        xml.find('.').append(field)
+
+        return data
+
+
+class SciELOPublicationDate(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.creation_date
+        field.set('name', 'scielo_publication_date')
+        xml.find('.').append(field)
+
+        return data
+
+
+class ReceivedCitations(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        result = CITEDBY.citedby_pid(raw.publisher_id, metaonly=True)
+
+        field = ET.Element('field')
+        field.text = str(result.get('article', {'total_received': 0})['total_received'])
+        field.set('name', 'total_received')
+        xml.find('.').append(field)
+
+        return data
+
+
+class SciELOProcessingDate(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+
+        field = ET.Element('field')
+        field.text = raw.processing_date
+        field.set('name', 'scielo_processing_date')
         xml.find('.').append(field)
 
         return data

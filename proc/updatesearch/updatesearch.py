@@ -18,10 +18,9 @@ from lxml import etree as ET
 
 import plumber
 import pipeline_xml
-import articlemeta as art_meta
+from articlemeta.client import ThriftClient
 
 from SolrAPI import Solr
-from xylose.scielodocument import Article
 
 logger = logging.getLogger('updatesearch')
 
@@ -75,12 +74,6 @@ class UpdateSearch(object):
                         default=None,
                         help='delete query ex.: q=*:* (Lucene Syntax).')
 
-    parser.add_argument('-r', '--range',
-                        type=int,
-                        dest='chunk_range',
-                        default=1000,
-                        help='range of chunks, send to solr, default:1000.')
-
     parser.add_argument('-s', '--sanitization',
                         dest='sanitization',
                         default=False,
@@ -125,7 +118,7 @@ class UpdateSearch(object):
 
         return date.strftime('%Y-%m-%d')
 
-    def pipeline_to_xml(self, list_dict):
+    def pipeline_to_xml(self, article):
         """
         Pipeline to tranform a dictionary to XML format
 
@@ -150,6 +143,8 @@ class UpdateSearch(object):
             pipeline_xml.AvailableLanguages(),
             pipeline_xml.Fulltexts(),
             pipeline_xml.PublicationDate(),
+            pipeline_xml.SciELOPublicationDate(),
+            pipeline_xml.SciELOProcessingDate(),
             pipeline_xml.Abstract(),
             pipeline_xml.AffiliationCountry(),
             pipeline_xml.AffiliationInstitution(),
@@ -167,10 +162,11 @@ class UpdateSearch(object):
             pipeline_xml.Keywords(),
             pipeline_xml.JournalISSNs(),
             pipeline_xml.SubjectAreas(),
+            pipeline_xml.ReceivedCitations(),
             pipeline_xml.TearDown()
         )
 
-        xmls = ppl.run([Article(article) for article in list_dict])
+        xmls = ppl.run([article])
 
         # Add root document
         add = ET.Element('add')
@@ -184,6 +180,8 @@ class UpdateSearch(object):
         """
         Run the process for update article in Solr.
         """
+
+        art_meta = ThriftClient()
 
         if self.args.delete:
 
@@ -205,8 +203,8 @@ class UpdateSearch(object):
                 ind_ids.add(id['id'])
 
             # all ids in articlemeta
-            for acron, id in art_meta.get_identifiers():
-                art_ids.add('%s-%s' % (id, acron))
+            for item in art_meta.documents(only_identifiers=True):
+                art_ids.add('%s-%s' % (item.code, item.collection))
 
             # Ids to remove
             remove_ids = ind_ids - art_ids
@@ -219,34 +217,19 @@ class UpdateSearch(object):
         else:
 
             # Get article identifiers
-            art_ids = art_meta.get_identifiers(collection=self.args.collection,
-                                               issn=self.args.issn,
-                                               _from=self.format_date(self.args.from_date),
-                                               _until=self.format_date(self.args.until_date))
 
             logger.info("Indexing in {0}".format(self.solr.url))
 
-            count = 0
-            while True:
+            for document in art_meta.documents(
+                collection=self.args.collection,
+                issn=self.args.issn,
+                from_date=self.format_date(self.args.from_date),
+                until_date=self.format_date(self.args.until_date)
+            ):
+
                 try:
-                    lst_ids = list(itertools.islice(art_ids, 0, self.args.chunk_range))
-
-                    if not lst_ids:
-                        break
-
-                    list_article = []
-
-                    for ident in lst_ids:
-                        list_article.append(json.loads(art_meta.get_article(*ident)))
-
-                    logger.info("Processed ids list: {0}".format(lst_ids))
-
-                    self.solr.update(self.pipeline_to_xml(list_article), commit=True)
-
-                    count += len(list_article)
-
-                    logger.info("Updated {0} articles".format(count))
-
+                    xml = self.pipeline_to_xml(document)
+                    self.solr.update(self.pipeline_to_xml(document), commit=True)
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))
                     logger.exception(e)
@@ -259,6 +242,7 @@ class UpdateSearch(object):
         # optimize the index
         self.solr.commit()
         self.solr.optimize()
+
 
 def main():
 
