@@ -1,6 +1,6 @@
 <!-- source -->
 <div class="line source">
-    <span style="margin: 0"><a href="#" class="openJournalInfo" data-issn="{{doc.issn.0}}" data-publisher={{doc.publisher}}>{{ doc.journal_title }}</a>, </span>
+    <span style="margin: 0"><a href="#" class="openJournalInfo" data-issn="{{doc.issn.0}}" data-publisher="{{doc.publisher}}" data-collection="{{doc.in.0}}">{{ doc.journal_title }}</a>, </span>
     {% if doc.da %}
         <span style="margin: 0">{{ translate(doc.da|slice(5,2), 'MONTHS') }}</span>
         <span style="margin: 0">{{ doc.da|slice(0,4) }}, </span>
