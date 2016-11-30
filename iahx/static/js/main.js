@@ -791,6 +791,26 @@ searchFormBuilder = {
 			$(this).val(v);
 		});
 
+		$(".showContextHelper").on("focus.showContextHelper blur.showContextHelper",function(e) {
+			var t = $(this),
+				contextHelper = $(t.data("helper")),
+				cl = "contextHelper_focus";
+
+			if(contextHelper.length > 0) {
+				if(e.type == "focus")
+					contextHelper.addClass(cl);
+				else {
+					setTimeout(function() {
+						contextHelper.removeClass(cl);
+					},500)
+				}
+			}
+		});
+
+		$("#BuscaAjuda").on("hidden.bs.modal",function() {
+			$(".showContextHelper:eq(0)").focus();
+		});
+
 		$(window).scroll(function() {
 			if($(window).scrollTop() > window.searchActionsStart)
 				$(".searchActions").addClass("fixed");
