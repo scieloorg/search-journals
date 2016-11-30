@@ -419,6 +419,10 @@ searchFormBuilder = {
 			t.text(txtToggle).data("texttoggle",txt);
 		});
 
+		$(".collapseBlock .filterCollapsedList input:checkbox").on("click",function() {
+			$("#apply_filters_button").removeProp("disabled");
+		});
+
 		$(".articleAction, .searchHistoryItem, .colActions .searchHistoryIcon",p).tooltip();
 
 		$(".selectAll",p).on("click",function() {
