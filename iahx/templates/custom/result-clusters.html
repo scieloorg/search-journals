@@ -80,7 +80,8 @@
                                         {{ attribute(texts.REFINE, name) }}
                                     </a>
                                     {% if cluster|length > 1 %}
-                                        <a href="javascript:;" class="icon configs openSelectItens pull-right configsText" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}">{{texts.SETTINGS}}</a>
+                                        <!--a href="javascript:;" class="icon configs openSelectItens pull-right configsText" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}">{{texts.SETTINGS}}</a-->
+                                        <a href="javascript:;" class="singleBtn openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}"><span>+ {{texts.SETTINGS}}</span></a>
                                     {% endif %}
                                 </div>
 

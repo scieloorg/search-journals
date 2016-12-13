@@ -628,8 +628,43 @@ button.btn:active {
   color: #a7a49e;
   padding-right: 20px;
 }
+.filterHead .orderBy_title {
+  line-height: 25px;
+  margin-top: -5px;
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  vertical-align: top;
+  font-weight: bold;
+  position: relative;
+  color: #355fb8;
+}
+.filterHead .orderBy_title:focus,
+.filterHead .orderBy_title:active {
+  text-decoration: none;
+  color: #6789d3;
+}
+.filterHead .orderBy_title:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: '';
+  width: 15px;
+  height: 20px;
+}
+.filterHead .orderBy_title.orderBy_selected {
+  color: #6789d3;
+  padding-right: 15px;
+}
+.filterHead .orderBy_title.orderBy_selected:before {
+  background: url(../image/input.glyphs.png) -9px -312px no-repeat;
+}
+.filterHead .checkbox {
+  margin-bottom: 0;
+}
 .filterHead .col-xs-3 {
   text-align: left;
+  text-align: right;
 }
 .filterBody {
   max-height: 200px;
@@ -1206,6 +1241,7 @@ button.btn:active {
 .searchForm .resultBlock .collapseBlock .title {
   background: url(../image/dashline.png) bottom left repeat-x;
   position: relative;
+  padding-right: 60px;
 }
 .searchForm .resultBlock .collapseBlock .title.closed {
   background: none;
@@ -1213,8 +1249,6 @@ button.btn:active {
 }
 .searchForm .resultBlock .collapseBlock .content {
   padding: 10px 5px 3px;
-  max-height: 180px;
-  overflow: hidden;
   position: relative;
   display: block;
   zoom: normal;
@@ -1230,9 +1264,13 @@ button.btn:active {
 .searchForm .resultBlock .collapseBlock a.closed {
   color: #403d39;
   font-weight: bold;
-  display: inline-block;
-  padding: 7px 3px 7px 25px;
+  display: block;
+  padding: 0 3px 0 25px;
   background: url(../image/button.glyphs.png) -10px -232px no-repeat;
+  line-height: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .searchForm .resultBlock .collapseBlock a.closed {
   background-position: -10px -188px;
@@ -1246,6 +1284,30 @@ button.btn:active {
   height: 25px;
   text-indent: -5000px;
   background: url(../image/button.glyphs.png) -10px -280px no-repeat;
+}
+.searchForm .resultBlock .collapseBlock a.singleBtn {
+  line-height: 35px;
+  width: 60px;
+  display: block;
+  text-align: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.searchForm .resultBlock .collapseBlock a.singleBtn span {
+  border: 1px solid #6789d3;
+  color: #6789d3;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 3px;
+  line-height: 17px;
+  display: inline-block;
+  padding: 0 2px;
+  opacity: .5;
+}
+.searchForm .resultBlock .collapseBlock a.singleBtn:hover span {
+  opacity: 1;
 }
 .searchForm .resultBlock .collapseBlock .showAll {
   position: absolute;
@@ -3502,4 +3564,27 @@ button.btn:active {
 }
 .openAccessIcon:hover{
     opacity: 1;
+}
+.cluster-actions-menu {
+  text-align: left;
+  position: relative;
+  width: 51% !important;
+}
+.cluster-actions-menu .tooltip {
+  position: absolute;
+}
+.cluster-actions-menu .singleBtn {
+  background: none;
+  color: #6789d3;
+  border: 1px solid #6789d3;
+  font-weight: normal;
+}
+.cluster-actions-menu .singleBtn_disabled {
+  opacity: .4;
+  cursor: pointer;
+  color: #403d39;
+  border-color: #403d39;
+}
+.cluster-actions-menu .btn + .btn {
+  margin-left: 0 !important;
 }
