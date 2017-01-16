@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="UpdateSearch",
-    version='0.2',
+    version='1.1.2',
     description="Process article to Solr",
     author="SciELO",
     author_email="scielo-dev@googlegroups.com",
