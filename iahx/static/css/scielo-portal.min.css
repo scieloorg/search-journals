@@ -1043,10 +1043,43 @@ button.btn:active {
   border-right: 0;
   display: table-cell;
   position: relative;
+  z-index: 2;
 }
 .searchForm div.form-textarea.no-divisor {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+.searchForm .contextHelper {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  background: #00314c;
+  color: #fff;
+  padding: 3px 7px;
+  font-size: 11px;
+  position: absolute;
+  z-index: 1;
+  margin-left: 10px;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -ms-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  -ms-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -o-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -webkit-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+}
+.searchForm .contextHelper:hover {
+  background: #6789d3;
+}
+.searchForm .contextHelper.contextHelper_focus {
+  margin-top: 42px;
 }
 .searchForm a.clearIptText {
   display: inline-block;
@@ -3587,4 +3620,42 @@ button.btn:active {
 }
 .cluster-actions-menu .btn + .btn {
   margin-left: 0 !important;
+}
+#apply_filters_button {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -ms-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  -ms-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -o-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  -webkit-transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+  transition: all 0.5s ease-out, text-indent 0.5s ease-out;
+}
+#apply_filters_button:disabled {
+  background: #aaa;
+}
+.buttons {
+  padding: 10px 0;
+}
+.buttons.affix,
+.buttons.affix-top {
+  width: 285px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px 15px;
+}
+.buttons.affix-top {
+  padding: 10px 0;
+  width: inherit;
 }

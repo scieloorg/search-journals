@@ -419,6 +419,10 @@ searchFormBuilder = {
 			t.text(txtToggle).data("texttoggle",txt);
 		});
 
+		$(".collapseBlock .filterCollapsedList input:checkbox").on("click",function() {
+			$("#apply_filters_button").removeProp("disabled");
+		});
+
 		$(".articleAction, .searchHistoryItem, .colActions .searchHistoryIcon",p).tooltip();
 
 		$(".selectAll").on("click",function() {
@@ -810,6 +814,26 @@ searchFormBuilder = {
 			v = v.replace(/[A-Za-z$-.\/\\\[\]=_@!#^<>;"]/g, "");
 
 			$(this).val(v);
+		});
+
+		$(".showContextHelper").on("focus.showContextHelper blur.showContextHelper",function(e) {
+			var t = $(this),
+				contextHelper = $(t.data("helper")),
+				cl = "contextHelper_focus";
+
+			if(contextHelper.length > 0) {
+				if(e.type == "focus")
+					contextHelper.addClass(cl);
+				else {
+					setTimeout(function() {
+						contextHelper.removeClass(cl);
+					},500)
+				}
+			}
+		});
+
+		$("#BuscaAjuda").on("hidden.bs.modal",function() {
+			$(".showContextHelper:eq(0)").focus();
 		});
 
 		$(window).scroll(function() {

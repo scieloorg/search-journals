@@ -24,6 +24,27 @@ from SolrAPI import Solr
 
 logger = logging.getLogger('updatesearch')
 
+ALLOWED_COLLECTION = [
+    'scl',
+    'arg',
+    'cub',
+    'esp',
+    'sss',
+    'spa',
+    'chl',
+    'mex',
+    'prt',
+    'ecu',
+    'cri',
+    'sza',
+    'col',
+    'per',
+    'ven',
+    'ury',
+    'bol',
+    'par'
+]
+
 
 class UpdateSearch(object):
     """
@@ -204,6 +225,8 @@ class UpdateSearch(object):
 
             # all ids in articlemeta
             for item in art_meta.documents(only_identifiers=True):
+                if item.collection not in ALLOWED_COLLECTION:
+                    continue
                 art_ids.add('%s-%s' % (item.code, item.collection))
 
             # Ids to remove

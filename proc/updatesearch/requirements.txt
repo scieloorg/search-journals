@@ -1,6 +1,6 @@
 lxml==3.4.4
 requests==2.11.1
-articlemetaapi==1.5.11
+articlemetaapi==1.6.15
 citedbyapi==1.2.4
 -e git+git://github.com/picleslivre/solrapi.git#egg=solrapi
 -e git+git://github.com/gustavofonseca/plumber.git#egg=plumber
