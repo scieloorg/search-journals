@@ -425,7 +425,7 @@ searchFormBuilder = {
 
 		$(".articleAction, .searchHistoryItem, .colActions .searchHistoryIcon",p).tooltip();
 
-		$(".selectAll",p).on("click",function() {
+		$(".selectAll").on("click",function() {
 
 			var t = $(this),
 				itens = $(".results .item input.checkbox",p),
@@ -448,20 +448,22 @@ searchFormBuilder = {
 
 		$(".clusterSelectAll").on("click",function() {
 			var t = $(this),
-				itens = $("#selectClusterItens .filterBody input.checkbox");
+				itens = $("#selectClusterItens .filterBody input.checkbox"),
+				checked = t.is(":checked");
 
-			if(t.is(":checked")) {
-				itens.each(function() {
-					$(this).prop("checked",false);
-					$(this).trigger("change");
-				});
+			itens.each(function() {
+				$(this).prop("checked",checked);
+				$(this).trigger("change");
+			});
+			
+			if(checked) {
 				t.data("all","1");
 			} else {
 				t.data("all","0");
 			}
 		});
 
-		$(".results .item input.checkbox",p).on("change",function() {
+		$(".results .item input.checkbox").on("change",function() {
 			var t = $(this),
 				selAll = $(".selectAll",p),
 				selCount = $("#selectedCount",p),
@@ -503,7 +505,15 @@ searchFormBuilder = {
 			var t = $(this),
 				field = t.data("field"),
 				container = $(t.data("rel")),
-				sort_items = [];
+				sort_items = [],
+				group = t.data("group");
+
+			if(typeof group !== "undefined") {
+				var groupItens = $("a.orderBy[data-group='"+group+"']");
+				groupItens.removeClass("orderBy_selected");
+			}
+
+			t.addClass("orderBy_selected");
 
 			$(".filterItem",container).each(function() {
 				var ti = $(this),
@@ -553,8 +563,8 @@ searchFormBuilder = {
 			// get itens from modal window
 			var modal_filter_id = "#filter_" + filter_id
 
-			$("#orderby_results").data("rel", modal_filter_id);
-			$("#orderby_alpha").data("rel", modal_filter_id);
+			$("#orderby_results").data("rel", modal_filter_id).addClass("orderBy_selected");
+			$("#orderby_alpha").data("rel", modal_filter_id).removeClass("orderBy_selected").html(filter_label);
 			$("#statistics").data("cluster", filter_label);
 			$("#statistics").data("chartsource", modal_filter_id);
 			$("#exportcsv").data("cluster", filter_label);
@@ -584,6 +594,17 @@ searchFormBuilder = {
 				},
 		        success: function(response) { // on success..
 					$('.filterBody').html(response); // update the DIV
+
+					$('.filterBody input.checkbox').off("change.enableBtn").on("change.enableBtn",function() {
+						var counter = $(".filterBody input.checkbox:checked").length,
+							btn = $(".cluster-actions-menu a.singleBtn");
+
+						if(counter > 0) {
+							btn.removeClass("singleBtn_disabled").tooltip("disable");
+						} else {
+							btn.addClass("singleBtn_disabled").tooltip("enable");
+						}
+					});
 		        }
 		    });
 			mod.modal("show");
@@ -594,7 +615,7 @@ searchFormBuilder = {
 			var t = $(this);
 			var selAll = $(".clusterSelectAll");
 
-			$("#no_cluster_selected").hide();
+			$("#no_cluster_selected").slideUp("fast");
 			if(t.is(":checked")) {
 				var all = selAll.data("all");
 				if(all == "1") {
@@ -1215,202 +1236,276 @@ $(function() {
 	if($("#articleText").length)
 		Article.Init();
 
-});
-
-$(".goto_page").keyup(function(event){
-    if(event.keyCode == 13){
-    	new_page = $(this).val();
-        go_to_page(new_page);
-    }
-});
-
-$(".selectAll").on("click",function() {
-	var t = $(this),
-		itens = $(".results .item input.checkbox"),
-		selCount = $("#selectedCount"),
-		selCountInt = parseInt(selCount.text());
-
-	if(t.is(":checked")) {
-		itens.each(function() {
-			$(this).prop("checked",true);
-			$(this).trigger("change");
-		});
-		t.data("all","1");
-	} else {
-		itens.each(function() {
-			$(this).prop("checked",false);
-			$(this).trigger("change");
-		});
-		t.data("all","0");
-	}
-});
-
-
-$(".exportCSV").on("click",function(e) {
-	e.preventDefault();
-
-	var t = $(this),
-		title = t.data("cluster"),
-		chartSource = t.data("chartsource");
-
-	var grupo = $(chartSource);
-    var lista = grupo.find('li');
-	var regex = /<span>\d+<\/span>/i;
-	var params= "";
-
-    for (i = 0; i < lista.length; i++){
-		clusterSelection = lista[i].getElementsByTagName('input')[0];
-		if (!clusterSelection.checked){
-			continue;
-		}
-        cluster = lista[i].innerHTML;
-        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
-		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
-
-        ma = regex.exec(cluster);
-        if (ma != null) {
-            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
-            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
-        }
-    }
-	if (params == ""){
-		$("#no_cluster_selected").show();
-		return;
-	}
-
-    var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
-	if(isOldIE) {
-		csvLink = encodeURI(csvLink);
-	}
-	export_win = window.open(csvLink);
-});
-
-
-$(".openStatistics").on("click",function(e) {
-	e.preventDefault();
-
-	var t = $(this),
-		title = t.data("cluster"),
-		chartType = t.data("type"),
-		chartSource = t.data("chartsource");
-
-	// check if has any item selected
-	var grupo = $(chartSource);
-	var lista = grupo.find('li');
-	var any_selected = false;
-	for (i = 0; i < lista.length; i++){
-		clusterSelection = lista[i].getElementsByTagName('input')[0];
-		if (clusterSelection.checked){
-			any_selected = true;
-			break;
-		}
-	}
-	if (any_selected == false){
-		$("#no_cluster_selected").show();
-		return;
-	}
-
-	$("#Statistics").data({
-		"title": title,
-		"charttype": chartType,
-		"chartsource": chartSource
-	}).modal({
-		"show": true
+	$(".goto_page").keyup(function(event){
+	    if(event.keyCode == 13){
+	    	new_page = $(this).val();
+	        go_to_page(new_page);
+	    }
 	});
 
-});
+	$(".exportCSV").on("click",function(e) {
+		e.preventDefault();
 
-$("#Statistics").on("shown.bs.modal",function() {
-	var regex = /<span>\d+<\/span>/i;
-    var params= "";
+		var t = $(this),
+			title = t.data("cluster"),
+			chartSource = t.data("chartsource");
 
-	var t = $(this),
-		chartBlock = $(".chartBlock",this),
-		title = t.data("title"),
-		chartType = t.data("charttype"),
-		chartSource = t.data("chartsource");
+		var grupo = $(chartSource);
+	    var lista = grupo.find('li');
+		var regex = /<span>\d+<\/span>/i;
+		var params= "";
 
-	var grupo = $(chartSource);
-    var lista = grupo.find('li');
+	    for (i = 0; i < lista.length; i++){
+			clusterSelection = lista[i].getElementsByTagName('input')[0];
+			if (!clusterSelection.checked){
+				continue;
+			}
+	        cluster = lista[i].innerHTML;
+	        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
+			clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
 
-    for (i = 0; i < lista.length; i++){
-		clusterSelection = lista[i].getElementsByTagName('input')[0];
-		if (!clusterSelection.checked){
-			continue;
+	        ma = regex.exec(cluster);
+	        if (ma != null) {
+	            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
+	            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
+	        }
+	    }
+		if (params == ""){
+			$("#no_cluster_selected").slideDown("fast");
+			return;
 		}
-        cluster = lista[i].innerHTML;
-        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
-		clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
 
-        ma = regex.exec(cluster);
-        if (ma != null) {
-            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
-            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
-        }
-    }
-    var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
-    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
-
-	chartDataUrl = encodeURI(chartDataUrl);
-	if(isOldIE) {
-		csvLink = encodeURI(csvLink);
-	}
-
-	t.find(".modal-title .cluster").text(title);
-	t.find(".link a").attr("href",csvLink);
-
-	chartBlock.html('<canvas id="chart" width="950" height="400"></canvas>');
-
-	var canvas = $("#chart").get(0);
-
-	if(isOldIE) {
-		canvas = G_vmlCanvasManager.initElement(canvas);
-	}
-
-	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0,0,550,400);
-
-	$.ajax({
-		url: chartDataUrl,
-		type: "POST",
-		dataType: "json",
-		beforeSend: function() {
-			chartBlock.addClass("loading");
+	    var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
+		if(isOldIE) {
+			csvLink = encodeURI(csvLink);
 		}
-	}).done(function(data) {
-		chartBlock.removeClass("loading");
-		switch(chartType) {
-			case "doughnut":
-				window.graph = new Chart(ctx).Doughnut(data,{
-					scaleGridLineWidth : 1
-				});
+		export_win = window.open(csvLink);
+	});
+
+	$(".openStatistics").on("click",function(e) {
+		e.preventDefault();
+
+		var t = $(this),
+			title = t.data("cluster"),
+			chartType = t.data("type"),
+			chartSource = t.data("chartsource");
+
+		// check if has any item selected
+		var grupo = $(chartSource);
+		var lista = grupo.find('li');
+		var any_selected = false;
+		for (i = 0; i < lista.length; i++){
+			clusterSelection = lista[i].getElementsByTagName('input')[0];
+			if (clusterSelection.checked){
+				any_selected = true;
 				break;
-			case "bar":
-				window.graph = new Chart(ctx).Bar(data,{
-					scaleGridLineWidth : 1
-				});
-				break;
-			case "line":
-				window.graph = new Chart(ctx).Line(data,{
-					scaleGridLineWidth : 1
-				});
-				break;
-			case "pie":
-				window.graph = new Chart(ctx).Pie(data,{
-					scaleGridLineWidth : 1
-				});
-				break;
-			default:
-				window.graph = new Chart(ctx).Pie(data,{
-					scaleGridLineWidth : 1
-				});
-				break;
+			}
+		}
+		if (any_selected == false){
+			$("#no_cluster_selected").slideDown("fast");
+			return;
+		}
+
+		$("#Statistics").data({
+			"title": title,
+			"charttype": chartType,
+			"chartsource": chartSource
+		}).modal({
+			"show": true
+		});
+	});
+
+	$("#Statistics").on("shown.bs.modal",function() {
+		var regex = /<span>\d+<\/span>/i;
+	    var params= "";
+
+		var t = $(this),
+			chartBlock = $(".chartBlock",this),
+			title = t.data("title"),
+			chartType = t.data("charttype"),
+			chartSource = t.data("chartsource");
+
+		var grupo = $(chartSource);
+	    var lista = grupo.find('li');
+
+	    for (i = 0; i < lista.length; i++){
+			clusterSelection = lista[i].getElementsByTagName('input')[0];
+			if (!clusterSelection.checked){
+				continue;
+			}
+	        cluster = lista[i].innerHTML;
+	        clusterLabel = lista[i].getElementsByTagName('label')[0].innerHTML;
+			clusterLabel = clusterLabel.replace(/^\s+|\s+$/g, '');
+
+	        ma = regex.exec(cluster);
+	        if (ma != null) {
+	            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
+	            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
+	        }
+	    }
+	    var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
+	    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
+
+		chartDataUrl = encodeURI(chartDataUrl);
+		if(isOldIE) {
+			csvLink = encodeURI(csvLink);
+		}
+
+		t.find(".modal-title .cluster").text(title);
+		t.find(".link a").attr("href",csvLink);
+
+		chartBlock.html('<canvas id="chart" width="950" height="400"></canvas>');
+
+		var canvas = $("#chart").get(0);
+
+		if(isOldIE) {
+			canvas = G_vmlCanvasManager.initElement(canvas);
+		}
+
+		var ctx = canvas.getContext("2d");
+		ctx.clearRect(0,0,550,400);
+
+		$.ajax({
+			url: chartDataUrl,
+			type: "POST",
+			dataType: "json",
+			beforeSend: function() {
+				chartBlock.addClass("loading");
+			}
+		}).done(function(data) {
+			chartBlock.removeClass("loading");
+			switch(chartType) {
+				case "doughnut":
+					window.graph = new Chart(ctx).Doughnut(data,{
+						scaleGridLineWidth : 1
+					});
+					break;
+				case "bar":
+					window.graph = new Chart(ctx).Bar(data,{
+						scaleGridLineWidth : 1
+					});
+					break;
+				case "line":
+					window.graph = new Chart(ctx).Line(data,{
+						scaleGridLineWidth : 1
+					});
+					break;
+				case "pie":
+					window.graph = new Chart(ctx).Pie(data,{
+						scaleGridLineWidth : 1
+					});
+					break;
+				default:
+					window.graph = new Chart(ctx).Pie(data,{
+						scaleGridLineWidth : 1
+					});
+					break;
+			}
+		});
+	}).on("hidden.bs.modal",function() {
+		window.graph.clear().destroy();
+		$(".chartBlock canvas",this).remove();
+	});
+
+	$(".openCitedBy").on("click",function(e) {
+		e.preventDefault();
+		var t = $(this),
+			pid = t.data("pid");
+
+		var article_title = $("#title-" + pid).html();
+		$("#CitedBy").modal("show");
+		$("#CitedBy #article_cited").html(article_title);
+		// make request to citedby service
+		$.ajax({
+			type: "get",
+			url: 'http://citedby.scielo.org/api/v1/pid/',
+			data: '&q=' + pid,
+			dataType: 'jsonp',
+			beforeSend: function() {
+				$('#CitedBy .modal-body').html('<img src="' + STATIC_URL + 'image/loading_dots.gif" style="margin-left:190px"/>');
+			},
+			success: function(response) { // on success..
+				articles = response.cited_by;
+				modal_body = $('#CitedBy .modal-body');
+				label_cited = modal_body.data("label-cited");
+				label_nocited = modal_body.data("label-nocited");
+				if (articles.length == 0){
+					modal_body.html('<h3>' + label_nocited + '</h3>');
+				}else{
+					modal_body.html('<strong>' + label_cited + '</strong>:');
+					modal_body.append('<ul>');
+					for (i = 0; i < articles.length; i++){
+						article = articles[i];
+						var author_list = '';
+						var author_total = article.authors.length;
+						for (var a = 0; a < author_total; a++){
+							var author  = article.authors[a];
+							author_list += author.surname + ', ' + author.given_names;
+							if (a < (author_total-1)) author_list += '; ';
+						}
+						modal_body.append('<li><a href="' + article.url + '" target="_blank">' +
+						article.titles[0] + '</a> ' + author_list + '<br/><i>' + article.source + '</i></li><br/>');
+					}
+					modal_body.append('</ul>');
+				}
+			}
+		});
+	});
+
+	$(".openExport, .sendViaMail").on("click",function(e) {
+		selection_count = $(".my_selection_count").html();
+		total = parseInt(selection_count);
+	    if(total > 0) {
+			$("#export_selection_user_selection").prop('checked', true);
+			$("#sendViaEmail_selection_my_selection").prop('checked', true);
+		}else{
+			$("#export_selection_current_page").prop('checked', true);
+			$("#sendViaEmail_selection_page").prop('checked', true);
 		}
 	});
-}).on("hidden.bs.modal",function() {
-	window.graph.clear().destroy();
-	$(".chartBlock canvas",this).remove();
+
+	$(".openJournalInfo").on("click",function(e) {
+		e.preventDefault();
+		var t = $(this),
+			issn = t.data("issn"),
+			publisher = t.data("publisher"),
+			collection = t.data("collection");
+
+		var journal_title = t.html();
+		$("#JournalInfo").modal("show");
+		modal_body = $('#JournalInfo .modal-body');
+		modal_footer = $('#JournalInfo .modal-footer');
+		modal_body.html('<h2>' + journal_title + '</h2>');
+
+		modal_body.append('<p>' + publisher + '</p>');
+		if (issn != ''){
+			modal_body.append('<strong>ISSN:</strong> ' + issn + '<br/>');
+		}
+
+		// make request to citedby service
+		$.ajax({
+			type: "get",
+			url: 'http://analytics.scielo.org/ajx/bibliometrics/journal/google_h5m5_chart?',
+			data: 'journal=' + issn,
+			dataType: 'jsonp',
+			success: function(response) { // on success..
+				console.log("sucess");
+				h5_serie = response.options.series[0].data;
+				h5_last = h5_serie[h5_serie.length-1];
+				m5_serie = response.options.series[1].data;
+				m5_last = m5_serie[h5_serie.length-1];
+				year_list = response.options.xAxis.categories;
+				last_year = year_list[year_list.length-1];
+				modal_body.append('<strong>Google Scholar</strong><br/>');
+				modal_body.append('<strong>' + last_year + '</strong><br/>');
+				modal_body.append('<strong>índice h5:</strong> <a href="' +  h5_last.ownURL + '" target="_blank">' + h5_last.y + '</a><br/>');
+				modal_body.append('<strong>mediana h5:</strong> <a href="' +  m5_last.ownURL + '" target="_blank">' + m5_last.y + '</a><br/>');
+			}
+		});
+		$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
+	});	
 });
+
 
 function get_result_total(form_action, form_params, callback){
 	// query iAHx and return total
@@ -1434,102 +1529,3 @@ function send_query_to_history(form_action, form_params){
 		url: form_action,
 	});
 }
-
-$(".openCitedBy").on("click",function(e) {
-	e.preventDefault();
-	var t = $(this),
-		pid = t.data("pid");
-
-	var article_title = $("#title-" + pid).html();
-	$("#CitedBy").modal("show");
-	$("#CitedBy #article_cited").html(article_title);
-	// make request to citedby service
-	$.ajax({
-		type: "get",
-		url: 'http://citedby.scielo.org/api/v1/pid/',
-		data: '&q=' + pid,
-		dataType: 'jsonp',
-		beforeSend: function() {
-			$('#CitedBy .modal-body').html('<img src="' + STATIC_URL + 'image/loading_dots.gif" style="margin-left:190px"/>');
-		},
-		success: function(response) { // on success..
-			articles = response.cited_by;
-			modal_body = $('#CitedBy .modal-body');
-			label_cited = modal_body.data("label-cited");
-			label_nocited = modal_body.data("label-nocited");
-			if (articles.length == 0){
-				modal_body.html('<h3>' + label_nocited + '</h3>');
-			}else{
-				modal_body.html('<strong>' + label_cited + '</strong>:');
-				modal_body.append('<ul>');
-				for (i = 0; i < articles.length; i++){
-					article = articles[i];
-					var author_list = '';
-					var author_total = article.authors.length;
-					for (var a = 0; a < author_total; a++){
-						var author  = article.authors[a];
-						author_list += author.surname + ', ' + author.given_names;
-						if (a < (author_total-1)) author_list += '; ';
-					}
-					modal_body.append('<li><a href="' + article.url + '" target="_blank">' +
-					article.titles[0] + '</a> ' + author_list + '<br/><i>' + article.source + '</i></li><br/>');
-				}
-				modal_body.append('</ul>');
-			}
-		}
-	});
-});
-
-$(".openExport, .sendViaMail").on("click",function(e) {
-	selection_count = $(".my_selection_count").html();
-	total = parseInt(selection_count);
-    if(total > 0) {
-		$("#export_selection_user_selection").prop('checked', true);
-		$("#sendViaEmail_selection_my_selection").prop('checked', true);
-	}else{
-		$("#export_selection_current_page").prop('checked', true);
-		$("#sendViaEmail_selection_page").prop('checked', true);
-	}
-});
-
-$(".openJournalInfo").on("click",function(e) {
-	e.preventDefault();
-	var t = $(this),
-		issn = t.data("issn"),
-		publisher = t.data("publisher"),
-		collection = t.data("collection");
-
-	var journal_title = t.html();
-	$("#JournalInfo").modal("show");
-	modal_body = $('#JournalInfo .modal-body');
-	modal_footer = $('#JournalInfo .modal-footer');
-	modal_body.html('<h2>' + journal_title + '</h2>');
-
-	modal_body.append('<p>' + publisher + '</p>');
-	if (issn != ''){
-		modal_body.append('<strong>ISSN:</strong> ' + issn + '<br/>');
-	}
-
-	// make request to citedby service
-	$.ajax({
-		type: "get",
-		url: 'http://analytics.scielo.org/ajx/bibliometrics/journal/google_h5m5_chart?',
-		data: 'journal=' + issn,
-		dataType: 'jsonp',
-		success: function(response) { // on success..
-			console.log("sucess");
-			h5_serie = response.options.series[0].data;
-			h5_last = h5_serie[h5_serie.length-1];
-			m5_serie = response.options.series[1].data;
-			m5_last = m5_serie[h5_serie.length-1];
-			year_list = response.options.xAxis.categories;
-			last_year = year_list[year_list.length-1];
-			modal_body.append('<strong>Google Scholar</strong><br/>');
-			modal_body.append('<strong>' + last_year + '</strong><br/>');
-			modal_body.append('<strong>índice h5:</strong> <a href="' +  h5_last.ownURL + '" target="_blank">' + h5_last.y + '</a><br/>');
-			modal_body.append('<strong>mediana h5:</strong> <a href="' +  m5_last.ownURL + '" target="_blank">' + m5_last.y + '</a><br/>');
-		}
-	});
-	$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
-
-});
