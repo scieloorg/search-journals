@@ -1,14 +1,116 @@
-        <div class="modal fade" id="Help" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Help</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur leo et neque dictum imperdiet. Donec ut ornare nisi, nec facilisis tortor. Ut at libero nec dolor sodales sagittis. Aenean auctor rutrum accumsan. Duis magna massa, lobortis in leo viverra, finibus accumsan purus.</p>
-                        <p>Curabitur ac enim id augue egestas tincidunt. Sed congue eleifend quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec in ipsum congue, dignissim sem a, varius odio. Nam laoreet dolor hendrerit orci aliquam porttitor. Aenean purus odio, placerat quis lacus quis, sagittis venenatis lectus.</p>
-                    </div>
-                </div>
+<div class="modal fade" id="BuscaAjuda" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Glossário e ajuda para busca</h4>
+            </div>
+            <div class="modal-body">
+                <strong>Você pode enriquecer sua busca de uma forma muito simples. Use os índices de pesquisa combinados com os conectores (AND ou OR) e especifique cada vez mais sua busca.</strong>
+                <hr/>
+                <blockquote style="text-align: center;">
+                    <p>Por exemplo, se você deseja buscar artigos sobre<br/> casos de dengue no Brasil em 2015, use:</p>
+                    <code>ti:dengue and publication_year:2015 and aff_country:Brasil</code>
+                </blockquote>
+                <hr/>
+                <p>Veja abaixo a lista completa de índices de pesquisa que podem ser usados:</p>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cód. do Índice</th>
+                            <th>Elemento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ti</td>
+                            <td>título do artigo</td>
+                        </tr>
+                        <tr>
+                            <td>au</td>
+                            <td>autor</td>
+                        </tr>
+                        <tr>
+                            <td>kw</td>
+                            <td>palavras-chave do artigo</td>
+                        </tr>
+                        <tr>
+                            <td>subject</td>
+                            <td>assunto (palavras do título, resumo e palavras-chave)</td>
+                        </tr>
+                        <tr>
+                            <td>ab</td>
+                            <td>resumo</td>
+                        </tr>
+                        <tr>
+                            <td>ta</td>
+                            <td>título abreviado da revista (ex. Cad. Saúde Pública)</td>
+                        </tr>
+                        <tr>
+                            <td>journal_title</td>
+                            <td>título completo da revista (ex. Cadernos de Saúde Pública)</td>
+                        </tr>
+                        <tr>
+                            <td>la</td>
+                            <td>código do idioma da publicação (ex. pt - Português, es - Espanhol)</td>
+                        </tr>
+                        <tr>
+                            <td>type</td>
+                            <td>tipo do documento</td>
+                        </tr>
+                        <tr>
+                            <td>pid</td>
+                            <td>identificador da publicação</td>
+                        </tr>
+                        <tr>
+                            <td>publication_year</td>
+                            <td>ano de publicação do artigo</td>
+                        </tr>
+                        <tr>
+                            <td>sponsor</td>
+                            <td>financiador</td>
+                        </tr>
+                        <tr>
+                            <td>aff_country</td>
+                            <td>código do país de afiliação do autor</td>
+                        </tr>
+                        <tr>
+                            <td>aff_institution</td>
+                            <td>instituição de afiliação do autor</td>
+                        </tr>
+                        <tr>
+                            <td>volume</td>
+                            <td>volume do artigo</td>
+                        </tr>
+                        <tr>
+                            <td>issue</td>
+                            <td>número do artigo</td>
+                        </tr>
+                        <tr>
+                            <td>elocation</td>
+                            <td>elocation</td>
+                        </tr>
+                        <tr>
+                            <td>doi</td>
+                            <td>número DOI</td>
+                        </tr>
+                        <tr>
+                            <td>issn</td>
+                            <td>ISSN da revista</td>
+                        </tr>
+                        <tr>
+                            <td>in</td>
+                            <td>código da coleção SciELO (ex. scl - Brasil, col - Colômbia)</td>
+                        </tr>
+                        <tr>
+                            <td>use_license</td>
+                            <td>código da licença de uso do artigo</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
