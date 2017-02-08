@@ -1,14 +1,116 @@
-        <div class="modal fade" id="Help" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Help</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur leo et neque dictum imperdiet. Donec ut ornare nisi, nec facilisis tortor. Ut at libero nec dolor sodales sagittis. Aenean auctor rutrum accumsan. Duis magna massa, lobortis in leo viverra, finibus accumsan purus.</p>
-                        <p>Curabitur ac enim id augue egestas tincidunt. Sed congue eleifend quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec in ipsum congue, dignissim sem a, varius odio. Nam laoreet dolor hendrerit orci aliquam porttitor. Aenean purus odio, placerat quis lacus quis, sagittis venenatis lectus.</p>
-                    </div>
-                </div>
+<div class="modal fade" id="BuscaAjuda" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Glossary and search help</h4>
+            </div>
+            <div class="modal-body">
+                <strong>You can enrich your search in a very simple way. Use the search indexes combined with the connectors (AND or OR) and specify more your search.</strong>
+                <hr/>
+                <blockquote style="text-align: center;">
+                    <p>For example, if you want to search for articles about<br/> cases of dengue in Brasil in 2015, use:</p>
+                    <code>ti:dengue and publication_year:2015 and aff_country:Brasil</code>
+                </blockquote>
+                <hr/>
+                <p>See below the complete list of search indexes that can be used:</p>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Index code</th>
+                            <th>Element</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ti</td>
+                            <td>article title</td>
+                        </tr>
+                        <tr>
+                            <td>au</td>
+                            <td>author</td>
+                        </tr>
+                        <tr>
+                            <td>kw</td>
+                            <td>article keywords</td>
+                        </tr>
+                        <tr>
+                            <td>subject</td>
+                            <td>subject (title words, abstract and keywords)</td>
+                        </tr>
+                        <tr>
+                            <td>ab</td>
+                            <td>abstract</td>
+                        </tr>
+                        <tr>
+                            <td>ta</td>
+                            <td>journal short title (ex. Cad. Saúde Pública)</td>
+                        </tr>
+                        <tr>
+                            <td>journal_title</td>
+                            <td>journal full title (ex. Cadernos de Saúde Pública)</td>
+                        </tr>
+                        <tr>
+                            <td>la</td>
+                            <td>publication language code (ex. pt - Portuguese, es - Spanish)</td>
+                        </tr>
+                        <tr>
+                            <td>type</td>
+                            <td>document type</td>
+                        </tr>
+                        <tr>
+                            <td>pid</td>
+                            <td>publication identifier</td>
+                        </tr>
+                        <tr>
+                            <td>publication_year</td>
+                            <td>publication year of publication</td>
+                        </tr>
+                        <tr>
+                            <td>sponsor</td>
+                            <td>sponsor</td>
+                        </tr>
+                        <tr>
+                            <td>aff_country</td>
+                            <td>country code of the author's affiliation</td>
+                        </tr>
+                        <tr>
+                            <td>aff_institution</td>
+                            <td>author affiliation institution</td>
+                        </tr>
+                        <tr>
+                            <td>volume</td>
+                            <td>article volume</td>
+                        </tr>
+                        <tr>
+                            <td>issue</td>
+                            <td>article issue</td>
+                        </tr>
+                        <tr>
+                            <td>elocation</td>
+                            <td>elocation</td>
+                        </tr>
+                        <tr>
+                            <td>doi</td>
+                            <td>DOI number</td>
+                        </tr>
+                        <tr>
+                            <td>issn</td>
+                            <td>journal ISSN</td>
+                        </tr>
+                        <tr>
+                            <td>in</td>
+                            <td>SciELO colection code  (ex. scl - Brasil, col - Colômbia)</td>
+                        </tr>
+                        <tr>
+                            <td>use_license</td>
+                            <td>article usage license code</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
