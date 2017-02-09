@@ -455,7 +455,7 @@ searchFormBuilder = {
 				$(this).prop("checked",checked);
 				$(this).trigger("change");
 			});
-			
+
 			if(checked) {
 				t.data("all","1");
 			} else {
@@ -1407,51 +1407,6 @@ $(function() {
 		$(".chartBlock canvas",this).remove();
 	});
 
-	$(".openCitedBy").on("click",function(e) {
-		e.preventDefault();
-		var t = $(this),
-			pid = t.data("pid");
-
-		var article_title = $("#title-" + pid).html();
-		$("#CitedBy").modal("show");
-		$("#CitedBy #article_cited").html(article_title);
-		// make request to citedby service
-		$.ajax({
-			type: "get",
-			url: 'http://citedby.scielo.org/api/v1/pid/',
-			data: '&q=' + pid,
-			dataType: 'jsonp',
-			beforeSend: function() {
-				$('#CitedBy .modal-body').html('<img src="' + STATIC_URL + 'image/loading_dots.gif" style="margin-left:190px"/>');
-			},
-			success: function(response) { // on success..
-				articles = response.cited_by;
-				modal_body = $('#CitedBy .modal-body');
-				label_cited = modal_body.data("label-cited");
-				label_nocited = modal_body.data("label-nocited");
-				if (articles.length == 0){
-					modal_body.html('<h3>' + label_nocited + '</h3>');
-				}else{
-					modal_body.html('<strong>' + label_cited + '</strong>:');
-					modal_body.append('<ul>');
-					for (i = 0; i < articles.length; i++){
-						article = articles[i];
-						var author_list = '';
-						var author_total = article.authors.length;
-						for (var a = 0; a < author_total; a++){
-							var author  = article.authors[a];
-							author_list += author.surname + ', ' + author.given_names;
-							if (a < (author_total-1)) author_list += '; ';
-						}
-						modal_body.append('<li><a href="' + article.url + '" target="_blank">' +
-						article.titles[0] + '</a> ' + author_list + '<br/><i>' + article.source + '</i></li><br/>');
-					}
-					modal_body.append('</ul>');
-				}
-			}
-		});
-	});
-
 	$(".openExport, .sendViaMail").on("click",function(e) {
 		selection_count = $(".my_selection_count").html();
 		total = parseInt(selection_count);
@@ -1503,7 +1458,7 @@ $(function() {
 			}
 		});
 		$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
-	});	
+	});
 });
 
 
