@@ -1274,7 +1274,7 @@ button.btn:active {
 .searchForm .resultBlock .collapseBlock .title {
   background: url(../image/dashline.png) bottom left repeat-x;
   position: relative;
-  padding-right: 60px;
+  padding-right: 70px;
 }
 .searchForm .resultBlock .collapseBlock .title.closed {
   background: none;
@@ -1320,7 +1320,7 @@ button.btn:active {
 }
 .searchForm .resultBlock .collapseBlock a.singleBtn {
   line-height: 35px;
-  width: 60px;
+  width: 70px;
   display: block;
   text-align: center;
   position: absolute;
