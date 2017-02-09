@@ -327,8 +327,6 @@ searchFormBuilder = {
 						$("#searchHistoryQuery").html(searchQuery);
 					}
 				}else{
-					// delete filters and other form parameters
-					$("input[type='hidden']").remove();
 					var searchForm = document.searchForm;
 					// clear my_selection list
 					manipulate_bookmark('c');
@@ -455,7 +453,7 @@ searchFormBuilder = {
 				$(this).prop("checked",checked);
 				$(this).trigger("change");
 			});
-			
+
 			if(checked) {
 				t.data("all","1");
 			} else {
@@ -1503,7 +1501,7 @@ $(function() {
 			}
 		});
 		$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
-	});	
+	});
 });
 
 
