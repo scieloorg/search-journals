@@ -628,8 +628,43 @@ button.btn:active {
   color: #a7a49e;
   padding-right: 20px;
 }
+.filterHead .orderBy_title {
+  line-height: 25px;
+  margin-top: -5px;
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  vertical-align: top;
+  font-weight: bold;
+  position: relative;
+  color: #355fb8;
+}
+.filterHead .orderBy_title:focus,
+.filterHead .orderBy_title:active {
+  text-decoration: none;
+  color: #6789d3;
+}
+.filterHead .orderBy_title:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: '';
+  width: 15px;
+  height: 20px;
+}
+.filterHead .orderBy_title.orderBy_selected {
+  color: #6789d3;
+  padding-right: 15px;
+}
+.filterHead .orderBy_title.orderBy_selected:before {
+  background: url(../image/input.glyphs.png) -9px -312px no-repeat;
+}
+.filterHead .checkbox {
+  margin-bottom: 0;
+}
 .filterHead .col-xs-3 {
   text-align: left;
+  text-align: right;
 }
 .filterBody {
   max-height: 200px;
@@ -1239,6 +1274,7 @@ button.btn:active {
 .searchForm .resultBlock .collapseBlock .title {
   background: url(../image/dashline.png) bottom left repeat-x;
   position: relative;
+  padding-right: 70px;
 }
 .searchForm .resultBlock .collapseBlock .title.closed {
   background: none;
@@ -1284,7 +1320,7 @@ button.btn:active {
 }
 .searchForm .resultBlock .collapseBlock a.singleBtn {
   line-height: 35px;
-  width: 60px;
+  width: 70px;
   display: block;
   text-align: center;
   position: absolute;
@@ -3561,6 +3597,29 @@ button.btn:active {
 }
 .openAccessIcon:hover{
     opacity: 1;
+}
+.cluster-actions-menu {
+  text-align: left;
+  position: relative;
+  width: 51% !important;
+}
+.cluster-actions-menu .tooltip {
+  position: absolute;
+}
+.cluster-actions-menu .singleBtn {
+  background: none;
+  color: #6789d3;
+  border: 1px solid #6789d3;
+  font-weight: normal;
+}
+.cluster-actions-menu .singleBtn_disabled {
+  opacity: .4;
+  cursor: pointer;
+  color: #403d39;
+  border-color: #403d39;
+}
+.cluster-actions-menu .btn + .btn {
+  margin-left: 0 !important;
 }
 #apply_filters_button {
   width: 100%;

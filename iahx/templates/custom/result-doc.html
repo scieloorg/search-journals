@@ -61,17 +61,16 @@
                     {% if doc.doi %}
                        <span class="DOIResults">DOI: {{ doc.doi }}</span>
                     {% endif %}
-                    {% if doc.total_received is not null %}
-    					<span>
-    						<strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received == 0 or doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong> {{ texts.CITED_IN }}
-    					</span>
-                    {% endif %}
                     {% if doc.total_access %}
 					    <span>
 						    <strong>{{ doc.total_access }} {{ texts.DOWNLOADS }}</strong>
 					    </span>
                     {% endif %}
-                    <!-- span> <a href="#" class="openCitedBy" data-pid="{{doc.ur.0}}">{{ texts.CITED }} {{ texts.CITED_IN }}</a></span -->
+                    {% if doc.total_received > 0 %}
+    					<span>
+    						<a href="http://analytics.scielo.org/w/bibliometrics/document/list/received_citations?document={{doc.ur.0}}&collection={{doc.in.0}}" class="openCitedBy" target="_citations"><strong>{{ texts.CITED }} {{ doc.total_received }} {% if doc.total_received > 1 %}{{ texts.CITED_TIMES }}{% else %}{{ texts.CITED_TIME }}{% endif %}</strong></a> {{ texts.CITED_IN }}
+    					</span>
+                    {% endif %}
 				</div>
 				<div class="clearfix"></div>
 			</div>
