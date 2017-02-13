@@ -327,8 +327,6 @@ searchFormBuilder = {
 						$("#searchHistoryQuery").html(searchQuery);
 					}
 				}else{
-					// delete filters and other form parameters
-					$("input[type='hidden']").remove();
 					var searchForm = document.searchForm;
 					// clear my_selection list
 					manipulate_bookmark('c');
