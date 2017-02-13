@@ -14,7 +14,7 @@
             <div class="collapseBlock">
                 <div class="title">
                     <a href="javascript:;" class="action opened">{{ texts.SELECTED_FILTERS }}</a>
-                    <a href="javascript:;" class="singleBtn"><span>{{ texts.CLEAN }}</span></a>
+                    <a href="javascript:reset_filters()" class="singleBtn"><span>{{ texts.CLEAN }}</span></a>
                 </div>
                 <div class="content">
                     {% for cluster, items in filters_formatted %}
@@ -53,7 +53,7 @@
                 <input type="hidden" name="fb" value="">
 
                 {% for key, value in params %}
-                    {% if key != "filter" and key != "submit" and key != "fb" and "_submit" not in key  %}
+                    {% if key != "filter" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
                         {% if key == "from" or key == "page" %}
                             <input type="hidden" name="{{ key }}" value="1">
                         {% else %}
