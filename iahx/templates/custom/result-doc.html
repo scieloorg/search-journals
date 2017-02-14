@@ -13,7 +13,7 @@
             {% block data %}
                 <!-- title -->
                 <div class="line">
-                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="{{ doc.use_license }}" class="openAccessIcon">
+                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
                     {% if doc.ti %}
                         {% set article_title = doc.ti.0|raw %}
                     {% else %}
