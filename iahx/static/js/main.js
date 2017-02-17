@@ -1439,10 +1439,9 @@ $(function() {
 		$.ajax({
 			type: "get",
 			url: 'http://analytics.scielo.org/ajx/bibliometrics/journal/google_h5m5_chart?',
-			data: 'journal=' + issn,
+			data: 'journal=' + issn + '&collection=' + collection,
 			dataType: 'jsonp',
 			success: function(response) { // on success..
-				console.log("sucess");
 				h5_serie = response.options.series[0].data;
 				h5_last = h5_serie[h5_serie.length-1];
 				m5_serie = response.options.series[1].data;
