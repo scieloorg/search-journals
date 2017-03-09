@@ -13,7 +13,7 @@
 
     					<form name="formSubmit" action="{{ constant("SEARCH_URL") }}" id="selectClusterItensForm" method="post">
                             {% for key, value in params %}
-                                {% if key != "filter" and key != "submit" and key != "fb" and "_submit" not in key  %}
+                                {% if key != "filter" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
                                     {% if key == "from" or key == "page" %}
                                         <input type="hidden" name="{{ key }}" value="1">
                                     {% else %}
