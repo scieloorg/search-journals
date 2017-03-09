@@ -426,7 +426,7 @@ searchFormBuilder = {
 		$(".selectAll").on("click",function() {
 
 			var t = $(this),
-				itens = $(".results .item input.checkbox",p),
+				itens = $(".results .item input.checkbox"),
 				selCount = $("#selectedCount",p),
 				selCountInt = parseInt(selCount.text());
 
