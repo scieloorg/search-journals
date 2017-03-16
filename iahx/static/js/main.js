@@ -426,7 +426,7 @@ searchFormBuilder = {
 		$(".selectAll").on("click",function() {
 
 			var t = $(this),
-				itens = $(".results .item input.checkbox",p),
+				itens = $(".results .item input.checkbox"),
 				selCount = $("#selectedCount",p),
 				selCountInt = parseInt(selCount.text());
 
@@ -603,6 +603,15 @@ searchFormBuilder = {
 							btn.addClass("singleBtn_disabled").tooltip("enable");
 						}
 					});
+					// if select all is checked mark all itens of filter as checked
+					if ( filter_all.is(":checked") ) {
+						itens = $("#selectClusterItens .filterBody input.checkbox");
+						itens.each(function() {
+							$(this).prop("checked", true);
+							$(this).trigger("change");
+						});
+					}
+
 		        }
 		    });
 			mod.modal("show");
@@ -614,12 +623,10 @@ searchFormBuilder = {
 			var selAll = $(".clusterSelectAll");
 
 			$("#no_cluster_selected").slideUp("fast");
-			if(t.is(":checked")) {
-				var all = selAll.data("all");
-				if(all == "1") {
-					selAll.prop("checked",false);
-					selAll.data("all","0");
-				}
+			var all = selAll.data("all");
+			if(all == "1") {
+				selAll.prop("checked",false);
+				selAll.data("all","0");
 			}
 		});
 
@@ -1442,7 +1449,6 @@ $(function() {
 			data: 'journal=' + issn,
 			dataType: 'jsonp',
 			success: function(response) { // on success..
-				console.log("sucess");
 				h5_serie = response.options.series[0].data;
 				h5_last = h5_serie[h5_serie.length-1];
 				m5_serie = response.options.series[1].data;
