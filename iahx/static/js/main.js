@@ -1446,7 +1446,7 @@ $(function() {
 		$.ajax({
 			type: "get",
 			url: 'http://analytics.scielo.org/ajx/bibliometrics/journal/google_h5m5_chart?',
-			data: 'journal=' + issn,
+			data: 'journal=' + issn + '&collection=' + collection,
 			dataType: 'jsonp',
 			success: function(response) { // on success..
 				h5_serie = response.options.series[0].data;
