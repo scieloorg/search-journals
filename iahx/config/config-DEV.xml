@@ -176,6 +176,7 @@
 		<ven>http://www.scielo.org.ve</ven>
 		<spa>http://www.scielosp.org</spa>
 		<sss>http://socialsciences.scielo.org</sss>
-		<sza>http://www.scielo.org.za</sza>
+        <sza>http://www.scielo.org.za</sza>
+		<ecu>http://scielo.senescyt.gob.ec</ecu>
 	</scielo_urls>
 </dia_config>
