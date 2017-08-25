@@ -174,7 +174,7 @@
             <field name="doi" type="text" indexed="true" stored="true" multiValued="false"/>
 
             <!-- Digital Object Identifier DOI -->
-            <field name="orcid" type="text" indexed="true" stored="true" multiValued="false"/>
+            <field name="orcid" type="text" indexed="true" stored="true" multiValued="true"/>
 
             <!-- Publication date at SciELO: Full ISO Date YYYY-MM-DD -->
             <field name="scielo_publication_date" type="string" indexed="true" stored="true" multiValued="false"/>
