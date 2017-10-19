@@ -247,6 +247,7 @@
         <copyField source="ab_*" dest="tw"/>
         <copyField source="ta" dest="tw"/>
         <copyField source="doi" dest="tw"/>
+        <copyField source="orcid" dest="tw"/>        
         <copyField source="sponsor" dest="tw"/>
         <copyField source="journal_title" dest="tw"/>
         <copyField source="keyword_*" dest="tw"/>
