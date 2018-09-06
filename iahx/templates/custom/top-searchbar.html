@@ -43,6 +43,7 @@
                         <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control showContextHelper" data-helper="#contextHelper1">{% if docs|length > 0 %}{{ params.q }}{% endif %}</textarea>
                         <a href="javascript:;" class="clearIptText showTooltip" title="{{ texts.CLEAN_SEARCHFIELD }}" style="display: none;"></a>
                     </div>
+                    
                     <div class="selectBox index">
                         <select name="index[]">
                             {% for index in collectionData.index_list.index if not index.advanced %}
@@ -50,10 +51,10 @@
                                     {% if index.prefix == params.index %}
                                         <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
                                     {% else %}
-                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        <option value="{{ index.prefix }}">{{ attribute(texts.INDEXES, index.name) }}</option>
                                     {% endif %}
                                 {% else %}
-                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                    <option value="{{ index.prefix }}">{{ attribute(texts.INDEXES, index.name) }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>

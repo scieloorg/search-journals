@@ -27,7 +27,7 @@
 
         <!-- Page icon -->
         <link rel="shortcut icon" href="{{ constant("STATIC_URL") }}image/favicon.ico">
-
+        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
         <script language="javascript" type="text/javascript">
             var RESULT_PAGE = {% if pag.total %}true{% else %}false{% endif %};
         </script>
@@ -126,6 +126,92 @@
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/bootstrap-affix.js"></script>
     {% endblock %}
+    <script>
+        $(document).ready(function(){
+            function show_modal(name){
+                if ($("#ul_"+name+" input:checked").length >= 2){
+                    $("#modal_"+name+" .newSearchField").attr("data-count",2)
+                    $("#modal_"+name+" .searchRow-container").empty()
+                    
+                    for(i=0;i<$("#ul_"+name+" input:checked").length;i++){
+                        j = i+2
+                        attr = $($("#ul_"+name+" input:checked")[i]).val()
+                        if (i == 0){
+                            $("#modal_"+name+" select[name='input[]']").val(attr)
+                        }else{
+                            $("#modal_"+name+" .newSearchField").click()
+                            $("#modal_"+name+" #searchRow-"+j+" select[name='input[]']").val(attr)
+                        }
+                    }
+                    
+                    $("#modal_"+name).modal("show")
+                }
+            }
+            function new_field(name){
+                $("#modal_"+name+" .newSearchField").attr("data-count",parseInt($("#modal_"+name+" .newSearchField").attr("data-count"))+1)
+                div = $("#modal_"+name+" #searchRow-matriz2").html().replace("@",$("#modal_"+name+" .newSearchField").attr("data-count"))
+                $("#modal_"+name+" .searchRow-container").append(div)
+                $("#modal_"+name+" *[class^='eraseSearchField']").click(function(){
+                    $($($($(this).parent()).parent()).parent()).remove()
+                })
+            }
+            
+            $('input[type="checkbox"]').change(function() {
+                var id = $($($($($($(this).parent()).parent()).parent()).parent()).parent()).attr("id")
+                if (id == 'la' || id == 'subject_area' ||id == 'wok_subject_categories'){
+                    show_modal(id)
+                }
+            })
+            
+            $(".newSearchField").click(function(){
+                id = $($($($($($(this).parent()).parent()).parent()).parent()).parent()).attr("id").replace("modal_","")
+                new_field(id)
+            })
+            $("*[class^='eraseSearchField']").click(function(){
+                $($($($(this).parent()).parent()).parent()).remove()
+            })
+            $("*#apply_filters_button2").on("click",function(e) {
+                var id = $($($($($(this).parent()).parent()).parent()).parent()).attr("id")
+                var name = $($($($($(this).parent()).parent()).parent()).parent()).attr("id").replace("modal_","")
+                var query = " AND ("
+                for (i=0;i < $("#"+id+" select[name='input[]']").length-1;i++){
+                    var aux = ""
+                    if (i > 0){
+                        aux += " "+$($("#"+id+" select[name='bool[]']")[i-1]).val()+" "
+                    }
+                    aux += name+":("+$($("#"+id+" select[name='input[]']")[i]).val()+")"
+                    query += aux
+                }
+                
+                $("input[name=q]").val($("input[name=q]").val()+query+")")
+                $("#colletion_"+name+" input[type^=checkbox]").prop("checked",false)
+                var form = $("#form_clusters");
+                var form_action = form.attr('action');
+                var form_params = form.serialize();
 
+                var total = 0;
+                get_result_total(form_action, form_params, function(total){
+                    if (total == 0){
+                        $("#ResultArea").hide();
+                        $("#NoResults").removeClass('hide');
+                        $("#TotalHits").html('0');
+                        $('html,body').animate({
+                            scrollTop: 0
+                        }, 700);
+                        send_query_to_history(form_action, form_params);
+                        var history_number = parseInt($(".searchHistoryItem").data("history"));
+                        $(".searchHistoryItem").data("history", history_number + 1);
+                        $(".searchHistoryItem").html("#" + (history_number + 1));
+                    }else{
+                        manipulate_bookmark('c');
+                        form.submit();
+                    }
+                });
+                return false;
+            });
+            
+
+        })
+    </script>    
     </body>
 </html>

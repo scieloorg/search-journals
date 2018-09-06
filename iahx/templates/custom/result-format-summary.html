@@ -6,7 +6,7 @@
     {% if doc.au is defined %}
         <div class="line authors">
             {% for author in doc.au %}
-                <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+                <a href='https://scholar.google.com/citations?view_op=search_authors&hl=es&mauthors="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
             {% endfor %}
         </div>
     {% endif %}

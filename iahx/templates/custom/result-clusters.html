@@ -100,15 +100,12 @@
                                             </div>
                                         </li>
                                         {% for item in cluster if item.0 != '' %}
-                                            {% set cluster_item_id = name ~ '_'
-~ item.0|slugify %}
+                                            {% set cluster_item_id = name ~ '_' ~ item.0|slugify %}
 
-                                            {% if name == 'document_type' and
-attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
+                                            {% if name == 'document_type' and attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
                                                {# hide cluster for document_type that dont have translation #}
 
-                                            {% elseif name == 'la' and
-attribute(texts.REFINE_la, item.0|slugify) == '' %}
+                                            {% elseif name == 'la' and attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                {# hide cluster for languages that dont have translation #}
 
                                             {% else %}
@@ -135,6 +132,7 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                     </div>
                                                 </li>
                                             {% endif %}
+                                            
                                         {% endfor %}
                                         {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
                                             <a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{ texts.SHOW_ALL_ITEMS }}...</a>
@@ -143,6 +141,109 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                 </div>
                             </div>
                         {% endif %}
+                    {% endif %}
+                    {% if name == 'la' or name =='subject_area' or name == 'wok_subject_categories' %}
+                        <div class="modal fade in" id="modal_{{name}}">
+                            <div class="modal-dialog"> 
+                                <div class="modal-content"> 
+                                    <div class="modal-header"> 
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button> 
+                                        {% if name == 'la' %}
+                                            <h4 class="modal-title">{{texts.MODAL_filter.TITLE_la}}</h4> 
+                                        {% endif %}
+                                        {% if name == 'subject_area' %}
+                                            <h4 class="modal-title">{{texts.MODAL_filter.TITLE_subject_area}}</h4> 
+                                        {% endif %}
+                                        {% if name == 'wok_subject_categories' %}
+                                            <h4 class="modal-title">{{texts.MODAL_filter.TITLE_wok_subject_categories}}</h4> 
+                                        {% endif %}
+                                    </div> 
+                                    <div class="modal-body"> 
+                                        {% if name == 'la' %}
+                                            <div id="subtitle"><a>{{texts.MODAL_filter.SELECTED_la}}</a></div>
+                                        {% endif %}
+                                        {% if name == 'subject_area' %}
+                                            <div id="subtitle"><a>{{texts.MODAL_filter.SELECTED_subject_area}}</a></div>
+                                        {% endif %}
+                                        {% if name == 'wok_subject_categories' %}
+                                            <div id="subtitle"><a>{{texts.MODAL_filter.SELECTED_wok_subject_categories}}</a></div>
+                                        {% endif %}
+                                        <div class="modalFilter">
+                                            <div class="input-group col-md-12 col-sm-12">
+                                                <div class="input-group col-md-6 col-sm-6">
+                                                    <div class="selectBox left-border">
+                                                        <select name="input[]">
+                                                            {% for item in cluster if item.0 != '' %}
+                                                                {% if name == 'la' %}
+                                                                    {% if attribute(texts.REFINE_la, item.0|slugify) != '' %}
+                                                                        <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% if name == 'subject_area' %}
+                                                                    <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                {% endif %}
+                                                                {% if name == 'wok_subject_categories' %}
+                                                                    <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="clearfix"></div>
+                                            <div class="searchRow-container"></div>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 right">
+                                            <a href="javascript:void(0)" class="newSearchField" data-count="2">{{texts.MODAL_filter.OTHER_LANG}} +</a>
+                                        </div>
+                                        <div id="searchRow-matriz2" style="display: none;">
+                                            <div class="searchRow" id="searchRow-@">
+                                                <div class="input-group col-md-12 col-sm-12">
+                                                    <div class="col-md-2 col-sm-2 right">
+                                                        <a href="javascript:void(0)" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+                                                    </div>
+                                                    <div class="col-md-10 col-sm-10">
+                                                        <div class="input-group col-md-12 col-sm-12">
+                                                            <div class="selectBox logic left-border">
+                                                                <select name="bool[]">
+                                                                    <option>OR</option>
+                                                                    <option>AND</option>
+\                                                                </select>
+                                                            </div>
+                                                            <div class="selectBox left-border">
+                                                                <select name="input[]">
+                                                                    {% for item in cluster if item.0 != '' %}
+                                                                        {% if name == 'la' %}
+                                                                            {% if attribute(texts.REFINE_la, item.0|slugify) != '' %}
+                                                                                <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                        {% if name == 'subject_area' %}
+                                                                            <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                        {% endif %}
+                                                                        {% if name == 'wok_subject_categories' %}
+                                                                            <option value="{{item.0}}">{{translate(item.0, cluster_labels )}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="apply_filters_button2" type="button" class="btn ">{{texts.MODAL_filter.APPLY}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endfor %}
             </form>

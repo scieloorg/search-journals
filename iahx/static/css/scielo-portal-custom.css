@@ -94,3 +94,53 @@ ul.list-inline li{
 .affix button {
     margin: 6px 2px 6px 10px;
 }
+.modalMetrics .modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f5f3f1;
+    min-height: 16.43px;
+    border-radius: 4px;
+}
+
+.modalMetrics .modal-header h4{
+    font-size: 14px;
+    text-align: left;
+}
+.modalMetrics .title-metrics{
+    font-size: 14px;
+}
+
+.modalMetrics .modal-header .modal-title {
+    text-transform: uppercase;
+}
+.modalMetrics .__dimensions_badge_embed__{
+    text-align: center !important;
+}
+.modalMetrics .PlumX-Popup .ppp-container.ppp-large {
+    position: relative !important; 
+    display: inline !important; 
+    width: 120px !important; 
+    height: 120px !important; 
+}
+.modalMetrics{
+    text-align: center;
+}
+.modal #subtitle{
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+    line-height: 35px;
+    padding: 0 3px 0 10px;
+    background: url(../image/dashline.png) bottom left repeat-x;
+}
+.modalFilter{
+    padding-top:10px;
+    padding-left: 10px;
+}
+.left-border{
+    border-left: 1px #b5c4e5 solid  !important;
+    border-radius: 5px !important;
+}
+.logic{
+    padding-right:12px;
+}
