@@ -63,7 +63,9 @@
                                 </ul>
                             </span>
                         {% endif %}
-                        <a href="javascript:void()" data-toggle="modal" data-target="#metric_modal_{{doc.ur.0}}" class="fm-button-child item-metrics" data-fm-label="Métricas" target="_blank" style="float:right;"> <img src="static/image/metrics.png"> </a>
+                        {% if doc.doi %}
+                            <a href="javascript:void()" data-toggle="modal" data-target="#metric_modal_{{doc.ur.0}}" class="fm-button-child item-metrics" data-fm-label="Métricas" target="_blank" style="float:right;"> <img src="static/image/metrics.png"> </a>
+                        {% endif %}
                     </div>
                 
                     <br class="visible-xs visible-sm">
@@ -126,7 +128,7 @@
                         <div class="col-md-12 col-sm-12">
                             <a><span>{{texts.ARTICLE_INDEXED}}:</span></a>
                                 {% for col in doc_url[(doc.ur.0)] %}
-                                    <b>&bull; <a href="{{ attribute(config.scielo_urls, col) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" target="_blank">{{col}}</a></b>
+                                    <b>&bull; <a href="{{ attribute(config.scielo_urls, col) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" target="_blank">{{translate(col, "REFINE_in" )}}</a></b>
                                     
                                 {% endfor %}
                         </div>

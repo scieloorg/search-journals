@@ -85,7 +85,7 @@ ul.list-inline li{
     top: 0;
     background: #fff;
     position: fixed;
-    border-bottom: 2px solid #ccc !important;
+    border-bottom: 2px solid #ccc;
     margin: 0 0 0 -10px;
 }
 .affix-top button {
@@ -114,13 +114,13 @@ ul.list-inline li{
     text-transform: uppercase;
 }
 .modalMetrics .__dimensions_badge_embed__{
-    text-align: center !important;
+    text-align: center;
 }
 .modalMetrics .PlumX-Popup .ppp-container.ppp-large {
-    position: relative !important; 
-    display: inline !important; 
-    width: 120px !important; 
-    height: 120px !important; 
+    position: relative; 
+    display: inline; 
+    width: 120px; 
+    height: 120px; 
 }
 .modalMetrics{
     text-align: center;
@@ -137,9 +137,10 @@ ul.list-inline li{
     padding-top:10px;
     padding-left: 10px;
 }
-.left-border{
-    border-left: 1px #b5c4e5 solid  !important;
-    border-radius: 5px !important;
+.input-group .selectBox.left-border {
+    display: table-cell;
+    border-left: 1px #b5c4e5 solid ;
+    border-radius: 5px;
 }
 .logic{
     padding-right:12px;

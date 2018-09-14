@@ -111,13 +111,13 @@
                                             {% else %}
                                                 <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
                                                     <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
-                                                        <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
+                                                        <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}" opt="{{name}}"
                                                         {% for filter_name, filter in filters if filter_name == name %}
                                                             {% if item.0 in filter %}checked="true"{% endif %}
                                                         {% endfor %}
                                                         class="checkbox">
                                                         {% set item_label = translate(item.0, cluster_labels ) %}
-                                                        <label class="checkbox {% if item_label|length > 30 %}showTooltip{% endif %}" for="{{ cluster_item_id }}" {% if item_label|length > 30 %}data-original-title="{{item_label}}" {% endif %}>
+                                                        <label class="checkbox {% if item_label|length > 30 %}showTooltip{% endif %}" for="{{ cluster_item_id }}" opt="{{name}}" {% if item_label|length > 30 %}data-original-title="{{item_label}}" {% endif %}>
                                                             {% if '/' in item.0 %}
                                                                 {% set item_part = item.0|split('/') %}
                                                                 {{ translate(item_part.1, cluster_labels ) }}
@@ -198,13 +198,13 @@
                                             <div class="searchRow-container"></div>
                                         </div>
                                         <div class="col-md-12 col-sm-12 right">
-                                            <a href="javascript:void(0)" class="newSearchField" data-count="2">{{texts.MODAL_filter.OTHER_LANG}} +</a>
+                                            <a href="javascript:void(0)" class="newSearchField" data-count="2" name="{{name}}">{{texts.MODAL_filter.OTHER_LANG}} +</a>
                                         </div>
                                         <div id="searchRow-matriz2" style="display: none;">
                                             <div class="searchRow" id="searchRow-@">
                                                 <div class="input-group col-md-12 col-sm-12">
                                                     <div class="col-md-2 col-sm-2 right">
-                                                        <a href="javascript:void(0)" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+                                                        <a href="javascript:void(0)" class="eraseSearchField" data-rel="@" title="{{texts.CLEAN_SEARCHBOX}}"></a>
                                                     </div>
                                                     <div class="col-md-10 col-sm-10">
                                                         <div class="input-group col-md-12 col-sm-12">
@@ -239,7 +239,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="apply_filters_button2" type="button" class="btn ">{{texts.MODAL_filter.APPLY}}</button>
+                                        <button id="apply_filters_button2" type="button" class="btn " name="{{name}}">{{texts.MODAL_filter.APPLY}}</button>
                                     </div>
                                 </div>
                             </div>

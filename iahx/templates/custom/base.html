@@ -27,7 +27,7 @@
 
         <!-- Page icon -->
         <link rel="shortcut icon" href="{{ constant("STATIC_URL") }}image/favicon.ico">
-        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+        <script type="text/javascript" src="{{ constant("STATIC_URL") }}js/widget-popup.js"></script>
         <script language="javascript" type="text/javascript">
             var RESULT_PAGE = {% if pag.total %}true{% else %}false{% endif %};
         </script>
@@ -149,30 +149,30 @@
             }
             function new_field(name){
                 $("#modal_"+name+" .newSearchField").attr("data-count",parseInt($("#modal_"+name+" .newSearchField").attr("data-count"))+1)
-                div = $("#modal_"+name+" #searchRow-matriz2").html().replace("@",$("#modal_"+name+" .newSearchField").attr("data-count"))
+                div = $("#modal_"+name+" #searchRow-matriz2").html().replace(/@/g,$("#modal_"+name+" .newSearchField").attr("data-count"))
                 $("#modal_"+name+" .searchRow-container").append(div)
                 $("#modal_"+name+" *[class^='eraseSearchField']").click(function(){
-                    $($($($(this).parent()).parent()).parent()).remove()
+                    $("#searchRow-"+$(this).attr("data-rel")).remove()
                 })
             }
             
             $('input[type="checkbox"]').change(function() {
-                var id = $($($($($($(this).parent()).parent()).parent()).parent()).parent()).attr("id")
+                var id = $(this).attr("opt")
                 if (id == 'la' || id == 'subject_area' ||id == 'wok_subject_categories'){
                     show_modal(id)
                 }
             })
             
             $(".newSearchField").click(function(){
-                id = $($($($($($(this).parent()).parent()).parent()).parent()).parent()).attr("id").replace("modal_","")
+                id = $(this).attr("name")
                 new_field(id)
             })
             $("*[class^='eraseSearchField']").click(function(){
-                $($($($(this).parent()).parent()).parent()).remove()
+                $("#searchRow-"+$(this).attr("data-rel")).remove()
             })
             $("*#apply_filters_button2").on("click",function(e) {
-                var id = $($($($($(this).parent()).parent()).parent()).parent()).attr("id")
-                var name = $($($($($(this).parent()).parent()).parent()).parent()).attr("id").replace("modal_","")
+                var id = "modal_"+$(this).attr("name")
+                var name = $(this).attr("name")
                 var query = " AND ("
                 for (i=0;i < $("#"+id+" select[name='input[]']").length-1;i++){
                     var aux = ""
