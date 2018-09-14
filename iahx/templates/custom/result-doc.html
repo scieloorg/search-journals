@@ -9,11 +9,13 @@
     {% else %}
         {% set doc_repeat = doc_repeat|merge([doc.ur[0]]) %}
         
-    {% endif%}
+    {% endif %}
     {% set doc_url = doc_url|merge({(doc.ur.0) : doc_url[(doc.ur.0)]|merge([doc.in.0])}) %}
     {% set doc_aux = doc_aux|merge([doc.ur[0]]) %}
 {% endfor %}
+{% set i = 0 %}
 {% for doc in docs2 %}
+    {% if i < pag.count %}
         <div id="{{ doc.id }}" class="item">
 
             <div class="col-md-1 col-sm-2 col-xs-1">
@@ -103,19 +105,19 @@
                                 <div class="modal-body"> 
                                     <div class="modal-metrics"> 
                                         <div class="row">
-                                            <div class="col-md-6 col-sm-6">
+                                            <div class="col-md-6 col-sm-6" id="dimensions">
                                                 <span class="__dimensions_badge_embed__" data-doi="{{doc.doi}}"></span>
                                                 
                                                 <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
                                                 
                                                 
                                             </div>
-                                            <div class="col-md-6 col-sm-6">
+                                            <div class="col-md-6 col-sm-6" id="plumx">
                                                 <span><a href="https://plu.mx/scielo/a/?doi={{doc.doi}}" data-popup="right" class="plumx-plum-print-popup" data-site="scielo" data-hide-when-empty="true">{{doc.ti}}</a></span>
                                                 
                                             </div>
-                                            <div class="title-metrics col-md-6 col-sm-6">Dimensions</div>
-                                            <div class="title-metrics col-md-6 col-sm-6">PlumX</div>
+                                            <div class="title-metrics col-md-6 col-sm-6" id="dimensions-title">Dimensions</div>
+                                            <div class="title-metrics col-md-6 col-sm-6" id="plumx-title">PlumX</div>
                                         </div> 
                                     </div>
                                 </div>
@@ -139,4 +141,6 @@
             </div>
             <div class="clearfix"></div>
         </div>
+    {% endif %}
+    {% set i = i+1 %}
 {% endfor %}

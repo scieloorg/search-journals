@@ -149,12 +149,25 @@
             }
             function new_field(name){
                 $("#modal_"+name+" .newSearchField").attr("data-count",parseInt($("#modal_"+name+" .newSearchField").attr("data-count"))+1)
-                div = $("#modal_"+name+" #searchRow-matriz2").html().replace(/@/g,$("#modal_"+name+" .newSearchField").attr("data-count"))
+                var div = $("#modal_"+name+" #searchRow-matriz2").html().replace(/@/g,$("#modal_"+name+" .newSearchField").attr("data-count"))
                 $("#modal_"+name+" .searchRow-container").append(div)
                 $("#modal_"+name+" *[class^='eraseSearchField']").click(function(){
                     $("#searchRow-"+$(this).attr("data-rel")).remove()
                 })
             }
+            
+            $(".modalMetrics").on("shown.bs.modal",function(e){
+                var id = "#"+$(this).attr("id")
+                if($(id+" .PlumX-Popup").length == 0){
+                    $(id+" #plumx").remove()
+                    $(id+" #plumx-title").remove()
+                    $(id+" #dimensions").removeClass("col-sm-6 col-md-6")
+                    $(id+" #dimensions").addClass("col-sm-12 col-md-12")
+                    $(id+" #dimensions-title").removeClass("col-sm-6 col-md-6")
+                    $(id+" #dimensions-title").addClass("col-sm-12 col-md-12")
+                }
+                
+            })
             
             $('input[type="checkbox"]').change(function() {
                 var id = $(this).attr("opt")
