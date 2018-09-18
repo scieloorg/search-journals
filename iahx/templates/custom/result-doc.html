@@ -87,10 +87,6 @@
                                                             data-legend="never"
                                                             data-style="small_circle">
                                                         </span>
-                                                        <script type="text/javascript"
-                                                            src="https://badge.dimensions.ai/badge.js"
-                                                                charset="utf-8" async>
-                                                        </script>
                                                     </div>
                                                     <div>
                                                         <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
@@ -111,9 +107,6 @@
                                                                 {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
                                                             {% endif %}
                                                         </a>
-                                                        <script type="text/javascript"
-                                                                src="https://d39af2mgp1pqhg.cloudfront.net/widget-popup.js">
-                                                        </script>
                                                     </div>
                                                     <div>
                                                         <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
