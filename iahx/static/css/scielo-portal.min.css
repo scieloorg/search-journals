@@ -453,7 +453,7 @@ button.btn:active {
   background-position: center -1676px;
 }
 .metrics {
-  background-position: center -1766px;
+  background-position: center -1768px;
 }
 .infoMenu {
   background-position: center -4152px;
@@ -3658,4 +3658,36 @@ button.btn:active {
 .buttons.affix-top {
   padding: 10px 0;
   width: inherit;
+}
+
+
+
+
+.modal-metrics {
+    margin: 0 auto;
+    max-width: -moz-fit-content;
+    max-width: -webkit-fit-content;
+}
+.modal .logo-statistc.logo-statistc-scielo {
+    background-image: url(../image/logo-scielo-svg.svg);
+}
+.modal .logo-statistc {
+    height: 100px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.modal .logo-statistc span.__dimensions_badge_embed__{
+  margin: 15px 0 0 0;
+  position: absolute;
+}
+
+.modal .badge-link {
+    position: relative;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.modal .col-center {
+    text-align: center;
 }

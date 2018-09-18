@@ -1258,7 +1258,8 @@ $(function() {
 		var grupo = $(chartSource);
 	    var lista = grupo.find('li');
 		var regex = /<span>\d+<\/span>/i;
-		var params= "";
+        var data = [];
+        var cluster_selected = false;
 
 	    for (i = 0; i < lista.length; i++){
 			clusterSelection = lista[i].getElementsByTagName('input')[0];
@@ -1272,19 +1273,41 @@ $(function() {
 	        ma = regex.exec(cluster);
 	        if (ma != null) {
 	            clusterTotal = ma[0].replace(/(<([^>]+)>)/g,'');
-	            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
+                data[clusterLabel] = clusterTotal;
+                cluster_selected = true;
 	        }
 	    }
-		if (params == ""){
+
+		if (!cluster_selected){
 			$("#no_cluster_selected").slideDown("fast");
 			return;
 		}
 
-	    var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title + params;
+	    var csvLink  = SEARCH_URL + "chartjs/?type=export-csv&title=" + title;
 		if(isOldIE) {
 			csvLink = encodeURI(csvLink);
 		}
-		export_win = window.open(csvLink);
+        // create a tmp form to submit via POST data
+        var form = document.createElement("form");
+        form.setAttribute("method", 'POST');
+        form.setAttribute("action", csvLink);
+        form.setAttribute("target", '_blank');
+
+        for (key in data) {
+            var input_label = document.createElement('input');
+            var input_data = document.createElement('input');
+            input_label.type = 'hidden';
+            input_label.name = 'l[]';
+            input_label.value = key;
+            form.appendChild(input_label);
+            input_data.type = 'hidden';
+            input_data.name = 'd[]';
+            input_data.value = data[key];
+            form.appendChild(input_data);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
 	});
 
 	$(".openStatistics").on("click",function(e) {
@@ -1348,7 +1371,7 @@ $(function() {
 	            params += "&l[]=" + clusterLabel + "&d[]=" + clusterTotal;
 	        }
 	    }
-	    var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title + params;
+	    var chartDataUrl = "chartjs/?type=" + chartType + "&title=" + title;
 	    var csvLink  = "chartjs/?type=export-csv&title=" + title + params;
 
 		chartDataUrl = encodeURI(chartDataUrl);
@@ -1357,7 +1380,7 @@ $(function() {
 		}
 
 		t.find(".modal-title .cluster").text(title);
-		t.find(".link a").attr("href",csvLink);
+		//t.find(".link a").attr("href",csvLink);
 
 		chartBlock.html('<canvas id="chart" width="950" height="400"></canvas>');
 
@@ -1371,8 +1394,9 @@ $(function() {
 		ctx.clearRect(0,0,550,400);
 
 		$.ajax({
+            type: "POST",
 			url: chartDataUrl,
-			type: "POST",
+            data: params,
 			dataType: "json",
 			beforeSend: function() {
 				chartBlock.addClass("loading");
