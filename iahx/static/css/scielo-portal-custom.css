@@ -94,37 +94,7 @@ ul.list-inline li{
 .affix button {
     margin: 6px 2px 6px 10px;
 }
-.modalMetrics .modal-header {
-    padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
-    background: #f5f3f1;
-    min-height: 16.43px;
-    border-radius: 4px;
-}
 
-.modalMetrics .modal-header h4{
-    font-size: 14px;
-    text-align: left;
-}
-.modalMetrics .title-metrics{
-    font-size: 14px;
-}
-
-.modalMetrics .modal-header .modal-title {
-    text-transform: uppercase;
-}
-.modalMetrics .__dimensions_badge_embed__{
-    text-align: center;
-}
-.modalMetrics .PlumX-Popup .ppp-container.ppp-large {
-    position: relative; 
-    display: inline; 
-    width: 120px; 
-    height: 120px; 
-}
-.modalMetrics{
-    text-align: center;
-}
 .modal #subtitle{
     font-weight: bold;
     text-align: left;

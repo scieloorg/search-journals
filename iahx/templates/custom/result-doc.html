@@ -14,8 +14,7 @@
     {% set doc_aux = doc_aux|merge([doc.ur[0]]) %}
 {% endfor %}
 {% set i = 0 %}
-{% for doc in docs2 %}
-    {% if i < pag.count %}
+{% for doc in docs2 if i < (pag.count) %}
         <div id="{{ doc.id }}" class="item">
 
             <div class="col-md-1 col-sm-2 col-xs-1">
@@ -65,9 +64,6 @@
                                 </ul>
                             </span>
                         {% endif %}
-                        {% if doc.doi %}
-                            <a href="javascript:void()" data-toggle="modal" data-target="#metric_modal_{{doc.ur.0}}" class="fm-button-child item-metrics" data-fm-label="Métricas" target="_blank" style="float:right;"> <img src="static/image/metrics.png"> </a>
-                        {% endif %}
                     </div>
                 
                     <br class="visible-xs visible-sm">
@@ -93,38 +89,6 @@
                             </span>
                         {% endif %}
                     </div>
-                    <div class="modal fade in modalMetrics" id="metric_modal_{{doc.ur.0}}">
-                        <div class="modal-dialog"> 
-                            <div class="modal-content"> 
-                                <div class="modal-header"> 
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                        &times;
-                                    </button> 
-                                    <h4 class="modal-title">{{ texts.METRICS }}</h4> 
-                                </div> 
-                                <div class="modal-body"> 
-                                    <div class="modal-metrics"> 
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6" id="dimensions">
-                                                <span class="__dimensions_badge_embed__" data-doi="{{doc.doi}}"></span>
-                                                
-                                                <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
-                                                
-                                                
-                                            </div>
-                                            <div class="col-md-6 col-sm-6" id="plumx">
-                                                <span><a href="https://plu.mx/scielo/a/?doi={{doc.doi}}" data-popup="right" class="plumx-plum-print-popup" data-site="scielo" data-hide-when-empty="true">{{doc.ti}}</a></span>
-                                                
-                                            </div>
-                                            <div class="title-metrics col-md-6 col-sm-6" id="dimensions-title">Dimensions</div>
-                                            <div class="title-metrics col-md-6 col-sm-6" id="plumx-title">PlumX</div>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     
                     {% if doc.ur[0] in doc_repeat %}
                         <div class="col-md-12 col-sm-12">
@@ -141,6 +105,5 @@
             </div>
             <div class="clearfix"></div>
         </div>
-    {% endif %}
     {% set i = i+1 %}
 {% endfor %}

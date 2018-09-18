@@ -3,9 +3,9 @@
 		{{ texts.SHOWING }}
 		<div class="selectBox inline" style="width: 60px;">
 			<select name="countSelect" id="countSelect" onchange="change_count(this);">
-                <option value="15" {% if count is defined and count == 25 %}selected="true"{% endif %}>15</option>
-                <option value="30" {% if count is defined and count == 40 %}selected="true"{% endif %}>30</option>
-                <option value="50" {% if count is defined and count == 60 %}selected="true"{% endif %}>50</option>
+                <option value="15" {% if count is defined and count == 15 %}selected="true"{% endif %}>15</option>
+                <option value="30" {% if count is defined and count == 30 %}selected="true"{% endif %}>30</option>
+                <option value="50" {% if count is defined and count == 50 %}selected="true"{% endif %}>50</option>
 			</select>
 		</div>
         {{ texts.ITENS_PER_PAGE }}
