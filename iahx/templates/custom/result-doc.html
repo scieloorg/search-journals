@@ -34,19 +34,117 @@
                             <a href="javascript:void()"><span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span></a>
                             <a href="{{share_url}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="{{ texts.SHARE }} Facebook">Facebook</a>
                             <a href="{{share_url}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="{{ text.SHARE }} Twitter">Twitter</a>
-                            <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" title="" data-original-title="{{ texts.SHARE_OTHER_NETWORKS }}">
-                                <span class="glyphBtn otherNetworks"></span>
+
+                            <span class="dropdown" style="margin:0;">
+                                <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" title="" data-original-title="{{ texts.SHARE_OTHER_NETWORKS }}">
+                                    <span class="glyphBtn otherNetworks" style="margin:0;"></span>
+                                </a>
+                                <ul class="dropdown-menu articleShare">
+                                    <li class="dropdown-header">{{ texts.OTHER_SOCIAL_NETWORKS }}</li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
+                                    <li><a target="_blank" href="{{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
+                                    <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
+                                </ul>
+                            </span>
+
+                            <a href="" class="showTooltip" data-placement="top" title="" data-original-title="{{ texts.METRICS }}" data-toggle="modal" data-target="#metrics_{{ doc.id }}">
+                                <span class="glyphBtn metrics"></span>
                             </a>
-                            <ul class="dropdown-menu articleShare">
-                                <li class="dropdown-header">{{ texts.OTHER_SOCIAL_NETWORKS }}</li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
-                                <li><a target="_blank" href="{{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
-                                <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
-                            </ul>
+
+                            <div class="modal fade" tabindex="-1" role="dialog" id="metrics_{{ doc.id }}">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">Métricas</h4>
+                                        </div>
+                                        <div class="modal-body">
+
+
+                                            <div class="modal-metrics">
+                                              <div class="row">
+
+                                                {% if doc.doi %}
+
+                                                <div class="badge-link col-center">
+                                                    <div class="badge-link col-center">
+                                                        <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                            <div class="logo-statistc logo-statistc-scielo"></div>
+                                                        </a>
+                                                        <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                            SciELO Analytics
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="badge-link col-center">
+                                                    <div class="logo-statistc">
+                                                        <span class="__dimensions_badge_embed__"
+                                                            data-doi="{{ doc.doi }}"
+                                                            data-legend="never"
+                                                            data-style="small_circle">
+                                                        </span>
+                                                        <script type="text/javascript"
+                                                            src="https://badge.dimensions.ai/badge.js"
+                                                                charset="utf-8" async>
+                                                        </script>
+                                                    </div>
+                                                    <div>
+                                                        <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
+                                                            Dimensions
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="badge-link col-center">
+                                                    <div class="logo-statistc">
+                                                        <a href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}"
+                                                           data-popup="hidden"
+                                                           data-size="large"
+                                                           class="plumx-plum-print-popup"
+                                                           data-site="scielo">
+                                                            {% if doc.ti %}
+                                                                {% set article_title = doc.ti.0|raw %}
+                                                            {% else %}
+                                                                {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                                                            {% endif %}
+                                                        </a>
+                                                        <script type="text/javascript"
+                                                                src="https://d39af2mgp1pqhg.cloudfront.net/widget-popup.js">
+                                                        </script>
+                                                    </div>
+                                                    <div>
+                                                        <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
+                                                            PlumX
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                {% else %}
+
+                                                <div class="badge-link col-center">
+                                                    <div class="badge-link col-center">
+                                                        <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                            <div class="logo-statistc logo-statistc-scielo"></div>
+                                                        </a>
+                                                        <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                            SciELO Analytics
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                {% endif %}
+
+                                              </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </span>
                     {% endif %}
                 </div>
