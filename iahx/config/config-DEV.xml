@@ -6,6 +6,7 @@
     <about_bvs_url>http://www.scielo.org/php/level.php?lang=pt&amp;component=56&amp;item=8</about_bvs_url>
     <home_url>http://www.scielo.org/</home_url>
     <search_server>api-search.scielo.org</search_server>
+    <google_scholar>https://scholar.google.com/citations?view_op=search_authors&amp;hl=es&amp;mauthors=</google_scholar>
     <photocopy_url/>
     <documents_per_page>15</documents_per_page>
         <max_export_records>2000</max_export_records>
@@ -56,35 +57,32 @@
             <cluster_items_limit>5</cluster_items_limit>
             <initial_filter></initial_filter>
             <index_list>
-                <index>
-                    <name>ALL</name>
-                    <prefix></prefix>
-                </index>
-                <index>
-                    <name>YEAR</name>
-                    <prefix>year_cluster</prefix>
-                </index>
-                <index>
-                    <name>AU</name>
-                    <prefix>au</prefix>
-                </index>
-                <index>
-                    <name>SP</name>
-                    <prefix>sponsor</prefix>
-                </index>
-                <index>
-                    <name>TA</name>
-                    <prefix>ta</prefix>
-                </index>
-                <index>
-                    <name>AB</name>
-                    <prefix>ab</prefix>
-                </index>
-                <index>
-                    <name>TI</name>
-                    <prefix>ti</prefix>
-                </index>
-            </index_list>
+		<index>
+			<name>ALL</name>
+			<prefix></prefix>
+		</index>
+		<index>
+		    <name>SUBJECT</name>
+		    <prefix>subject2</prefix>
+		</index>
+		<index>
+		    <name>TI</name>
+		    <prefix>ti</prefix>
+		</index>
+		<index>
+		    <name>AU</name>
+		    <prefix>au</prefix>
+		</index>
+		<index>
+		    <name>TA</name>
+		    <prefix>ta</prefix>
+		</index>
+		
+		<index>
+		    <name>YEAR</name>
+		    <prefix>year_cluster</prefix>
+		</index>
+	    </index_list>
             <where_list>
                 <where>
                     <name>ORG</name>
@@ -154,11 +152,11 @@
             <sort_list>
                     <sort>
                             <name>YEAR_DESC</name>
-                            <value>da desc</value>
+                            <value>scielo_publication_date desc</value>
                     </sort>
                     <sort>
                             <name>YEAR_ASC</name>
-                            <value>da asc</value>
+                            <value>scielo_publication_date asc</value>
                     </sort>
                         <sort>
                             <name>RELEVANCE</name>
@@ -214,8 +212,8 @@
         <spa>http://www.scielosp.org</spa>
         <sss>http://socialsciences.scielo.org</sss>
         <sza>http://www.scielo.org.za</sza>
-                <bol>http://www.scielo.org.bo</bol>
-                <per>http://www.scielo.org.pe</per>
-                <ecu>http://scielo.senescyt.gob.ec</ecu>
+        <bol>http://www.scielo.org.bo</bol>
+        <per>http://www.scielo.org.pe</per>
+        <ecu>http://scielo.senescyt.gob.ec</ecu>
     </scielo_urls>
 </dia_config>
