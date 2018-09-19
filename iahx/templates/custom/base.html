@@ -128,6 +128,7 @@
     {% endblock %}
     <script>
         $(document).ready(function(){
+            
             function show_modal(name){
                 if ($("#ul_"+name+" input:checked").length >= 2){
                     $("#modal_"+name+" .newSearchField").attr("data-count",2)

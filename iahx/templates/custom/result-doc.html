@@ -1,20 +1,13 @@
-{% set docs2 = [] %}
+{% set docs_clean = [] %}
 {% set doc_aux = [] %}
-{% set doc_repeat = [] %}
-{% set doc_url = {} %}
 {% for doc in docs %}
     {% if doc.ur[0] not in doc_aux %}
-        {% set docs2 = docs2|merge([doc]) %}
-        {% set doc_url = doc_url|merge({(doc.ur.0) : []}) %}
-    {% else %}
-        {% set doc_repeat = doc_repeat|merge([doc.ur[0]]) %}
-        
+        {% set docs_clean = docs_clean|merge([doc]) %}   
     {% endif %}
-    {% set doc_url = doc_url|merge({(doc.ur.0) : doc_url[(doc.ur.0)]|merge([doc.in.0])}) %}
     {% set doc_aux = doc_aux|merge([doc.ur[0]]) %}
 {% endfor %}
 {% set i = 0 %}
-{% for doc in docs2 if i < (pag.count) %}
+{% for doc in docs_clean if i < (pag.count) %}
         <div id="{{ doc.id }}" class="item">
 
             <div class="col-md-1 col-sm-2 col-xs-1">
@@ -89,15 +82,20 @@
                             </span>
                         {% endif %}
                     </div>
-                    
-                    {% if doc.ur[0] in doc_repeat %}
-                        <div class="col-md-12 col-sm-12">
-                            <a><span>{{texts.ARTICLE_INDEXED}}:</span></a>
-                                {% for col in doc_url[(doc.ur.0)] %}
-                                    <b>&bull; <a href="{{ attribute(config.scielo_urls, col) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" target="_blank">{{translate(col, "REFINE_in" )}}</a></b>
-                                    
-                                {% endfor %}
-                        </div>
+                    {% if doc.doi %}
+                        {% if docs2[doc.doi]["in"]|length >= 2 %}
+                            <div class="col-md-12 col-sm-12">
+                                <a><span>{{texts.ARTICLE_INDEXED}}:</span></a>
+                                    {% for col in docs2[doc.doi]["in"] %}
+                                        <b>&bull; <a href="{{ attribute(config.scielo_urls, col) }}/scielo.php?script=sci_arttext&pid={{docs2[doc.doi]['ur']}}&lang={{lang}}" target="_blank">{{translate(col, "REFINE_in" )}}</a></b>
+
+
+                                    {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if doc.doi %}
+                        <span id="doi" name="{{doc.doi}}"></span>
                     {% endif %}
                     <div class="clearfix"></div>
                 </div>
