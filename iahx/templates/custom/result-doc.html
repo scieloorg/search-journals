@@ -7,12 +7,13 @@
                 <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
                 {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
             {% endif %}
-            <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
+            <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
                 <!-- title -->
                 <div class="line">
+                    {{ loop.index + pag.start }}.
                     <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
                     {% if doc.ti %}
                         {% set article_title = doc.ti.0|raw %}
