@@ -160,7 +160,6 @@ input[type=radio].radio {
 label.checkbox,
 label.radio {
   padding-left: 32px;
-  height: 25px;
   display: inline-block;
   line-height: 25px;
   background-repeat: no-repeat;
