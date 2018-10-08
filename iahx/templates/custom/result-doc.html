@@ -7,7 +7,7 @@
                 <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
                 {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
             {% endif %}
-            <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
+            <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
@@ -52,46 +52,41 @@
                                 </ul>
                             </span>
 
-                            {% if config.show_metrics|trim == 'true' %}
-                                <span class="dropdown" style="margin:0;">
-                                    <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
-                                        <span class="glyphBtn metrics"></span>
-                                    </a>
-                                    <ul class="dropdown-menu articleShare">
-                                        <li class="dropdown-header">{{ texts.METRICS }}</li>
+                            <span class="dropdown" style="margin:0;">
+                                <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
+                                    <span class="glyphBtn metrics"></span>
+                                </a>
+                                <ul class="dropdown-menu articleShare">
+                                    <li class="dropdown-header">{{ texts.METRICS }}</li>
 
-                                        {% if config.metrics.use_analytics|trim == 'true' %}
-                                            <li>
-                                                <a target="_blank" href="
-                                                {{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
-                                                    <span class="glyphBtn googlePlus"></span>
-                                                    SciELO Analytics
-                                                </a>
-                                            </li>
-                                        {% endif %}
-
-                                        {% if doc.doi %}
-                                            {% if config.metrics.use_dimensions|trim == 'true' %}
-                                                <li>
-                                                    <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
-                                                        <span class="glyphBtn linkedIn"></span>
-                                                        Dimensions
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-
-                                            {% if config.metrics.use_plumx|trim == 'true' %}
-                                                <li>
-                                                    <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
-                                                        PlumX
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-
-                                        {% endif %}
-                                    </ul>
-                                </span>
-                            {% endif %}
+                                    {% if doc.doi %}
+                                        <li>
+                                            <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                <span class="glyphBtn googlePlus"></span> 
+                                                SciELO Analytics
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
+                                                <span class="glyphBtn linkedIn"></span> 
+                                                Dimensions
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
+                                                PlumX
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                <span class="glyphBtn googlePlus"></span> 
+                                                SciELO Analytics
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </span>
 
                         </span>
                     {% endif %}
