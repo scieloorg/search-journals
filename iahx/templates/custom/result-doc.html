@@ -57,29 +57,29 @@
                                 </a>
                                 <ul class="dropdown-menu articleShare">
                                     <li class="dropdown-header">{{ texts.METRICS }}</li>
-
                                     {% if doc.doi %}
                                         <li>
                                             <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                <span class="glyphBtn googlePlus"></span> 
+                                                <span class="glyphBtnMetrics scieloAnalytics"></span> 
                                                 SciELO Analytics
                                             </a>
                                         </li>
                                         <li>
                                             <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
-                                                <span class="glyphBtn linkedIn"></span> 
+                                                <span class="glyphBtnMetrics dimension"></span> 
                                                 Dimensions
                                             </a>
                                         </li>
                                         <li>
                                             <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
+                                                <span class="glyphBtnMetrics plumx"></span> 
                                                 PlumX
                                             </a>
                                         </li>
                                     {% else %}
                                         <li>
                                             <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                <span class="glyphBtn googlePlus"></span> 
+                                                <span class="glyphBtnMetrics scieloAnalytics"></span> 
                                                 SciELO Analytics
                                             </a>
                                         </li>
