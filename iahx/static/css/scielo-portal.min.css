@@ -3679,6 +3679,67 @@ button.btn:active {
 }
 
 
+.metricTable{
+  margin:0;
+  padding:0;
+  
+  list-style: none;
+  display:table;
+  width:200px !important;
+}
+.articleShareMetrics .dropdown-header{
+  padding:3px 5px !important;
+}
+.articleShareMetrics:before {
+    left: 27%!important;
+}
+.metricTable li{
+  display: table-cell;
+  vertical-align: middle;
+}
+.metricTable li a{
+  padding:0!important;
+  display: block;
+}
+.metricTable li:first-child{
+  width:60px !important;
+}
+.metricTable li:last-child{
+  width:140px !important;
+}
+.metricTable li:first-child a{
+  background: transparent !important;
+}
+.metricTable li:last-child a{
+  padding:15px 10px !important;
+}
+.metricTable li:last-child a:hover{
+  background: #6789d3;
+  color: #fff;
+}
+.metricTable .logo-statistc {
+    width:48px;
+    height:48px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+}
+
+.metricTable .logo-statistc.logo-statistc-scielo{
+  width:58px;
+  height:48px;
+}
+
+
+.articleShare .__dimensions_Badge_Image,
+.articleShare .plx-print,
+.articleShare .PlumX-Popup .ppp-container.ppp-large>a, 
+.articleShare .PlumX-Popup .ppp-container.ppp-large .plx-print,
+.articleShare .PlumX-Popup .ppp-container.ppp-large{
+  width:48px !important;
+  height:48px !important;
+}
+
 
 
 .modal-metrics {
@@ -3686,21 +3747,26 @@ button.btn:active {
     max-width: -moz-fit-content;
     max-width: -webkit-fit-content;
 }
-.modal .logo-statistc.logo-statistc-scielo {
+.modal .logo-statistc.logo-statistc-scielo,
+.logo-statistc.logo-statistc-scielo {
     background-image: url(../image/logo-scielo-svg.svg);
 }
-.modal .logo-statistc {
+.modal .logo-statistc{
     height: 100px;
     display: block;
     background-repeat: no-repeat;
     background-position: center center;
 }
-.modal .logo-statistc span.__dimensions_badge_embed__{
-  margin: 15px 0 0 0;
+.modal .logo-statistc span.__dimensions_badge_embed__,
+.logo-statistc span.__dimensions_badge_embed__{
+  margin: -10px 0 0 0 !important;
   position: absolute;
+  width:48px !important;
+  height:48px !important;
 }
 
-.modal .badge-link {
+.modal .badge-link,
+.badge-link {
     position: relative;
     float: left;
     padding-left: 10px;
