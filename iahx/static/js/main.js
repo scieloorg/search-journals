@@ -506,8 +506,6 @@ searchFormBuilder = {
 				sort_items = [],
 				group = t.data("group");
 
-				console.log('aqui');
-
 			if(typeof group !== "undefined") {
 				var groupItens = $("a.orderBy[data-group='"+group+"']");
 				groupItens.removeClass("orderBy_selected");
