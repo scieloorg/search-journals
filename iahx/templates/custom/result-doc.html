@@ -55,33 +55,79 @@
                                 <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
                                     <span class="glyphBtn metrics"></span>
                                 </a>
-                                <ul class="dropdown-menu articleShare">
+                                <ul class="dropdown-menu articleShare articleShareMetrics">
                                     <li class="dropdown-header">{{ texts.METRICS }}</li>
                                     {% if doc.doi %}
                                         <li>
-                                            <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                <span class="glyphBtnMetrics scieloAnalytics"></span> 
-                                                SciELO Analytics
-                                            </a>
+                                            <ul class="metricTable">
+                                                <li>
+                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                        <div class="logo-statistc logo-statistc-scielo"></div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                        SciELO Analytics
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                         <li>
-                                            <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
-                                                <span class="glyphBtnMetrics dimension"></span> 
-                                                Dimensions
-                                            </a>
+                                            <ul class="metricTable">
+                                                <li>&nbsp;
+                                                    <div class="logo-statistc">
+                                                        <span class="__dimensions_badge_embed__"
+                                                        data-doi="{{ doc.doi }}"
+                                                        data-legend="never"
+                                                        data-style="small_circle">
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
+                                                        Dimensions
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                         <li>
-                                            <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
-                                                <span class="glyphBtnMetrics plumx"></span> 
-                                                PlumX
-                                            </a>
+                                            <ul class="metricTable">
+                                                <li>
+                                                    <div class="logo-statistc">
+                                                        <a href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}" 
+                                                            data-popup="hidden" 
+                                                            data-size="large"   
+                                                            class="plumx-plum-print-popup"  
+                                                            data-site="scielo"> 
+                                                            {% if doc.ti %} 
+                                                            {% set article_title = doc.ti.0|raw %}  
+                                                            {% else %}  
+                                                            {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}   
+                                                            {% endif %} 
+                                                        </a>    
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
+                                                        PlumX
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     {% else %}
                                         <li>
-                                            <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                <span class="glyphBtnMetrics scieloAnalytics"></span> 
-                                                SciELO Analytics
-                                            </a>
+                                            <ul class="metricTable">
+                                                <li>
+                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                        <div class="logo-statistc logo-statistc-scielo"></div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
+                                                        SciELO Analytics
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     {% endif %}
                                 </ul>
