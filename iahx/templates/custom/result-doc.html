@@ -51,89 +51,46 @@
                                     <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
                                 </ul>
                             </span>
+                            {% if config.show_metrics|trim == 'true' %}
+                                <span class="dropdown" style="margin:0;">
+                                    <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
+                                        <span class="glyphBtn metrics"></span>
+                                    </a>
+                                    <ul class="dropdown-menu articleShare">
+                                        <li class="dropdown-header">{{ texts.METRICS }}</li>
 
-                            <span class="dropdown" style="margin:0;">
-                                <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
-                                    <span class="glyphBtn metrics"></span>
-                                </a>
-                                <ul class="dropdown-menu articleShare articleShareMetrics">
-                                    <li class="dropdown-header">{{ texts.METRICS }}</li>
-                                    {% if doc.doi %}
-                                        <li>
-                                            <ul class="metricTable">
+                                        {% if config.metrics.use_analytics|trim == 'true' %}
+                                            <li>
+                                                <a target="_blank" href="
+                                                {{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
+                                                    <span class="glyphBtn googlePlus"></span>
+                                                    SciELO Analytics
+                                                </a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% if doc.doi %}
+                                            {% if config.metrics.use_dimensions|trim == 'true' %}
                                                 <li>
-                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                        <div class="logo-statistc logo-statistc-scielo"></div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                        SciELO Analytics
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <ul class="metricTable">
-                                                <li>&nbsp;
-                                                    <div class="logo-statistc">
-                                                        <span class="__dimensions_badge_embed__"
-                                                        data-doi="{{ doc.doi }}"
-                                                        data-legend="never"
-                                                        data-style="small_circle">
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank" href="https://badge.dimensions.ai/details/doi/{{ doc.doi }}">
+                                                    <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
+                                                        <span class="glyphBtn linkedIn"></span>
                                                         Dimensions
                                                     </a>
                                                 </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <ul class="metricTable">
+                                            {% endif %}
+
+                                            {% if config.metrics.use_plumx|trim == 'true' %}
                                                 <li>
-                                                    <div class="logo-statistc">
-                                                        <a href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}" 
-                                                            data-popup="hidden" 
-                                                            data-size="large"   
-                                                            class="plumx-plum-print-popup"  
-                                                            data-site="scielo"> 
-                                                            {% if doc.ti %} 
-                                                            {% set article_title = doc.ti.0|raw %}  
-                                                            {% else %}  
-                                                            {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}   
-                                                            {% endif %} 
-                                                        </a>    
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank" href="{{ config.PLUMX_METRICS_URL }}/?doi={{ doc.doi }}">
+                                                    <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
                                                         PlumX
                                                     </a>
                                                 </li>
-                                            </ul>
-                                        </li>
-                                    {% else %}
-                                        <li>
-                                            <ul class="metricTable">
-                                                <li>
-                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                        <div class="logo-statistc logo-statistc-scielo"></div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a target="_blank" href="http://analytics.scielo.org/w/accesses?document={{ doc.id }}&amp;collection={{doc.in.0}}">
-                                                        SciELO Analytics
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </span>
+                                            {% endif %}
 
+                                        {% endif %}
+                                    </ul>
+                                </span>
+                            {% endif %}
                         </span>
                     {% endif %}
                 </div>
