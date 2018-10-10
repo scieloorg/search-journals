@@ -3601,7 +3601,6 @@ button.btn:active {
 .cluster-actions-menu {
   text-align: left;
   position: relative;
-  width: 51% !important;
 }
 .cluster-actions-menu .tooltip {
   position: absolute;
