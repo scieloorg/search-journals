@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+
+    webapp:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        restart: always
+        hostname: webapp
+        ports:
+            - "80:80"
