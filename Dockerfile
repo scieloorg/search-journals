@@ -41,7 +41,7 @@ ADD docker/apache/foreground.sh /etc/apache2/foreground.sh
 RUN cp /etc/apache2/mods-available/expires.load /etc/apache2/mods-enabled/
 
 # supervisord config
-ADD docker/apache/supervisord.conf /etc/supervisord.conf
+ADD docker/supervisor/supervisord.conf /etc/supervisord.conf
 
 RUN chmod 755 /etc/apache2/foreground.sh
 RUN mkdir /var/log/supervisor/
