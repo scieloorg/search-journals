@@ -1,0 +1,1 @@
+../../../../iahx-opac/static/js/add_collection.js

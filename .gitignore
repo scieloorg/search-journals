@@ -1,3 +1,6 @@
+iahx/config/config-mail.php
+iahx/config/config.xml
+logs/
 .DS_Store
 *.pyc
 *.log
