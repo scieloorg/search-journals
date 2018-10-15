@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0">
+    <channel>{% block channel %}
+        <title>{{ texts.BVS_TITLE }} | {% if params.filterLabel != '' %} {{ params.filterLabel }}{% else %} {{ q|truncate(220) }} {% endif %}</title>
+        <link>{{ search_url }}</link>
+        <description>{% spaceless %}
+        <![CDATA[
+        {{ q }}
+        {% if filters_formatted|length > 0 %}
+            | {{ texts.SELECTED_FILTERS }}:
+            {% for cluster, items in filters_formatted %}
+                {% set texts_group = 'REFINE_' ~ cluster %}
+                {{ attribute(texts.REFINE, cluster) }}=
+                    {%- for item in items %}
+                       {%- set item_value = cluster ~ '_' ~ item|slugify ~ '' -%}
+                        {{ translate(item, texts_group) }}{% if not loop.last %}, {% endif %}
+                    {% endfor -%}{%- if not loop.last %} ; {% endif -%}
+            {% endfor %}
+        {% endif %}
+        ]]>
+        {% endspaceless %}</description>
+
+        <image>
+            <title>{{ texts.TITLE }}</title>
+            <url>{{ constant("STATIC_URL") }}image/{{ lang }}/logo.png</url>
+            <link>{{ constant("SEARCH_URL") }}</link>
+            <description>{{ texts.DESCRIPTION }}</description>
+        </image>
+
+        {% for doc in docs %}
+            {% block item %}
+                <item>
+                    <title><![CDATA[{{ doc.ti.0|raw }}]]></title>
+                    {% if doc.au is defined %}
+                        <author><![CDATA[{% for author in doc.au %}{{ author }}{% if loop.last %}.{% else %}; {% endif %}{% endfor %}]]></author>
+                    {% endif %}
+                    <source><![CDATA[{{ doc.fo.0 }}]]></source>
+                    <link>{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}</link>
+                    <description><![CDATA[<p>{% if doc.fo is defined %}{{ doc.fo.0 }}{% if doc.fo.0|last == '.' %} {% else %}. {% endif %}{% endif %}{% if doc.type is defined %}[{{ translate(doc.type.0, 'REFINE_type') }}]{% endif %}</p>]]></description>
+                    <guid isPermaLink="false">{{ doc.id }}</guid>
+                </item>
+                {% endblock %}
+        {% endfor %}
+    {% endblock %}</channel>
+</rss>

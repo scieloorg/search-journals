@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <div class="results">
+        <a href="?clear=true">Clear History</a>
+        <h2>History Search</h2>
+
+
+        <ul>
+            {% for q, item in histories %}
+                <li>
+                    <a href="{{ item.url }}" title="Pesquisa feita em {{ item.time|date('d/m/Y H:i:s') }}" id="{{ item.id }}">
+                        {{ q }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    {% include custom_template("footer.html") %}
+{% endblock %}

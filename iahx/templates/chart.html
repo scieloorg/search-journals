@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/chart.css" type="text/css" media="screen"/>   
+    </head>
+    <body>
+    <ul> 
+        <li class="chart_bar">
+            <a href="{{ resubmit }}&type=bar"><span>Barra</span></a>
+        </li>
+        <li class="chart_line">
+            <a href="{{ resubmit }}&type=line"><span>Linha</span></a>
+        </li>
+        <li class="chart_pie">
+            <a href="{{ resubmit }}&type=pie"><span>Pizza</span></a>
+        </li>
+        <li class="chart_csv">
+            <a href="{{ resubmit }}&type=export-csv"><span>CSV</span></a>
+        </li>
+    </ul>
+
+{{ graph|raw }}
+
+</body>
+</html>

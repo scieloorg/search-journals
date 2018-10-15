@@ -1,0 +1,32 @@
+{% for doc in docs %}
+
+    <div id="{{ doc.id }}" class="record">
+
+        <div class="yourSelectionCheck">
+            <label for="select_{{ doc.id }}" class="hide">{{ texts.SELECT }}</label>
+            <input type="checkbox" class="my_selection" value="{{ doc.id }}" 
+            {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
+        </div>
+
+        <div class="position">{{ loop.index + pag.start }}.</div>
+        <div class="data">
+            {% block data %}                
+                <!-- title -->
+                <h3>
+                    {% if 'DECS' in doc.db  %}
+                        {% set descriptor = 'ti_' ~ lang %}
+
+                        <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" title="{{ attribute(doc, descriptor ).0 }}">{{ attribute(doc, descriptor ).0 }}</a>
+                    {% else %}                    
+                        <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" title="{{ doc.ti.0 }}">{% autoescape false %}{{ occ( {'element': doc.ti|raw, separator: ' / '} ) }}{% endautoescape %}</a>
+                    {% endif %}
+                </h3>
+               
+            {% endblock %}            
+            <div class="user-actions">
+                {% include custom_template("result-doc-actions.html") %}
+            </div>
+        </div>       
+
+    </div>
+{% endfor %}

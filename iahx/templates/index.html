@@ -1,0 +1,66 @@
+{% extends custom_template("base.html") %}
+
+{% block content %}
+    
+    {{ parent() }}
+
+    {% if flash_message is defined %}
+        <div id="flash" style="display: none;">{{ attribute(texts, flash_message) }}</div>
+    {% endif %}
+
+    {% if config.maintenance == 'true' %}
+        <div class="noResults">
+            {{ texts.MAINTENANCE }}
+        </div>
+    
+    {% else %}
+
+        {% if docs|length > 0 %}
+            {% block results %}
+                <div class="results">
+                    
+                    {% block clusters %}
+                        {% include custom_template("result-clusters.html") %}
+                    {% endblock %}
+
+                    {% block result_options %}
+                    <div class="resultOptions">
+
+                            {% block results_bar %}
+                                <div class="resultsBar">
+                                    {% block results_topbar %}
+                                        {% include custom_template("result-topbar.html") %}
+                                    {% endblock %}
+                                    {% block results_actions %}
+                                        {% include custom_template("result-actions.html") %}
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+
+                            {% block resultNavigation %}
+                                <div class="resultNavigation">{% include custom_template("result-navigation.html") %}</div>
+                            {% endblock %}
+
+
+                        </div>
+                    {% endblock %}
+
+                    {% block result_set %}
+                        <div class="resultSet">
+                            {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
+                            {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
+                        </div>
+                    {% endblock %}
+
+                </div>
+            {% endblock %}
+
+        {% else %}
+            <div class="noResults">
+                {{ texts.NO_RESULTS }}
+            </div>
+        {% endif %}
+
+    {% endif %}        
+
+{% endblock %}

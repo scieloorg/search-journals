@@ -1,0 +1,38 @@
+<!-- source -->
+{% if doc.fo %}
+    <div>
+        {% set journal = doc.fo.0|substring_before(';') %}
+        {% if journal != '' and doc.type.0 == 'article' %}
+            <em><a href="http://portal.revistas.bvs.br/transf.php?xsl=xsl/titles.xsl&xml=http://catserver.bireme.br/cgi-bin/wxis1660.exe/?IsisScript=../cgi-bin/catrevistas/catrevistas.xis|database_name=TITLES|list_type=title|cat_name=ALL|from=1|count=50&lang=pt&comefrom=home&home=false&task=show_magazines&request_made_adv_search=false&lang=pt&show_adv_search=false&help_file=/help_pt.htm&connector=ET&search_exp={{ journal }}
+                " class="fancybox_iframe75"><span>{{ journal }}</span></a>;
+            {{ doc.fo.0|substring_after(';') }}</em>
+        {% else %}
+            <em>{{ doc.fo.0 }}</em>
+        {% endif %}        
+    </div>
+{% endif %}
+
+<div>    
+    {{ occ( {'element': doc.type[0],  'translate': true, 'group': 'REFINE_type' } ) }}
+    {% if doc.la is defined %}
+        {{ texts.DOCUMENT_IN }} {{ occ( {'element': doc.la,  'translate': true, 'group': 'REFINE_la'} ) }}
+    {% endif %}
+
+
+    <!-- database -->
+    {% if 'LXP' in doc.services %}
+    	{% if lang == 'pt' %}    	
+    		{% set lxp_disclaimer_url = 'http://bases.bireme.br/iah/online/P/llxp_disclaimer.htm' %}
+    	{% elseif lang == 'es' %}
+    		{% set lxp_disclaimer_url = 'http://bases.bireme.br/iah/online/E/llxp_disclaimer.htm' %}
+    	{% else %}
+    		{% set lxp_disclaimer_url = 'http://bases.bireme.br/iah/online/I/llxp_disclaimer.htm' %}
+    	{% endif %}
+       	| <a href="{{ lxp_disclaimer_url }}" title="LILACS-Express" class="fancybox_iframe">
+           	LILACS-Express
+       	</a>
+    {% else %}
+        {% if doc.db is defined %}| {% for db in doc.db %}{{ translate(db|default(doc.db), 'REFINE_db') }}{% if loop.last %}{% else %}, {% endif %}{% endfor %}{% endif %}
+    {% endif %}
+	| ID: {{ doc.id }}
+</div>

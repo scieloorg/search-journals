@@ -1,0 +1,104 @@
+{% extends custom_template("base.html") %}
+
+{% block script %}{% endblock %}
+{% block onload %}{% endblock %}
+
+{% block extrahead %}
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/advanced.js"></script>
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/advanced.css" type="text/css" media="screen">    
+{% endblock %}
+
+{% block content %}
+    {% block breadcrumb %}{% include custom_template("top-breadcrumb.html") %}{% endblock %}
+    <h2>{{ texts.ADVANCED_SEARCH }}</h2>
+
+    <div class="advanced-form">
+        <form name="advanced" id="advanced" onsubmit="return search();">    
+
+            <div class="q-first">
+                <input type="text" name="q[]" class="q" value="" id="input-1">
+                {% if config.browse_index_url is defined and config.browse_index_url != '' %}
+                    <a href="#" onclick="show_index(this)" class="updateIndexList openerIndexes" id="show-1">{{ texts.SHOW_INDEX }}</a>
+                {% endif %}
+
+                <select name="index[]" class="inputText index" id="index-1">
+                    {% for index in collectionData.index_list.index %}
+                        {% if params.index is defined %}
+                            {% if index.prefix == params.index %}
+                                <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% else %}
+                                <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="indexList" style="display: none;" id="list-1">
+                    <div class="vBlockL first">
+                        <select class="indexTerms" multiple="multiple" size="10" id="select-1" onchange="select_term(this)">
+                        </select>
+                    </div>
+                    <div class="vBlockR">
+                        <div class="prev"><a href="#" onclick="show_prev(this)" class="prev" id="prev-1">{{ texts.PREVIOUS_KEYS }}</a></div>
+                        <div class="next"><a href="#" onclick="show_next(this)" class="next" id="next-1">{{ texts.NEXT_KEYS }}</a></div>
+                        <div class="refresh"><a href="#" onclick="show_index(this, true)" class="updateIndexList" id="refresh-1">{{ texts.UPDATE_KEYS }}</a></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="block-q">
+                <div>
+                    <select name="bool[]" class="mini">
+                        <option value="AND">AND</option>
+                        <option value="OR">OR</option>
+                        <option value="AND NOT">AND NOT</option>
+                    </select>
+
+                    <input type="text" name="q[]" class="q" id="input-2" onfocus="new_line(this)"> 
+                    {% if config.browse_index_url is defined and config.browse_index_url != '' %}
+                        <a href="#" onclick="show_index(this)" class="updateIndexList openerIndexes" id="show-2">{{ texts.SHOW_INDEX }}</a>
+                    {% endif %}
+
+                    <select name="index[]" class="inputText index" id="index-2">
+                        {% for index in collectionData.index_list.index %}
+                            {% if params.index is defined %}
+                                {% if index.prefix == params.index %}
+                                    <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% else %}
+                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    <div class="indexList" style="display: none;" id="list-2">
+                        <div class="vBlockL">
+                            <select class="indexTerms" multiple="multiple" size="10" id="select-2" onchange="select_term(this)">
+                            </select>
+                        </div>
+                        <div class="vBlockR">
+                            <div class="prev"><a href="#" onclick="show_prev(this)" class="prev" id="prev-2">{{ texts.PREVIOUS_KEYS }}</a></div>
+                            <div class="next"><a href="#" onclick="show_next(this)" class="next" id="next-2">{{ texts.NEXT_KEYS }}</a></div>
+                            <div class="refresh"><a href="#" onclick="show_index(this, true)" class="updateIndexList" id="refresh-2">{{ texts.UPDATE_KEYS }}</a></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="more"></div>
+            
+            <div class="buttons">
+                <button type="submit">{{ texts.SEARCH_SUBMIT }}</button>
+            </div>
+        </form>
+
+        <form name="searchForm" action="{{ constant("SEARCH_URL") }}">
+            <input name="lang" type="hidden" value="{{ lang }}" />
+            <input name="q" type="hidden" value="" />
+        </form>
+    </div>
+    
+{% endblock %}

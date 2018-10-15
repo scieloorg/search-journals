@@ -1,0 +1,256 @@
+{% extends "index.html" %}
+{% block title %}{{ doc.ti.0 }} {% if doc.fo.0 %} | {{ doc.fo.0 }} {% endif %} {% if doc.db %} | {{ occ({'element': doc.db, separator: ' | '}) }} {% endif %} | {{ texts.BVS_TITLE }}{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/print.css" type="text/static" media="print">
+
+    <style>
+        /* style the abstract tabs */
+        div.tab_box {
+            margin: 10px 0 10px;
+        }
+
+        div.tab {
+           overflow: hidden;
+           border: 1px solid #ccc;
+           background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        div.tab button {
+           background-color: inherit;
+           float: left;
+           border: none;
+           outline: none;
+           cursor: pointer;
+           padding: 10px 12px;
+           transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        div.tab button:hover {
+           background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        div.tab button.active {
+           background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+           padding: 15px;
+           border: 1px solid #ccc;
+           border-top: none;
+        }
+
+        .abstract h2{
+            color: #3A8EBE;
+            margin: 10px 0 10px;
+            font-weight: normal;
+        }
+    </style>
+
+    <meta name="citation_id" content="{{ doc.id }}" />
+    <meta name="dc.identifier" content="{{ doc.id }}" />
+
+    {% for title in doc.ti %}
+        <meta name="dc.title" content="{{ title }}" />
+    {% endfor %}
+
+    {% if "a" in doc.nivel_tratamento %}
+        <meta name="citation_title" content="{{ doc.ti.0 }}" />
+    {% endif %}
+
+    {% if doc.au is defined %}
+        {% for author in doc.au %}
+            <meta name="dc.contributor"  content="{{ author }}" />
+            <meta name="citation_author" content="{{ author }}" />
+        {% endfor %}
+    {% endif %}
+
+    {% if doc.ur is defined %}
+        <meta name="citation_fulltext_html_url" content="{{ doc.ur.0 }}" />
+    {% endif %}
+    {% if doc.mh is defined %}
+        {% for descriptor in doc.mh %}
+            {% if '/' in descriptor %}
+                <meta name="citation_keywords" content="{{ descriptor|substring_before('/') }}" />
+            {% else %}
+                <meta name="citation_keywords" content="{{ descriptor }}" />
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if doc.book_title %}
+        <meta name="citation_inbook_title" content="{{ doc.book_title }}" />
+    {% endif %}
+
+    {% if doc.type.0 == "article" %}
+        <meta name="citation_journal_title" content="{{ doc.ta.0 }}" />
+    {% endif %}
+
+    {% if "-" in doc.pg.0 %}
+        <meta name="citation_firstpage" content="{{ doc.pg.0|substring_before('-')|trim }}" />
+        <meta name="citation_lastpage" content="{{ doc.pg.0|substring_after('-')|trim }}" />
+    {% else %}
+        <meta name="citation_firstpage" content="{{ doc.pg.0 }}" />
+        <meta name="citation_lastpage" content="{{ doc.pg.0 }}" />
+    {% endif %}
+
+    <meta name="citation_language" content="{{ doc.la.0 }}" />
+    <meta name="citation_publication_date" content="{{ doc.da|slice(0,4) }}" />
+    <meta name="dc.date" content="{{ doc.da|slice(0,4) }}" />
+
+
+{% endblock %}
+
+{# hide unused blocks #}
+
+{% block result_navigation %}{% endblock %}
+{% block clusters %}{% endblock %}
+{% block results_topbar %}{% endblock %}
+{% block resultNavigation %}{% endblock %}
+
+{% block result_set %}
+
+	<div id="{{ doc.id }}" class="record detail">
+	    <div class="data">
+	        {% block data %}
+	            <!-- title -->
+	            <h3>{% autoescape false %}{{ occ( {'element': doc.ti, separator: ' / '} ) }}{% endautoescape %}</h3>
+			<!-- author -->
+			<div class="author">
+			    {% if doc.au is defined %}
+
+			        {% for author in doc.au %}
+			            <a href='{{ constant("SEARCH_URL") }}?lang={{ lang }}&q=au:"{{ author }}"'>{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+			        {% endfor %}
+
+			    {% endif %}
+			<div>
+
+				{% include custom_template("result-inc-source.html") %}
+
+                <!-- abstract  -->
+                {% set mark_ab_list = [] %}
+                {% set raw_ab_list = [] %}
+                {% set ab_active_lang = '' %}
+
+                {% for key in doc|keys %}
+                    {% if 'mark_ab' in key %}
+                        {% set mark_ab_list = mark_ab_list|merge({ (loop.index0): key}) %}
+                    {% elseif 'ab_' in key %}
+                        {% set raw_ab_list = raw_ab_list|merge({ (loop.index0): key}) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if mark_ab_list %}
+                    {% set ab_list = mark_ab_list %}
+                {% elseif raw_ab_list %}
+                    {% set ab_list = raw_ab_list %}
+                {% endif %}
+
+                {% if ab_list %}
+                    {% for ab_field in ab_list %}
+                        {% set ab_lang = ab_field|split('_')|last %}
+                        {% if ab_lang == lang %}
+                            {% set ab_active_lang = ab_lang %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if ab_list %}
+                    <div class="tab_box">
+                        <div class="tab">
+                        {% for ab_field in ab_list %}
+                            {% set ab_lang = ab_field|split('_')|last %}
+                            {% set label_name = ab_lang != 'ab' ?  'LABEL_ABSTRACT_' ~ ab_lang|upper : 'LABEL_ABSTRACT' %}
+
+                            <button class="tablinks {% if ab_active_lang %}{% if ab_lang == ab_active_lang %}active{% endif %}{% elseif loop.index == 1%}active{% endif %}" onclick="open_tab(event, '{{ ab_field }}')">{{ attribute(texts.RESULT, label_name) }}</button>
+                        {% endfor %}
+                        </div>
+
+                        {% for ab_field in ab_list %}
+                            {% set ab_lang = ab_field|split('_')|last %}
+
+                            <div id="{{ ab_field }}" class="tabcontent abstract" {% if ab_active_lang %}{% if ab_lang != ab_active_lang %}style="display: none"{% endif %}{% elseif loop.index > 1%}style="display: none"{% endif %}>
+                                {{ attribute(doc, ab_field).0|raw }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elseif doc.ab is defined %}
+                    <div class="tab_box">
+                        <div class="tab">
+                            <button class="tablinks active">{{ texts.RESULT.LABEL_ABSTRACT }}</button>
+                        </div>
+                        <div class="tabcontent abstract">
+    			            {% for abstract in doc.ab %}
+    			                {{ abstract|raw }}{% if loop.last %}{% else %}<hr/>{% endif %}
+    			            {% endfor %}
+                        </div>
+			        </div>
+			    {% endif %}
+
+				<!-- subject -->
+                {% if doc.mh is defined  %}
+                    <div class="tags{% if lang not in ['pt', 'es', 'en'] %}_disable_tooltip{% endif %}">
+                        <h4>{{ texts.RESULT.LABEL_SUBJECT }}</h4>
+                        {% for subject in doc.mh %}
+                            <a href='{{ constant("SEARCH_URL") }}?lang={{ lang }}&q=mh:"{{ subject|replace({'&amp;':'%26'})|raw }}"'>{{ subject|raw }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+				{% include "result-inc-location.html" %}
+
+		        <div class="user-actions">
+                {% if config.show_related_docs == 'true' %}
+		            {% embed custom_template("result-doc-actions.html") %}
+		            	{# hide unused options #}
+		            	{% block btn_detail %}{% endblock %}
+ 	            	    {% block btn_related %}{% endblock %}
+		            {% endembed %}
+                {% else %}
+                    {% embed custom_template("result-doc-actions.html") %}
+                        {# hide unused options #}
+                        {% block btn_detail %}{% endblock %}
+                    {% endembed %}
+                {% endif %}
+		        </div>
+
+				{% if config.show_related_docs == 'true' and maxScore > config.related_min_score %}
+			    	{% include "related-list.html" %}
+			    {% endif %}
+
+	        {% endblock %}
+	    </div>
+	</div>
+{% endblock %}
+
+{% block footerscripts %}
+    {% if doc.ab|length > 1 %}
+    <script type="text/javascript">
+        function open_tab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+    {% endif %}
+{% endblock %}

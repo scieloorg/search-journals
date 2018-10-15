@@ -1,0 +1,50 @@
+{% extends custom_template("base.html") %}
+
+{% block script %}{% endblock %}
+{% block onload %}{% endblock %}
+
+{% block content %}
+    <h2>Documentos relacionados com a pesquisa: "{{ query }}"</h2>
+
+    
+    {% if debug == "true" %}
+        <div class="related_docs_list">
+            <strong>max score: {{ maxScore }} / config min. score: {{ config.related_min_score }}</strong>
+            <ol>
+                {% for doc in related_docs %}
+                    <li>
+                        <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" target="_parent" title="{{ doc.ti.0 }}">{{ doc.ti.0 }}</a> ({{ doc.score }})
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    {% else %}
+        <!-- max score: {{ maxScore }} / config min. score: {{ config.related_min_score }} -->
+        {% if maxScore > config.related_min_score %}
+            <div class="related_docs_list">
+                <ol>
+                    {% for doc in related_docs if doc.score > config.related_min_score %}
+                        <li>
+                            <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" target="_parent" title="{{ doc.ti.0 }}">{{ doc.ti.0|default(doc.ti) }}</a>
+                            <!-- ({{ doc.score }}) -->
+                            <div>
+                                {% if doc.ab is defined %}
+                                    {% if doc.ab.0 is defined %}
+                                        {{ doc.ab.0|truncate(400) }}
+                                    {% else %}    
+                                        {{ doc.ab|truncate(400) }}
+                                    {% endif %}
+                                {% endif %}    
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% else %}
+            <div class="center">
+                <h1>{{ texts.NO_RELATED_DOCUMENTS }}</h1>
+            </div>    
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

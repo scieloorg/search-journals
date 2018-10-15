@@ -1,0 +1,29 @@
+{% extends "result-format-summary.html" %}
+
+{% block data %}
+    {{ parent () }}
+    
+    {% if doc.ab is defined %}
+        <div>
+            <h4>{{ texts.RESULT.LABEL_ABSTRACT }}</h4>
+            {% for abstract in doc.ab %}
+                {{ abstract|raw }}{% if loop.last %}{% else %}<hr/>{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+	<!-- subject -->
+    {% if doc.mh is defined  %}
+        <div class="tags">
+            <h4>{{ texts.RESULT.LABEL_SUBJECT }}</h4>
+            {% for subject in doc.mh %}
+                <a href='{{ constant("SEARCH_URL") }}?lang={{ lang }}&q=mh:"{{ subject|replace({'&amp;':'%26'}) }}"'>{{ subject|raw }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% include "result-inc-location.html" %}
+
+
+{% endblock %}            
+ 

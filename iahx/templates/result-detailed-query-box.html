@@ -1,0 +1,25 @@
+<div class="refineSearch">
+	<div class="spacer"></div>
+	<strong>{{ texts.SEARCH_DETAIL_BOX }}</strong>
+	
+	{% if params.q is defined and params.q|length >= 2048 %}
+      <form action="" id="form_custom_search" method="POST">
+    {% else %}  
+      <form action="" id="form_custom_search" method="GET">
+    {% endif %}
+	    {% for key, value in params %}
+	        {% if key != "filter" and key != "q" %}
+	            {% if key == "from" or key == "page" %}
+	                <input type="hidden" name="{{ key }}" value="1">
+	            {% else %}
+	                <input type="hidden" name="{{ key }}" value="{{ value }}">
+	            {% endif %}
+	        {% endif %}
+	    {% endfor %}
+	    <label for="detailed_query_box" class="hide">{{ texts.SEARCH_DETAIL_BOX }}</label>
+		<textarea name="q" id="detailed_query_box" class="inputText defaultValue" cols="26" rows="5" title="*:*">{{ detailed_query|default('*:*') }}</textarea>	
+		<div class="spacer"></div>
+		<input type="submit" value=" {{ texts.SEARCH_SUBMIT }} " class="submit"/>		
+	</form>
+</div>
+

@@ -1,0 +1,398 @@
+{% extends custom_template("base.html") %}
+
+{% block top %}
+    {% if mode != 'dataentry' %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+    {% if mode != 'dataentry' %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block script %}{% endblock %}
+{% block onload %}{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/decs-locator.css" type="text/css" media="screen">
+
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/jquery-ui-1.10.1.custom.min.js
+"></script>
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/ui-lightness/jquery-ui-1.10.1.custom.min.css" type="text/css" media="screen">
+
+    <script>
+
+        // autocomplete
+        $(document).ready(function() {
+
+             $( "#query" ).autocomplete({
+                  source: function( request, response ) {
+                    $.ajax({
+                      url: '{{ constant("SEARCH_URL") }}lib/decs-autocomplete.php?lang={{ lang }}',
+                      dataType: "jsonp",
+                      data: {
+                        count: 100,
+                        query: request.term
+                      },
+                      success: function( data ) {
+                        response( $.map( data.descriptors, function( item ) {
+                          return {
+                            label: __highlight(item.name, request.term),
+                            value: item.id
+                          }
+                        }));
+                      }
+                    });
+                  },
+                  select: function( event, ui){
+                    submit_tree_id(ui.item.value);
+                  },
+                  minLength: 3,
+             })
+             .data('ui-autocomplete')._renderItem = function( ul, item ) {
+                    return $( "<li></li>" )
+                        .data( "ui-autocomplete-item", item )
+                        .append( '<a>' + item.label + '</a>' )
+                        .appendTo( ul );
+            };
+
+        });
+
+        function __highlight(s, t) {
+            var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
+            return s.replace(matcher, "<strong>$1</strong>");
+        }
+
+        // submit autocomplete form
+        function submit_tree_id(value){
+            $("#tree_id").val(value);
+            $("#searchForm").submit();
+        }
+
+        function view_tree(id){
+            $("#tree_id").val(id);
+            $("#searchForm").submit();
+        }
+
+        // css tree view
+        $(document).ready(function () {
+            $('ul.tree li:last-child').addClass('last');
+        });
+
+
+        // submit search form
+        function make_search_query(){
+
+            var query = "";
+            var qlf_selected = $('input:checkbox:checked.qlf').map(function () {
+              return this.value;
+            }).get();
+
+            // if user select qualifiers make combination query
+            if (qlf_selected.length > 0){
+                $.each(qlf_selected, function(index, qlf){
+                    $('<input>').attr({
+                        type: 'hidden',
+                        id: 'decslocator_{{qlf}}',
+                        name: 'filter[{{ filter_prefix }}][]',
+                        value: '{{ decs.tree.self.term_list.term }}/' + qlf
+                    }).appendTo( $('#searchForm') );
+                });
+
+            }else{
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'decslocator',
+                    name: 'filter[{{ filter_prefix }}][]',
+                    value: '{{ decs.tree.self.term_list.term }}'
+                }).appendTo( $('#searchForm') );
+
+            }
+
+            $("#searchForm").attr('action', '{{ constant("SEARCH_URL") }}');
+
+            $('#searchForm').submit();
+
+        }
+
+        function postMsg(descriptor) {
+            window.opener.postMessage(descriptor, '*');
+            window.close();
+        }
+
+        function showQualifierInfo(qlf) {
+
+            var lng = {% if lang == 'en' %}'i'{% else %}'{{lang|slice(0,1)}}'{% endif %};
+            var decs_qlf = 'http://decs.bvsalud.org/cgi-bin/wxis1660.exe/decsserver/?IsisScript=../cgi-bin/decsserver/decsserver.xis&search_language=' + lng + '&interface_language=' + lng + '&previous_page=homepage&task=show_qualifier&qualifier=' + qlf
+            window.open(decs_qlf, 'decsqlf', 'scrollbars=1,width=650,height=400');
+        }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block breadcrumb %}
+        {% if mode != 'dataentry' %}
+            {% include custom_template("top-breadcrumb.html") %}
+        {% else %}
+            <div class="resultsFor">
+                <a href="#">Fechar</a>
+            </div>
+        {% endif %}
+    {% endblock %}
+    <h2> {{ texts.DECS_LOOKUP }}</h2>
+
+    <form action="" name="lookup" id="searchForm">
+        {% for key, value in params %}
+            {% if key != "filter" and key != "submit" %}
+                {% if key == "from" or key == "page" %}
+                    <input type="hidden" name="{{ key }}" value="1">
+                {% else %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endif %}
+            {% else %}
+                {% for name, items in value %}
+                    {% for item in items %}
+                        <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+        <input type="hidden" name="tree_id" id="tree_id" value=""/>
+        <input type="text" name="term" id="query" class="text-input" autocomplete="off" />
+
+    </form>
+
+    <div id="hierarchy">
+        <h2><a href="#" onclick="view_tree('')">{{ texts.HIERARCHY }}</a></h2>
+
+        {# CASE 1:  LEVEL 0 OF DECS HIERARCY #}
+        {% if decs.tree.term_list.term is defined %}
+            <ul class="tree">
+                {% for t_list in decs.tree.term_list %}
+                    {% if t_list.attributes.lang == lang %}
+                        {% for term in t_list %}
+                            <li><a href="#" onclick="view_tree('{{ term.attributes.tree_id }}')">{{ term }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+        {% else %}
+
+            {# CASE 2:  TERM WITH ANCESTORS #}
+            {% if decs.tree.ancestors.term_list.term is defined %}
+                {% set tree_count = 1 %}
+
+                {% for i_tree in ancestors_i_tree %}
+
+                    {% for current_term in i_tree %}
+                        <ul class="tree">
+                            <li>
+                                {% if loop.first %}{{ tree_count }}.{% endif %} <a href="#" onclick="view_tree('{{ current_term|substring_before('|') }}')">{{ current_term|substring_after('|') }} </a>
+                            </li>
+
+                            {% if loop.last and tree_count == 1 %}
+
+                                <ul> <!-- preceding_sibling - self -->
+                                    {% if decs.tree.preceding_sibling.term_list.term is defined %}
+                                        <li><!-- preceding_sibling --></li>
+                                        {% for term in decs.tree.preceding_sibling.term_list.term %}
+                                            <li><a href="#" onclick="view_tree('{{ term.attributes.tree_id }}')">{{ term }}</a></li>
+
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <li>{{ decs.tree.self.term_list.term }}</a></li>
+
+                                    <ul> <!-- descending -->
+                                        {% if decs.tree.descendants.term_list.term is defined %}
+                                            <li><!-- descendants --></li>
+                                            {% for term in decs.tree.descendants.term_list.term %}
+                                                <li><a href="#" onclick="view_tree('{{ term.attributes.tree_id }}')">{{ term }}</a></li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul> <!-- /descending -->
+
+                                    {% if decs.tree.following_sibling.term_list.term is defined %}
+                                        <li><!-- following_sibling --></li>
+                                        {% for term in decs.tree.following_sibling.term_list.term %}
+                                            <li><a href="#" onclick="view_tree('{{ term.attributes.tree_id }}')">{{ term }}</a></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul> <!-- /preceding_sibling - self -->
+
+                            {% endif %}
+
+
+                    {% endfor %}
+
+                    {# add at final term for the last tree #}
+                    {% if tree_count != 1 %}
+                        <ul>
+                            <li>{{ decs.tree.self.term_list.term }}</a></li>
+                        </ul>
+                    {% endif %}
+
+                    {# close ancestors itens #}
+                    {% for current_term in i_tree %}
+                        </ul> <!-- /ancestor -->
+                    {% endfor %}
+                    <br/>
+
+                    {% set tree_count = tree_count + 1 %}
+
+                {% endfor %}
+
+            {% else %}  {# else if dont have ancestors #}
+
+                {# CASE 3:  TERM WITHOUT ANCESTORS #}
+                <ul class="tree"> <!-- descending -->
+                    <li>{{ decs.tree.self.term_list.term }}</a></li>
+                    <ul>
+                        {% if decs.tree.descendants.term_list.term is defined %}
+                            <li><!-- descendants --></li>
+                            {% for term in decs.tree.descendants.term_list.term %}
+                                <li><a href="#" onclick="view_tree('{{ term.attributes.tree_id }}')">{{ term }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </ul> <!-- /descending -->
+
+            {% endif %} {# close if have ancestors #}
+
+        {% endif %}
+    </div>
+    <div id="details">
+        {% if decs.record_list.record is defined %}
+            <form action="" onsubmit="make_search_query(); return false" id="searchDocsTrigger">
+                {% if lang == 'pt' %}
+                    <h2>{{ decs.record_list.record.descriptor_list.descriptor.2 }}
+                    / <small>{{ decs.record_list.record.descriptor_list.descriptor.0 }}
+                    / {{ decs.record_list.record.descriptor_list.descriptor.1 }}</small></h2>
+                {% elseif lang == 'es' %}
+                    <h2>{{ decs.record_list.record.descriptor_list.descriptor.1 }}
+                    / <small>{{ decs.record_list.record.descriptor_list.descriptor.0 }}
+                    / {{ decs.record_list.record.descriptor_list.descriptor.2 }}</small></h2>
+                {% else %}
+                    <h2>{{ decs.record_list.record.descriptor_list.descriptor.0 }}
+                    / <small>{{ decs.record_list.record.descriptor_list.descriptor.1 }}
+                    / {{ decs.record_list.record.descriptor_list.descriptor.2 }}</small></h2>
+                {% endif %}
+
+                {% if mode is defined and mode == 'dataentry'%}
+                    {% if decs.record_list.record.tree_id_list.tree_id.0|trim|slice(0,1) != 'Q' %}
+                        <input type="button" value="{{ texts.SELECT }}" onclick="postMsg('{{ decs.tree.self.term_list.term }}|^d{{ decs.record_list.record.attributes.mfn }}');" class="btn-custom btn-large" />
+                    {% endif %}
+                {% else %}
+                    <input type="submit" value="{{ texts.SEARCH_DOCUMENTS }}" class="btn-custom btn-large" />
+                {% endif %}
+
+                <div class="spacer"></div>
+
+                {% if decs.record_list.record.definition.occ.attributes.n != '' or decs.record_list.record.synonym_list.synonym != '' %}
+                    <div class="definition">
+                        {{ decs.record_list.record.definition.occ.attributes.n }}
+
+                        {% if mode == 'dataentry' and decs.record_list.record.indexing_annotation %}
+                            <div>
+                                <span>{{ texts.INDEXING_ANNOTATION }}:</span>
+                                <blockquote>
+                                    {{ decs.record_list.record.indexing_annotation }}
+                                </blockquote>
+                            <div>
+                        {% endif %}
+
+                        {% if decs.record_list.record.synonym_list.synonym %}
+                            <div class="syn">
+                                <span>{{ texts.SYNONYMS }}:</span>
+                                <ul>
+                                    {% for syn in decs.record_list.record.synonym_list.synonym %}
+                                        <li>{{ syn }} </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="syn">
+                            <span>{{ texts.CATEGORIES }}:</span>
+                            <ul>
+                                {% for category in decs.record_list.record.tree_id_list.tree_id %}
+                                    <li>{{ category }} </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% if mode == 'dataentry' and decs.record_list.record.pharmacological_action_list.pharmacological_action %}
+                            <div class="syn">
+                                <span>{{ texts.PHARMACOLOGIAL_ACTION }}:</span>
+                                <ul>
+                                    {% for pharmacological_action in decs.record_list.record.pharmacological_action_list.pharmacological_action %}
+                                        <li>{{ pharmacological_action }} </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if mode == 'dataentry' and decs.record_list.record.consider_also_terms_at %}
+                            <div>
+                                <span>{{ texts.CONSIDER_ALSO_TERMS }}:</span>
+                                <blockquote>
+                                    {{ decs.record_list.record.consider_also_terms_at }}
+                                </blockquote>
+                            <div>
+                        {% endif %}
+
+                        {% if mode == 'dataentry' and decs.record_list.record.entry_combination_list.entry_combination %}
+                            <div>
+                                <span>{{ texts.PRECOORD }}:</span>
+                                <ul>
+                                    {% for entry_combination in decs.record_list.record.entry_combination_list.entry_combination %}
+
+                                        <li>/{{  attribute(texts, entry_combination.attributes.sh_abbr1) }} Use <strong>{{ entry_combination }}</strong> </li>
+                                    {% endfor %}
+                                </ul>
+                            <div>
+                        {% endif %}
+
+                        {% if decs.record_list.record.see_related_list.see_related %}
+                            <div class="syn">
+                                <span>{{ texts.RELATED }}:</span>
+                                <ul>
+                                    {% for see_related in decs.record_list.record.see_related_list.see_related %}
+                                        <li>{{ see_related }} </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                {% endif %}
+
+                {% if decs.record_list.record.allowable_qualifier_list.allowable_qualifier != '' %}
+                    <span>{{ texts.RESTRICT_BY_ASPECT }}:</span>
+                    <div class="qlf_box">
+                        <ul>
+                            {% for qlf in decs.record_list.record.allowable_qualifier_list.allowable_qualifier %}
+                                <li>
+                                {% if mode is defined and mode == 'dataentry'%}
+                                    <input type="button" name="qlf" class="qlf btn-custom" value="{{ qlf }}" id="{{ qlf }}" onclick="postMsg('{{ decs.tree.self.term_list.term }}/{{  attribute(texts, qlf) }}|^d{{ decs.record_list.record.attributes.mfn }}^s{{ qlf.attributes.id }}');" style="width: 30px" />
+                                    <a href="javascript:showQualifierInfo('{{qlf}}')">{{  attribute(texts, qlf) }}</a>
+                                {% else %}
+                                    <input type="checkbox" name="qlf" class="qlf" value="{{ qlf }}" id="{{ qlf }}"/><label for="{{ qlf }}"> {{  attribute(texts, qlf) }}</label>
+                                {% endif %}
+                                </li>
+                            {% endfor %}
+                            <div class="spacer"></div>
+                        </ul>
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+
+{% endblock %}

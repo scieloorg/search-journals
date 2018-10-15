@@ -1,0 +1,17 @@
+<div class="resultsFor">
+    <a href="{{ config.home_url }}?lang={{ lang }}">{{ texts.BVS_HOME }}</a> >
+    
+    {% block bc_second_lvl %}
+        <a href="{{ constant("SEARCH_URL") }}?lang={{ lang }}">{{ texts.SEARCH_HOME }}</a>
+    {% endblock %}
+
+    {% block bc_third_lvl %}
+        >
+        {% if params.filterLabel != "" %}
+            {{ params.filterLabel|truncate(90) }}
+        {% elseif params.q is defined and params.q != "" %}
+            {{ params.q|truncate(90) }} 
+        {% endif %}
+        ({{ pag.total_formatted }})
+    {% endblock %}
+</div>

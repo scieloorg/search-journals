@@ -1,0 +1,6 @@
+{% set texts_group = 'REFINE_' ~ filter_id %}
+<ul>
+    {% for item in filter_list %}
+        <li>{{ translate(item.0, texts_group) }} ({{item.1}})</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+{% block extrahead %}
+    <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/print.css" type="text/static" media="print">
+{% endblock %}
+
+{% block onload %}onload="window.print();"{% endblock %}
+
+{# zerando os blocos que nao quero que apareça #}
+{% block searchbar %}{% endblock %}
+{% block result_options %}{% endblock %}
+{% block result_navigation %}{% endblock %}
+{% block clusters %}{% endblock %}

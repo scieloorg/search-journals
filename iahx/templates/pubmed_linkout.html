@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>PubMed Services</title>
+        <link rel="stylesheet" rel="stylesheet" href="{{ constant("STATIC_URL") }}css/pubmed_linkout.css" type="text/static" media="screen">  
+    </head>
+    <body>
+
+        <table width="98%" cellspacing="0">
+            <tr>
+                <th>Type</th>
+                <th>Info</th>
+                <th>Provider</th>
+                <th>Full Text</th>
+            </tr>
+
+            {% for item in set %}
+                <tr valign="top" {% if loop.index is odd %}class="odd"{% endif %}>
+                    <td>{{ item.SubjectType }}</td>
+                    <td>
+                    {% for attr in item.Attribute %}
+                       {{ attr }}
+                    {% endfor %}
+                    </td>
+
+                    <td>{{ item.Provider.Name }}</td>                    
+                    <td><a href="{{ item.Url }}" target="blank"><img src="{{ item.IconUrl  }}" border="0"/></a></td>
+                </tr>               
+            {% endfor %}
+
+
+    </body>
+</html>

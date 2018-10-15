@@ -1,0 +1,82 @@
+{% if email.name is defined or email.your_email is defined %}
+    <p>{{ texts.SEND_BY }} {{ email.name }} {{ email.your_email }}.</p>
+{% endif %}
+    
+<a href="http://{{ constant("SERVERNAME") }}{{ current_url }}">{{ texts.SEARCH_HOME }} | {{ texts.BVS_TITLE }} {% if params.q %}| {{ params.q|truncate(90) }} {% endif %}</a>
+
+{% if email.comment %}
+    <hr>
+    {{ email.comment }}
+    <hr>
+{% endif %}
+
+<div class="results">
+    <div class="resultSet">
+    {% for doc in docs %}
+            <table width="90%">
+                <tr valign="top">
+                    <td colspan="2">
+                        <br/>
+                        <font size="4" color="#0068CF">
+                            <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}">
+                                {% for item in doc.ti if doc.ti is defined and doc.ti|length > 0 %}
+                                    {{ item }}{% if loop.index != doc.ti|length %} /{% endif %}
+                                {% endfor %}
+                            </a>
+                        </font>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td width="15%">
+                        <b>
+                            {{ texts.RESULT.LABEL_AUTHOR }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.au if doc.au is defined and doc.au|length > 0 %}
+                            {{ item }}{% if loop.index != doc.au|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <td>
+                        <b>
+                            {{ texts.RESULT.LABEL_SOURCE }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.fo if doc.fo is defined and doc.fo|length > 0 %}
+                            {{ item }}{% if loop.index != doc.fo|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% if doc.ab is defined %}
+                <tr valign="top">
+                    <td>
+                        <b>
+                            {{ texts.RESULT.LABEL_ABSTRACT }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.ab if doc.ab is defined and doc.ab|length > 0 %}
+                            {{ item }}{% if loop.index != doc.ab|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr valign="top">
+                    <td>
+                        <b>
+                            {{ texts.RESULT.LABEL_SUBJECT }}
+                        </b>
+                    </td>
+                    <td>
+                        {% for item in doc.mh if doc.mh is defined and doc.mh|length > 0 %}
+                            {{ item }}{% if loop.index != doc.mh|length %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+    {% endfor %}
+    </div>
+</div>

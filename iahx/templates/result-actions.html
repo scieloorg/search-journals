@@ -1,0 +1,177 @@
+<div class="feed">
+    {% if config.services_platform_domain != '' and app.request.cookies.has('userTK') %}
+        <a class="RSS fancybox" href="#rss" title="{{ texts.SHOW_RSS }}"><span>RSS</span></a>
+        <div style="display: none;">
+            <div id="rss">
+                <h3>RSS</h3>
+                <ul>
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/common/icon_feed.gif" alt="{{ texts.PRINT }}" title="{{ texts.PRINT }}" />
+                        <a href="javascript:change_output('rss');" alt="{{ texts.PRINT }}">
+                            {{ texts.VIEW_RSS }}
+                        </a>
+                    </li>
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/common/icon_feed.gif" alt="{{ texts.ADD_TO_COLLECTION }}" />
+                        <a class="add-rss" href="javascript:;">
+                            {{ texts.ADD_RSS }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <a class="RSS" href="javascript:change_output('rss');" title="{{ texts.SHOW_RSS }}"><span>RSS</span></a>
+    {% endif %}
+    <a class="XML" href="javascript:change_output('xml');" title="{{ texts.SHOW_XML }}"><span>XML</span></a>
+</div>
+
+<div class="actions">
+    <!-- print -->
+    {% if current_page == 'detail' %}
+        <a href="javascript:window.print()" alt="{{ texts.PRINT }}">
+            <img src="{{ constant("STATIC_URL") }}image/print.png" alt="{{ texts.PRINT }}">
+        </a>
+    {% else %}
+        <a id="inline_print" href="#print" alt="{{ texts.PRINT }}" class="fancybox">
+            <img src="{{ constant("STATIC_URL") }}image/print.png" alt="{{ texts.PRINT }}">
+        </a>
+        <div style="display: none;">
+            <div id="print">
+                {{ texts.PRINT }}
+                <ul>
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/print.png" alt="{{ texts.PRINT }}" title="{{ texts.PRINT }}">
+                        <a href="javascript:print_page('{{ pag.count }}');" alt="{{ texts.PRINT }}">
+                            {{ texts.THIS_PAGE }}
+                        </a>
+                    </li>
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/print.png" alt="{{ texts.PRINT }}" title="{{ texts.PRINT }}">
+                        <a href="javascript:print_page();" alt="{{ texts.PRINT }}">
+                            {{ texts.ALL_REFERENCES_LIMIT }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- export -->
+    <a id="inline_export" href="#export" alt="{{ texts.EXPORT }}" class="fancybox">
+        <img src="{{ constant("STATIC_URL") }}image/export.png" alt="{{ texts.EXPORT }}">
+    </a>
+    <div style="display:none">
+        <div id="export">
+
+            <h3>{{ texts.EXPORT_FORMAT }}:</h3>
+            <form name="exportForm">
+                <fieldset name="exportForm">
+                    <legend class="hide">{{ texts.EXPORT }}</legend>
+                    <input type="radio" name="format" id="format_ris" value="ris" checked><label for="format_ris"> {{ texts.EXPORT_FORMAT_RIS }}</label><br/>
+                    <input type="radio" name="format" id="format_csv" value="csv"><label for="format_csv"> {{ texts.EXPORT_FORMAT_CSV }}</label><br/>
+                    <input type="radio" name="format" id="format_citation" value="citation"><label for="format_citation"> {{ texts.EXPORT_FORMAT_CITATION }}</label>
+                </fieldset>
+            </form>
+
+            {% if current_page == 'detail' %}
+                <input class="submit" onclick="javascript:export_record('{{q}}')" value="{{ texts.EXPORT }}" type="button">
+            {% else %}
+                <h3>{{ texts.EXPORT }}:</h3>
+                <ul>
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/export.png" alt="{{ texts.EXPORT }}">
+                        <a href="javascript:export_result('{{ pag.count }}');" title="{{ texts.THIS_PAGE }}">
+                            {{ texts.THIS_PAGE }}
+                        </a>
+                    </li>
+
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/export.png" alt="{{ texts.EXPORT }}">
+                        <a href="javascript:export_result('selection');" title="{{ texts.YOUR_SELECTION }}">
+                            {{ texts.YOUR_SELECTION }}
+                        </a>
+                    </li>
+
+                    <li>
+                        <img src="{{ constant("STATIC_URL") }}image/export.png" alt="{{ texts.EXPORT }}">
+                        <a href="javascript:export_result();" title="{{ texts.ALL_REFERENCES }}">
+                            {{ texts.ALL_REFERENCES }}
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- email -->
+    <a id="inline_email" href="#email" alt="{{ texts.EXPORT }}" class="fancybox">
+        <img src="{{ constant("STATIC_URL") }}image/email.png" alt="{{ texts.SEND_BY_EMAIL }}">
+    </a>
+    <div style="display:none">
+        <div id="email" class="optionEmail">
+
+            <form name="emailForm" method="POST" action="{% if current_page == 'detail' %}{{ constant("SEARCH_URL") }}{% else %}{{ current_url }}{% endif %}" onsubmit="return send_email();">
+
+                <input type="hidden" name="is_email" value="true" />
+
+                <formset>
+                    <label for="yourName">{{ texts.MAIL_FROM_NAME }} </label>
+                    <input type="text" id="yourName" name="name" value="{{ texts.MAIL_FROM_NAME }}" title="{{ texts.MAIL_FROM_NAME }}" class="defaultValue">
+
+                    <label for="yourEmail">{{ texts.MAIL_FROM_EMAIL }} </label>
+                    <input type="text" id="yourEmail" name="your_email" value="{{ texts.MAIL_FROM_EMAIL }}" title="{{ texts.MAIL_FROM_EMAIL }}" class="defaultValue">
+
+                    <label for="email">(*) {{ texts.SEND_RESULT_TO }}</label> <a href="javascript:add_more_email();">{{ texts.MAIL_TO_ADD }}</a>
+                    <div id="destinatarios"><input type="text" id="email_dest" name="email[]" value="{{ texts.MAIL_TO_EMAIL }}" title="{{ texts.MAIL_TO_EMAIL }}" class="defaultValue"></div>
+                    <div id="more-destinatarios"></div>
+
+                    <label for="subject">{{ texts.MAIL_SUBJECT }}</label>
+                    <input type="text" id="subject" name="subject" value="{{ texts.MAIL_SUBJECT }}" title="{{ texts.MAIL_SUBJECT }}" class="defaultValue">
+
+                    <label for="comment">{{ texts.MAIL_COMMENT }}</label>
+                    <textarea id="comment" name="comment" title="{{ texts.MAIL_COMMENT }}" class="defaultValue">{{ texts.MAIL_COMMENT }}</textarea>
+
+                    {% if current_page == 'detail' %}
+                        <input type="hidden" name="q" value="{{q}}" />
+                    {% else %}
+                        <label for="selection">{{ texts.SEND_RESULT }}</label><br>
+                        <fieldset>
+                            <legend class="hide">{{ texts.SEND_RESULT }}</legend>
+                            <input type="radio" name="selection" id="select_page" value="page" checked><label for="select_page">{{ texts.THIS_PAGE }}</label>
+                            <input type="radio" name="selection" id="select_my" value="my_selection"><label for="select_my">{{ texts.YOUR_SELECTION }}</label>
+                            <input type="radio" name="selection" id="select_all" value="all_results"><label for="select_all">{{ texts.ALL_REFERENCES_LIMIT }}</label>
+                        </fieldset>
+                    {% endif %}
+                    <div>
+                        <input type="submit" value=" {{ texts.SEND }} " class="submit">
+                    </div>
+                </formset>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style">
+    <span class="addthis_separator">|</span>
+    {% if doc is defined %}
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count" title="Facebook_like"></a>
+        <a class="addthis_button_tweet" title="Tweet"></a>
+        <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+        <a class="addthis_counter addthis_pill_style"></a>
+        <span class="addthis_separator">|</span>
+    {% endif %}
+
+    {% for service in config.addthis_buttons.button %}
+        <a class="addthis_button_{{ service }}"></a>
+    {% endfor %}
+    {% if doc is not defined %}
+        <a class="addthis_button_compact"></a>
+    {% endif %}
+
+</div>
+<script type="text/javascript">addthis_pub  = '{{ config.addthis_pub }}';</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/152/addthis_widget.js"></script>
+<!-- AddThis Button END -->
