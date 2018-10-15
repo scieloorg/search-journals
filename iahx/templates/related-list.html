@@ -1,1 +1,32 @@
-../../../iahx-opac/templates/related-list.html
+{% if debug == "true" %}
+    <div class="related_docs_list">
+        <h1>{{ texts.RELATED_DOCUMENTS }}</h1>
+        <strong>max score: {{ maxScore }} / config min. score: {{ config.related_min_score }}</strong>
+        <ol>
+            {% for doc in related_docs %}
+                <li>
+                    <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" target="_parent" title="{{ doc.ti.0 }}">{{ doc.ti.0 }}</a> ({{ doc.score }})
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% else %}
+    <!-- max score: {{ maxScore }} / config min. score: {{ config.related_min_score }} -->
+    {% if maxScore > config.related_min_score %}
+        <div class="related_docs_list">
+            <h1>{{ texts.RELATED_DOCUMENTS }}</h1>
+            <ol>
+                {% for doc in related_docs if doc.score > config.related_min_score %}
+                    <li>
+                        <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}" target="_parent" title="{{ doc.ti.0 }}">{{ doc.ti.0 }}</a>
+                        <!-- ({{ doc.score }}) -->
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    {% else %}
+        <div class="center">
+            <h1>{{ texts.NO_RELATED_DOCUMENTS }}</h1>
+        </div>    
+    {% endif %}
+{% endif %}

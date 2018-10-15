@@ -1,1 +1,12 @@
-../../../iahx-opac/templates/decs.html
+{% if concept == "" %}
+    <em>{{ texts.DescNF }}</em>
+{% else %}
+    {{ concept }}
+{% endif %}
+
+<div id="logo-decs">
+    {{ texts.source }}
+    <a href="{{ href }}" target="_blank">DeCS - {{ texts.DeCS }} 
+        <img src="{{ constant("STATIC_URL") }}image/common/logodecs.gif" alt="DeCS"></img>
+    </a>
+</div>

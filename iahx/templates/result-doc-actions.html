@@ -1,1 +1,126 @@
-../../../iahx-opac/templates/result-doc-actions.html
+{% block btn_detail %}
+<div class="text_abstract">
+    <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/icon_page_go.gif" alt="{{ texts.SHOW_DETAILS }}" border="0" />{{ texts.SHOW_DETAILS }}</a>
+</div>
+{% endblock %}
+
+{% block btn_fulltext %}
+    {% if doc.ur is defined %}
+        <div>
+            {% if doc.ur|length > 1 %}
+                <a href="#fulltext_urls_{{ doc.id }}" class="nav-toggle"><img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}</a>
+
+                <div style="display: none" id="fulltext_urls_{{ doc.id }}" class="fulltext_box">
+                    <ul>
+                    {% for url in doc.ur %}
+                        <li><a href="{{ url|raw }}" target="_blank" alt="{{ texts.FULLTEXT }} Link">{{ url }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{{ doc.ur.0|raw }}" target="_blank" title="{{ texts.FULLTEXT }}"><img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.FULLTEXT }}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+
+    {% if doc.ur_AUDIO is defined %}
+        <div>
+            {% if doc.ur_AUDIO|length > 1 %}
+                <a href="#audio_urls_{{ doc.id }}" class="nav-toggle"><img src="{{ constant("STATIC_URL")  }}image/common/icon_audio.gif" alt="{{ texts.AUDIO }}" border="0" />{{ texts.AUDIO }}</a>
+
+                <div style="display: none" id="audio_urls_{{ doc.id }}" class="fulltext_box">
+                    <ul>
+                    {% for url in doc.ur_AUDIO %}
+                        <li><a href="{{ url }}" target="_blank" alt="{{ texts.AUDIO }} Link">{{ url }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{{ doc.ur_AUDIO.0 }}" target="_blank" title="{{ texts.AUDIO }}"><img src="{{ constant("STATIC_URL")  }}image/common/icon_audio.gif" alt="{{ texts.AUDIO }}" border="0" />{{ texts.AUDIO }}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if doc.ur_MULTIMIDIA is defined %}
+        <div>
+            {% if doc.ur_MULTIMIDIA|length > 1 %}
+                <a href="#video_urls_{{ doc.id }}" class="nav-toggle"><img src="{{ constant("STATIC_URL")  }}image/common/icon_video.gif" alt="{{ texts.VIDEO }}" border="0" />{{ texts.VIDEO }}</a>
+
+                <div style="display: none" id="video_urls_{{ doc.id }}" class="fulltext_box">
+                    <ul>
+                    {% for url in doc.ur_MULTIMIDIA %}
+                        <li><a href="{{ url }}" target="_blank" alt="{{ texts.VIDEO }} Link">{{ url }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{{ doc.ur_MULTIMIDIA.0 }}" target="_blank" title="Áudio"><img src="{{ constant("STATIC_URL")  }}image/common/icon_video.gif" alt="{{ texts.VIDEO }}" border="0" />{{ texts.VIDEO }}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if doc.db.0|contains('COCHRANE') %}
+        <div>
+             <a href="#" onclick="javascript:cochrane_lnk(this,'{{doc.db.0}}','{{doc.id}}')" target="_blank" title="{{ texts.FULLTEXT }}"><img src="{{ constant("STATIC_URL")  }}image/common/viewFullText.gif" alt="{{ texts.FULLTEXT }}" border="0" />{{ texts.TEXT }}</a>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block btn_photocopy %}
+    {% if config.photocopy_url and ('MEDLINE' in doc.db or 'SCAD' in doc.services) %}
+        <div class="scad">
+            <a href="{{ config.photocopy_url }}&lang={{lang}}&db={{doc.db[0]}}&ident={{ doc.id|substring_after('-') }}">
+                <img src="{{ constant("STATIC_URL") }}image/common/icon_scad.gif" alt="{{ texts.PHOTOCOPY }}"/>
+                &#160;<span>{{ texts.PHOTOCOPY }}</span>
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block btn_related %}
+    {% if config.show_related_button == 'true' %}
+    	<div class="related">
+            {% if 'DECS' in doc.db  %}
+                <a href="{{ constant("SEARCH_URL") }}?q=%22{{doc.ti.0}}%22&index=mh&lang={{lang}}" title="{{doc.ti.0}}">
+                    <img src="{{ constant("STATIC_URL") }}image/common/icon_related.gif" alt="{{ texts.RELATED_DOCUMENTS }}" />
+                    {{ texts.SEARCH_MH_DOCS }}
+                </a>
+            {% else %}
+           	    <a href="{{ constant("SEARCH_URL") }}related/{{ lang }}/{{ doc.id }}{% if debug == "true"  %}?debug=true{% endif %}" class="fancybox_iframe" title="{{ texts.RELATED_DOCUMENTS }}">
+        	    	<img src="{{ constant("STATIC_URL") }}image/common/icon_related.gif" alt="{{ texts.RELATED_DOCUMENTS }}" />
+        	        {{ texts.RELATED_DOCUMENTS }}
+        	    </a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block btn_pubmed_linkout %}
+    {% if 'MEDLINE' in doc.db %}
+        <div class="pubmed">
+            <a href="{{ constant("SEARCH_URL") }}pubmed_linkout/{{ lang }}/{{ doc.id }}" class="fancybox_iframe" title="{{ doc.ti.0 }}">
+                <img src="{{ constant("STATIC_URL") }}image/common/icon_PubMed.gif" alt="PubMed More Resources"/>
+                <span>PubMed Links</span>
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block btn_services_platform %}
+    {% if config.services_platform_domain != '' %}
+        <!-- services platform -->
+        <div class="platserv">
+    	  {% if app.request.cookies.has('userTK') %}
+              <a class="add-collection" href="javascript:;" onclick="_gaq.push(['_trackEvent','My VHL','Add to collection', '{{doc.ti.0}}']);">
+    	  {% else %}
+              <a class="add-collection" href="javascript:;" onclick="_gaq.push(['_trackEvent','My VHL','Login', '{{doc.ti.0}}']);">
+          {% endif %}
+                  <img src="{{ constant("STATIC_URL") }}image/common/icon_addToFolder.gif" alt="{{ texts.ADD_TO_COLLECTION }}"/>
+                  <span>{{ texts.ADD_TO_COLLECTION }}</span>
+              </a>
+        </div>
+    {% endif %}
+{% endblock %}

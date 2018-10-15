@@ -1,1 +1,55 @@
-../../../iahx-opac/templates/result-navigation.html
+<div class="infoBar">
+    <div class="totalResults">
+        {{ texts.RESULTS }}
+        <strong>
+            {{ pag.start+1 }} - 
+            {% if pag.start+pag.count <= pag.total %}
+                {{ pag.start+pag.count }}
+            {% else %}
+                {{ pag.total }}
+            {% endif %}
+        </strong> de <strong>{{ pag.total_formatted }}</strong>
+    </div>
+    
+    <div class="pagination">
+        {% if pag.total_pages > 0 %} 
+            {% if params.page is defined and params.page > 1 %}
+                <span>&lt;&lt; <a href="javascript:go_to_page('1')" title="{{ texts.GO_TO_PAGE }} 1">{{ texts.FIRST_PAGE }}</a></span>
+                <span>&lt; <a href="javascript:go_to_page('{{ params.page-1 }}')" title="{{ texts.GO_TO_PAGE }} {{ params.page-1 }}">{{ texts.PREVIOUS_PAGE }}</a></span>
+            {% endif %}
+
+            {% for i in pag.pages %}
+                
+                    
+                {% if params.page is defined %}
+                    {% if params.page != i %}
+                        <span><a href="javascript:go_to_page('{{ i }}')" title="{{ texts.GO_TO_PAGE }} {{ i }}">{{ i }}</a></span>
+                    {% else %}
+                        {{ i }}
+                    {% endif %}
+                {% else %}
+                    {% if i != 1 %}
+                        <span><a href="javascript:go_to_page('{{ i }}')" title="{{ texts.GO_TO_PAGE }} {{ i }}">{{ i }}</a></span>
+                    {% else %}
+                        {{ i }}
+                    {% endif %}
+                {% endif %}
+
+                
+                
+            {% endfor %}
+
+            {% if params.page is defined %}
+                {% if params.page < pag.total_pages %}
+                    <span><a href="javascript:go_to_page('{{ params.page+1 }}')" title="{{ texts.GO_TO_PAGE }} {{ params.page+1 }}">{{ texts.NEXT_PAGE }}</a> &gt; </span>
+                    <span><a href="javascript:go_to_page('{{ pag.total_pages }}')" title="{{ texts.GO_TO_PAGE }} {{ pag.total_pages }}">{{ texts.LAST_PAGE }} </a> &gt;&gt; </span>
+                {% endif %}
+            {% else %}
+
+                <span><a href="javascript:go_to_page('2')" title="{{ texts.GO_TO_PAGE }} 2">{{ texts.NEXT_PAGE }}</a> &gt; </span>
+                    <span><a href="javascript:go_to_page('{{ pag.total_pages }}')" title="{{ texts.GO_TO_PAGE }} {{ pag.total_pages }}">{{ texts.LAST_PAGE }} </a> &gt;&gt; </span>
+
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

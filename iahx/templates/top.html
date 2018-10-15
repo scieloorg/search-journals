@@ -1,1 +1,25 @@
-../../../iahx-opac/templates/top.html
+<div class="topbar">
+    {% if config.feedback_id is defined and config.feedback_id != '' %}
+    <div class="feedback">
+        <a href="http://feedback.bireme.org/feedback/?application=iahx&version={% include("version.txt") %}&lang={{ lang }}&site={{ config.feedback_id }}">{{ texts.FEEDBACK_SERVICE }}</a>
+    </div>
+    {% endif %}
+    <div class="otherVersions">
+        {% for langcode, item in texts.AVAILABLE_LANGUAGES %}
+            <a href="javascript:change_language('{{ langcode|lower }}')" {% if langcode|lower == lang %} class="selected" {% endif %}>{{ item }}</a>
+        {% endfor %}
+    </div>
+    <div class="spacer"></div>
+</div>
+<div class="top top_{{ lang }}">
+    <div class="parent">
+        <a href="{{ config.bvs_url }}">
+            <img src="{{ constant("STATIC_URL") }}image/{{ lang }}/logo.png" alt="{{ texts.LOGO_ALTERNATE }}" title="{{ texts.LOGO_ALTERNATE }}" />
+        </a>
+    </div>
+    <div class="identification">
+        <h1>{{ texts.BVS_TITLE }}</h1>
+        <h2>{{ texts.TITLE }}</h2>
+    </div>
+    <div class="spacer"></div>
+</div>

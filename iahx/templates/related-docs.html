@@ -1,1 +1,23 @@
-../../../iahx-opac/templates/related-docs.html
+<html>
+    <head>
+        <title>{{ texts.RELATED_DOCUMENTS }}</title>
+        <link rel="stylesheet" rel="stylesheet" href="{{ constant("STATIC_URL") }}css/related.css" type="text/css" media="screen">
+    </head>
+    <body> 
+    	
+		<div class="data">
+		     <h3>{{ doc.ti.0 }}</h3>
+		    <!-- author -->
+		    {% if doc.au is defined %}
+		        <div class="author">
+		            {% for author in doc.au %}
+		                {{ author }}{% if loop.last %}.{% else %};{% endif %}
+		            {% endfor %}
+		        </div>
+		    {% endif %}
+		     {% include "result-inc-source.html" %}
+		</div>
+
+        {% include custom_template("related-list.html") %}
+    </body>
+</html>

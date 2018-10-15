@@ -1,1 +1,5 @@
-../../../iahx-opac/templates/export-citation.html
+{% for doc in docs %}
+{% for au in doc.au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. - {% for ti in doc.ti %}{{ti}}{% if not loop.last %} - {% endif %}{% endfor %} - {% for fo in doc.fo %}{{fo}}{% if not loop.last %}; {% endif %}{% endfor %}
+
+
+{% endfor %}

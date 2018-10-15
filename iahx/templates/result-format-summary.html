@@ -1,1 +1,17 @@
-../../../iahx-opac/templates/result-format-summary.html
+{% extends custom_template("result-doc.html") %}
+
+{% block data %}
+    {{ parent () }}
+    <!-- author -->
+    {% if doc.au is defined %}
+        <div class="author">
+            {% for author in doc.au %}
+                <a href='{{ constant("SEARCH_URL") }}?lang={{ lang }}&q=au:"{{ author }}"'>{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% include custom_template("result-inc-source.html") %}
+
+{% endblock %}            
+ 
