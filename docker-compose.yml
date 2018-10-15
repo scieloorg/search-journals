@@ -10,3 +10,7 @@ services:
         hostname: webapp
         ports:
             - "80:80"
+        environment:
+            - SEARCH_FROM_MAIL=
+            - SEARCH_SMTP_SERVER=
+            - SEARCH_SMTP_PORT=
