@@ -30,6 +30,7 @@ EXPOSE 80
 # Work place.
 WORKDIR /var/www/site
 
+
 # Update the default apache site with the config we created.
 ADD docker/apache/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 ADD docker/apache/foreground.sh /etc/apache2/foreground.sh

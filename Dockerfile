@@ -33,6 +33,8 @@ ADD iahx /var/www/site
 # Work place.
 WORKDIR /var/www/site
 
+RUN chown -R www-data:www-data /var/www/site/logs
+
 # Update the default apache site with the config we created.
 ADD docker/apache/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 ADD docker/apache/foreground.sh /etc/apache2/foreground.sh
@@ -47,4 +49,4 @@ RUN chmod 755 /etc/apache2/foreground.sh
 RUN mkdir /var/log/supervisor/
 
 # By default, run start.sh script
-CMD ["/bin/bash", "/start.sh"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
