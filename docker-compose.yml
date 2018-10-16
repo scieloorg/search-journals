@@ -3,11 +3,10 @@ version: '2'
 services:
 
     webapp:
-        build:
-            context: .
-            dockerfile: ./Dockerfile
+        image: scieloorg/search-journals
         restart: always
         hostname: webapp
+        user: www-data
         ports:
             - "80:80"
         environment:
