@@ -197,6 +197,7 @@
                 <cluster>collection</cluster>
                 <cluster>tag_brasil</cluster>
             </cluster_list-->
+			<filter_list_boolean>true</filter_list_boolean>
 		</collection>
 	</search_collection_list>
 	<scielo_urls>
