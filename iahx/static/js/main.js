@@ -235,6 +235,8 @@ var Portal = {
 },
 searchFormBuilder = {
 	SearchHistory: "",
+	LanguageFilterCheckedBuffer: [],
+	SubjectAreasFilterCheckedBuffer: [],
 	Init: function() {
 		var p = "form.searchFormBuilder";
 		var lang = document.language.lang.value;
@@ -546,6 +548,9 @@ searchFormBuilder = {
 			window.open(this.href,'print','width=760,height=550');
 		});
 
+		searchFormBuilder.LanguageFilterInit();
+		searchFormBuilder.SubjectAreaFilterInit();
+
 		$(".openSelectItens").on("click",function(e) {
 			e.preventDefault();
 
@@ -612,8 +617,14 @@ searchFormBuilder = {
 						});
 					}
 
-		        }
-		    });
+		        },
+				complete: function () {
+					searchFormBuilder.FilterModalContentConfig(filter_id);
+					searchFormBuilder.FilterModalEnableDisableButtons();
+				}
+			});
+			
+			searchFormBuilder.FilterModalConfig(filter_id);
 			mod.modal("show");
 
 		});
@@ -963,6 +974,151 @@ searchFormBuilder = {
 			textRange.collapse(false);
 			textRange.select();
 	    }
+	},
+	LanguageFilterInit: function () {
+
+		// Buffer the selected languages for comparing on the hidden modal event
+		$("input[id^='la_']").each(function () {
+			if ($(this).is(":checked")) {
+				searchFormBuilder.LanguageFilterCheckedBuffer.push($(this).attr('id'));
+			}
+		});
+
+		$("input[id^='la_']").change(function (e) {
+			e.preventDefault();
+
+			if (!$(this).is(":checked"))
+				return;
+
+			$.when(get_languages_checked()).done(function (languagesChecked) {
+
+				if (languagesChecked.length > 1) {
+					$("#openSelectItens_la").click();
+				}
+			});
+		});
+
+		$('#selectClusterItens').on('hidden.bs.modal', function () {
+
+			if ($('#mainLanguageSelect').length > 0) {
+
+				$.when($("input[id^='la_']").prop('checked', false)).done(function () {
+					for (var i = 0; i < searchFormBuilder.LanguageFilterCheckedBuffer.length; i++) {
+						var elementID = '#' + searchFormBuilder.LanguageFilterCheckedBuffer[i];
+						$(elementID).prop('checked', true);
+					}
+				});
+			}
+
+		});
+	},
+	FilterModalConfig: function (filter_id) {
+
+		if (filter_id == 'la' || filter_id == 'subject_area') {
+
+			$('.filterHead').addClass('hidden');
+			$('.filterBody').addClass('filterBodyNoOverflow');
+
+		} else {
+
+			$('.filterHead').removeClass('hidden');
+			$('.filterBody').removeClass('filterBodyNoOverflow');
+		}
+	},
+	FilterModalContentConfig: function (filter_id) {
+
+		if (filter_id == 'la') {
+
+			var translations = get_language_filter_translations();
+
+			$('#mainLanguageTitle').text(translations.mainLanguageTitle);
+			$('#mainLanguageSelect').attr('placeholder', translations.mainLanguageSelectPlaceholder);
+			$('#addSecondLanguageRow').text(translations.addSecondLanguageRowText);
+
+			$.when(get_languages_checked()).done(function (languagesChecked) {
+				if (languagesChecked.length > 0) {
+					add_languages_checked(languagesChecked);
+				} else {
+					$("#mainLanguageSelect").selectize()[0].selectize.setValue(null);
+					$("#secondaryLanguageCtt").html(null);
+				}
+			});
+
+		} else if (filter_id == 'subject_area') {
+
+			var translations = get_subject_area_filter_translations();
+
+			$('#mainThematicTitle').text(translations.mainThematicTitle);
+			$('#mainSubjectAreaSelect').attr('placeholder', translations.mainSubjectAreaSelectPlaceholder);
+			$('#addSecondSubjectAreaRow').text(translations.addSecondSubjectAreaRowText);
+
+			$.when(get_subject_areas_checked()).done(function (subjectAreasChecked) {
+				if (subjectAreasChecked.length > 0) {
+					add_subject_areas_checked(subjectAreasChecked);
+				} else {
+					$("#mainSubjectAreaSelect").selectize()[0].selectize.setValue(null);
+					$("#secondarySubjectAreaCtt").html(null);
+				}
+			});
+		}
+	},
+	FilterModalEnableDisableButtons: function () {
+
+		var anySelected = false;
+
+		$('.selectize-input').each(function () {
+			var t = $(this),
+				val = t.val();
+
+			if (val !== "") {
+				anySelected = true;
+				return false;
+			}
+		});
+
+		if (anySelected) {
+			$(".openStatistics").removeClass("singleBtn_disabled").tooltip("disable");
+			$(".exportCSV").removeClass("singleBtn_disabled").tooltip("disable");
+		} else {
+			$(".openStatistics").addClass("singleBtn_disabled").tooltip("enable");
+			$(".exportCSV").addClass("singleBtn_disabled").tooltip("enable");
+		}
+	},
+	SubjectAreaFilterInit: function () {
+
+		// Buffer the selected subject areas for comparing on the hidden modal event
+		$("input[id^='subject_area_']").each(function () {
+			if ($(this).is(":checked")) {
+				searchFormBuilder.SubjectAreasFilterCheckedBuffer.push($(this).attr('id'));
+			}
+		});
+
+		$("input[id^='subject_area_']").change(function (e) {
+			e.preventDefault();
+
+			if (!$(this).is(":checked"))
+				return;
+
+			$.when(get_subject_areas_checked()).done(function (subjectAreasChecked) {
+
+				if (subjectAreasChecked.length > 1) {
+					$("#openSelectItens_subject_area").click();
+				}
+			});
+		});
+
+		$('#selectClusterItens').on('hidden.bs.modal', function () {
+
+			if ($('#mainSubjectAreaSelect').length > 0) {
+
+				$.when($("input[id^='subject_area_']").prop('checked', false)).done(function () {
+					for (var i = 0; i < searchFormBuilder.SubjectAreasFilterCheckedBuffer.length; i++) {
+						var elementID = '#' + searchFormBuilder.SubjectAreasFilterCheckedBuffer[i];
+						$(elementID).prop('checked', true);
+					}
+				});
+			}
+		});
 	}
 },
 Article = {
@@ -1489,6 +1645,216 @@ $(function() {
 	});
 });
 
+function get_language_filter_translations() {
+
+	var lang = $(document.language.lang).val();
+
+	var translations = {
+		mainLanguageTitle: 'IDIOMAS SELECIONADOS',
+		mainLanguageSelectPlaceholder: 'Selecione o idioma',
+		addSecondLanguageRowText: 'Adicionar outro idioma +'
+	};
+
+	switch (lang) {
+
+		case 'en':
+			translations.mainLanguageTitle = 'SELECTED LANGUAGES';
+			translations.mainLanguageSelectPlaceholder = 'Select the language';
+			translations.addSecondLanguageRowText = 'Add another language +';
+			break;
+
+		case 'es':
+			translations.mainLanguageTitle = 'IDIOMAS SELECCIONADAS';
+			translations.mainLanguageSelectPlaceholder = 'Seleccione el idioma';
+			translations.addSecondLanguageRowText = 'Añadir otro idioma +';
+			break;
+	}
+
+	return translations;
+}
+
+function add_second_language_row(value) {
+
+	var time = new Date().getTime();
+	var uniq = Math.floor(time * Math.random());
+	var id = "secondLanguageRow" + uniq;
+	var secondaryLanguageSelectId = "secondaryLanguageSelect" + uniq;
+
+	var mainLanguageSelect = $('#mainLanguageSelect');
+	var clonedName = mainLanguageSelect.attr('name');
+	var clonedOptions = Object.values(mainLanguageSelect.selectize()[0].selectize.options);
+	var optionsHTML = '';
+
+	for (var i = 0; i < clonedOptions.length; i++) {
+		optionsHTML += '<option value="' + clonedOptions[i].value + '">' + clonedOptions[i].text + '</option>';
+	}
+
+	var translations = get_language_filter_translations();
+
+	var html = '<div class="row row-margin" id="' + id + '" style="display:none;">\
+					<div class="col-md-1 col-sm-1">\
+						<button type="button" class="btn btn-default" onclick="javascript:remove_second_language_row(' + uniq + ');" data-uniq="' + uniq + '">\
+							<i class="glyphicon glyphicon-remove"></i>\
+						</button>\
+					</div>\
+					<div class="col-md-5 col-sm-5">\
+						<select name="languageCondicionalOperator[]" class="form-control">\
+							<option value="OR">OR</option>\
+							<option value="AND">AND</option>\
+						</select>\
+					</div>\
+					<div class="col-md-6 col-sm-6">\
+						<select name="' + clonedName + '" id="' + secondaryLanguageSelectId + '" placeholder="' + translations.mainLanguageSelectPlaceholder + '" class="selectize-input">\
+						' + optionsHTML + '\
+						</select>\
+					</div>\
+				</div>';
+
+	$("#secondaryLanguageCtt").append(html);
+	$('#' + secondaryLanguageSelectId).selectize({
+		'items': [value]
+	});
+
+	$('#' + id).fadeIn('fast');
+}
+
+function remove_second_language_row(uniq) {
+
+	$('#secondLanguageRow' + uniq).fadeOut("fast", function () {
+		$(this).remove();
+	});
+}
+
+function get_languages_checked() {
+
+	var languagesChecked = [];
+
+	$("input[id^='la_']").each(function () {
+		var t = $(this),
+			language = t.val();
+
+		if (t.is(":checked")) languagesChecked.push(language);
+	});
+
+	return languagesChecked;
+}
+
+function add_languages_checked(languagesChecked) {
+
+	$("#mainLanguageSelect").selectize()[0].selectize.setValue(languagesChecked[0]);
+
+	$("#secondaryLanguageCtt").html(null);
+
+	for (var i = 1; i < languagesChecked.length; i++) {
+		add_second_language_row(languagesChecked[i]);
+	}
+}
+
+function get_subject_area_filter_translations() {
+
+	var lang = $(document.language.lang).val();
+
+	var translations = {
+		mainThematicTitle: 'ÁREAS SELECIONADAS',
+		mainSubjectAreaSelectPlaceholder: 'Selecione a área temática',
+		addSecondSubjectAreaRowText: 'Adicionar outra área temática +'
+	};
+
+	switch (lang) {
+
+		case 'en':
+			translations.mainThematicTitle = 'SELECTED AREAS';
+			translations.mainSubjectAreaSelectPlaceholder = 'Select the subject area';
+			translations.addSecondSubjectAreaRowText = 'Add another subject area +';
+			break;
+
+		case 'es':
+			translations.mainThematicTitle = 'ÁREAS SELECCIONADAS';
+			translations.mainSubjectAreaSelectPlaceholder = 'Seleccione el área temática';
+			translations.addSecondSubjectAreaRowText = 'Añadir nueva área temática +';
+			break;
+	}
+
+	return translations;
+}
+
+function add_second_subject_area_row(value) {
+
+	var time = new Date().getTime();
+	var uniq = Math.floor(time * Math.random());
+	var id = "secondSubjectAreaRow" + uniq;
+	var secondarySubjectAreaSelectId = "secondarySubjectAreaSelect" + uniq;
+
+	var mainSubjectAreaSelect = $('#mainSubjectAreaSelect');
+	var clonedName = mainSubjectAreaSelect.attr('name');
+	var clonedOptions = Object.values(mainSubjectAreaSelect.selectize()[0].selectize.options);
+	var optionsHTML = '';
+
+	var translations = get_subject_area_filter_translations();
+
+	for (var i = 0; i < clonedOptions.length; i++) {
+		optionsHTML += '<option value="' + clonedOptions[i].value + '">' + clonedOptions[i].text + '</option>';
+	}
+
+	var html = '<div class="row row-margin" id="' + id + '" style="display:none;">\
+					<div class="col-md-1 col-sm-1">\
+						<button type="button" class="btn btn-default" onclick="javascript:remove_second_subject_area_row(' + uniq + ');" data-uniq="' + uniq + '">\
+							<i class="glyphicon glyphicon-remove"></i>\
+						</button>\
+					</div>\
+					<div class="col-md-5 col-sm-5">\
+						<select name="subjectAreaOperator[]" class="form-control">\
+							<option value="OR">OR</option>\
+							<option value="AND">AND</option>\
+						</select>\
+					</div>\
+					<div class="col-md-6 col-sm-6">\
+						<select name="' + clonedName + '" id="' + secondarySubjectAreaSelectId + '" placeholder="' + translations.mainSubjectAreaSelectPlaceholder + '" class="selectize-input">\
+						' + optionsHTML + '\
+					</select>\
+					</div>\
+				</div>';
+
+	$("#secondarySubjectAreaCtt").append(html);
+
+	$('#' + secondarySubjectAreaSelectId).selectize({
+		'items': [value]
+	});
+
+	$('#' + id).fadeIn('fast');
+}
+
+function remove_second_subject_area_row(uniq) {
+
+	$('#secondSubjectAreaRow' + uniq).fadeOut("fast", function () {
+		$(this).remove();
+	});
+}
+
+function get_subject_areas_checked() {
+
+	var subjectAreasChecked = [];
+
+	$("input[id^='subject_area_']").each(function () {
+		var t = $(this),
+			subjectArea = t.val();
+
+		if (t.is(":checked")) subjectAreasChecked.push(subjectArea);
+	});
+
+	return subjectAreasChecked;
+}
+
+function add_subject_areas_checked(subjectAreasChecked) {
+
+	$("#mainSubjectAreaSelect").selectize()[0].selectize.setValue(subjectAreasChecked[0]);
+
+	$("#secondarySubjectAreaCtt").html(null);
+
+	for (var i = 1; i < subjectAreasChecked.length; i++) {
+		add_second_subject_area_row(subjectAreasChecked[i]);
+	}
+}
 
 function get_result_total(form_action, form_params, callback){
 	// query iAHx and return total

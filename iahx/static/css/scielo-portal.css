@@ -3480,3 +3480,13 @@ button.btn:active {
 .lt-ie9 .articleTxt .refList.full {
   border-bottom: 0;
 }
+
+.modal-body h4 {
+  color: #6789d3;
+  margin: 0;
+}
+
+.filterBodyNoOverflow {
+  overflow: unset;
+  max-height: none;
+}

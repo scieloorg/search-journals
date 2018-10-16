@@ -3689,3 +3689,13 @@ button.btn:active {
 .modal .col-center {
     text-align: center;
 }
+
+.modal-body h4 {
+  color: #6789d3;
+  margin: 0;
+}
+
+.filterBodyNoOverflow {
+  overflow: unset;
+  max-height: none;
+}
