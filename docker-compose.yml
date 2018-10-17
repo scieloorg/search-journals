@@ -3,9 +3,7 @@ version: '2'
 services:
 
     webapp:
-        build:
-            context: .
-            dockerfile: ./Dockerfile
+        image: scieloorg/search-journals
         restart: always
         hostname: webapp
         ports:
