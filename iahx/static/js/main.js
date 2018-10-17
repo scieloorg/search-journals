@@ -516,6 +516,7 @@ searchFormBuilder = {
 				groupItens.removeClass("orderBy_selected");
 			}
 
+			$("a.orderBy").removeClass("orderBy_selected");
 			t.addClass("orderBy_selected");
 
 			$(".filterItem",container).each(function() {
