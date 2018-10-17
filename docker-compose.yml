@@ -6,7 +6,6 @@ services:
         image: scieloorg/search-journals
         restart: always
         hostname: webapp
-        user: www-data
         ports:
             - "80:80"
         environment:
