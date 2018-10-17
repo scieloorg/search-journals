@@ -3664,6 +3664,16 @@ button.btn:active {
 .buttons {
   padding: 10px 0;
 }
+.buttons.fixed{
+  width:285px;
+  z-index:5;
+  top: 0;
+  background: #fff;
+  position: fixed;
+  border-bottom: 2px solid #ccc !important;
+  margin: 0 0 0 -10px;
+  padding:10px;
+}
 .buttons.affix,
 .buttons.affix-top {
   width: 285px;

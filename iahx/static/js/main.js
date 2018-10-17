@@ -350,12 +350,17 @@ searchFormBuilder = {
 		});
 
 
+		var aot = $("#btn-affix").offset().top;
 		if($(".searchActions").length)
 			window.searchActionsStart = $(".searchActions").offset().top;
 
 		$(".newSearchField",p).on("click",function(e) {
 			e.preventDefault();
 			searchFormBuilder.InsertNewFieldRow(this,"#searchRow-matriz .searchRow",".searchFormBuilder .searchRow-container");
+
+			var ot = $(".searchActions").offset().top;
+			window.searchActionsStart = ot;
+			aot = $("#btn-affix").offset().top;
 		});
 
 		$("select.setMinValue").on("change",function() {
@@ -841,11 +846,19 @@ searchFormBuilder = {
 			$(".showContextHelper:eq(0)").focus();
 		});
 
+
 		$(window).scroll(function() {
 			if($(window).scrollTop() > window.searchActionsStart)
 				$(".searchActions").addClass("fixed");
 			else
 				$(".searchActions").removeClass("fixed");
+
+
+			if($(window).scrollTop() > aot){
+				$("#btn-affix").addClass("fixed");
+			}else{
+				$("#btn-affix").removeClass("fixed");
+			}
 		});
 	},
 	InsertSearchHistoryItem: function(obj) {
