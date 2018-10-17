@@ -7,7 +7,7 @@
                 <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
                 {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
             {% endif %}
-            <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
+            <label for="select_{{ doc.id }}" class="checkbox">{{ loop.index + pag.start }}.</label>
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
@@ -51,93 +51,46 @@
                                     <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
                                 </ul>
                             </span>
-
                             {% if config.show_metrics|trim == 'true' %}
-                                <a href="" class="showTooltip" data-placement="top" title="" data-original-title="{{ texts.METRICS }}" data-toggle="modal" data-target="#metrics_{{ doc.id }}">
-                                    <span class="glyphBtn metrics"></span>
-                                </a>
+                                <span class="dropdown" style="margin:0;">
+                                    <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
+                                        <span class="glyphBtn metrics"></span>
+                                    </a>
+                                    <ul class="dropdown-menu articleShare">
+                                        <li class="dropdown-header">{{ texts.METRICS }}</li>
+
+                                        {% if config.metrics.use_analytics|trim == 'true' %}
+                                            <li>
+                                                <a target="_blank" href="
+                                                {{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
+                                                    <span class="glyphBtn googlePlus"></span>
+                                                    SciELO Analytics
+                                                </a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% if doc.doi %}
+                                            {% if config.metrics.use_dimensions|trim == 'true' %}
+                                                <li>
+                                                    <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
+                                                        <span class="glyphBtn linkedIn"></span>
+                                                        Dimensions
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+
+                                            {% if config.metrics.use_plumx|trim == 'true' %}
+                                                <li>
+                                                    <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
+                                                        PlumX
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+
+                                        {% endif %}
+                                    </ul>
+                                </span>
                             {% endif %}
-
-                            {% if config.show_metrics|trim == 'true' %}
-                                <div class="modal fade" tabindex="-1" role="dialog" id="metrics_{{ doc.id }}">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title">Métricas</h4>
-                                        </div>
-                                        <div class="modal-body">
-
-
-                                            <div class="modal-metrics">
-                                              <div class="row">
-
-                                                {% if config.metrics.use_analytics|trim == 'true' %}
-                                                    <div class="badge-link col-center">
-                                                        <div class="badge-link col-center">
-                                                            <a target="_blank" href="{{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
-                                                                <div class="logo-statistc logo-statistc-scielo"></div>
-                                                            </a>
-                                                            <a target="_blank" href="{{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.id.ur.0 }}&amp;collection={{doc.in.0}}">
-                                                                SciELO Analytics
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                {% endif %}
-
-                                                {% if doc.doi %}
-
-                                                    {% if config.metrics.use_dimensions|trim == 'true' %}
-                                                        <div class="badge-link col-center">
-                                                            <div class="logo-statistc">
-                                                                <span class="__dimensions_badge_embed__"
-                                                                    data-doi="{{ doc.doi }}"
-                                                                    data-legend="never"
-                                                                    data-style="small_circle">
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
-                                                                    Dimensions
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-
-                                                    {% if config.metrics.use_plumx|trim == 'true' %}
-                                                        <div class="badge-link col-center">
-                                                            <div class="logo-statistc">
-                                                                <a href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}"
-                                                                   data-popup="hidden"
-                                                                   data-size="large"
-                                                                   class="plumx-plum-print-popup"
-                                                                   data-site="scielo">
-                                                                    {% if doc.ti %}
-                                                                        {% set article_title = doc.ti.0|raw %}
-                                                                    {% else %}
-                                                                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
-                                                                    {% endif %}
-                                                                </a>
-                                                            </div>
-                                                            <div>
-                                                                <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
-                                                                    PlumX
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-
-                                                {% endif %}
-
-                                              </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            {% endif %}
-
                         </span>
                     {% endif %}
                 </div>
