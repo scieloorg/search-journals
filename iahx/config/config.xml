@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dia_config>
-    <use_https>false</use_https>
+    <use_https>true</use_https>
 	<site>solr/scielo-articles</site>
 	<bvs_url>http://www.scielo.org/</bvs_url>
 	<about_bvs_url>http://www.scielo.org/php/level.php?lang=pt&amp;component=56&amp;item=8</about_bvs_url>

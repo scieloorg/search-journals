@@ -160,6 +160,7 @@ input[type=radio].radio {
 label.checkbox,
 label.radio {
   padding-left: 32px;
+  height: 25px;
   display: inline-block;
   line-height: 25px;
   background-repeat: no-repeat;
@@ -418,7 +419,7 @@ button.btn:active {
   background-position: center 1px;
 }
 .dimension{
-  background-position: center -51px; 
+  background-position: center -51px;
 }
 .plumx{
   background-position: center -26px;
@@ -3618,6 +3619,7 @@ button.btn:active {
 .cluster-actions-menu {
   text-align: left;
   position: relative;
+  width: 51% !important;
 }
 .cluster-actions-menu .tooltip {
   position: absolute;
@@ -3664,16 +3666,6 @@ button.btn:active {
 .buttons {
   padding: 10px 0;
 }
-.buttons.fixed{
-  width:285px;
-  z-index:5;
-  top: 0;
-  background: #fff;
-  position: fixed;
-  border-bottom: 2px solid #ccc !important;
-  margin: 0 0 0 -10px;
-  padding:10px;
-}
 .buttons.affix,
 .buttons.affix-top {
   width: 285px;
@@ -3690,7 +3682,7 @@ button.btn:active {
 .metricTable{
   margin:0;
   padding:0;
-  
+
   list-style: none;
   display:table;
   width:200px !important;
@@ -3741,7 +3733,7 @@ button.btn:active {
 
 .articleShare .__dimensions_Badge_Image,
 .articleShare .plx-print,
-.articleShare .PlumX-Popup .ppp-container.ppp-large>a, 
+.articleShare .PlumX-Popup .ppp-container.ppp-large>a,
 .articleShare .PlumX-Popup .ppp-container.ppp-large .plx-print,
 .articleShare .PlumX-Popup .ppp-container.ppp-large{
   width:48px !important;
