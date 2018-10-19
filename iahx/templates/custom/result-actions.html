@@ -13,7 +13,7 @@
 
     					<form name="formSubmit" action="{{ constant("SEARCH_URL") }}" id="selectClusterItensForm" method="post">
                             {% for key, value in params %}
-                                {% if key != "filter" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
+                                {% if key != "filter" and key != "filter_boolean_operator" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
                                     {% if key == "from" or key == "page" %}
                                         <input type="hidden" name="{{ key }}" value="1">
                                     {% else %}
@@ -25,6 +25,12 @@
                             {% for name, items in filters if filters is defined %}
                                 {% for item in items %}
                                     <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% for name, items in filter_boolean_operator if filter_boolean_operator is defined %}
+                                {% for item in items %}
+                                    <input type="hidden" name="filter_boolean_operator[{{ name }}][]" value="{{ item }}">
                                 {% endfor %}
                             {% endfor %}
 

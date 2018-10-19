@@ -351,8 +351,10 @@ searchFormBuilder = {
 				$(p).submit();
 		});
 
-
-		var aot = $("#btn-affix").offset().top;
+		if($("#btn-affix"). length > 0) {
+			var aot = $("#btn-affix").offset().top;
+		}
+		
 		if($(".searchActions").length)
 			window.searchActionsStart = $(".searchActions").offset().top;
 
@@ -1701,12 +1703,25 @@ function get_language_filter_translations() {
 	return translations;
 }
 
-function add_second_language_row(value) {
+function add_second_language_row(value, i) {
 
 	var time = new Date().getTime();
 	var uniq = Math.floor(time * Math.random());
 	var id = "secondLanguageRow" + uniq;
 	var secondaryLanguageSelectId = "secondaryLanguageSelect" + uniq;
+
+	var filter_boolean_operator = $('input[name="filter_boolean_operator[la][]"]');
+	var filterBooleanOperatorId = "filter_boolean_operator" + uniq;
+	var filterBooleanOperatorValue = '';
+
+	i--; // O indíce do método 'each' começa do 0, já o i começa inicia com 1.
+
+	filter_boolean_operator.each(function(index, element) {
+		if(index === i) {
+			filterBooleanOperatorValue = $(element).val();
+			return false;		
+		}		
+	});
 
 	var mainLanguageSelect = $('#mainLanguageSelect');
 	var clonedName = mainLanguageSelect.attr('name');
@@ -1726,7 +1741,7 @@ function add_second_language_row(value) {
 						</button>\
 					</div>\
 					<div class="col-md-5 col-sm-5">\
-						<select name="languageCondicionalOperator[]" class="form-control">\
+						<select name="filter_boolean_operator[la][]" id="'+filterBooleanOperatorId+'" class="form-control">\
 							<option value="OR">OR</option>\
 							<option value="AND">AND</option>\
 						</select>\
@@ -1742,6 +1757,10 @@ function add_second_language_row(value) {
 	$('#' + secondaryLanguageSelectId).selectize({
 		'items': [value]
 	});
+
+	if(filterBooleanOperatorValue !== '') {
+		$('#' + filterBooleanOperatorId).val(filterBooleanOperatorValue);	
+	}
 
 	$('#' + id).fadeIn('fast');
 }
@@ -1774,7 +1793,7 @@ function add_languages_checked(languagesChecked) {
 	$("#secondaryLanguageCtt").html(null);
 
 	for (var i = 1; i < languagesChecked.length; i++) {
-		add_second_language_row(languagesChecked[i]);
+		add_second_language_row(languagesChecked[i], i);
 	}
 }
 
@@ -1806,12 +1825,25 @@ function get_subject_area_filter_translations() {
 	return translations;
 }
 
-function add_second_subject_area_row(value) {
+function add_second_subject_area_row(value, i) {
 
 	var time = new Date().getTime();
 	var uniq = Math.floor(time * Math.random());
 	var id = "secondSubjectAreaRow" + uniq;
 	var secondarySubjectAreaSelectId = "secondarySubjectAreaSelect" + uniq;
+
+	var filter_boolean_operator = $('input[name="filter_boolean_operator[subject_area][]"]');
+	var filterBooleanOperatorId = "filter_boolean_operator" + uniq;
+	var filterBooleanOperatorValue = '';
+
+	i--; // O indíce do método 'each' começa do 0, já o i começa inicia com 1.
+
+	filter_boolean_operator.each(function(index, element) {
+		if(index === i) {
+			filterBooleanOperatorValue = $(element).val();
+			return false;		
+		}		
+	});
 
 	var mainSubjectAreaSelect = $('#mainSubjectAreaSelect');
 	var clonedName = mainSubjectAreaSelect.attr('name');
@@ -1831,7 +1863,7 @@ function add_second_subject_area_row(value) {
 						</button>\
 					</div>\
 					<div class="col-md-5 col-sm-5">\
-						<select name="subjectAreaOperator[]" class="form-control">\
+						<select name="filter_boolean_operator[subject_area][]" id="' + filterBooleanOperatorId + '" class="form-control">\
 							<option value="OR">OR</option>\
 							<option value="AND">AND</option>\
 						</select>\
@@ -1848,6 +1880,10 @@ function add_second_subject_area_row(value) {
 	$('#' + secondarySubjectAreaSelectId).selectize({
 		'items': [value]
 	});
+
+	if(filterBooleanOperatorValue !== '') {
+		$('#' + filterBooleanOperatorId).val(filterBooleanOperatorValue);	
+	}
 
 	$('#' + id).fadeIn('fast');
 }
@@ -1880,7 +1916,7 @@ function add_subject_areas_checked(subjectAreasChecked) {
 	$("#secondarySubjectAreaCtt").html(null);
 
 	for (var i = 1; i < subjectAreasChecked.length; i++) {
-		add_second_subject_area_row(subjectAreasChecked[i]);
+		add_second_subject_area_row(subjectAreasChecked[i], i);
 	}
 }
 
