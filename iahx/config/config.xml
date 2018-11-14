@@ -40,6 +40,9 @@
         <use_analytics>
             true
         </use_analytics>
+		<altmetric>
+			true
+		</altmetric>
     </metrics>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
