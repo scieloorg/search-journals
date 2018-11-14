@@ -3751,6 +3751,11 @@ button.btn:active {
 .logo-statistc.logo-statistc-scielo {
     background-image: url(../image/logo-scielo-svg.svg);
 }
+.modal .logo-statistc.logo-statistc-science-open,
+.logo-statistc.logo-statistc-science-open {
+    background-image: url(../image/logo-science-open.svg);
+    background-size: 35px 35px;
+}
 .modal .logo-statistc{
     height: 100px;
     display: block;
