@@ -74,9 +74,15 @@
                                                         <a target="_blank" href="{{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
                                                             SciELO Analytics
                                                         </a>
-                                                    </li>
+                                                    </li>                                                    
                                                 </ul>
                                             </li>
+                                        {% endif %}
+
+                                        {% if config.metrics.altmetric|trim == 'true' %}
+                                            <li>
+                                                <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
+                                            </li>                                                        
                                         {% endif %}
 
                                         {% if doc.doi %}
@@ -126,7 +132,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                            {% endif %}
+                                            {% endif %}                                           
                                         {% endif %}
                                     </ul>
                                 </span>
