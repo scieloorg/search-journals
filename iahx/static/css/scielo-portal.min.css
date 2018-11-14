@@ -3756,6 +3756,17 @@ button.btn:active {
     background-position: center center;
 }
 
+.modal .logo-statistc.logo-statistc-science-open,
+.logo-statistc.logo-statistc-science-open {
+    background-image: url(../image/logo-science-open.svg);
+    background-size: 35px 35px;
+}
+.modal .logo-statistc{
+    height: 100px;
+    display: block;
+    background-repeat: no-repeat;
+}
+
 .modal .logo-statistc{
   height: 100px;
   display: block;

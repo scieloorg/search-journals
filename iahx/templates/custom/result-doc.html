@@ -81,7 +81,21 @@
 
                                         {% if config.metrics.altmetric|trim == 'true' %}
                                             <li>
+                                                <!--
                                                 <div class="altmetric-embed" data-badge-type="4" data-doi="{{ doc.doi }}"></div>
+                                                -->
+                                                <ul class="metricTable">
+                                                    <li>
+                                                        <a target="_blank" href="javascript:;">
+                                                            <div class="logo-statistc logo-statistc-science-open"></div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a target="_blank" href="javascript:;">
+                                                            Science Open Metrics
+                                                        </a>
+                                                    </li>                                                    
+                                                </ul>
                                             </li>                                                        
                                         {% endif %}
 
