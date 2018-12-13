@@ -23,7 +23,11 @@ define("CUSTOM_TEMPLATE_PATH", TEMPLATE_PATH . "custom/");
 
 // CONFIGURATION
 $config = simplexml_load_file($PATH_DATA . 'config/config.xml');
+$config->search_server = getenv('SEARCH_SOLR_SERVER', true) ?: $config->search_server;
+
 $lang = $config->default_lang;
+
+$config->site = getenv('SEARCH_SOLR_CORE', true) ?: $config->site;
 
 $DEFAULT_PARAMS = array();
 $DEFAULT_PARAMS['lang'] = $lang;
@@ -41,6 +45,8 @@ if ($DEFAULT_PARAMS['defaultSite'] == ""){
 }
 
 $DEFAULT_PARAMS['defaultDisplayFormat'] = (string) $DEFAULT_PARAMS['defaultCollectionData']->format_list[0]->format[0]->name;
+
+$config->use_https = getenv('SEARCH_USE_HTTPS', true) ?: $config->site;
 
 // urls
 $protocol = ( (isset($config->use_https) && $config->use_https == 'true') ? 'https' : 'http');

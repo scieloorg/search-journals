@@ -22,3 +22,8 @@ services:
             - mailhog:mailhog
         ports:
             - "80:80"
+        environment:
+            - SEARCH_SOLR_CORE=solr/scielo-test
+            - SEARCH_USE_HTTPS=false
+            - SEARCH_SOLR_SERVER=api-search.scielo.org
+

@@ -13,11 +13,15 @@ services:
             - SEARCH_SMTP_SERVER=
             - SEARCH_SMTP_PORT=
         links:
-          - solr:solr
+            - solr:solr
+        environment:
+            - SEARCH_SOLR_CORE=solr/scielo-articles
+            - SEARCH_USE_HTTPS=true
+            - SEARCH_SOLR_SERVER=api-search.scielo.org
 
     solr:
         image: solr:5.5.5
         ports:
-           - "8983:8983"
+            - "8983:8983"
         volumes:
-           - ./index:/opt/solr/server/solr/articles
+            - ./index:/opt/solr/server/solr/articles

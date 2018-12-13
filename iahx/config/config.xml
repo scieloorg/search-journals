@@ -8,9 +8,9 @@
 	<search_server>api-search.scielo.org</search_server>
 	<photocopy_url/>
 	<documents_per_page>15</documents_per_page>
-        <max_export_records>2000</max_export_records>
+    <max_export_records>2000</max_export_records>
 	<max_documents_per_page>100</max_documents_per_page>
-        <default_lang>pt</default_lang>
+    <default_lang>pt</default_lang>
 	<log_user_search>true</log_user_search>
 	<log_dir>./logs/</log_dir>
 	<environment>development</environment>
