@@ -94,3 +94,11 @@ ul.list-inline li{
 .affix button {
     margin: 6px 2px 6px 10px;
 }
+.filterBody .col-xs-1 {
+  font-size: .8em;
+}
+.filterBody .col-xs-10 {
+  padding-right: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
