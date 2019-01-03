@@ -1,2 +1,5 @@
-iahx/logs/*.txt
 .DS_Store
+
+iahx/logs/*.txt
+
+solr/5.5.5/cores/articles/data/
