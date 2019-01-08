@@ -2,29 +2,54 @@ version: '2'
 
 services:
 
+    mailhog:
+        image: mailhog/mailhog:latest
+        hostname: mailhog
+        ports:
+            - "1025:1025"
+            - "8025:8025"
     webapp:
-        image: scieloorg/search-journals
+        build:
+            context: .
+            dockerfile: ./docker/apache/Dockerfile-dev
         restart: always
         hostname: webapp
+        depends_on:
+            - mailhog
+            - solrcontroller
+        volumes:
+            - ./iahx:/var/www/site # SciELO Search Journals
+        links:
+            - mailhog:mailhog
+            - solrcontroller:solrcontroller
         ports:
             - "80:80"
         environment:
-            - SEARCH_FROM_MAIL=
-            - SEARCH_SMTP_SERVER=
-            - SEARCH_SMTP_PORT=
+            - SEARCH_SOLR_CORE=solr/articles
+            - SEARCH_USE_HTTPS=false
+            - SEARCH_SOLR_SERVER=solrcontroller:8080
+
+    solrcontroller:
+        build:
+            context: .
+            dockerfile: ./docker/tomcat/Dockerfile-dev
+        restart: always
+        depends_on:
+            - solr
         links:
             - solr:solr
-        environment:
-            - SEARCH_SOLR_CORE=solr/scielo-articles
-            - SEARCH_USE_HTTPS=true
-            - SEARCH_SOLR_SERVER=api-search.scielo.org
+        volumes:
+            - ./docker/tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+        ports:
+            - "8080:8080"
 
-    sorl:
+    solr:
         image: solr:5.5.5
         volumes:
-            - .mycores:/opt/solr/server/solr/mycores
+            - ./cores:/opt/solr/server/solr/mycores
         ports:
             - 8983:8983/tcp
         command:
             - solr-precreate
             - articles
+

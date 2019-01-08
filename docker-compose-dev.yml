@@ -11,23 +11,39 @@ services:
     webapp:
         build:
             context: .
-            dockerfile: ./Dockerfile-dev
+            dockerfile: ./docker/apache/Dockerfile-dev
         restart: always
         hostname: webapp
         depends_on:
             - mailhog
+            - solrcontroller
         volumes:
             - ./iahx:/var/www/site # SciELO Search Journals
         links:
             - mailhog:mailhog
+            - solrcontroller:solrcontroller
         ports:
             - "80:80"
         environment:
-            - SEARCH_SOLR_CORE=solr/scielo-test
+            - SEARCH_SOLR_CORE=solr/articles
             - SEARCH_USE_HTTPS=false
-            - SEARCH_SOLR_SERVER=api-search.scielo.org
+            - SEARCH_SOLR_SERVER=solrcontroller:8080
 
-    sorl:
+    solrcontroller:
+        build:
+            context: .
+            dockerfile: ./docker/tomcat/Dockerfile-dev
+        restart: always
+        depends_on:
+            - solr
+        links:
+            - solr:solr
+        volumes:
+            - ./docker/tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+        ports:
+            - "8080:8080"
+
+    solr:
         image: solr:5.5.5
         volumes:
             - ./cores:/opt/solr/server/solr/mycores
@@ -36,3 +52,4 @@ services:
         command:
             - solr-precreate
             - articles
+
