@@ -8,10 +8,9 @@ services:
         ports:
             - "1025:1025"
             - "8025:8025"
+
     webapp:
-        build:
-            context: .
-            dockerfile: ./docker/apache/Dockerfile-dev
+        image: scieloorg/search-journals:stable
         restart: always
         hostname: webapp
         depends_on:
@@ -30,16 +29,12 @@ services:
             - SEARCH_SOLR_SERVER=solrcontroller:8080
 
     solrcontroller:
-        build:
-            context: .
-            dockerfile: ./docker/tomcat/Dockerfile-dev
+        image: scieloorg/search-journal-iahx-controller:latest
         restart: always
         depends_on:
             - solr
         links:
             - solr:solr
-        volumes:
-            - ./docker/tomcat/tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
         ports:
             - "8080:8080"
 
