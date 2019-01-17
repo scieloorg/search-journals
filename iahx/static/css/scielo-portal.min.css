@@ -3751,6 +3751,13 @@ button.btn:active {
 .logo-statistc.logo-statistc-scielo {
     background-image: url(../image/logo-scielo-svg.svg);
 }
+
+.logo-statistc.logo-statistc-info{
+    background-image: url(../image/ico-info-large.svg);
+    background-size: 40px 40px;
+    background-position: center center;
+}
+
 .modal .logo-statistc{
     height: 100px;
     display: block;
