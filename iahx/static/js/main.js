@@ -1249,6 +1249,20 @@ var Cookie = {
 $(function() {
 	Portal.Init();
 
+	// altera orientação do dropdown quando ultrapassar altura da tela.
+	$(document).on("shown.bs.dropdown", ".dropdown", function () {
+	    var ul = $(this).children(".dropdown-menu");
+	    var button = $(this).children(".dropdown-toggle");
+	    var ulOffset = ul.offset();
+	    var spaceUp = (ulOffset.top - button.height() - ul.height()) - $(window).scrollTop();
+	    var spaceDown = $(window).scrollTop() + $(window).height() - (ulOffset.top + ul.height());
+	    if (spaceDown < 0 && (spaceUp >= 0 || spaceUp > spaceDown))
+	      $(this).addClass("dropup");
+	}).on("hidden.bs.dropdown", ".dropdown", function() {
+	    $(this).removeClass("dropup");
+	});
+
+
 	if($("form.searchFormBuilder").length)
 		searchFormBuilder.Init();
 

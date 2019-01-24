@@ -3682,7 +3682,6 @@ button.btn:active {
 .metricTable{
   margin:0;
   padding:0;
-
   list-style: none;
   display:table;
   width:200px !important;
@@ -3741,21 +3740,20 @@ button.btn:active {
 }
 
 
-
 .modal-metrics {
-    margin: 0 auto;
-    max-width: -moz-fit-content;
-    max-width: -webkit-fit-content;
+  margin: 0 auto;
+  max-width: -moz-fit-content;
+  max-width: -webkit-fit-content;
 }
 .modal .logo-statistc.logo-statistc-scielo,
 .logo-statistc.logo-statistc-scielo {
-    background-image: url(../image/logo-scielo-svg.svg);
+  background-image: url(../image/logo-scielo-svg.svg);
 }
 .modal .logo-statistc{
-    height: 100px;
-    display: block;
-    background-repeat: no-repeat;
-    background-position: center center;
+  height: 100px;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 .modal .logo-statistc span.__dimensions_badge_embed__,
 .logo-statistc span.__dimensions_badge_embed__{
@@ -3764,14 +3762,20 @@ button.btn:active {
   width:48px !important;
   height:48px !important;
 }
-
 .modal .badge-link,
 .badge-link {
-    position: relative;
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
+  position: relative;
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .modal .col-center {
-    text-align: center;
+  text-align: center;
+}
+.dropup .articleShareMetrics:before,
+.dropup .articleShare:before{
+  bottom: -7px;
+  top: auto !important;
+  border-bottom: 0 !important;
+  border-top: 7px solid #fff;
 }
