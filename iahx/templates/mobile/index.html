@@ -1,0 +1,44 @@
+{% extends custom_template("mobile/base.html") %}
+{% block content %}
+    {{ parent() }}
+
+    {% if flash_message is defined %}
+        <div id="flash" style="display: none;">{{ attribute(texts, flash_message) }}</div>
+    {% endif %}
+
+    {% if docs|length > 0 %}
+        {% block results %}
+            <div class="results">
+                
+                {% block result_options %}
+                <div class="resultOptions">
+
+                        {% block results_bar %}
+                            <div class="resultsBar">
+                                {% block results_topbar %}
+                                    {% include custom_template("mobile/result-topbar.html") %}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+
+                    </div>
+                {% endblock %}
+
+                {% block result_set %}
+                    <div class="resultSet">
+                        {% block result_doc %}{% include custom_template( "mobile/result-format-summary.html" ) %}{% endblock %}
+                        {% block result_navigation %}{% include custom_template("mobile/result-navigation.html") %}{% endblock %}
+                    </div>
+
+                {% endblock %}
+
+            </div>
+        {% endblock %}
+
+    {% else %}
+        <div class="noResults">
+            {{ texts.NO_RESULTS }}
+        </div>
+    {% endif %}
+
+{% endblock %}

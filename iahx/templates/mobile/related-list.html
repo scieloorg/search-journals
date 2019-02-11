@@ -1,0 +1,16 @@
+
+<ul class="c-results-list">
+    {% for doc in related_docs if doc.score > config.related_min_score %}
+        <li class="c-results">
+            <a class="c-results-a" href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}?view=mobile" target="_parent" title="{{ doc.ti.0 }}">
+                <span class="c-results-tit">
+                    <span class="c-results-num">{{ loop.index }}.</span>
+                    {{ doc.ti.0 }}
+                </span>
+                {% include "mobile/result-inc-source.html" %}                
+                <span class="i-results-arrow"></span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+

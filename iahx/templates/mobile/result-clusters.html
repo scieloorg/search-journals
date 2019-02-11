@@ -1,0 +1,74 @@
+<div class="filters" style="display: none; ">
+    <form action="" id="form_clusters" method="GET">
+        <div class="buttons" data-spy="affix" id="affix">
+            <button type="submit" class="b-apply pull-right">{{texts.FILTER}}</button>
+        </div>
+        <!-- used for show more values (facet browse)-->
+        <input type="hidden" name="fb" value="">
+
+        {% for key, value in params %}
+            {% if key != "filter" and key != "submit" and key != "fb" %}
+                {% if key == "from" or key == "page" %}
+                    <input type="hidden" name="{{ key }}" value="1" />
+                {% else %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}" />
+                {% endif %}
+            {% else %}
+                {# FIX (make more generic): decs locator filters 'mh' must be populated as they don't appears as regular cluster list #}
+                {% for name, items in filters if name == 'mh' %}
+                    {% for item in items %}
+                        <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}" />
+                    {% endfor %}
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+
+        {% for name, cluster in clusters if cluster|length > 0 %}
+
+            {% set cluster_labels = 'REFINE_' ~ name %}
+
+            {# check if config has a cluster list to show, if not show all #}
+
+            {% if not collectionData.cluster_list.cluster or name in collectionData.cluster_list.cluster %}
+                <nav class="c-filters">
+                    <ul class="c-filters-ul">
+                        <li class="c-filters-li">
+                            <a href="#" title="{{ name }}" class="c-filters-lia">
+                                <span class="i-show"></span>{{ attribute(texts.REFINE, name) }}
+                            </a>
+
+                            <ul class="c-filters-sub">
+                                {% for item in cluster if item.0 != '' %}
+                                    {% set cluster_item_id = name ~ '_' ~ item.0|replace({' ': '_', '/':'_'}) %}
+
+                                    <li class="c-filters-sub-li {% if '/' in item.0 %}subtopic{% endif %} ">
+                                        <input type="checkbox" class="c-filters-ck" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
+                                        {% for filter_name, filter in filters if filter_name == name %}
+                                            {% if item.0 in filter %}checked="true"{% endif %}
+                                        {% endfor %}
+                                        />
+
+                                        <a href="javascript: add_filter('{{ name }}_{{ item.0|replace({' ': '_', '/':'_'}) }}');" title="" class="c-filters-lbl">
+											{% if '/' in item.0 %}
+												{% set item_part = item.0|split('/') %}
+												{{ translate(item_part.1, cluster_labels ) }}
+                                            {% elseif '^' in item.0 %}
+                                                {{ item.0|subfield(lang) }}
+                                            {% elseif '+' in item.0 %}
+												{{ item.0|replace('+','/') }}
+											{% else %}
+												{{ translate(item.0, cluster_labels ) }}
+											{% endif %}
+                                        </a> &nbsp;({{ item.1 }})
+
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            {% endif %}
+        {% endfor %}
+    </form>
+</div>

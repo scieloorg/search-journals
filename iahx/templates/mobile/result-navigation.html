@@ -1,0 +1,38 @@
+<div class="c-results-pag">
+    <ul class="simplePagerNav">
+    {% if pag.total_pages > 0 %} 
+        {% if params.page is defined and params.page > 1 %}
+            <li><a href="javascript:go_to_page('1')" title="{{ texts.GO_TO_PAGE }} 1">&lt;&lt;</a></li>
+            <li><a href="javascript:go_to_page('{{ params.page-1 }}')" title="{{ texts.GO_TO_PAGE }} {{ params.page-1 }}">&lt;</a></li>
+        {% endif %}
+
+        {% for i in pag.pages_mobile %}
+            {% if params.page is defined %}
+                {% if params.page != i %}
+                    <li><a href="javascript:go_to_page('{{ i }}')" title="{{ texts.GO_TO_PAGE }} {{ i }}">{{ i }}</a></li>
+                {% else %}
+                    <li class="currentPage"><a href="#">{{ i }}</a></li>
+                {% endif %}
+            {% else %}
+                {% if i != 1 %}
+                    <li><a href="javascript:go_to_page('{{ i }}')" title="{{ texts.GO_TO_PAGE }} {{ i }}">{{ i }}</a></li>
+                {% else %}
+                    <li class="currentPage"><a href="#">{{ i }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if params.page is defined %}
+            {% if params.page < pag.total_pages %}
+                <li><a href="javascript:go_to_page('{{ params.page+1 }}')" title="{{ texts.GO_TO_PAGE }} {{ params.page+1 }}"> &gt; </a></li>
+                <li><a href="javascript:go_to_page('{{ pag.total_pages }}')" title="{{ texts.GO_TO_PAGE }} {{ pag.total_pages }}"> &gt;&gt;  </a></li>
+            {% endif %}
+        {% else %}
+
+            <li><a href="javascript:go_to_page('2')" title="{{ texts.GO_TO_PAGE }} 2"> &gt; </a></li>
+            <li><a href="javascript:go_to_page('{{ pag.total_pages }}')" title="{{ texts.GO_TO_PAGE }} {{ pag.total_pages }}"> &gt;&gt;</a></li>
+
+        {% endif %}
+    {% endif %}
+    </ul>
+</div>

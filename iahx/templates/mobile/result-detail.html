@@ -1,0 +1,84 @@
+{% extends "mobile/index.html" %}
+
+{% block back_button %}
+    <div class="h-div-back">
+        <a class="b-back" href="#" onclick="history.back(); return false;">{{ texts.BACK }}</a>
+    </div>
+{% endblock %}
+
+
+{# hide unused blocks #}
+
+{% block result_navigation %}{% endblock %}
+{% block clusters %}{% endblock %}
+{% block results_topbar %}{% endblock %}
+{% block resultNavigation %}{% endblock %}
+
+{% block result_set %}	    
+	<div id="{{ doc.id }}" class="record detail">
+	    <div class="data padding7">
+	        {% block data %}
+	            <!-- title -->
+	            <h1 class="c-results-tit">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</h1>
+			    <!-- author -->
+			    <h2 class="c-results-intro">
+				<div class="author">
+				    {% if doc.au is defined %}
+				    
+				        {% for author in doc.au %}
+				            {{ author }}{% if loop.last %}.{% else %};{% endif %}
+				        {% endfor %}
+
+				    {% endif %}
+				</div>          
+
+					{% include "result-inc-source.html" %}
+				</h2>
+
+				<!-- subject -->
+                {% if doc.mh is defined  %}
+                 	<section class="c-results-assunt margintop5">
+                 		<h3 class="c-results-h3">{{ texts.RESULT.LABEL_SUBJECT }}</h3>
+                 		<div class="row-fluid">
+                        {% for subject in doc.mh %}
+                            <span class="c-tags">{{ subject|raw }}</span>
+                        {% endfor %}
+                    	</div>
+                    </section>
+                {% endif %}
+        </div>
+
+	    {% if doc.ab is defined %}
+	        <div class="c-results-resume">
+	        	<p class="padding5">
+	            	<h3 class="c-results-h3">{{ texts.RESULT.LABEL_ABSTRACT }}</h3>
+	            	{% for abstract in doc.ab %}
+	                	{{ abstract }}{% if loop.last %}{% else %}<hr/>{% endif %}
+	            	{% endfor %}
+	            </p>
+	        </div>
+	    {% endif %}
+
+		{% include "result-inc-location.html" %}                
+
+        <nav class="c-share">
+            {% embed custom_template("mobile/result-doc-actions.html") %}
+            	{# hide unused options #}
+            	{% block btn_detail %}{% endblock %}
+            {% endembed %}
+        </nav>
+
+
+		{% if maxScore > config.related_min_score %}
+            <div style="display: none">
+	    	  {% include "related-list.html" %}
+            </div>
+	    {% endif %}	                
+
+   		{% endblock %}            
+	    </div>
+	</div>
+{% endblock %}
+
+
+{% block footer %}{% endblock %}

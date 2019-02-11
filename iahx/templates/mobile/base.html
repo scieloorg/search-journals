@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" lang="{{lang}}" xmlns="http://www.w3.org/1999/xhtml">
+    <head>{% block head %}
+
+        <meta charset="utf-8">
+        <title>{% block title %}{{ texts.SEARCH_HOME }} | {{ texts.BVS_TITLE }}{% endblock %}</title>
+
+        <!-- meta-tags -->
+        <meta http-equiv="Expires" content="-1">
+        <meta http-equiv="pragma" content="no-cache">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Language" content="{{ lang }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <meta http-equiv="keywords" content="{{ texts.KEYWORDS }}">
+        <meta http-equiv="description" content="{{ texts.DESCRIPTION }} ">
+
+        <!-- page icon -->
+        <link rel="shortcut icon" href="{{ constant("STATIC_URL") }}image/favicon.ico">
+        <!-- css -->
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/mobile/style.css" type="text/css" media="all" />
+
+        <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/add_collection.js"></script>
+
+        <script language="javascript" type="text/javascript">
+            var LANG = '{{ lang }}';
+            var SEARCH_URL = '{{ constant("SEARCH_URL") }}';
+            var STATIC_URL = '{{ constant("STATIC_URL") }}';
+            var RESULT_PAGE = {% if pag.total %}true{% else %}false{% endif %};
+            var ADD_TO_COLLECTION_SUCCESS = '{{ texts.ADD_TO_COLLECTION_SUCCESS }}';
+            var ADD_TO_COLLECTION_ERROR = '{{ texts.ADD_TO_COLLECTION_ERROR }}';
+            var COLLECTION_EXISTS = '{{ texts.COLLECTION_EXISTS }}';
+            var ADD_LINK_SUCCESS = '{{ texts.ADD_LINK_SUCCESS }}';
+            var ADD_LINK_ERROR = '{{ texts.ADD_LINK_ERROR }}';
+            var LINK_EXISTS = '{{ texts.LINK_EXISTS }}';
+            var ADD_RSS_SUCCESS = '{{ texts.ADD_RSS_SUCCESS }}';
+            var ADD_RSS_ERROR = '{{ texts.ADD_RSS_ERROR }}';
+            var RSS_EXISTS = '{{ texts.RSS_EXISTS }}';
+            var SERVICES_PLATFORM_DOMAIN = '{{ config.services_platform_domain }}';
+            var QUERY = $.trim('{{ q }}');
+            var FILTER = $.trim('{{ filters|filters_to_string }}');
+            var SITE = $.trim('{{ app.request.server.get("SCRIPT_NAME")|split("/").1 }}');
+        </script>
+
+        {% block extrahead %}{% endblock %}
+
+        <noscript>Your browser doesn't support javascript.</noscript>
+    {% endblock %}</head>
+
+    <body {% block onload %}onload="document.searchForm.reset()"{% endblock %}>{% block body %}
+
+        <div id="loading" style="display:none;"><span></span></div>
+
+        <form name="language"><input type="hidden" name="lang" value="{{ lang }}"></form>
+        <div class="mobile">{% block container %}
+
+            <header class="h h-bg">
+                <div class="h-padding">
+                    {% include custom_template("mobile/top.html") %}
+                    {% block searchbar %}{% include custom_template("mobile/top-searchbar.html") %}{% endblock %}
+                </div>
+                {% block back_button %}{% endblock %}
+            </header>
+            <div class="c">
+                {% if filters_formatted|length > 0 %}
+                    {% include custom_template("mobile/selected-clusters.html") %}
+                {% endif %}
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        {% endblock %}</div>
+    {% endblock %}
+
+    {% block footer %}
+        {% include custom_template("mobile/footer.html") %}
+    {% endblock %}
+
+    <!-- javascript load -->
+    <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/mobile.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/functions.js"></script>
+
+    {% block script %}
+
+    {% endblock %}
+
+    {% if config.google_analytics_tracking_id != '' %}
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', '{{ config.google_analytics_tracking_id }}']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    {% endif %}
+
+    {% if config.services_platform_domain != '' %}
+    <script type="text/javascript">
+        $(document).ready( function(){
+            var userTK = unescape(getCookie('userTK'));
+
+            if( typeof( userTK ) != 'undefined' && userTK !== null && userTK !== 'undefined' ) {
+                var obj = new Object();
+
+                obj.userTK = userTK;
+                obj.ip = $.trim('{{ app.request.server.get("REMOTE_ADDR") }}');
+                obj.lang = $.trim('{{ lang }}');
+                obj.col = $.trim('{{ config.search_collection_list.collection.name }}');
+                obj.site = SITE;
+                obj.query = QUERY;
+                obj.index = $.trim('{{ index }}');
+                obj.where = $.trim('{{ where }}');
+                obj.filter = FILTER;
+                obj.page = $.trim('{{ page }}');
+                obj.output = $.trim('{{ current_page }}');
+                obj.referer = $.trim(document.referrer);
+                obj.session = $.trim('{{ app.session.getId() }}');
+                obj.format = $.trim('{{ format }}');
+                obj.sort = $.trim('{{ sort }}');
+
+                $.post(SERVICES_PLATFORM_DOMAIN + '/logs/', obj, function(data){
+                    console.log(data);
+                });
+            }
+
+            function getCookie(name) {
+                var value = "; " + document.cookie;
+                var parts = value.split("; " + name + "=");
+                if (parts.length == 2) return parts.pop().split(";").shift();
+            }
+        });
+    </script>
+    {% endif %}
+
+    </body>
+</html>

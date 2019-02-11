@@ -1,0 +1,24 @@
+<div class="simplePagerContainer">
+    <ul class="c-results-list">
+    {% for doc in docs %}        
+
+        <li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
+
+            <a href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}?view=mobile"  class="c-results-a">
+                {% block data %}  
+                    <span class="c-results-tit">
+                        <span class="c-results-num">{{ loop.index + pag.start }}.</span>
+                        {% if 'DECS' in doc.db  %}
+                            {% set descriptor = 'ti_' ~ lang %}
+                            {{ attribute(doc, descriptor ).0 }}
+                        {% else %}
+                            {{ occ( {'element': doc.ti, separator: ' / '} ) }}
+                         {% endif %}                          
+                    </span>
+                {% endblock %}                 
+                <span class="i-results-arrow"></span>
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>

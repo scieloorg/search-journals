@@ -1,0 +1,30 @@
+<div class="bg-white">
+    <div class="padding7 bg-white" id="filters-add">
+        <h1 class="h1-tits">{{ texts.SELECTED_FILTERS }}</h1>
+        <ul>
+            {% for cluster, items in filters_formatted %}
+                {% set texts_group = 'REFINE_' ~ cluster %}
+
+                <li class="c-filters-sub-li"><strong>{{ attribute(texts.REFINE, cluster) }}</strong>
+                    <ul>
+                        {% for item in items %}
+                            {% set item_value = cluster ~ '_' ~ item|replace({' ': '_', '/':'_'}) ~ '' %}
+
+                            <li class="c-filters-lbl">
+                                {% if '^' in item %}
+                                    {{ item|subfield(lang) }}
+                                {% elseif '+' in item %}
+									{{ item|replace('+','/') }}
+                                {% else %}
+                                    {{ translate(item, texts_group) }}
+                                {% endif %}
+                                <a href="javascript:remove_filter('{{ item_value }}')" title="Remover cluster: {{ item }}" class="c-filter-remove" >(remover)</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="spacer"></div>
+</div>

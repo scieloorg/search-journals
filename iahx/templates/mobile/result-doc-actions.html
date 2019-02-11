@@ -1,0 +1,54 @@
+<ul class="c-share-ul">
+
+    {% block btn_detail %}
+
+        <li class="c-share-li"><a class="c-share-lia" href="{{ constant("SEARCH_URL") }}resource/{{ lang }}/{{ doc.id }}"><img src="{{ constant("STATIC_URL") }}image/common/icon_page_go.gif" alt="{{ texts.SHOW_DETAILS }}" border="0" />{{ texts.SHOW_DETAILS }}</a>
+
+    {% endblock %}
+
+{% block btn_fulltext %}
+    {% if doc.ur is defined %}
+        <li class="c-share-li"><a href="{{ doc.ur.0|raw }}" class="c-share-lia" target="_blank" title="{{ texts.FULLTEXT }}">{{ texts.FULLTEXT }}</a></li>
+    {% endif %}
+
+
+    {% if doc.ur_AUDIO is defined %}
+        <li class="c-share-li"><a href="{{ doc.ur_AUDIO.0 }}" class="c-share-lia" target="_blank" title="{{ texts.AUDIO }}">{{ texts.AUDIO }}</a></li>
+    {% endif %}
+
+    {% if doc.ur_MULTIMIDIA is defined %}
+        <li class="c-share-li"><a href="{{ doc.ur_MULTIMIDIA.0 }}" class="c-share-lia" target="_blank" title="Áudio">{{ texts.VIDEO }}</a></li>
+    {% endif %}
+
+    {% if doc.db.0|contains('COCHRANE') %}
+        <li class="c-share-li"><a href="#" onclick="javascript:cochrane_lnk(this,'{{doc.db.0}}','{{doc.id}}')" class="c-share-lia" target="_blank" title="{{ texts.FULLTEXT }}">{{ texts.TEXT }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block btn_related %}
+    {% if maxScore > config.related_min_score %}
+        <li class="c-share-li">
+            {% if 'DECS' in doc.db  %}
+                <a class="c-share-lia" href="{{ constant("SEARCH_URL") }}?q=%22{{doc.ti.0}}%22&index=mh&lang={{lang}}" title="{{doc.ti.0}}">
+                {{ texts.SEARCH_MH_DOCS }}</a>
+            {% else %}
+       	        <a class="c-share-lia"  href="{{ constant("SEARCH_URL") }}related/{{ lang }}/{{ doc.id }}?view=mobile"  title="{{ texts.RELATED_DOCUMENTS }}">
+    	        {{ texts.RELATED_DOCUMENTS }}</a>
+            {% endif %}
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block btn_services_platform %}
+    {% if config.services_platform_domain != '' %}
+        <!-- services platform -->
+        <div class="platserv">
+              <a class="add-collection" href="javascript:;">
+                  <img src="{{ constant("STATIC_URL") }}image/common/icon_addToFolder.gif" alt="{{ texts.ADD_TO_COLLECTION }}"/>
+                  <span>{{ texts.ADD_TO_COLLECTION }}</span>
+              </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+</ul>

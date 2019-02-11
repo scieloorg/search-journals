@@ -1,0 +1,13 @@
+<!-- source -->
+{% if doc.fo %}
+    <div>
+       <i>{{ doc.fo.0 }}</i>
+    </div>
+{% endif %}
+
+<div>    
+    {{ occ( {'element': doc.type[0],  'translate': true, 'group': 'REFINE_type' } ) }}
+    {% if doc.la is defined %}
+        {{ texts.DOCUMENT_IN }} {{ occ( {'element': doc.la,  'translate': true, 'group': 'REFINE_la'} ) }}
+    {% endif %}
+</div>
