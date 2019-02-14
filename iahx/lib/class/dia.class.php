@@ -87,6 +87,13 @@ class Dia
 
         //remove valores vazios do array
         $filter = $this->cleanArray($filter);
+        $filter_operators = NULL;
+        $fields_with_logical_operation = array("la", "subject_area");
+
+        if (array_key_exists("operators", $filter)) {
+            $filter_operators = $filter["operators"];
+            unset($filter["operators"]);
+        }
 
         $new_filter = array();
         foreach(array_keys($filter) as $name) {
@@ -98,8 +105,44 @@ class Dia
             }
             if ($filter[$name][0] == '*'){
                 $new_filter[] = $search_prefix . ':*';
-            }else{
+            } else if ($name == "la" && isset($filter_operators["la"]) ||
+                       $name == "subject_area" && isset($filter_operators["subject_area"])) {
+                continue;
+            } else {
                 $new_filter[] = $search_prefix . ':("' . join('" OR "', $filter[$name]) . '")';
+            }
+        }
+
+        if (isset($filter_operators)) {
+            $query = array();
+
+            foreach ($fields_with_logical_operation as $field) {
+                if (!array_key_exists($field, $filter_operators) or
+                    count($filter[$field]) == 0) {
+                    continue;
+                }
+
+                $query_operator = array();
+
+                array_push($query_operator, "{$field}:(");
+
+                foreach ($filter[$field] as $index => $value) {
+                    $operator = array_shift($filter_operators[$field]);
+                    array_push($query_operator, "\"{$value}\"");
+
+                    if (isset($operator) && next($filter[$field])) {
+                        array_push($query_operator, " {$operator} ");
+                    }
+                }
+
+                array_push($query_operator, ")");
+                array_push($query, trim(join("", $query_operator)));
+            }
+
+            $query = trim(join(" AND ", $query));
+
+            if (!empty($query)) {
+                $new_filter[] = $query;
             }
         }
 
@@ -170,6 +213,18 @@ class Dia
         return $this->param["fq"];
     }
 
+}
+
+function has_next($array) {
+    if (is_array($array)) {
+        if (next($array) === false) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 ?>
