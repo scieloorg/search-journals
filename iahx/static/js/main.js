@@ -574,6 +574,12 @@ searchFormBuilder = {
 			// get itens from modal window
 			var modal_filter_id = "#filter_" + filter_id
 
+			var toRemoveFields = $("input[data-filter='" + filter_id +"']");
+
+			if (toRemoveFields.length > 0) {
+				toRemoveFields.remove();
+			}
+
 			$("#orderby_results").data("rel", modal_filter_id).addClass("orderBy_selected");
 			$("#orderby_alpha").data("rel", modal_filter_id).removeClass("orderBy_selected").html(filter_label);
 			$("#statistics").data("cluster", filter_label);
