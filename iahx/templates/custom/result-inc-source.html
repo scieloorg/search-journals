@@ -8,7 +8,7 @@
         </a>
 
         <ul class="dropdown-menu articleShare articleShareMetrics">
-            <li class="dropdown-header">{{ texts.JOURNAL_METRICS }}</li>        
+            <li class="dropdown-header">{{ texts.JOURNAL_METRICS }}</li>
             <li>
                 <ul class="metricTable">
                     <li>
@@ -27,13 +27,13 @@
                 <ul class="metricTable">
                     <li>
                         <a target="_blank" href="
-                        {{ config.metrics.analytics_metrics_url|trim }}?document={{doc.issn.0}}&amp;collection={{doc.in.0}}">
+                        {{ config.metrics.analytics_metrics_url|trim }}?journal={{doc.issn.0}}&amp;collection={{doc.in.0}}">
                             <div class="logo-statistc logo-statistc-scielo"></div>
                         </a>
                     </li>
                     <li>
                         <a target="_blank" href="
-                        {{ config.metrics.analytics_metrics_url|trim }}?document={{doc.issn.0}}&amp;collection={{doc.in.0}}">
+                        {{ config.metrics.analytics_metrics_url|trim }}?journal={{doc.issn.0}}&amp;collection={{doc.in.0}}">
                             SciELO Analytics
                         </a>
                     </li>
