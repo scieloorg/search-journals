@@ -151,6 +151,11 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
         $format = $params['format'];
     }
 
+    $filter_boolean_operator = array();
+    if(!empty($params['filter_boolean_operator']) and $params['filter_boolean_operator'] != "Array") {
+        $filter_boolean_operator = $params['filter_boolean_operator'];
+    }
+
     $filter = array();
     if(!empty($params['filter']) and $params['filter'] != "Array") {
         $filter = $params['filter'];
@@ -256,6 +261,10 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     $dia->setParam('sort', $sort_value);
     $dia->setParam('initial_filter', $initial_filter );
 
+    if (isset($user_filter) && isset($params['filter_boolean_operator']) && is_array($params['filter_boolean_operator'])) {
+        $user_filter["operators"] = $params['filter_boolean_operator'];
+    }
+
     $dia_response = $dia->search($q, $index, $user_filter, $from);
     $result = json_decode($dia_response, true);
 
@@ -308,6 +317,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     $output_array = array();
     $output_array['bookmark'] = $bookmark;
     $output_array['user_preference_filter'] = (array) $user_preference_filter;
+    $output_array['filter_boolean_operator'] = $filter_boolean_operator;
     $output_array['filters'] = $filter;
     $output_array['filters_formatted'] = $filter;
     $output_array['lang'] = $lang;

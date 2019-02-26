@@ -56,6 +56,12 @@
                     {% if key != "filter" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
                         {% if key == "from" or key == "page" %}
                             <input type="hidden" name="{{ key }}" value="1">
+                        {% elseif key == "filter_boolean_operator" %}
+                            {% for bkey, bvalue in  value %}
+                                {% for operator in  bvalue %}
+                                    <input type="hidden" name="{{ key }}[{{bkey}}][]" value="{{ operator }}">
+                                {% endfor %}
+                            {% endfor %}
                         {% else %}
                             <input type="hidden" name="{{ key }}" value="{{ value }}">
                         {% endif %}
@@ -82,7 +88,7 @@
                                     </a>
                                     {% if cluster|length > 1 %}
                                         <!--a href="javascript:;" class="icon configs openSelectItens pull-right configsText" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}">{{texts.SETTINGS}}</a-->
-                                        <a href="javascript:;" class="singleBtn openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}"><span>+ {{texts.SETTINGS}}</span></a>
+                                        <a href="javascript:;" id="openSelectItens_{{ name }}" class="singleBtn openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}"><span>+ {{texts.SETTINGS}}</span></a>
                                     {% endif %}
                                 </div>
 

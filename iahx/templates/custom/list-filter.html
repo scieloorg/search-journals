@@ -1,18 +1,68 @@
 {% set texts_group = 'REFINE_' ~ filter_id %}
+{% if filter_id == 'la' and config.search_collection_list.collection.filter_list_boolean %}
+<h4 id="mainLanguageTitle">IDIOMAS SELECIONADOS</h4>
+<hr>
+<div class="row row-margin">
+    <div class="col-md-6 col-sm-6">
+        <select name="filter[{{filter_id}}][]" id="mainLanguageSelect" placeholder="Selecione o idioma" class="selectize-input">
+            <option value="" selected></option>
+            {% for item in filter_list %}
+                {% set item_id = item.0|slugify %}
+                {% set item_text = translate(item.0, texts_group) %}
+                <option value="{{item.0}}">{{ translate(item.0, texts_group) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6 col-sm-6"></div>
+</div>
 
-<ul id="filter_{{filter_id}}" class="list-unstyled">
-    {% for item in filter_list %}
-        {% set item_id = item.0|slugify %}
-        {% set item_text = translate(item.0, texts_group) %}
+<div id="secondaryLanguageCtt">
+</div>
 
-        <li class="filterItem row" data-item="{{item_text}}" data-count="{{item.1}}">
-            <div class=" col-xs-11">
-                <input type="checkbox" name="filter[{{filter_id}}][]" value="{{item.0}}" id="select_{{filter_id}}_{{item_id}}" class="checkbox">
-                <label class="checkbox" for="select_{{filter_id}}_{{item_id}}">{{ translate(item.0, texts_group) }}</label>
-            </div>
-            <div class="col-xs-1 right">
-                <span>{{item.1}}</span>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
+<div class="row">
+    <div class="col-md-12 col-sm-12 right">
+        <a href="javascript:add_second_language_row(null);" id="addSecondLanguageRow">Adicionar outro idioma +</a>
+    </div>
+</div>
+{% elseif filter_id == 'subject_area' and config.search_collection_list.collection.filter_list_boolean %}
+<h4 id="mainSubjectAreaTitle">ÁREAS SELECIONADAS</h4>
+<hr>
+<div class="row row-margin">
+    <div class="col-md-6 col-sm-6">
+        <select name="filter[{{filter_id}}][]" id="mainSubjectAreaSelect" placeholder="Selecione a área temática" class="selectize-input">
+            <option value="" selected></option>
+            {% for item in filter_list %}
+                {% set item_id = item.0|slugify %}
+                {% set item_text = translate(item.0, texts_group) %}
+                <option value="{{item.0}}">{{ translate(item.0, texts_group) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6 col-sm-6"></div>
+</div>
+
+<div id="secondarySubjectAreaCtt"></div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 right">
+        <a href="javascript:add_second_subject_area_row(null);" id="addSecondSubjectAreaRow">Adicionar outra área temática +</a>
+    </div>
+</div>
+{% else %}
+    <ul id="filter_{{filter_id}}" class="list-unstyled">
+        {% for item in filter_list %}
+            {% set item_id = item.0|slugify %}
+            {% set item_text = translate(item.0, texts_group) %}
+
+            <li class="filterItem row" data-item="{{item_text}}" data-count="{{item.1}}">
+                <div class=" col-xs-11">
+                    <input type="checkbox" name="filter[{{filter_id}}][]" value="{{item.0}}" id="select_{{filter_id}}_{{item_id}}" class="checkbox">
+                    <label class="checkbox" for="select_{{filter_id}}_{{item_id}}">{{ translate(item.0, texts_group) }}</label>
+                </div>
+                <div class="col-xs-1 right">
+                    <span>{{item.1}}</span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
