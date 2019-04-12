@@ -3555,10 +3555,28 @@ button.btn:active {
     box-shadow: 0 0 0 transparent;
     border-radius: 0;
   }
+
+}
+@media all and (min-width: 991px) {
+  .searchForm .resultBlock .searchFilters .filterContent .buttons.fixed{
+    position: fixed;
+    top:0;
+    padding: 6px 5px;
+    width: 235px;
+    background: #fff;
+    margin-left: -10px;
+    z-index: 1;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
 }
 @media all and (min-width: 1200px) {
   .searchForm .searchActions.fixed {
     width: 825px;
+  }
+  .searchForm .resultBlock .searchFilters .filterContent .buttons.fixed{
+    width: 285px;
   }
 }
 .lt-ie9 input[type=checkbox].checkbox,
