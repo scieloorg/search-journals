@@ -437,20 +437,33 @@ searchFormBuilder = {
 			var t = $(this),
 				itens = $(".results .item input.checkbox"),
 				selCount = $("#selectedCount",p),
-				selCountInt = parseInt(selCount.text());
+				selCountInt = parseInt(selCount.text())
+				action = "a";
+				values = "";
 
 			if(t.is(":checked")) {
 				itens.each(function() {
 					$(this).prop("checked",true);
+					values += $(this).val()+",";
+					
 				});
 				t.data("all","1");
+
+				
+
 			} else {
+				action ="d";
 				itens.each(function() {
 					$(this).prop("checked",false);
+					values += $(this).val()+",";
+					
 				});
 				t.data("all","0");
+
+				
 			}
-			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
+			window.manipulate_bookmark(action,values);
+			
 		});
 
 		$(".clusterSelectAll").on("click",function() {
@@ -483,9 +496,6 @@ searchFormBuilder = {
 				}
 			}
 
-			// Executar aqui ações para adicionar item à "sua lista"
-
-			searchFormBuilder.CountCheckedResults("#selectedCount",".results .item input.checkbox:checked");
 		});
 
 		$("#form_clusters input.checkbox").on("change",function() {
@@ -946,16 +956,7 @@ searchFormBuilder = {
 		});
 	},
 	CountCheckedResults: function(t,r) {
-		t = $(t);
-		var	preSelected = parseInt(t.data("preselected")),
-			selResults = parseInt($(r+":checked").length),
-			c = preSelected + selResults;
-
-		t.text(c);
-		if(c > 0) {
-			t.addClass("highlighted");
-		} else
-			t.removeClass("highlighted");
+		window.manipulate_bookmark("count");
 	},
 	SearchHistoryFocusIn: function(t) {
 		if(searchFormBuilder.SearchHistory != "") {

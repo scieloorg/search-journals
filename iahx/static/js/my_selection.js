@@ -22,7 +22,8 @@ function manipulate_bookmark(func, id) {
     if(id != "")
         href = href + "/" + id;
 
-    $.get(href, function(data) {
+
+    $.get(href+"?_=" + new Date().getTime(), function(data) {
         var total = parseInt(data);
         var t = $(".my_selection_count");
         t.html(data);
@@ -32,6 +33,7 @@ function manipulate_bookmark(func, id) {
             t.removeClass("highlighted");
 
     })
+
 
 }
 
@@ -53,7 +55,7 @@ function clean_bookmark(phrase) {
 
 // list the bookmark, beggining from first result
 function list_bookmark() {
-    $.get('bookmark/list', function(q) {
+    $.get('bookmark/list?_='+ new Date().getTime(), function(q) {
         var form = document.searchForm;
         form.q.value = q;
         form.from.value = 0;

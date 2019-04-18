@@ -115,8 +115,8 @@ $app->register(new SessionServiceProvider, array(
     'session.storage.save_path' => '/tmp/sessions/iahx',
     'session.storage.options' => array(
         'name' => 'iahx',
-        'cookie_path' => $PATH,
-        'cookie_domain' => '.' . SERVERNAME,
+        'cookie_path' => "/",
+        'cookie_domain' => SERVERNAME,
         'cookie_lifetime' => 604800 * 4,  // 4 weeks
     ),
 
