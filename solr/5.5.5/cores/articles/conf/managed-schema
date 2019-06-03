@@ -165,9 +165,6 @@
     <!-- Text Words (All indexes) -->
     <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
 
-    <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
-    <copyField source="*" dest="_text_"/>
-
     <!-- All indexes -->
     <copyField source="id" dest="tw"/>
     <copyField source="ti" dest="tw"/>
@@ -279,8 +276,8 @@
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
          currently supported on types that are sorted internally as strings
          and on numeric types.
-	     This includes "string","boolean", and, as of 3.5 (and 4.x),
-	     int, float, long, date, double, including the "Trie" variants.
+         This includes "string","boolean", and, as of 3.5 (and 4.x),
+         int, float, long, date, double, including the "Trie" variants.
        - If sortMissingLast="true", then a sort on this field will cause documents
          without the field to come after documents with the field,
          regardless of the requested sort order (asc or desc).
@@ -405,10 +402,10 @@
 
     <!-- A general text field that has reasonable, generic
          cross-language defaults: it tokenizes with StandardTokenizer,
-	       removes stop words from case-insensitive "stopwords.txt"
-	       (empty by default), and down cases.  At query time only, it
-	       also applies synonyms.
-	  -->
+           removes stop words from case-insensitive "stopwords.txt"
+           (empty by default), and down cases.  At query time only, it
+           also applies synonyms.
+      -->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100" multiValued="true">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -449,7 +446,7 @@
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
         <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
         <filter class="solr.EnglishMinimalStemFilterFactory"/>
-	      -->
+          -->
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
@@ -464,7 +461,7 @@
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
         <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
         <filter class="solr.EnglishMinimalStemFilterFactory"/>
-	      -->
+          -->
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
     </fieldType>
@@ -529,7 +526,7 @@
     </fieldType>
 
     <!-- Just like text_general except it reverses the characters of
-	       each token, to enable more efficient leading wildcard queries.
+           each token, to enable more efficient leading wildcard queries.
     -->
     <dynamicField name="*_txt_rev" type="text_general_rev"  indexed="true"  stored="true"/>
     <fieldType name="text_general_rev" class="solr.TextField" positionIncrementGap="100">
