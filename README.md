@@ -55,4 +55,4 @@ Copyright 2019 SciELO <scielo-dev@googlegroups.com>. Licensed under the terms
 of the BSD license. Please see LICENSE in the source code for more
 information.
 
-https://github.com/scieloorg/document-store/blob/master/LICENSE
+https://github.com/scieloorg/search-journals/blob/master/LICENSE
