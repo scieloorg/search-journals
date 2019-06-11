@@ -1,6 +1,6 @@
 # Pesquisa nos periódicos
 
-Aplicação responsável tornar os artigos ciênficos da rede pesquisável.
+Aplicação responsável por tornar os artigos ciêntificos da rede sciELO pesquisável.
 
 ## TOC:
 
