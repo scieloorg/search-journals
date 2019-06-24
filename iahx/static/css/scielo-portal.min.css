@@ -372,12 +372,36 @@ input[type=radio].radio:checked + label.radio {
 .language a.lang-en {
   background-position: 0 -32px;
 }
+
+
 .brandLogo {
   margin-top: 20px;
-}
-.brandLogo h1 {
-  margin: 0 auto;
   text-align: center;
+}
+.brandLogo a{
+  display: inline-block;
+  width: 235px;
+  height: 140px;
+  text-decoration: none;
+  background-image: url('../image/logo-scielo-portal-no-label.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: auto 83%;
+}
+.brandLogo a span{
+  text-align: center;
+  position: relative;
+  top: 115px;
+  display: block;
+  font-size: 16px;
+  font-family: Arapey,serif;
+  color: #333;
+  white-space: nowrap;
+}
+.brandLogo.brandLogoInternal a{
+  width: 94px;
+  height: 80px;
+  background-size: auto 100%;
 }
 .highlight {
   background: #f7f6f4;
