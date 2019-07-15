@@ -15,12 +15,8 @@
                 {{ texts.RESULT.LABEL_ABSTRACT }}: 
                 
                 {% for language in doc.available_languages %}
-                    
-                    {% set ab_lang = 'ab_' ~ language %}
-                    {% set fulltext_lang = 'fulltext_html_' ~ language %}
-                    {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
-                    <a href="#" onclick="$('#{{doc.id}}_{{language}}').toggle(); return false;" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
+                    <a href="#" onclick="$(this).toggleClass('opened');$('#{{doc.id}}_{{language}}').slideToggle(); return false;" class=" showTooltip abstract" title="{{ translate(language, 'REFINE_la') }}">
                         {{ translate(language) }}
                     </a>
                     
@@ -39,13 +35,9 @@
                 <span class="separator">|</span>
                 <span>
 
-                 {{ texts.TEXT }}: 
+                {{ texts.TEXT }}: 
                 
                 {% for language in doc.available_languages %}
-                    
-                    {% set ab_lang = 'ab_' ~ language %}
-                    {% set fulltext_lang = 'fulltext_html_' ~ language %}
-                    {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
                     <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
                         {{ translate(language) }}
@@ -63,8 +55,6 @@
             -->        
             {% for language in doc.available_languages %}
 
-                {% set ab_lang = 'ab_' ~ language %}
-                {% set fulltext_lang = 'fulltext_html_' ~ language %}
                 {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
                 {% if attribute(doc, pdf_lang) %}
@@ -93,11 +83,9 @@
                 
             {% endfor %}
 
-
         {% endif %}     
         
     </div>
-
 
     {% for language in doc.available_languages %}
         {% set ab_lang = 'ab_' ~ language %}
