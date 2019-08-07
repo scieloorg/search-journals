@@ -1713,6 +1713,26 @@ button.btn:active {
 }
 .searchForm .results .versions span {
   white-space: nowrap;
+  margin-right: 0;
+}
+.searchForm .results .versions span.separator {
+  padding: 0 5px;
+}
+.searchForm .results .versions span a{
+  text-transform: uppercase;
+  margin-left: 5px;
+}
+.searchForm .results .versions span a:first-child{
+  content: "";
+  margin-left: 0;
+}
+.searchForm .results .versions span a.abstract:before{
+  content: '>';
+  font-family: "courier new", monaco, monospace;
+  display: inline-block;
+}
+.searchForm .results .versions span a.abstract.opened:before{
+  transform: rotate(90deg);
 }
 .searchForm .results .metadata {
   font-size: .85em;
