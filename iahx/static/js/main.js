@@ -15,7 +15,7 @@ var Portal = {
 				t.removeClass("opened");
 				d.slideUp("fast");
 			} else {
-				t.Class("opened");
+				t.addClass("opened");
 				d.slideDown("fast");
 			}
 		});
