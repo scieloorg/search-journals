@@ -344,6 +344,8 @@ searchFormBuilder = {
 		});
 
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
+		
+		//$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
 		$(p).on("keypress",function(e) {
@@ -859,15 +861,34 @@ searchFormBuilder = {
 		$(".showContextHelper").on("focus.showContextHelper blur.showContextHelper",function(e) {
 			var t = $(this),
 				contextHelper = $(t.data("helper")),
-				cl = "contextHelper_focus";
-
+				cl = "contextHelper_focus",
+				ht = false; //have text
+			
 			if(contextHelper.length > 0) {
-				if(e.type == "focus")
-					contextHelper.addClass(cl);
-				else {
-					setTimeout(function() {
-						contextHelper.removeClass(cl);
-					},500)
+				if(e.type == "focus"){
+
+					if (!contextHelper.hasClass(cl)){
+						contextHelper.addClass(cl);
+					}else{	
+						return false;
+					}
+					
+				}else {
+
+					if(e.type == "blur"){
+						if($(".clearIptText").is(":visible")){
+							var ht = true;
+						}
+					}
+					if(!ht){
+						setTimeout(function() {
+							contextHelper.removeClass(cl);
+						},500);	
+					}
+						
+					$(".clearIptText").on("click", function(e){
+						$(".showContextHelper").focus();
+					});
 				}
 			}
 		});
