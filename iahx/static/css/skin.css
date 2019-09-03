@@ -1,12 +1,2 @@
-/* BVS Haiti Skin */
-DIV.top.top_es {}
-DIV.top.top_en {}
-DIV.top.top_fr {}
-DIV.top.top_pt {}
-
-DIV.identification H1 {
-	display:none;
-}
-DIV.identification H2{
-    display:none;
-}
+DIV.identification H1,DIV.identification H2{display:none}
+/*# sourceMappingURL=skin.css.map */

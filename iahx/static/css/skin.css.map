@@ -1,0 +1,1 @@
+{"version":3,"sources":["skin.less"],"names":[],"mappings":"AACA,sBAAA,sBAEE,QAAA","file":"skin.css","sourcesContent":["/* BVS Haiti Skin */\nDIV.identification {\n\tH1 {\n\t\tdisplay: none;\n\t}\n\tH2 {\n\t\tdisplay: none;\n\t}\n}\n"]}
