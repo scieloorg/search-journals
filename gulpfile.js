@@ -25,8 +25,7 @@ function webserver() {
 let cssSources1 = {
     watchFolder: [
         
-        'iahx/static/less/bootstrap.less',
-        
+        'iahx/static/less/bootstrap.less',       
         'iahx/static/less/advanced.less',
         'iahx/static/less/chart.less',
         'iahx/static/less/decs.locator.less',
@@ -65,41 +64,6 @@ let cssSources3 = {
         ],
     output: 'iahx/static/css/mobile'
 };
-
-/*
-function processBootstrap() {
-    return src("node_modules/bootstrap/less/bootstrap.less")
-        .pipe(
-            sourceMaps.init()
-        )
-        .pipe(
-            less().on('error', function(err){
-                gutil.log(err);
-                this.emit('end');
-            }))
-        .pipe(
-            cleanCSS()
-        )
-        .pipe(
-            minifyCSS()
-        )
-        .pipe(
-            rename({ suffix: ".min" })
-        )
-        .pipe(
-            sourceMaps.write(".")
-        )
-        .pipe(
-            rename("bootstrap.min.css")
-        )
-        .pipe(
-            dest("iahx/static/css")
-        )
-        .pipe(
-            connect.reload()
-        );
-}
-*/
 
 function processUiCustom() {
     return src("iahx/static/less/jquery.ui.1.10.1.custom.less")
@@ -213,7 +177,6 @@ exports.watch = series(
     processCSS,
     processStyleMobile,
     processUiCustom,
-    //processBootstrap,
 
     parallel(
         watchCSSProcess,
@@ -223,10 +186,7 @@ exports.watch = series(
 );
 
 exports.default = series(
-
     processCSS,
     processStyleMobile,
-    processUiCustom,
-    //processBootstrap
-
+    processUiCustom
 );
