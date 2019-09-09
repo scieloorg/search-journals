@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block extrahead %}
-    <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/print.css" type="text/static" media="print">
+    <link rel="stylesheet" rev="stylesheet" href="{{ constant("STATIC_URL") }}css/print.min.css" type="text/static" media="print">
 {% endblock %}
 
 {% block onload %}onload="window.print();"{% endblock %}
