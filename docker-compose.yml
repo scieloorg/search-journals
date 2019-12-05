@@ -27,6 +27,8 @@ services:
             - SEARCH_SOLR_CORE=solr/articles
             - SEARCH_USE_HTTPS=false
             - SEARCH_SOLR_SERVER=solrcontroller:8080
+            - COOKIE_POLICY_ENABLED=true
+            - COOKIE_POLICY_SCRIPT_URL=https://static.scielo.org/js/cookiePolicy.min.js
 
     solrcontroller:
         image: scieloorg/search-journal-iahx-controller:latest

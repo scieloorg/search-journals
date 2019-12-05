@@ -44,6 +44,8 @@
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
 	<google_analytics_tracking_id>UA-18268125-1</google_analytics_tracking_id>
+	<cookie_policy_enabled>true</cookie_policy_enabled>
+	<cookie_policy_script_url>https://static.scielo.org/js/cookiePolicy.min.js</cookie_policy_script_url>
 	<maintenance>false</maintenance>
 	<feedback_id></feedback_id>
 	<browse_index_url></browse_index_url>
