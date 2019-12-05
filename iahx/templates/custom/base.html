@@ -127,8 +127,13 @@
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/bootstrap-affix.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/selectize.js"></script> 
-   {% endblock %}
 
+    {% if constant('COOKIE_POLICY_ENABLED') == 'true' %}
+        <script src="{{ constant('COOKIE_POLICY_SCRIPT_URL') }}" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
+
+   {% endblock %}
+  
     <!-- modal metrics -->
     <script type="text/javascript" src="https://badge.dimensions.ai/badge.js" charset="utf-8" async></script>
     <script type="text/javascript" src="https://d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>

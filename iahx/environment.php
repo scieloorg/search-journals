@@ -54,6 +54,13 @@ $protocol = ( (isset($config->use_https) && $config->use_https == 'true') ? 'htt
 define("SEARCH_URL",  $protocol . "://" . $_SERVER['HTTP_HOST'] . $PATH);
 define("STATIC_URL",  SEARCH_URL . "static/");
 
+// check if cookie policy bar is enabled = cookie_policy_enabled
+$config->cookie_policy_enabled = getenv('COOKIE_POLICY_ENABLED') ? getenv('COOKIE_POLICY_ENABLED') : $config->cookie_policy_enabled;
+define("COOKIE_POLICY_ENABLED",  $config->cookie_policy_enabled);
+
+// src of cookie policy bar script
+$config->cookie_policy_script_url = getenv('COOKIE_POLICY_SCRIPT_URL') ? getenv('COOKIE_POLICY_SCRIPT_URL') : $config->cookie_policy_script_url;
+define("COOKIE_POLICY_SCRIPT_URL",  $config->cookie_policy_script_url);
 
 // log's configuration
 $logDir = ( isset( $config->log_dir ) ? $config->log_dir : "logs/");
