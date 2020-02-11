@@ -143,7 +143,7 @@
             <div class="line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
-                       <span class="DOIResults">DOI: {{ doc.doi }}</span>
+                       <span class="DOIResults"><a href="https://doi.org/{{ doc.doi }}" target="_blank">https://doi.org/{{ doc.doi }}</a></span>
                     {% endif %}
                     {% if doc.total_access %}
 					    <span>
