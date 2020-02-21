@@ -18,17 +18,53 @@
 		<form name="searchHistoryForm" action="{{ constant("SEARCH_URL") }}" method="get" class="searchFormBuilder searchForm searchHistoryContainer" id="searchHistoryForm">
 			<div class="highlight result">
 				<div class="container">
-					<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
+					<div class="row">
+						
+						<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
 
-					<div class="col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
-						<div class="input-group col-md-12 col-sm-12">
-							<div class="form-textarea">
-								<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
-								<!--div class="form-control full-input" contenteditable="true" id="iptQuery"></div-->
-								<!--input type="hidden" name="q" value="" autocomplete="off" id="query"-->
+						<div class="hidden-xs col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
+							<div class="input-group col-md-12 col-sm-12">
+								<div class="form-textarea ">
+									<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input hidden-xs" contenteditable="true"></div>
+									<!--div class="form-control full-input" contenteditable="true" id="iptQuery"></div-->
+									<!--input type="hidden" name="q" value="" autocomplete="off" id="query"-->
+								</div>
+								
+								
+								<div class="selectBox index ">
+			                        <select name="index[]">
+			                            {% for index in collectionData.index_list.index if not index.advanced %}
+			                                {% if params.index is defined %}
+			                                    {% if index.prefix == params.index %}
+			                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+			                                    {% else %}
+			                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+			                                    {% endif %}
+			                                {% else %}
+			                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+			                                {% endif %}
+			                            {% endfor %}
+			                        </select>
+			                    </div>
 							</div>
-							<div class="selectBox index">
-		                        <select name="index[]">
+						</div>
+						<div class="hidden-xs col-md-2 col-sm-2">
+							<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+						</div>
+
+						<div class="clearfix"></div>
+
+
+						<!-- ini campos alinhados mobile -->
+						<div class="visible-xs col-xs-9">
+			                <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
+			                    {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
+			                </a>
+			                <div class="form-textarea">
+			                    <div id="iptQueryMobile" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
+			                </div>
+			                <div class="selectBox index">
+			                    <select name="index[]">
 		                            {% for index in collectionData.index_list.index if not index.advanced %}
 		                                {% if params.index is defined %}
 		                                    {% if index.prefix == params.index %}
@@ -41,24 +77,30 @@
 		                                {% endif %}
 		                            {% endfor %}
 		                        </select>
-		                    </div>
-						</div>
-					</div>
-					<div class="col-md-2 col-sm-2">
-						<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
-					</div>
-					<div class="col-md-1 col-sm-1">
-						<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
-					</div>
-					<div class="clearfix"></div>
+			                </div>
+			            </div>
+			            <div class="visible-xs col-xs-3" style="padding-left: 0;display:none">
+			                <input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+			            </div> 
+						<!-- fim campos alinhados mobile -->
 
-		            <div class="searchRow-container">
-		            </div>
+			            <div class="searchRow-container">
+			            </div>
+						
+						
+			            <div class="visible-xs col-xs-12">
+			            	<hr>	     
+			            </div>
+			            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-6 right">
+			                <a href="" class="newSearchField" data-count="2">
+			                	<!-- {{ texts.ADD_FIELD }} -->Adicionar campo</a>
+			            </div>
+			            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
+			            	<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" style="padding:10px 0 0 0;font-size: 0.9em;display: inline-block;">» {{ texts.NEW_SEARCH }}</a>
+			            </div>
+			            <div class="clearfix"></div>
+					</div>
 
-		            <div class="col-md-7 col-sm-7 right">
-		                <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
-		            </div>
-		            <div class="clearfix"></div>
 				</div>
 
 				<div class="row {%if not app.request.query.all.noresult %}hide{% endif %}" id="NoResults">
@@ -71,10 +113,10 @@
 
 			<div id="searchRow-matriz">
 		        <div class="searchRow" id="searchRow-@" style="display: none;">
-		            <div class="col-md-1 col-sm-1 right">
+		            <div class="col-md-1 col-sm-1 hidden-xs right">
 		                <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
 		            </div>
-		            <div class="col-md-8 col-sm-8">
+		            <div class="col-md-8 col-sm-8 hidden-xs">
 		                <div class="input-group col-md-12 col-sm-12">
 		                    <div class="selectBox connector">
 		                        <select name="bool[]">
@@ -104,72 +146,185 @@
 		                    </div>
 		                </div>
 		            </div>
-		            <div class="clearfix"></div>
+		            <div class="clearfix hidden-xs"></div>
+
+
+		            <!-- ini nova linha de busca no mobile -->
+					<div class="hidden-sm hidden-md hidden-lg col-xs-9">
+                    	<hr>
+                	</div>
+	                <div class="hidden-sm hidden-md hidden-lg col-xs-6">
+                        <div class="selectBox connector">
+	                        <select name="bool[]">
+	                            <option>AND</option>
+	                            <option>OR</option>
+	                            <option>AND NOT</option>
+	                        </select>
+	                    </div>
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg col-xs-9">
+                        <div class="form-textarea">
+                    		<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
+                		</div>
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg visible-xs col-xs-3" style="padding-left: 0">
+                        <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg col-xs-9">
+                        <div class="selectBox index">
+		                    <select name="index[]">
+	                            {% for index in collectionData.index_list.index if not index.advanced %}
+	                                {% if params.index is defined %}
+	                                    {% if index.prefix == params.index %}
+	                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+	                                    {% else %}
+	                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+	                                    {% endif %}
+	                                {% else %}
+	                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+	                                {% endif %}
+	                            {% endfor %}
+	                        </select>
+		                </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- fim nova linha de busca no mobile --> 
+
+
 		        </div>
 		        <div class="clearfix"></div>
 			</div>
 
 
 			<div class="container">
-				<div class="col-md-11 col-sm-11 col-md-offset-1 col-sm-offset-1">
-					<div class="row dashline">
-						<div class="col-md-8 col-sm-8">
-							<h2>{{ texts.HISTORY_LIST }}</h2>
+				<div class="row">
+
+					<div class="col-md-11 col-sm-11 col-md-offset-1 col-sm-offset-1">
+						<div class="hidden-xs row dashline">
+							<div class="col-md-8 col-sm-8 col-xs-8">
+								<h2>{{ texts.HISTORY_LIST }}</h2>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-4 right">
+								<a href="javascript:;" class="searchHistoryIcon eraseAll">{{ texts.HISTORY_CLEAN }}</a>
+							</div>
 						</div>
-						<div class="col-md-4 col-sm-4 right">
-							<a href="javascript:;" class="searchHistoryIcon eraseAll">{{ texts.HISTORY_CLEAN }}</a>
+
+						<div class="row dashline visible-xs mobileTitleRow">
+							<div class="col-xs-8" style="padding-left:0;">
+								<h2>{{ texts.HISTORY_LIST }}</h2>
+							</div>
+							<div class="col-xs-4 right" style="padding-right:0;">
+								<a href="javascript:;" class="searchHistoryIcon eraseAll">{{ texts.HISTORY_CLEAN }}</a>
+							</div>
 						</div>
-					</div>
-					<div class="clearfix"></div>
-					<div class="row">
-						<table>
-							<tr>
-								<th class="colId">Id.</th>
-								<th class="colSearch">{{ texts.HISTORY_QUERY }}</th>
-								<th class="colResults">{{ texts.HISTORY_TOTAL }}</th>
-								<th class="colActions">{{ texts.HISTORY_ACTIONS }}</th>
-							</tr>
-							{% if history_list|length > 0 %}
-								{% for index, history in history_list|reverse %}
-								{% set history_id = history_list|length-index %}
+
+
+						<div class="clearfix"></div>
+						<div class="row">
+							
+
+							<table>
 								<tr>
-									<td class="colId">
-										<span>#{{ history_id }}</span>
-									</td>
-									<td class="colSearch">
-										<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
-										<strong>{{ texts.HISTORY_FILTERS }}:</strong>
-										{% for cluster, items in history.filter %}
-											{% set texts_group = 'REFINE_' ~ cluster %}
-											{% for item in items %}
-												{% set item_value = cluster ~ '_' ~
-	item|slugify ~ '' %}
-												({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+									<th class="colId">Id.</th>
+									<th class="colSearch">{{ texts.HISTORY_QUERY }}</th>
+									<th class="colResults">{{ texts.HISTORY_TOTAL }}</th>
+									<th class="colActions hidden-xs">{{ texts.HISTORY_ACTIONS }}</th>
+								</tr>
+								{% if history_list|length > 0 %}
+									{% for index, history in history_list|reverse %}
+									{% set history_id = history_list|length-index %}
+									
+									<tr class="hidden-xs">
+										<td class="colId">
+											<span>#{{ history_id }}</span>
+										</td>
+										<td class="colSearch">
+											<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
+											<strong>{{ texts.HISTORY_FILTERS }}:</strong>
+											{% for cluster, items in history.filter %}
+												{% set texts_group = 'REFINE_' ~ cluster %}
+												{% for item in items %}
+													{% set item_value = cluster ~ '_' ~
+		item|slugify ~ '' %}
+													({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+												{% endfor %}
 											{% endfor %}
-										{% endfor %}
-									</td>
-									<td class="colResults">
-										{% if history.total > 0 %}
-											<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
-										{% else %}
-											{{ history.total }}
-										{% endif %}
-									</td>
-									<td class="colActions">
-										<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
-										<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
-										<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
-									</td>
-								</tr>
-								{% endfor %}
-							{% else %}
-								<tr>
-									<td colspan="5" >
-										<h4><i>{{ texts.HISTORY_EMPTY }}</i></h4>
-									</td>
-								</tr>
-							{% endif %}
-						</table>
+										</td>
+										<td class="colResults">
+											{% if history.total > 0 %}
+												<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+											{% else %}
+												{{ history.total }}
+											{% endif %}
+										</td>
+										<td class="colActions">
+											<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
+											<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
+											<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
+										</td>
+									</tr>
+
+
+									<!-- ini table mobile -->
+									<tr class="visible-xs trHistoryMobile">
+										<td class="colId">
+											<span>#{{ history_id }}</span>
+										</td>
+										<td class="colSearch">
+											<strong>{{ texts.HISTORY_EXPRESSION }}:</strong> {{ history.q }}<br/>
+											<strong>{{ texts.HISTORY_FILTERS }}:</strong>
+											{% for cluster, items in history.filter %}
+												{% set texts_group = 'REFINE_' ~ cluster %}
+												{% for item in items %}
+													{% set item_value = cluster ~ '_' ~
+		item|slugify ~ '' %}
+													({{ attribute(texts.REFINE, cluster) }}: <strong>{{ translate(item, texts_group) }}</strong>)
+												{% endfor %}
+											{% endfor %}
+										</td>
+										<td class="colResults">
+											{% if history.total > 0 %}
+												<a href="{{ constant("SEARCH_URL") }}?q={{history.detailed_query}}&lang={{lang}}&page=1" class="showTooltip" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_SHOW_RESULTS }}">{{ history.total }}</a>
+											{% else %}
+												{{ history.total }}
+											{% endif %}
+										</td>
+									</tr>
+									<tr class="visible-xs trHistoryMobile">
+										<td colspan="3" class="colActionsMobile" align="center">
+											
+											<!--
+											<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
+
+											<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
+											
+											<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
+											-->
+
+											<a href="javascript:;" class="searchHistoryIcon add col-xs-4" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD_MOBILE }}</a>
+
+											<a href="javascript:;" class="searchHistoryIcon edit editQuery col-xs-4" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT_MOBILE }}</a>
+											
+											<a href="javascript:;" class="searchHistoryIcon erase col-xs-4" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE_MOBILE }}</a>
+
+																					
+										</td>
+									</tr>
+									<!-- fim talble mobile -->
+
+
+									{% endfor %}
+								{% else %}
+									<tr>
+										<td colspan="5" >
+											<h4><i>{{ texts.HISTORY_EMPTY }}</i></h4>
+										</td>
+									</tr>
+								{% endif %}
+							</table>
+
+
+						</div>
 					</div>
 				</div>
 			</div>

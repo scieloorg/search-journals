@@ -475,7 +475,9 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
 
             if( $view == 'desktop' ) {   // forced by user desktop version
                 $view = '';              // use default view
-            }else{
+            }
+/*
+            else{
                 if ($check_mobile){      //configured to present mobile version
                     $detect = new Mobile_Detect();
                     if ($view == 'mobile' || ($detect->isMobile() && !$detect->isTablet()) )   {
@@ -483,7 +485,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
                     }
                 }
             }
-
+*/
             return $app['twig']->render( custom_template($view . '/index.html'), $output_array);
 
             break;

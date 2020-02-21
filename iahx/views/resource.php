@@ -66,7 +66,9 @@ $app->get('resource/{lang}/{id}', function (Request $request, $lang, $id) use ($
 
     if( $view == 'desktop' ) {   // forced by user desktop version
         $view = '';              // use default view
-    }else{
+    }
+/*
+    else{
         if ($check_mobile){      //configured to present mobile version
             $detect = new Mobile_Detect();
             if ($view == 'mobile' || ($detect->isMobile() && !$detect->isTablet()) )   {
@@ -74,7 +76,7 @@ $app->get('resource/{lang}/{id}', function (Request $request, $lang, $id) use ($
             }
         }
     }
-
+*/
     if( !isset($view) ) {
         $view = '';
     }

@@ -1,23 +1,24 @@
 
 <div class="container">
-    <div class="topFunction">
-        <div class="col-md-3 col-sm-4 mainNav">
+    <div class="row">
+        <div class="topFunction">
+            <div class="mainNav">
 
-           {% include custom_template('top-menu-' ~ lang ~ '.html') %}
+               {% include custom_template('top-menu-' ~ lang ~ '.html') %}
 
+            </div>
+            <div class="language">
+                {% for langcode, item in texts.AVAILABLE_LANGUAGES %}
+                    <a href="javascript:change_language('{{ langcode|lower }}')" {% if langcode|lower == lang %} class="selected" {% endif %} class="lang-{{ langcode|lower }}">{{ item }}</a>
+                {% endfor %}
+            </div>
+            
+            <div class="col-xs-12 brandLogo {% if detailed_query != '' %}brandLogoInternal{% endif %}">      
+                <a href="{{ config.bvs_url }}" >
+                    {% if detailed_query == '' %}<span>Scientific Electronic Library Online</span>{% endif %}
+                </a>
+            </div>
+            <div class="clearfix"></div>
         </div>
-        
-        <div class="col-md-6 col-sm-4 brandLogo {% if detailed_query != '' %}brandLogoInternal{% endif %}">      
-            <a href="{{ config.bvs_url }}" >
-                {% if detailed_query == '' %}<span>Scientific Electronic Library Online</span>{% endif %}
-            </a>
-        </div>
-        
-        <div class="col-md-3 col-sm-4 language">
-            {% for langcode, item in texts.AVAILABLE_LANGUAGES %}
-                <a href="javascript:change_language('{{ langcode|lower }}')" {% if langcode|lower == lang %} class="selected" {% endif %} class="lang-{{ langcode|lower }}">{{ item }}</a>
-            {% endfor %}
-        </div>
-        <div class="clearfix"></div>
     </div>
 </div>

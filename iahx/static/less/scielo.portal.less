@@ -1,3 +1,6 @@
+@import "scielo.variables.less";
+
+
 ::selection {
   background: #6789d3;
   color: #fff;
@@ -6,10 +9,13 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+/*
 .clearfix {
   height: 1px;
   clear: both;
 }
+*/
+
 @-webkit-keyframes bounce {
   0%,
   20%,
@@ -90,7 +96,18 @@ body {
 	color: #403d39;
 }
 .container {
-	min-width: 768px !important;
+	//min-width: 768px !important;
+}
+.container-fluid{
+
+	@media @minTablet {
+		padding: 0;
+
+		.row{
+			margin-right: 0;
+			margin-left: 0;
+		}
+	}
 }
 a {
 	color: #6789d3;
@@ -184,12 +201,12 @@ input[type=checkbox].checkbox {
 
 	+ label.checkbox {
 		background: url('../image/input.glyphs.png') 95% 0 no-repeat;
-		background-position: 0 -245px;
+		background-position: 0 -242px;
 	}
 
 	&:checked {
 		+ label.checkbox {
-			background-position: 0 -177px;
+			background-position: 0 -174px;
 		}
 	}
 }
@@ -256,6 +273,12 @@ input[type=radio].radio {
 	text-align: left;
 	background-image: url(../image/button.glyphs.png);
 	background-repeat: no-repeat;
+
+	@media @onlyMobile{
+		background-image: none;
+		padding: 6px 0;
+		text-align: center;
+	}
 }
 .btn.glyph-search {
 	background-position: 98% -5px;
@@ -351,6 +374,10 @@ input[type=radio].radio {
 	ul {
 		margin: 0;
 		padding: 0;
+
+		@media @onlyMobile{
+			margin-top: 5px;
+		}
 	}
 	li {
 		list-style: none;
@@ -362,13 +389,21 @@ input[type=radio].radio {
 			color: #00314c;
 			padding-top: 10px;
 		}
+		
 		a {
 			display: block;
 			padding: 2px 0;
 			color: #00314c;
+
+			@media @onlyMobile{
+				padding: 10px 0;
+			}
+
 			&:hover {
 				color: #6789d3;
 			}
+
+			
 		}
 		li {
 			background: none;
@@ -416,6 +451,13 @@ input[type=radio].radio {
 	a.lang-en {
 		background-position: 0 -32px;
 	}
+
+	@media @onlyMobile {
+		margin-top: 5px;
+		position: absolute;
+		right: 20px;
+		display: inline-block;
+	}
 }
 .brandLogo {
 	margin-top: 20px;
@@ -440,6 +482,10 @@ input[type=radio].radio {
 			white-space: nowrap;
 		}
 	}
+
+	@media @onlyMobile {
+		margin: 40px 0 0 0;
+	}
 }
 .brandLogo.brandLogoInternal {
 	a {
@@ -452,9 +498,24 @@ input[type=radio].radio {
 	background: #f7f6f4;
 	padding: 20px 0;
 	margin: 10px 0;
+
+	//margin-top: 142px;
+	//min-height: 157px;
+	
+	@media @onlyMobile {
+		margin: 10px -15px;
+
+		hr{
+			margin: 10px 0 15px;
+		}
+	}
+
 }
 .highlight.result {
-	padding-bottom: 70px;
+
+	@media @minTablet {
+		padding-bottom: 70px;
+	}
 }
 #iptQuery {
 	&:focus {
@@ -1046,6 +1107,17 @@ button.btn {
 	img {
 		margin-right: 15px;
 	}
+
+	@media @onlyMobile {
+		margin: 10px -15px 0;
+
+		img{
+			margin: 0 0 10px;
+		}
+		span{
+			text-align: center;
+		}
+	}
 }
 .journalContacts {
 	margin: 20px 0;
@@ -1079,19 +1151,45 @@ button.btn {
 }
 .collectionSignature {
 	margin: 30px 0 10px;
+	padding: 20px 0;
 	background: #f5f5f5;
 	color: #403d39;
 	font-size: .8em;
+
+
 	.container {
 		padding: 20px 0;
 		background: url(../image/dashline.png) bottom left repeat-x;
 	}
+	img{
+		max-width: 70px;
+
+		@media @minTablet {
+			float: right;
+		}
+	}
+	/*
 	.col-md-2 {
 		width: 11%;
 	}
 	.col-md-8 {
 		padding-top: 5px;
 		line-height: 1.8em;
+	}
+	*/
+
+	@media @onlyMobile {
+		text-align: center;	  
+		margin: 20px -15px;
+    	padding: 20px 0;
+	}
+
+	strong{
+
+		@media @minTablet {
+			display: inline-block;
+			margin-top: 10px;
+		}
 	}
 }
 .partners {
@@ -1148,7 +1246,7 @@ button.btn {
 }
 .searchForm {
 	.container {
-		position: relative;
+		//position: relative;
 	}
 	h2 {
 		margin: 0 20px 5px 0;
@@ -1181,19 +1279,26 @@ button.btn {
 		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
 	}
 	.selectBox.index {
-		width: 30%;
-		border-left: none;
+		//width: 30%;
+	
+		@media @minTablet {
+			border-left: none;
+		}
+
 		select {
 			border-left: 1px solid #e5e5e5;
 		}
 	}
 	.selectBox.connector {
 		border-left: 1px solid #b5c4e5;
-		border-right: 0;
 		border-radius: 4px;
-		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
-		width: 18%;
+		//width: 18%;
+
+		@media @minTablet {
+			border-right: 0;
+			border-top-right-radius: 0;
+		}
 	}
 	div.form-textarea {
 		border-color: #b5c4e5;
@@ -1210,10 +1315,21 @@ button.btn {
 		display: table-cell;
 		position: relative;
 		z-index: 2;
+
+		@media @onlyMobile {
+			display: block;
+		    border: 1px solid #b5c4e5;
+		    border-radius: 4px;
+		    margin-bottom: 5px;
+		}
+
+
 	}
 	div.form-textarea.no-divisor {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
+		@media @minTablet {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
 	}
 	.contextHelper {
 		border-bottom-left-radius: 7px;
@@ -1268,6 +1384,13 @@ button.btn {
 		-moz-box-shadow: 0 0 0 transparent;
 		box-shadow: 0 0 0 transparent;
 		display: block;
+
+		
+		@media @onlyMobile {
+			height: auto;
+		}
+
+
 	}
 	.connector {
 		+ div.form-textarea {
@@ -1286,6 +1409,10 @@ button.btn {
 		&:hover {
 			color: #6789d3;
 		}
+	
+		@media @onlyMobile {
+			color: #6789d3;
+		}
 	}
 	.shLink {
 		display: inline-block;
@@ -1299,6 +1426,11 @@ button.btn {
 		color: #7f7a71;
 		&:hover {
 			color: #6789d3;
+		}
+
+		@media @onlyMobile {
+			background: none;
+			padding: 10px 0;
 			color: #6789d3;
 		}
 	}
@@ -1325,6 +1457,15 @@ button.btn {
 	}
 	.searchRow {
 		padding: 10px 0 0;
+
+		.newSearchRowMobile{
+			padding: 0;
+
+			.selectBox{
+				width: auto;
+				margin: 0 0 5px;
+			}
+		}
 	}
 	.normalizeButton {
 		display: inline-block;
@@ -1425,6 +1566,11 @@ button.btn {
 		background: url(../image/dashline.png) top left repeat-x;
 		font-size: .85em;
 		padding-top: 15px;
+
+		@media @onlyMobile{
+			background: none;
+		}
+
 		.pageNext {
 			display: inline-block;
 			text-align: left;
@@ -1444,7 +1590,11 @@ button.btn {
 		}
 	}
 	.resultBlock {
-		margin-top: -74px;
+
+		@media @minTablet{
+			margin-top: -72px;
+		}
+		
 		color: #403d39;
 		.searchFilters {
 			margin-top: 0;
@@ -1725,7 +1875,56 @@ button.btn {
 			}
 		}
 	}
+
+	.mobileTitleRow{
+		background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 33%, white 0%);
+	    background-position: bottom;
+	    background-size: 4px 1px;
+	    background-repeat: repeat-x;
+	    padding: 15px 0 !important;
+
+	    @media @minTablet{
+	    	display: none;
+	    }
+
+	    h2{
+	    	line-height: 100%;
+	    	margin: 0;
+
+	    	span{
+	    		font-weight: normal;
+	    	}
+	    }
+
+	    .col-xs-8{
+	    	padding-left: 0
+	    }
+	    .col-xs-4{
+	    	padding-right: 0;
+	    	text-align: right;
+	    }
+
+	    &.searchQuery{
+	    	border-bottom: 0;
+	    	padding-top: 10px;
+	    	padding-left: 15px;
+
+	    	.query{
+	    		vertical-align: middle;
+	    	}
+	    }
+
+	    .searchHistoryIcon.eraseAll{
+	    	margin: 0;
+	    }
+	}
+
 	.searchActions {
+
+		@media @onlyMobile{
+			border-bottom: 2px solid #b6c6ea
+		}
+
 		padding: 18px 0 10px 0;
 		font-size: .83em;
 		color: #a7a49e;
@@ -1742,6 +1941,10 @@ button.btn {
 		}
 		.checkbox {
 			margin-top: -2px;
+
+			@media @onlyMobile{
+				line-height:100%;
+			}
 		}
 		.actionList {
 			vertical-align: top;
@@ -1754,6 +1957,8 @@ button.btn {
 			padding-right: 20px !important;
 			background: url(../image/button.glyphs.png) right -510px no-repeat;
 		}
+		
+		/*
 		.selectItens {
 			color: #403d39;
 			display: inline-block;
@@ -1837,6 +2042,8 @@ button.btn {
 				}
 			}
 		}
+
+		*/
 	}
 	.searchActions.fixed {
 		position: fixed;
@@ -1858,6 +2065,18 @@ button.btn {
 		font-size: .9em;
 		.item {
 			margin-bottom: 20px;
+
+			@media @onlyMobile{
+				/*
+				margin: 0;
+				*/
+				margin-bottom: 0;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				border-bottom: 1px solid #E3E9F7;
+				
+			}
+
 			.line {
 				padding: 3px 0;
 				position: relative;
@@ -1885,6 +2104,10 @@ button.btn {
 				&:focus {
 					text-decoration: none;
 				}
+
+				.title{
+					color: #6789d3;
+				}
 			}
 			span {
 				margin-right: 15px;
@@ -1895,9 +2118,10 @@ button.btn {
 		}
 		.checkbox {
 			margin-top: 0;
+
 		}
 		.title {
-			color: #6789d3;
+			//color: #6789d3;
 			font-size: 1.1em;
 			margin: 0 10px 0 0;
 		}
@@ -1907,11 +2131,18 @@ button.btn {
 				color: #7f7a71;
 			}
 		}
+		.user-actions{
+			@media @onlyMobile{
+				//display:none;
+			}
+		}
+
 		.versions {
 			color: #7f7a71;
 			padding: 7px 10px !important;
 			background: #f8f8f6;
 			border-radius: 2px;
+
 			span {
 				white-space: nowrap;
 				margin-right: 0;
@@ -1941,6 +2172,11 @@ button.btn {
 			}
 		}
 		.metadata {
+
+			@media @onlyMobile{
+				//display:none;
+			}
+			
 			font-size: .85em;
 			padding: 7px 0 7px 5px !important;
 			color: #7f7a71;
@@ -1950,6 +2186,11 @@ button.btn {
 			}
 		}
 		span.socialLinks {
+
+			@media @onlyMobile{
+				//display:none;
+			}
+
 			display: inline-block;
 			white-space: nowrap;
 		}
@@ -1976,6 +2217,100 @@ button.btn {
 		}
 	}
 }
+
+
+.selectItens {
+	color: #403d39;
+	display: inline-block;
+	width: 100%;
+	span {
+		display: inline-block;
+		vertical-align: middle;
+		white-space: nowrap;
+		overflow: hidden;
+		max-width: 102px;
+
+		@media @onlyMobile{
+			white-space: normal;
+			width: 70px;
+			text-align: left;
+			line-height: 100%;
+		}
+	}
+	strong {
+		display: inline-block;
+		padding: 2px 7px 1px 7px;
+		border-radius: 15px;
+		background: #403d39;
+		color: #fff;
+		-webkit-animation-fill-mode: both;
+		-moz-animation-fill-mode: both;
+		-ms-animation-fill-mode: both;
+		-o-animation-fill-mode: both;
+		animation-fill-mode: both;
+		-webkit-animation-duration: 0.5s;
+		-moz-animation-duration: 0.5s;
+		-ms-animation-duration: 0.5s;
+		-o-animation-duration: 0.5s;
+		animation-duration: 0.5s;
+		-o-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
+		-ms-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
+		-moz-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
+		-webkit-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
+		transition: background 0.5s ease-out, text-indent 0.5s ease-out;
+	}
+	strong.highlighted {
+		background: #6789d3;
+		-webkit-animation-name: bounce;
+		-moz-animation-name: bounce;
+		-ms-animation-name: bounce;
+		-o-animation-name: bounce;
+		animation-name: bounce;
+		-webkit-animation-duration: 0.5s;
+		-moz-animation-duration: 0.5s;
+		-ms-animation-duration: 0.5s;
+		-o-animation-duration: 0.5s;
+		animation-duration: 0.5s;
+	}
+}
+.selectItens.dropdownIcon {
+	background-position: right -508px;
+}
+a.dropdownIcon {
+	+ .dropdown-menu {
+		left: -60px;
+		top: 20px;
+
+		&:before {
+			position: absolute;
+			display: inline-block;
+			content: '';
+			top: -7px;
+			left: 48%;
+			border-right: 7px solid transparent;
+			border-bottom: 7px solid #fff;
+			border-left: 7px solid transparent;
+		}
+	}
+}
+a.selectItens {
+	+ .dropdown-menu {
+		margin-top: 10px !important;
+		left: inherit;
+		right: 0px;
+	}
+}
+.dropdown-menu {
+	font-size: inherit;
+	text-align: left;
+	li {
+		a {
+			padding-left: 10px;
+		}
+	}
+}
+
+
 #Statistics {
 	.chartBlock {
 		text-align: center;
@@ -2194,7 +2529,9 @@ button.btn {
 	tr {
 		&:hover {
 			td {
-				background: #f2f4f8;
+				@media @minDesktop{
+					background: #f2f4f8;
+				}
 			}
 		}
 	}
@@ -2208,12 +2545,21 @@ button.btn {
 	td.colResults {
 		vertical-align: middle;
 		font-weight: bold;
+
+		@media @onlyMobile{
+			vertical-align: top;			
+		}
 	}
 	.searchHistoryIcon.eraseAll {
 		display: inline-block;
 		margin-top: 3px;
 		padding-left: 22px;
 		background: url(../image/button.glyphs.png) -15px -913px no-repeat;
+
+		@media @onlyMobile{
+			background-image: none;
+			padding: 0;
+		}
 	}
 	.colActions {
 		width: 30%;
@@ -2312,6 +2658,7 @@ button.btn {
 		.menu {
 			top: 35px;
 		}
+
 	}
 	.mainNav.collab {
 		background: none;
@@ -2371,6 +2718,12 @@ button.btn {
 			padding-left: 0;
 			margin-top: 15px;
 		}
+
+		@media @onlyMobile {
+			margin: 30px 0 0;
+    		text-align: center;
+		}
+
 	}
 	.journalMenu {
 		padding: 0;
@@ -2385,6 +2738,7 @@ button.btn {
 					right: 0;
 				}
 			}
+
 		}
 		ul {
 			margin: 5px 0 0;
@@ -4323,16 +4677,27 @@ button.btn {
 	overflow: unset;
 	max-height: none;
 }
-@media all and (max-width: 991px) {
+
+@media @minTablet {
+
+	.mainNav{
+		position: relative;
+	}
+
+}
+
+// max 991px
+@media all and (max-width: @screen-sm-max) {
 	.notTablet {
 		display: none !important;
 	}
 	.searchForm {
 		.selectBox.index {
-			width: 40%;
+			//width: 40%;
 		}
 		.selectBox.connector {
-			width: 25%;
+			//width: 100%;
+			margin: 0 0 5px;
 		}
 		.btn.glyph {
 			background-image: none;
@@ -4360,7 +4725,8 @@ button.btn {
 		}
 	}
 }
-@media all and (min-width: 991px) {
+// min 991px
+@media all and (min-width: @screen-sm-max) {
 	.searchForm {
 		.resultBlock {
 			.searchFilters {
@@ -4382,7 +4748,7 @@ button.btn {
 		}
 	}
 }
-@media all and (min-width: 1200px) {
+@media @onlyHighDef {
 	.searchForm {
 		.searchActions.fixed {
 			width: 825px;
@@ -4396,6 +4762,83 @@ button.btn {
 				}
 			}
 		}
+	}
+}
+ 
+ 
+ /*
+ Teste da top bar no mobile
+ deve aparecer somente quando selecionado um ou mais itens na lista.
+ */
+
+.topbar-mobile{
+	box-shadow: 0 5px 15px rgba(0,0,0,.5);
+	position: fixed;
+	z-index: 200;
+	width: 100%;
+	height: 60px;
+	left: 0;
+	top:0;
+	background: #fff;
+
+	display: none;
+
+
+	@media @minTablet{
+		display: none;
+	}
+
+	.selectItens{
+		margin-left: 20px;
+		margin-top: 15px;
+		padding-right: 20px!important;
+    	background: url(../image/button.glyphs.png) 125px -505px no-repeat;
+    	
+    	strong{
+    		margin-right: 2px;
+    	}
+		span{
+			max-width: 100%;
+			margin-top: -2px;
+    		display: inline-block;
+		}
+	}
+	.dropdown-menu{
+		margin-left: 25px;
+
+		li{
+			a{
+				padding: 15px 20px 15px 30px !important;
+			}
+		}
+	}
+
+	.removeSelection{
+		margin-top:8px;
+		display: inline-block;
+		line-height: 100%;
+		padding: 5px;
+	}
+}
+
+
+.trHistoryMobile{
+	
+	.colActionsMobile{
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+
+		a{
+			display: inline-block;
+			padding: 10px 0 15px; 
+		}
+	}
+
+	.colId,
+	.colSearch,
+	.colResults{
+		border-bottom:0;
+		padding:15px 0 0 14px;
 	}
 }
 

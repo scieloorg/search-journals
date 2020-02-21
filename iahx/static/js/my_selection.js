@@ -29,12 +29,11 @@ function manipulate_bookmark(func, id) {
         t.html(data);
         if(total > 0) {
             t.addClass("highlighted");
-        } else
+        } else{
             t.removeClass("highlighted");
-
+        }
+        searchFormBuilder.ShowCloseSelectedItemsBarMobile(total);
     })
-
-
 }
 
 // if confirms message, clean the list and go to the main page

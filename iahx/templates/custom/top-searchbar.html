@@ -21,19 +21,22 @@
 <form name="searchFormBuilder" class="searchFormBuilder searchForm">
     <div class="highlight {% if detailed_query != '' %}result{% endif %}">
         <div class="container">
+            <div class="row">
             <!--a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a-->
 
             {% if detailed_query == '' %}
-                <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-1">
                     <h2>{{ texts.SEARCH_ARTICLES }}</h2>
                 </div>
-                <div class="col-md-2 col-sm-2">
+                <div class="col-md-2 col-sm-2 col-xs-12">
 
                 </div>
                 <div class="clearfix"></div>
             {% endif %}
 
-            <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
+
+
+            <div class="col-md-8 col-sm-10 {% if detailed_query == '' %}col-md-offset-1 {% endif %} hidden-xs">
                 <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
                     {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
                 </a>
@@ -60,11 +63,44 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-2">
+            <div class="col-md-2 col-sm-2 hidden-xs">
                 <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
             </div>
+
+
+            <div class="visible-xs col-xs-9">
+                <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
+                    {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
+                </a>
+                <div class="form-textarea">
+                    <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control showContextHelper" data-helper="#contextHelper1">{% if docs|length > 0 %}{{ params.q }}{% endif %}</textarea>
+                    <a href="javascript:;" class="clearIptText showTooltip" title="{{ texts.CLEAN_SEARCHFIELD }}" style="display: none;"></a>
+                </div>
+                <div class="selectBox index">
+                    <select name="index[]">
+                        {% for index in collectionData.index_list.index if not index.advanced %}
+                            {% if params.index is defined %}
+                                {% if index.prefix == params.index %}
+                                    <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% else %}
+                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="visible-xs col-xs-3" style="padding-left: 0;">
+                <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+            </div> 
+
+
+
+
             {% if detailed_query != '' %}
-                <div class="col-md-1 col-sm-1">
+                <div class="hidden-xs col-md-2 col-sm-2">
                     <a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
                 </div>
             {% endif %}
@@ -74,17 +110,22 @@
 
             </div>
 
-            <div class="{% if detailed_query == '' %}col-md-7 col-sm-7{% else %}col-md-6 col-sm-6{% endif %} right">
-                <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
+            <hr class="visible-xs">
+            
+            <div class="{% if detailed_query == '' %}col-md-7 col-sm-7{% else %}col-md-7 col-sm-7{% endif %} col-xs-6 right">
+                <a href="" class="newSearchField" data-count="2">
+                    {{ texts.ADD_FIELD_MOBILE }}
+                </a>
             </div>
-            <div class="col-md-3  col-md-offset-2 col-sm-3">
+            <div class="col-md-3 col-sm-3 col-xs-6 ">
                 <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
             </div>
             <div class="clearfix"></div>
+            </div>
         </div>
 
         <div class="row hide" id="NoResults">
-            <div class="col-md-8 col-sm-8 col-md-offset-4 col-sm-offset-4">
+            <div class="col-md-8 col-sm-8 col-md-offset-4 col-sm-offset-4 col-xs-12 ">
                 <h2>{{ texts.NO_RESULTS }}</h2>
             </div>
         </div>
@@ -92,11 +133,14 @@
     </div>
     <div id="searchRow-matriz">
         <div class="searchRow" id="searchRow-@" style="display: none;">
-            <div class="col-md-1 col-sm-1 right">
+            
+            <div class="col-md-1 col-sm-1 col-xs-2 hidden-xs right">
                 <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
             </div>
-            <div class="{% if detailed_query == '' %}col-md-8 col-sm-8{% else %}col-md-7 col-sm-7{% endif %}">
-                <div class="input-group col-md-12 col-sm-12">
+            
+            <div class="{% if detailed_query == '' %}col-md-8 col-sm-9{% else %}col-md-7 col-sm-7{% endif %} col-xs-12">
+                
+                <div class="input-group col-md-12 col-sm-12 hidden-xs">
                     <div class="selectBox connector">
                         <select name="bool[]">
                             <option>AND</option>
@@ -123,8 +167,59 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <div class="visible-xs col-xs-3 center">
+                        <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+                    </div>
+                </div>
+
+                <div class="visible-xs col-xs-9">
+                    <hr>
+                </div>
+                <div class="visible-xs col-xs-12 center newSearchRowMobile">
+                    
+                    <div class="row">
+                        
+                        <div class="col-xs-6">
+                            <div class="selectBox connector">
+                                <select name="bool[]">
+                                    <option>AND</option>
+                                    <option>OR</option>
+                                    <option>AND NOT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="form-textarea no-divisor">
+                                <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control"></textarea>
+                                <a href="javascript:;" class="clearIptText showTooltip" title="Limpar expressão" style="display: none;"></a>
+                            </div>
+                        </div>
+                        <div class="visible-xs col-xs-3" style="padding-left: 0">
+                            <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="selectBox index">
+                                <select name="index[]">
+                                    {% for index in collectionData.index_list.index if not index.advanced %}
+                                        {% if params.index is defined %}
+                                            {% if index.prefix == params.index %}
+                                                <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                            {% else %}
+                                                <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                            {% endif %}
+                                        {% else %}
+                                            <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>  
+
+                    </div>
+
                 </div>
             </div>
+            
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>

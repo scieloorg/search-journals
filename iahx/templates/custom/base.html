@@ -15,12 +15,18 @@
 
         <!-- css -->
         <link href="https://fonts.googleapis.com/css?family=Arapey" rel="stylesheet">
+        
+        <!--
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ constant("STATIC_URL")
-}}css/scielo.portal.min.css">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL")}}css/scielo.portal.min.css">
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.portal.custom.min.css">
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.print.min.css" media="print">
         <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/selectize.bootstrap3.min.css">
+        -->
+
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/styles.min.css?v=787549">
+        <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.print.min.css" media="print">
+
         <!--[if lt IE 9]>
         	<script src="{{ constant("STATIC_URL") }}js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
             <script src="{{ constant("STATIC_URL") }}js/vendor/excanvas.min.js"></script>
@@ -51,37 +57,43 @@
     {% endblock %}
     </head>
 
-    <body {% block onload %}onload="document.searchForm.reset()"{% endblock %}>{% block body %}
+    <body {% block onload %}onload="document.searchForm.reset()"{% endblock %}>
+        <div class="container-fluid">
+         
+            {% block body %}
 
-        <form name="language"><input type="hidden" name="lang" value="{{ lang }}"></form>
-        <header>
-            {% block top %}
-                {% include custom_template("top.html") %}
-            {% endblock %}
-        </header>
-
-        <section>
-            {% block container %}
-            <div class="content">
-                {% if config.maintenance == 'true' %}
-                    <div class="jumbotron">
-                        <div class="container">
-                            <h2>{{ texts.MAINTENANCE }}</h2>
-                        </div>
-                    </div>
-                {% else %}
-                    {% block content %}
-                        {% block searchbar %}{% include custom_template("top-searchbar.html") %}{% endblock %}
+                <form name="language"><input type="hidden" name="lang" value="{{ lang }}"></form>
+                <header>
+                    {% block top %}
+                        {% include custom_template("top.html") %}
                     {% endblock %}
-                {% endif %}
-                {% block footer %}
-                    {% include custom_template("footer.html") %}
-                {% endblock %}
-            </div>
-            {% endblock %}
-        </section>
-    {% endblock %}
+                </header>
 
+                <section>
+                    {% block container %}
+                    <div class="content">
+                        {% if config.maintenance == 'true' %}
+                            <div class="jumbotron">
+                                <div class="container">
+                                    <h2>{{ texts.MAINTENANCE }}</h2>
+                                </div>
+                            </div>
+                        {% else %}
+                            {% block content %}
+                                {% block searchbar %}{% include custom_template("top-searchbar.html") %}{% endblock %}
+                            {% endblock %}
+                        {% endif %}
+                        {% block footer %}
+                            {% include custom_template("footer.html") %}
+                        {% endblock %}
+                    </div>
+                    {% endblock %}
+                </section>
+            
+            {% endblock %}
+
+        </div>
+    
     <script language="javascript" type="text/javascript">
         var SEARCH_URL = '{{ constant("SEARCH_URL") }}';
         var STATIC_URL = '{{ constant("STATIC_URL") }}';
@@ -93,7 +105,7 @@
     <!-- custom scielo -->
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/bootstrap.min.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/jquery-ui.min.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/main.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/main.js?v=8745"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/chart.min.js" defer></script>
 
     {% if config.sharethis_pub != '' %}
@@ -123,7 +135,7 @@
     <!-- /custom scielo -->
 
     {% block script %}
-    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js?v=58"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/bootstrap-affix.js"></script>
     <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/selectize.js"></script> 

@@ -162,6 +162,52 @@ function processCSS() {
         );
 }
 
+
+
+// file in js/ folder
+let jsSources = {
+    scieloSearchContent: [
+        //'./js/plugins/slick.js',
+        //'./js/plugins.js',
+        //'./js/vd-ep.js',
+        './iahx/static/js/main.js'
+        ],
+    
+    watcher: [
+        //'./js/plugins.js',
+        //'./js/vd-ep.js',
+        './iahx/static/js/main.js'
+        ],
+
+    output: './js'
+};
+
+function proccessJs() {
+    return src(jsSources.scieloSearchContent)
+            .pipe(
+                sourceMaps.init()
+            )
+            /*
+            .pipe(
+                concat("vd-ep.min.js")
+            )
+            */
+            .pipe(
+                uglify()
+            )
+            .pipe(
+                sourceMaps.write('.')
+            )
+            .pipe(
+                dest(jsSources.output)
+            )
+            .pipe(
+                connect.reload()
+            );
+}
+
+
+
 // Watchers
 function watchCSSProcess() {
     return watch(cssSources1.watchFolder,processCSS);
@@ -173,10 +219,13 @@ function watchStyleMobile() {
     return watch(cssSources3.watchFolder, processStyleMobile);
 }
 
+
+
 exports.watch = series(
     processCSS,
     processStyleMobile,
     processUiCustom,
+    proccessJs,
 
     parallel(
         watchCSSProcess,
@@ -185,8 +234,11 @@ exports.watch = series(
     )
 );
 
+
+
 exports.default = series(
     processCSS,
-    processStyleMobile,
-    processUiCustom
+    //processStyleMobile,
+    //processUiCustom,
+    proccessJs
 );
