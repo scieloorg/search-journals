@@ -172,7 +172,7 @@ let jsSources = {
         './iahx/static/js/main.js'
         ],
 
-    output: './js'
+    output: './iahx/static/js'
 };
 
 function proccessJs() {
@@ -210,7 +210,7 @@ exports.watch = series(
     processCSS,
     processStyleMobile,
     processUiCustom,
-    proccessJs,
+   
 
     parallel(
         watchCSSProcess,
@@ -220,6 +220,5 @@ exports.watch = series(
 );
 
 exports.default = series(
-    processCSS,
-    proccessJs
+    processCSS
 );
