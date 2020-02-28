@@ -9,10 +9,10 @@
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
-        <div class="col-md-11 col-sm-10 col-xs-10">
+        <div class="col-md-11 col-sm-10 col-xs-10 no-padding-mobile">
             {% block data %}
                 <!-- title -->
-                <div class="line">
+                <div class="hidden-xs line">
                     {{ loop.index + pag.start }}.
                     <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
                     {% if doc.ti %}
@@ -134,12 +134,26 @@
                         </span>
                     {% endif %}
                 </div>
-                <br class="visible-xs visible-sm">
+
+                <!-- title without link only for mobile -->
+                <div class="visible-xs line">
+                    {{ loop.index + pag.start }}.
+                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
+                    {% if doc.ti %}
+                        {% set article_title = doc.ti.0|raw %}
+                    {% else %}
+                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                    {% endif %}
+                    <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
+                </div>
+
+                <br class="visible-sm">
 
             {% endblock %}
             <div class="user-actions">
                 {% include custom_template("result-doc-actions.html") %}
             </div>
+           
             <div class="line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
@@ -160,6 +174,55 @@
 			</div>
 
         </div>
+
         <div class="clearfix"></div>
+
+        <div class="detailMobile">
+            <div id="detail_{{ doc.id }}" class="detailContent">
+            
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Resumo
+                            </th>
+                            <th>
+                                Texto
+                            </th>
+                            <th>
+                                PDF
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="">EN</a>
+                            </td>
+                            <td>
+                                <a href="">EN</a>
+                            </td>
+                            <td>
+                                <a href="">EN</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="">EN</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="">EN</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+
+            </div>
+        </div>
+
     </div>
+
 {% endfor %}

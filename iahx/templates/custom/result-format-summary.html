@@ -4,9 +4,15 @@
     {{ parent () }}
     <!-- author -->
     {% if doc.au is defined %}
-        <div class="line authors">
+        <div class="hidden-xs line authors">
             {% for author in doc.au %}
                 <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="visible-xs line authors">
+            {% for author in doc.au %}
+                {{ author }}{% if loop.last %}.{% else %};{% endif %}
             {% endfor %}
         </div>
     {% endif %}

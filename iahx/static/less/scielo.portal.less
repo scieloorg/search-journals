@@ -1568,6 +1568,7 @@ button.btn {
 		padding-top: 15px;
 
 		@media @onlyMobile{
+			display: none;
 			background: none;
 		}
 
@@ -1943,7 +1944,8 @@ button.btn {
 			margin-top: -2px;
 
 			@media @onlyMobile{
-				line-height:100%;
+				//line-height:100%;
+				padding-left: 42px;
 			}
 		}
 		.actionList {
@@ -2072,7 +2074,7 @@ button.btn {
 				*/
 				margin-bottom: 0;
 				padding-top: 15px;
-				padding-bottom: 15px;
+				//padding-bottom: 15px;
 				border-bottom: 1px solid #E3E9F7;
 				
 			}
@@ -2130,10 +2132,18 @@ button.btn {
 			small {
 				color: #7f7a71;
 			}
+
+			@media @onlyMobile{
+				color: #A7A49E;
+
+				small{
+					color: #A7A49E;
+				}
+			}
 		}
 		.user-actions{
 			@media @onlyMobile{
-				//display:none;
+				display:none;
 			}
 		}
 
@@ -2174,7 +2184,7 @@ button.btn {
 		.metadata {
 
 			@media @onlyMobile{
-				//display:none;
+				display:none;
 			}
 			
 			font-size: .85em;
@@ -2188,7 +2198,7 @@ button.btn {
 		span.socialLinks {
 
 			@media @onlyMobile{
-				//display:none;
+				display:none;
 			}
 
 			display: inline-block;
@@ -4796,9 +4806,11 @@ a.selectItens {
     	
     	strong{
     		margin-right: 2px;
+    		min-width: 29px;
+    		text-align: center;
     	}
 		span{
-			max-width: 100%;
+			min-width: 120px;
 			margin-top: -2px;
     		display: inline-block;
 		}
@@ -4842,4 +4854,45 @@ a.selectItens {
 	}
 }
 
+/*
+Removendo padding da lista de resultados no mobile.
+*/
+@media @onlyMobile{
+	#ResultArea{
+		padding: 0;
+	}
+	.no-padding-mobile{
+		padding: 0 !important;
+	}
+}
 
+.detailMobile{
+	display: block;
+	margin-top: 15px;
+
+	.detailContent{
+		display: none;
+		background: #F7F6F4;
+		padding: 20px;
+
+		table{
+			width: 100%;
+
+			th, td{
+				width: 33.33%;
+				background: #fff;
+				border-bottom: 1px solid #E3E9F7;
+				padding: 10px;
+				text-align: center;
+			}
+
+			th{
+				border-bottom: 2px solid #B7C7E9;
+				color: #698BD1;
+			}
+		}
+
+	}
+
+	
+}

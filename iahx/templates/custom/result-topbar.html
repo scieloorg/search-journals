@@ -1,3 +1,22 @@
+<div class="topbar-mobile">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-9">
+                <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
+                    <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-3" style="padding-left:0;text-align: center">
+                <a href="javascript:;" class="removeSelection">Remover seleção</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="col-md-9 col-sm-8" id="ResultArea">
     <div class="searchOptions">
         <div class="col-md-6 col-sm-12">
@@ -42,8 +61,32 @@
         {% endif %}
         <div class="clearfix"></div>
     </div>
+
+    <!-- Search result - titlebar mobile -->
+    <div class="visible-xs container">
+        <div class="row dashline mobileTitleRow">
+            <div class="col-xs-8" style="padding-left:0;padding-top:7px;">
+                <h2 class="filterTitle">
+                    {{ texts.RESULTS }}: <span id="TotalHits">{{ pag.total_formatted }}</span>
+                </h2>
+            </div>
+            <div class="col-xs-4 right" style="padding-right:0;">
+                <a href="javascript:;" class="btn btn-default"><span class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+                <a href="javascript:;" class="btn btn-default"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></a>
+            </div>
+        </div>
+        <div class="row dashline mobileTitleRow searchQuery">
+            <div class="col-xs-12">
+                <div class="searchHistoryItem" data-original-title="" title="" data-history="{{history|length}}">#{{history|length}}</div>
+                <div class="query" id="searchHistoryQuery">
+                {{ detailed_query }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="searchActions">
-        <div class="col-md-9 col-sm-6 col-xs-6">
+        <div class="col-md-9 col-sm-6 col-xs-12">
             <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
             <label class="checkbox" for="searchForm_selectAll">{{ texts.SELECT_PAGE }}</label>
 
@@ -71,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-6 right">
+        <div class="col-md-3 col-sm-6 hidden-xs right">
             <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
             <ul class="dropdown-menu" role="menu">
                 <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
