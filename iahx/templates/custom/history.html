@@ -20,16 +20,11 @@
 				<div class="container">
 					<div class="row">
 						
-						<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
-
 						<div class="hidden-xs col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
 							<div class="input-group col-md-12 col-sm-12">
 								<div class="form-textarea ">
 									<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input hidden-xs" contenteditable="true"></div>
-									<!--div class="form-control full-input" contenteditable="true" id="iptQuery"></div-->
-									<!--input type="hidden" name="q" value="" autocomplete="off" id="query"-->
 								</div>
-								
 								
 								<div class="selectBox index ">
 			                        <select name="index[]">
@@ -93,7 +88,8 @@
 			            </div>
 			            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-6 right">
 			                <a href="" class="newSearchField" data-count="2">
-			                	<!-- {{ texts.ADD_FIELD }} -->Adicionar campo</a>
+			                	{{ texts.ADD_FIELD }}
+			                </a>
 			            </div>
 			            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
 			            	<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" style="padding:10px 0 0 0;font-size: 0.9em;display: inline-block;">» {{ texts.NEW_SEARCH }}</a>
@@ -220,9 +216,7 @@
 
 
 						<div class="clearfix"></div>
-						<div class="row">
-							
-
+						<div class="row">	
 							<table>
 								<tr>
 									<th class="colId">Id.</th>
@@ -293,14 +287,6 @@
 									<tr class="visible-xs trHistoryMobile">
 										<td colspan="3" class="colActionsMobile" align="center">
 											
-											<!--
-											<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
-
-											<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
-											
-											<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
-											-->
-
 											<a href="javascript:;" class="searchHistoryIcon add col-xs-4" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD_MOBILE }}</a>
 
 											<a href="javascript:;" class="searchHistoryIcon edit editQuery col-xs-4" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT_MOBILE }}</a>
@@ -322,7 +308,6 @@
 									</tr>
 								{% endif %}
 							</table>
-
 
 						</div>
 					</div>
