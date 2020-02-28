@@ -1,19 +1,7 @@
 var isOldIE = $("html").is(".lt-ie9");
 var Portal = {
 	
-	IsMobile: false,
-	IsTablet: false,
-
 	Init: function() {
-
-		/* Starts checking if it is mobile */
-		if($(document).width() < 767) Portal.IsMobile = true 
-		else Portal.IsMobile = false;
-
-		if(!Portal.IsMobile && $(document).width() < 992) Portal.IsTablet = true;
-		else  Portal.IsTablet = false;
-		/*  Ends verification if it is mobile */
-
 
 		$(".showTooltip").tooltip();
 
@@ -259,7 +247,7 @@ searchFormBuilder = {
 
 		$(p).on("submit",function(e) {
 
-			var historyQuery = Portal.IsMobile ? $.trim("#iptQueryMobile") : $.trim("#iptQuery");
+			var historyQuery = $.trim("#iptQuery");
 
 			var expr = $("*[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
@@ -268,21 +256,10 @@ searchFormBuilder = {
 
 			for(var i=0,l=expr.length;i<l;i++) {
 
-				if(Portal.IsMobile){
-
-					if ( $(expr[i]).attr('id') == 'iptQueryMobile' ){
-						var v = $(expr[i]).text();
-					}else{
-						var v = $(expr[i]).val();
-					}
-
+				if ( $(expr[i]).attr('id') == 'iptQuery' ){
+					var v = $(expr[i]).text();
 				}else{
-
-					if ( $(expr[i]).attr('id') == 'iptQuery' ){
-						var v = $(expr[i]).text();
-					}else{
-						var v = $(expr[i]).val();
-					}
+					var v = $(expr[i]).val();
 				}
 
 				if(v != "") {
@@ -802,7 +779,7 @@ searchFormBuilder = {
 		$(".editQuery").on("click",function() {
 			var d = $(this).data("modal"),
 				expr = $(this).data("expr"),
-				q = Portal.IsMobile ? $("#iptQueryMobile") : $("#iptQuery");
+				q = $("#iptQuery");
 
 			q.append(expr).focus();
 			$(this).effect("transfer", { to: q }, 1000);
@@ -953,19 +930,10 @@ searchFormBuilder = {
 			}
 		});
 	},
-	ShowCloseSelectedItemsBarMobile: function(param){
-		if (Portal.IsMobile){
-			if(param >0){
-				$(".topbar-mobile").slideDown('fast');
-			}else{
-				$(".topbar-mobile").slideUp();
-			}
-		}
-	},
 	InsertSearchHistoryItem: function(obj) {
 		var $item = $(obj).data("item"),
 			$ctt = $(obj).parent().parent().find(".colSearch").text(),
-			q = Portal.IsMobile ? $("#iptQueryMobile") : $("#iptQuery");
+			q = $("#iptQuery");
 			
 			shItem = '&#160;<div class="searchHistoryItem" contenteditable="false"  data-toggle="tooltip" data-placement="top" title="'+$ctt+'">#'+$item+'</div> AND&#160;';
 

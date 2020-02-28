@@ -291,6 +291,14 @@ input[type=radio].radio {
 		border-left: 0;
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
+
+		@media @minTablet{
+			min-height:42px;
+		}
+	}
+
+	@media @onlyMobile{
+		width: 100%;
 	}
 }
 .midGlyph {
@@ -1263,6 +1271,17 @@ button.btn {
 		-webkit-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
 		-moz-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
 		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
+
+		@media @onlyMobile{
+			border: 1px solid #b5c4e5;
+			border-radius: 4px;
+			padding-left: 0;
+			min-height: 42px;
+
+			select{
+				border-left: 0;
+			}
+		}
 	}
 	.selectBox.index {
 	
@@ -1300,21 +1319,20 @@ button.btn {
 		position: relative;
 		z-index: 2;
 
-		@media @onlyMobile {
-			display: block;
-		    border: 1px solid #b5c4e5;
-		    border-radius: 4px;
-		    margin-bottom: 5px;
+
+		@media @onlyMobile{
+			border: 1px solid #b5c4e5;
+			border-radius: 4px;
+			margin-bottom: 5px;
+		}
+
+		@media @minTablet{
+			box-shadow: none;
 		}
 
 
 	}
-	div.form-textarea.no-divisor {
-		@media @minTablet {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-	}
+	
 	.contextHelper {
 		border-bottom-left-radius: 7px;
 		border-bottom-right-radius: 7px;
@@ -1376,11 +1394,17 @@ button.btn {
 
 
 	}
-	.connector {
-		+ div.form-textarea {
-			border-left: 1px solid #e5e5e5;
-		}
+
+	@media @minTablet{
+		.connector {
+			+ div.form-textarea {
+				border-left: 1px solid #e5e5e5;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+		}		
 	}
+
 	.btn-primary {
 		height: 42px;
 		background-position: 97% -2px;
@@ -1396,6 +1420,8 @@ button.btn {
 	
 		@media @onlyMobile {
 			color: #6789d3;
+			display: block;
+			text-align: center;
 		}
 	}
 	.shLink {
