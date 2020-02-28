@@ -499,9 +499,9 @@ searchFormBuilder = {
 
 				itens.each(function() {
 					$(this).prop("checked",false);
-					values += $(this).val()+",";
-					
+					values += $(this).val()+",";	
 				});
+				
 				$(".selectAll").prop("checked",false);
 				$(".selectAll").data("all","0");
 
@@ -523,7 +523,6 @@ searchFormBuilder = {
 				t.data("all","1");
 			} else {
 				t.data("all","0");
-				console.log("esconder a barra de contagem");
 			}
 		});
 
