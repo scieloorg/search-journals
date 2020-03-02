@@ -9,12 +9,6 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-/*
-.clearfix {
-  height: 1px;
-  clear: both;
-}
-*/
 
 @-webkit-keyframes bounce {
   0%,
@@ -95,9 +89,7 @@ body {
 	font-family: Arial, Sans-serif;
 	color: #403d39;
 }
-.container {
-	//min-width: 768px !important;
-}
+
 .container-fluid{
 
 	@media @minTablet {
@@ -293,13 +285,19 @@ input[type=radio].radio {
 	border: none;
 	background: none;
 }
-.input-group {
-	.selectBox {
-		display: table-cell;
-		border-left: 0;
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-	}
+.input-group {	
+	.selectBox {	
+		display: table-cell;	
+		border-left: 0;	
+		border-top-left-radius: 0;	
+		border-bottom-left-radius: 0;	
+		@media @minTablet{	
+			min-height:42px;	
+		}	
+	}	
+	@media @onlyMobile{	
+		width: 100%;	
+	}	
 }
 .midGlyph {
 	padding-top: 80px;
@@ -498,9 +496,6 @@ input[type=radio].radio {
 	background: #f7f6f4;
 	padding: 20px 0;
 	margin: 10px 0;
-
-	//margin-top: 142px;
-	//min-height: 157px;
 	
 	@media @onlyMobile {
 		margin: 10px -15px;
@@ -1245,9 +1240,7 @@ button.btn {
 	}
 }
 .searchForm {
-	.container {
-		//position: relative;
-	}
+
 	h2 {
 		margin: 0 20px 5px 0;
 		font-size: 1.2em;
@@ -1270,16 +1263,24 @@ button.btn {
 		border-right: 1px solid #b5c4e5;
 		border-radius: 4px;
 	}
-	.selectBox {
-		background: #ffffff url(../image/searchForm.selectBox.png) right 4px no-repeat;
-		padding-top: 5px;
-		border-color: #b5c4e5;
-		-webkit-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
-		-moz-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
-		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
+	.selectBox {	
+		background: #ffffff url(../image/searchForm.selectBox.png) right 4px no-repeat;	
+		padding-top: 5px;	
+		border-color: #b5c4e5;	
+		-webkit-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		-moz-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		@media @onlyMobile{	
+			border: 1px solid #b5c4e5;	
+			border-radius: 4px;	
+			padding-left: 0;	
+			min-height: 42px;	
+			select{	
+				border-left: 0;	
+			}	
+		}	
 	}
 	.selectBox.index {
-		//width: 30%;
 	
 		@media @minTablet {
 			border-left: none;
@@ -1293,44 +1294,37 @@ button.btn {
 		border-left: 1px solid #b5c4e5;
 		border-radius: 4px;
 		border-bottom-right-radius: 0;
-		//width: 18%;
 
 		@media @minTablet {
 			border-right: 0;
 			border-top-right-radius: 0;
 		}
 	}
-	div.form-textarea {
-		border-color: #b5c4e5;
-		-webkit-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
-		-moz-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
-		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);
-		padding: 10px 14px;
-		background: #fff;
-		border-radius: 4px;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		border: 1px solid #b5c4e5;
-		border-right: 0;
-		display: table-cell;
-		position: relative;
-		z-index: 2;
-
-		@media @onlyMobile {
-			display: block;
-		    border: 1px solid #b5c4e5;
-		    border-radius: 4px;
-		    margin-bottom: 5px;
-		}
-
-
+	div.form-textarea {	
+		border-color: #b5c4e5;	
+		-webkit-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		-moz-box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		box-shadow: 0 0 5px rgba(0, 0, 238, 0.1);	
+		padding: 10px 14px;	
+		background: #fff;	
+		border-radius: 4px;	
+		border-top-right-radius: 0;	
+		border-bottom-right-radius: 0;	
+		border: 1px solid #b5c4e5;	
+		border-right: 0;	
+		display: table-cell;	
+		position: relative;	
+		z-index: 2;	
+		@media @onlyMobile{	
+			border: 1px solid #b5c4e5;	
+			border-radius: 4px;	
+			margin-bottom: 5px;	
+		}	
+		@media @minTablet{	
+			box-shadow: none;	
+		}	
 	}
-	div.form-textarea.no-divisor {
-		@media @minTablet {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-	}
+	
 	.contextHelper {
 		border-bottom-left-radius: 7px;
 		border-bottom-right-radius: 7px;
@@ -1392,27 +1386,33 @@ button.btn {
 
 
 	}
-	.connector {
-		+ div.form-textarea {
-			border-left: 1px solid #e5e5e5;
-		}
+	@media @minTablet{	
+		.connector {	
+			+ div.form-textarea {	
+				border-left: 1px solid #e5e5e5;	
+				border-top-left-radius: 0;	
+				border-bottom-left-radius: 0;	
+			}	
+		}			
 	}
 	.btn-primary {
 		height: 42px;
 		background-position: 97% -2px;
 	}
-	.newSearchField {
-		display: inline-block;
-		padding: 10px 0 0;
-		color: #7f7a71;
-		font-size: .9em;
-		&:hover {
-			color: #6789d3;
-		}
-	
-		@media @onlyMobile {
-			color: #6789d3;
-		}
+	.newSearchField {	
+		display: inline-block;	
+		padding: 10px 0 0;	
+		color: #7f7a71;	
+		font-size: .9em;	
+		&:hover {	
+			color: #6789d3;	
+		}	
+		
+		@media @onlyMobile {	
+			color: #6789d3;	
+			display: block;	
+			text-align: center;	
+		}	
 	}
 	.shLink {
 		display: inline-block;
@@ -1568,7 +1568,6 @@ button.btn {
 		padding-top: 15px;
 
 		@media @onlyMobile{
-			display: none;
 			background: none;
 		}
 
@@ -1944,8 +1943,7 @@ button.btn {
 			margin-top: -2px;
 
 			@media @onlyMobile{
-				//line-height:100%;
-				padding-left: 42px;
+				line-height:100%;
 			}
 		}
 		.actionList {
@@ -1960,92 +1958,6 @@ button.btn {
 			background: url(../image/button.glyphs.png) right -510px no-repeat;
 		}
 		
-		/*
-		.selectItens {
-			color: #403d39;
-			display: inline-block;
-			width: 100%;
-			span {
-				display: inline-block;
-				vertical-align: middle;
-				white-space: nowrap;
-				overflow: hidden;
-				max-width: 102px;
-			}
-			strong {
-				display: inline-block;
-				padding: 2px 7px 1px 7px;
-				border-radius: 15px;
-				background: #403d39;
-				color: #fff;
-				-webkit-animation-fill-mode: both;
-				-moz-animation-fill-mode: both;
-				-ms-animation-fill-mode: both;
-				-o-animation-fill-mode: both;
-				animation-fill-mode: both;
-				-webkit-animation-duration: 0.5s;
-				-moz-animation-duration: 0.5s;
-				-ms-animation-duration: 0.5s;
-				-o-animation-duration: 0.5s;
-				animation-duration: 0.5s;
-				-o-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
-				-ms-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
-				-moz-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
-				-webkit-transition: background 0.5s ease-out, text-indent 0.5s ease-out;
-				transition: background 0.5s ease-out, text-indent 0.5s ease-out;
-			}
-			strong.highlighted {
-				background: #6789d3;
-				-webkit-animation-name: bounce;
-				-moz-animation-name: bounce;
-				-ms-animation-name: bounce;
-				-o-animation-name: bounce;
-				animation-name: bounce;
-				-webkit-animation-duration: 0.5s;
-				-moz-animation-duration: 0.5s;
-				-ms-animation-duration: 0.5s;
-				-o-animation-duration: 0.5s;
-				animation-duration: 0.5s;
-			}
-		}
-		.selectItens.dropdownIcon {
-			background-position: right -508px;
-		}
-		a.dropdownIcon {
-			+ .dropdown-menu {
-				left: -60px;
-				top: 20px;
-
-				&:before {
-					position: absolute;
-					display: inline-block;
-					content: '';
-					top: -7px;
-					left: 48%;
-					border-right: 7px solid transparent;
-					border-bottom: 7px solid #fff;
-					border-left: 7px solid transparent;
-				}
-			}
-		}
-		a.selectItens {
-			+ .dropdown-menu {
-				margin-top: 10px !important;
-				left: inherit;
-				right: 0px;
-			}
-		}
-		.dropdown-menu {
-			font-size: inherit;
-			text-align: left;
-			li {
-				a {
-					padding-left: 10px;
-				}
-			}
-		}
-
-		*/
 	}
 	.searchActions.fixed {
 		position: fixed;
@@ -2069,12 +1981,9 @@ button.btn {
 			margin-bottom: 20px;
 
 			@media @onlyMobile{
-				/*
-				margin: 0;
-				*/
 				margin-bottom: 0;
 				padding-top: 15px;
-				//padding-bottom: 15px;
+				padding-bottom: 15px;
 				border-bottom: 1px solid #E3E9F7;
 				
 			}
@@ -2123,7 +2032,6 @@ button.btn {
 
 		}
 		.title {
-			//color: #6789d3;
 			font-size: 1.1em;
 			margin: 0 10px 0 0;
 		}
@@ -2131,19 +2039,6 @@ button.btn {
 			font-style: italic;
 			small {
 				color: #7f7a71;
-			}
-
-			@media @onlyMobile{
-				color: #A7A49E;
-
-				small{
-					color: #A7A49E;
-				}
-			}
-		}
-		.user-actions{
-			@media @onlyMobile{
-				display:none;
 			}
 		}
 
@@ -2182,11 +2077,6 @@ button.btn {
 			}
 		}
 		.metadata {
-
-			@media @onlyMobile{
-				display:none;
-			}
-			
 			font-size: .85em;
 			padding: 7px 0 7px 5px !important;
 			color: #7f7a71;
@@ -2196,11 +2086,6 @@ button.btn {
 			}
 		}
 		span.socialLinks {
-
-			@media @onlyMobile{
-				display:none;
-			}
-
 			display: inline-block;
 			white-space: nowrap;
 		}
@@ -4702,11 +4587,7 @@ a.selectItens {
 		display: none !important;
 	}
 	.searchForm {
-		.selectBox.index {
-			//width: 40%;
-		}
 		.selectBox.connector {
-			//width: 100%;
 			margin: 0 0 5px;
 		}
 		.btn.glyph {

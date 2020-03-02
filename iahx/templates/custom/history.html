@@ -20,18 +20,16 @@
 				<div class="container">
 					<div class="row">
 						
-						<!-- a href="" class="help" data-toggle="modal" data-target="#Help">{{ texts.HELP }}</a-->
-
-						<div class="hidden-xs col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
+						<div class="col-md-8 col-sm-10 col-md-offset-1">
 							<div class="input-group col-md-12 col-sm-12">
-								<div class="form-textarea ">
-									<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input hidden-xs" contenteditable="true"></div>
-									<!--div class="form-control full-input" contenteditable="true" id="iptQuery"></div-->
-									<!--input type="hidden" name="q" value="" autocomplete="off" id="query"-->
+								<div class="form-textarea col-xs-9 col-sm-8">
+									<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
+								</div>
+								<div class="visible-xs col-xs-3" style="padding-right:0;">
+									<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
 								</div>
 								
-								
-								<div class="selectBox index ">
+								<div class="selectBox index col-xs-9 col-sm-4">
 			                        <select name="index[]">
 			                            {% for index in collectionData.index_list.index if not index.advanced %}
 			                                {% if params.index is defined %}
@@ -48,55 +46,29 @@
 			                    </div>
 							</div>
 						</div>
-						<div class="hidden-xs col-md-2 col-sm-2">
+						<div class="col-md-2 col-sm-2 hidden-xs">
 							<input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
 						</div>
 
 						<div class="clearfix"></div>
 
-
-						<!-- ini campos alinhados mobile -->
-						<div class="visible-xs col-xs-9">
-			                <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
-			                    {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
-			                </a>
-			                <div class="form-textarea">
-			                    <div id="iptQueryMobile" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
-			                </div>
-			                <div class="selectBox index">
-			                    <select name="index[]">
-		                            {% for index in collectionData.index_list.index if not index.advanced %}
-		                                {% if params.index is defined %}
-		                                    {% if index.prefix == params.index %}
-		                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
-		                                    {% else %}
-		                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-		                                    {% endif %}
-		                                {% else %}
-		                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-		                                {% endif %}
-		                            {% endfor %}
-		                        </select>
-			                </div>
-			            </div>
-			            <div class="visible-xs col-xs-3" style="padding-left: 0;display:none">
-			                <input type="submit" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
-			            </div> 
-						<!-- fim campos alinhados mobile -->
-
 			            <div class="searchRow-container">
 			            </div>
-						
-						
+
 			            <div class="visible-xs col-xs-12">
-			            	<hr>	     
+			            	<hr>
 			            </div>
-			            <div class="col-sm-9 col-md-9 col-lg-9 col-xs-6 right">
-			                <a href="" class="newSearchField" data-count="2">
-			                	<!-- {{ texts.ADD_FIELD }} -->Adicionar campo</a>
+						
+			            <div class="col-sm-10 col-md-9 col-lg-9 col-xs-6 right">
+			                <a href="" class="hidden-xs newSearchField" data-count="2">
+			                	{{ texts.ADD_FIELD }}
+			                </a>
+			                <a href="" class="visible-xs newSearchField" data-count="2">
+			                	{{ texts.ADD_FIELD_MOBILE }}
+			                </a>
 			            </div>
 			            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-			            	<a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" style="padding:10px 0 0 0;font-size: 0.9em;display: inline-block;">» {{ texts.NEW_SEARCH }}</a>
+			            	<a class="newSearchField" href="{{ constant("SEARCH_URL") }}?lang={{lang}}">» {{ texts.NEW_SEARCH }}</a>
 			            </div>
 			            <div class="clearfix"></div>
 					</div>
@@ -113,23 +85,31 @@
 
 			<div id="searchRow-matriz">
 		        <div class="searchRow" id="searchRow-@" style="display: none;">
-		            <div class="col-md-1 col-sm-1 hidden-xs right">
+		            
+					<div class="visible-xs col-xs-9">
+						<hr>
+					</div>
+
+		            <div class="hidden-xs hidden-sm col-md-1 right">
 		                <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
 		            </div>
-		            <div class="col-md-8 col-sm-8 hidden-xs">
+		            <div class="col-md-8 col-sm-10 col-xs-12">
 		                <div class="input-group col-md-12 col-sm-12">
-		                    <div class="selectBox connector">
+		                    <div class="col-xs-6 col-sm-3 selectBox connector">
 		                        <select name="bool[]">
 		                            <option>AND</option>
 		                            <option>OR</option>
 		                            <option>AND NOT</option>
 		                        </select>
 		                    </div>
-		                    <div class="form-textarea no-divisor">
+		                    <div class="col-xs-9 col-sm-5  form-textarea no-divisor">
 		                        <textarea name="q[]" rows="1" class="form-control"></textarea>
 		                        <a href="javascript:;" class="clearIptText showTooltip" title="Limpar expressão" style="display: none;"></a>
 		                    </div>
-		                    <div class="selectBox index">
+							<div class="visible-xs col-xs-3">
+								<a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+							</div>
+		                    <div class="col-xs-9 col-sm-4 selectBox index">
 		                        <select name="index[]">
 		                            {% for index in collectionData.index_list.index if not index.advanced %}
 		                                {% if params.index is defined %}
@@ -146,49 +126,14 @@
 		                    </div>
 		                </div>
 		            </div>
-		            <div class="clearfix hidden-xs"></div>
+
+					<div class="visible-sm col-sm-2">
+						<a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+					</div>
+		            <div class="clearfix"></div>
 
 
-		            <!-- ini nova linha de busca no mobile -->
-					<div class="hidden-sm hidden-md hidden-lg col-xs-9">
-                    	<hr>
-                	</div>
-	                <div class="hidden-sm hidden-md hidden-lg col-xs-6">
-                        <div class="selectBox connector">
-	                        <select name="bool[]">
-	                            <option>AND</option>
-	                            <option>OR</option>
-	                            <option>AND NOT</option>
-	                        </select>
-	                    </div>
-                    </div>
-                    <div class="hidden-sm hidden-md hidden-lg col-xs-9">
-                        <div class="form-textarea">
-                    		<div id="iptQuery" name="q[]" rows="1" xclass="form-control full-input" contenteditable="true"></div>
-                		</div>
-                    </div>
-                    <div class="hidden-sm hidden-md hidden-lg visible-xs col-xs-3" style="padding-left: 0">
-                        <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
-                    </div>
-                    <div class="hidden-sm hidden-md hidden-lg col-xs-9">
-                        <div class="selectBox index">
-		                    <select name="index[]">
-	                            {% for index in collectionData.index_list.index if not index.advanced %}
-	                                {% if params.index is defined %}
-	                                    {% if index.prefix == params.index %}
-	                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
-	                                    {% else %}
-	                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-	                                    {% endif %}
-	                                {% else %}
-	                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-	                                {% endif %}
-	                            {% endfor %}
-	                        </select>
-		                </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <!-- fim nova linha de busca no mobile --> 
+		           
 
 
 		        </div>
@@ -209,7 +154,7 @@
 							</div>
 						</div>
 
-						<div class="row dashline visible-xs mobileTitleRow">
+						<div class="visible-xs row dashline mobileTitleRow">
 							<div class="col-xs-8" style="padding-left:0;">
 								<h2>{{ texts.HISTORY_LIST }}</h2>
 							</div>
@@ -220,9 +165,7 @@
 
 
 						<div class="clearfix"></div>
-						<div class="row">
-							
-
+						<div class="row">	
 							<table>
 								<tr>
 									<th class="colId">Id.</th>
@@ -293,14 +236,6 @@
 									<tr class="visible-xs trHistoryMobile">
 										<td colspan="3" class="colActionsMobile" align="center">
 											
-											<!--
-											<a href="javascript:;" class="searchHistoryIcon add" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD }}</a>
-
-											<a href="javascript:;" class="searchHistoryIcon edit editQuery" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT }}</a>
-											
-											<a href="javascript:;" class="searchHistoryIcon erase" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_REMOVE }}">{{ texts.HISTORY_REMOVE }}</a>
-											-->
-
 											<a href="javascript:;" class="searchHistoryIcon add col-xs-4" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_ADD }}">{{ texts.HISTORY_ADD_MOBILE }}</a>
 
 											<a href="javascript:;" class="searchHistoryIcon edit editQuery col-xs-4" data-expr="{{ history.detailed_query }}" data-item="{{history_id}}" data-toggle="tooltip" data-placement="bottom" title="{{ texts.HISTORY_EDIT }}">{{ texts.HISTORY_EDIT_MOBILE }}</a>
@@ -322,7 +257,6 @@
 									</tr>
 								{% endif %}
 							</table>
-
 
 						</div>
 					</div>
