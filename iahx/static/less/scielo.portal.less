@@ -138,6 +138,11 @@ a {
 	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 	border-radius: 4px;
+	
+	@media @minTablet{
+		float:none;
+	}
+
 	select {
 		width: 160%;
 		-webkit-appearance: none;
@@ -515,6 +520,8 @@ input[type=radio].radio {
 	}
 }
 #iptQuery {
+	min-height: 20px;
+
 	&:focus {
 		border: 1px solid #6789d3;
 		-webkit-box-shadow: 0 0 5px rgba(0, 80, 255, 0.5);
@@ -522,7 +529,6 @@ input[type=radio].radio {
 		box-shadow: 0 0 5px rgba(0, 80, 255, 0.5);
 		outline: none;
 		border: none;
-		height: 20px;
 		box-shadow: 0 0 0 transparent;
 	}
 }
@@ -1319,7 +1325,6 @@ button.btn {
 		position: relative;
 		z-index: 2;
 
-
 		@media @onlyMobile{
 			border: 1px solid #b5c4e5;
 			border-radius: 4px;
@@ -1328,9 +1333,8 @@ button.btn {
 
 		@media @minTablet{
 			box-shadow: none;
+			width:100%;
 		}
-
-
 	}
 	
 	.contextHelper {
@@ -1380,18 +1384,16 @@ button.btn {
 		resize: none;
 		height: auto;
 		padding: 0 20px 0 0;
-		overflow-y: none;
+		overflow: hidden;
 		border: none;
 		-webkit-box-shadow: 0 0 0 transparent;
 		-moz-box-shadow: 0 0 0 transparent;
 		box-shadow: 0 0 0 transparent;
 		display: block;
-
 		
 		@media @onlyMobile {
 			height: auto;
 		}
-
 
 	}
 
@@ -1409,7 +1411,8 @@ button.btn {
 		height: 42px;
 		background-position: 97% -2px;
 	}
-	.newSearchField {
+	.newSearchField,
+	.newSearch {
 		display: inline-block;
 		padding: 10px 0 0;
 		color: #7f7a71;
