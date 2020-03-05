@@ -1,6 +1,8 @@
 var isOldIE = $("html").is(".lt-ie9");
 var Portal = {
+	
 	Init: function() {
+
 		$(".showTooltip").tooltip();
 
 		$(".mainNav .menu").on("click",function(e) {
@@ -245,7 +247,7 @@ searchFormBuilder = {
 
 		$(p).on("submit",function(e) {
 
-			var historyQuery = $.trim($("#iptQuery").text());
+			var historyQuery = $.trim("#iptQuery");
 
 			var expr = $("*[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
@@ -253,11 +255,13 @@ searchFormBuilder = {
 				searchQuery = "";
 
 			for(var i=0,l=expr.length;i<l;i++) {
+
 				if ( $(expr[i]).attr('id') == 'iptQuery' ){
 					var v = $(expr[i]).text();
 				}else{
 					var v = $(expr[i]).val();
 				}
+
 				if(v != "") {
 					var ci = $("option:selected",idx[i]).val();
 
@@ -345,7 +349,6 @@ searchFormBuilder = {
 
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
 		
-		//$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
 		$(p).on("keypress",function(e) {
@@ -451,8 +454,6 @@ searchFormBuilder = {
 				});
 				t.data("all","1");
 
-				
-
 			} else {
 				action ="d";
 				itens.each(function() {
@@ -461,12 +462,29 @@ searchFormBuilder = {
 					
 				});
 				t.data("all","0");
-
 				
 			}
 			window.manipulate_bookmark(action,values);
 			
 		});
+
+		$(".removeSelection").on("click",function() {
+				
+			var itens = $(".results .item input.checkbox"),
+				values = "";
+				action = "d";
+
+				itens.each(function() {
+					$(this).prop("checked",false);
+					values += $(this).val()+",";	
+				});
+				
+				$(".selectAll").prop("checked",false);
+				$(".selectAll").data("all","0");
+
+			window.manipulate_bookmark(action,values);
+		});
+
 
 		$(".clusterSelectAll").on("click",function() {
 			var t = $(this),
@@ -915,7 +933,8 @@ searchFormBuilder = {
 	InsertSearchHistoryItem: function(obj) {
 		var $item = $(obj).data("item"),
 			$ctt = $(obj).parent().parent().find(".colSearch").text(),
-			q = $("#iptQuery"),
+			q = $("#iptQuery");
+			
 			shItem = '&#160;<div class="searchHistoryItem" contenteditable="false"  data-toggle="tooltip" data-placement="top" title="'+$ctt+'">#'+$item+'</div> AND&#160;';
 
 		q.append(shItem).focus();

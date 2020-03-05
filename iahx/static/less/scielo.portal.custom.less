@@ -1,4 +1,5 @@
-/* affix que fixa o sidebar */
+@import "scielo.variables.less";
+
 #form_clusters {
 	div {
 		ul {
@@ -51,9 +52,6 @@ ul.list-inline {
 			}
 		}
 	}
-	.selectBox.index {
-		width: 26% !important;
-	}
 	.normalizeButton {
 		padding-top: 3px;
 		white-space: nowrap;
@@ -97,7 +95,11 @@ ul.list-inline {
 }
 .author {
 	&:hover {
-		border-bottom: 1px dotted #6789d3;
+
+		@media @minDesktop{
+			border-bottom: 1px dotted #6789d3;
+		}
+		
 	}
 }
 .abstract {

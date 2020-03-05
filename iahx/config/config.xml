@@ -2,7 +2,7 @@
 <dia_config>
     <use_https>true</use_https>
 	<site>solr/scielo-articles</site>
-	<bvs_url>http://www.scielo.org/</bvs_url>
+	<bvs_url>https://search.scielo.org/</bvs_url>
 	<about_bvs_url>http://www.scielo.org/php/level.php?lang=pt&amp;component=56&amp;item=8</about_bvs_url>
 	<home_url>http://www.scielo.org/</home_url>
 	<search_server>api-search.scielo.org</search_server>

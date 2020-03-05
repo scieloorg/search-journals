@@ -2,14 +2,14 @@
 
     <div id="{{ doc.id }}" class="item">
 
-        <div class="col-md-1 col-sm-2 col-xs-1">
+        <div class="col-md-1 col-sm-2 col-xs-2">
             {% if output != 'print' %}
                 <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
                 {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
-        <div class="col-md-11 col-sm-10 col-xs-11">
+        <div class="col-md-11 col-sm-10 col-xs-10">
             {% block data %}
                 <!-- title -->
                 <div class="line">

@@ -1,0 +1,11 @@
+@import "../../../node_modules/bootstrap/less/variables.less";
+
+
+@onlyMobile: ~"all and (max-width: @{screen-xs-max})";
+
+// min 768px
+@minTablet: ~"all and (min-width: @{screen-sm-min})";
+@onlyTablet: ~"all and (min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max})";
+@minDesktop: ~"all and (min-width: @{screen-md-min})";
+@onlyDesktop: ~"all and (min-width: @{screen-md-min}) and (max-width: @{screen-md-max})";
+@onlyHighDef: ~"all and (min-width: @{screen-lg})";

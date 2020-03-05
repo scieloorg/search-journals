@@ -13,28 +13,32 @@
             <div class="searchForm">
                 <div class="container resultBlock">
 
-                    <div class="searchFilters col-md-3 col-sm-4">
-                        {% block clusters %}
-                            {% include custom_template("result-clusters.html") %}
-                        {% endblock %}
-                    </div>
-
-                    {% block result_options %}
-
-                        {% block results_bar %}
-                            {% block results_topbar %}
-                                {% include custom_template("result-topbar.html") %}
+                    <div class="row">
+                    
+                        <div class="-hidden-xs searchFilters col-md-3 col-sm-4">
+                            {% block clusters %}
+                                {% include custom_template("result-clusters.html") %}
                             {% endblock %}
+                        </div>
+
+                        {% block result_options %}
+
+                            {% block results_bar %}
+                                {% block results_topbar %}
+                                    {% include custom_template("result-topbar.html") %}
+                                {% endblock %}
+                            {% endblock %}
+
+                            {% block result_set %}
+                                <div class="results">
+                                    {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
+                                    {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
+                                </div>
+                            {% endblock %}
+
                         {% endblock %}
 
-                        {% block result_set %}
-                            <div class="results">
-                                {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
-                                {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
-                            </div>
-                        {% endblock %}
-
-                    {% endblock %}
+                    </div>
 
                 </div>
             </div>
