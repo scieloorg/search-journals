@@ -256,10 +256,8 @@ var Portal = {
 					j = $("#detail_" + d);			
 
 				if(j.is(":visible")){
-					//j.hide();
 					j.slideUp("fast");
 				}else{
-					//j.show();
 					j.slideDown("fast");
 				}
 			}
@@ -510,8 +508,8 @@ searchFormBuilder = {
 				itens.each(function() {
 					$(this).prop("checked",false);
 					values += $(this).val()+",";
-					
 				});
+
 				$(".selectAll").prop("checked",false);
 				$(".selectAll").data("all","0");
 

@@ -9,7 +9,9 @@
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
+
         <div class="col-md-11 col-sm-10 col-xs-10 no-padding-mobile toggleDetailMobile">
+
             {% block data %}
                 <!-- title -->
                 <div class="hidden-xs line">
@@ -157,7 +159,7 @@
             <div class="hidden-xs line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
-                       <span class="DOIResults">DOI: {{ doc.doi }}</span>
+                       <span class="DOIResults"><a href="https://doi.org/{{ doc.doi }}" target="_blank">https://doi.org/{{ doc.doi }}</a></span>
                     {% endif %}
                     {% if doc.total_access %}
 					    <span>
