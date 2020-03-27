@@ -245,6 +245,27 @@ var Portal = {
 		}).mouseup(function(e) {
 			e.preventDefault();
 		});
+
+		/*
+		Adding function to open and close details in the list of mobile results.
+		*/
+		$(".toggleDetailMobile").on("click",function(e) {
+			if (Portal.IsMobile){
+
+				var d = $(this).parent().attr("id"),
+					j = $("#detail_" + d);			
+
+				if(j.is(":visible")){
+					//j.hide();
+					j.slideUp("fast");
+				}else{
+					//j.show();
+					j.slideDown("fast");
+				}
+			}
+		});
+
+		
 	}
 },
 searchFormBuilder = {

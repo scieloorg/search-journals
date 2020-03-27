@@ -1,6 +1,5 @@
 @import "scielo.variables.less";
 
-
 ::selection {
   background: #6789d3;
   color: #fff;
@@ -126,6 +125,9 @@ a {
 .right {
 	text-align: right;
 }
+.text-center{
+	text-align: center;
+}
 .selectBox {
 	overflow: hidden;
 	-moz-box-sizing: border-box;
@@ -138,6 +140,11 @@ a {
 	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 	border-radius: 4px;
+
+	@media @minTablet{
+		float:none;
+	}
+
 	select {
 		width: 160%;
 		-webkit-appearance: none;
@@ -400,7 +407,6 @@ input[type=radio].radio {
 			&:hover {
 				color: #6789d3;
 			}
-
 			
 		}
 		li {
@@ -513,6 +519,8 @@ input[type=radio].radio {
 	}
 }
 #iptQuery {
+	min-height: 20px;
+	
 	&:focus {
 		border: 1px solid #6789d3;
 		-webkit-box-shadow: 0 0 5px rgba(0, 80, 255, 0.5);
@@ -814,7 +822,6 @@ button.btn {
 		margin-bottom: 0;
 	}
 	.col-xs-3 {
-		text-align: left;
 		text-align: right;
 	}
 }
@@ -1163,15 +1170,6 @@ button.btn {
 			float: right;
 		}
 	}
-	/*
-	.col-md-2 {
-		width: 11%;
-	}
-	.col-md-8 {
-		padding-top: 5px;
-		line-height: 1.8em;
-	}
-	*/
 
 	@media @onlyMobile {
 		text-align: center;	  
@@ -1322,6 +1320,7 @@ button.btn {
 		}	
 		@media @minTablet{	
 			box-shadow: none;	
+			width:100%;
 		}	
 	}
 	
@@ -1372,7 +1371,7 @@ button.btn {
 		resize: none;
 		height: auto;
 		padding: 0 20px 0 0;
-		overflow-y: none;
+		overflow: hidden;
 		border: none;
 		-webkit-box-shadow: 0 0 0 transparent;
 		-moz-box-shadow: 0 0 0 transparent;
@@ -1399,7 +1398,8 @@ button.btn {
 		height: 42px;
 		background-position: 97% -2px;
 	}
-	.newSearchField {	
+	.newSearchField,
+	.newSearch {	
 		display: inline-block;	
 		padding: 10px 0 0;	
 		color: #7f7a71;	
@@ -1411,7 +1411,9 @@ button.btn {
 		@media @onlyMobile {	
 			color: #6789d3;	
 			display: block;	
-			text-align: center;	
+			text-align: center;
+			position: relative;
+			z-index: 10;	
 		}	
 	}
 	.shLink {
@@ -1943,7 +1945,7 @@ button.btn {
 			margin-top: -2px;
 
 			@media @onlyMobile{
-				line-height:100%;
+				padding-left: 40px;
 			}
 		}
 		.actionList {
@@ -1983,9 +1985,7 @@ button.btn {
 			@media @onlyMobile{
 				margin-bottom: 0;
 				padding-top: 15px;
-				padding-bottom: 15px;
 				border-bottom: 1px solid #E3E9F7;
-				
 			}
 
 			.line {
@@ -2039,6 +2039,13 @@ button.btn {
 			font-style: italic;
 			small {
 				color: #7f7a71;
+			}
+			@media @onlyMobile{
+				color: #A7A49E;
+
+				small{
+					color: #A7A49E;
+				}
 			}
 		}
 
@@ -2112,7 +2119,6 @@ button.btn {
 		}
 	}
 }
-
 
 .selectItens {
 	color: #403d39;
@@ -2260,6 +2266,7 @@ a.selectItens {
 		}
 	}
 }
+
 #Export {
 	.modal-body {
 		background: #f7f6f4;
@@ -4574,11 +4581,9 @@ a.selectItens {
 }
 
 @media @minTablet {
-
 	.mainNav{
 		position: relative;
 	}
-
 }
 
 // max 991px
@@ -4655,12 +4660,6 @@ a.selectItens {
 		}
 	}
 }
- 
- 
- /*
- Teste da top bar no mobile
- deve aparecer somente quando selecionado um ou mais itens na lista.
- */
 
 .topbar-mobile{
 	box-shadow: 0 5px 15px rgba(0,0,0,.5);
@@ -4671,9 +4670,7 @@ a.selectItens {
 	left: 0;
 	top:0;
 	background: #fff;
-
 	display: none;
-
 
 	@media @minTablet{
 		display: none;
@@ -4706,6 +4703,11 @@ a.selectItens {
 		}
 	}
 
+	.col-action{
+		padding-left: 0;
+		text-align: center;
+	}
+
 	.removeSelection{
 		margin-top:8px;
 		display: inline-block;
@@ -4735,9 +4737,6 @@ a.selectItens {
 	}
 }
 
-/*
-Removendo padding da lista de resultados no mobile.
-*/
 @media @onlyMobile{
 	#ResultArea{
 		padding: 0;
@@ -4773,7 +4772,62 @@ Removendo padding da lista de resultados no mobile.
 			}
 		}
 
-	}
+		.doiShareMobile{
+			text-align: center;
+			margin-top: 15px;
+			position: relative;
 
-	
+			.dropup{
+				display: inline-block;
+
+				button{
+					span{
+						margin-right: 0;
+					}
+				}
+			}
+		}
+
+		.dropdown-menu{
+			&:before{
+				border: 0 !important;
+			}
+		}
+		
+		.dropUpShare{
+			min-width: 290px;
+    		margin-left: 50%;
+    		left: -145px;
+
+    		&:after{
+				position: absolute;
+				display: inline-block;
+				content: '';
+				bottom: -7px;
+				left: 65%;
+				border-right: 7px solid transparent;
+				border-top: 7px solid #fff;
+				border-left: 7px solid transparent;
+    		}
+
+    		a{
+    			display: block;
+    			text-align: left;
+    			padding: 10px 0;
+
+    			span{
+    				margin-right: 0;
+    			}
+    		}
+		}
+
+		.DOIResults{
+			margin-bottom: 15px;
+		}
+
+		.btn-default{
+			border:1px solid #ccc;
+			background: #fff;
+		}
+	}
 }

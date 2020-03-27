@@ -131,7 +131,6 @@ function processStyleMobile() {
         );
 }
 
-
 function processCSS() {
     return src(cssSources1.watchFolder)
         .pipe(
@@ -163,23 +162,17 @@ function processCSS() {
 }
 
 
-
 // file in js/ folder
 let jsSources = {
     scieloSearchContent: [
-        //'./js/plugins/slick.js',
-        //'./js/plugins.js',
-        //'./js/vd-ep.js',
         './iahx/static/js/main.js'
         ],
     
     watcher: [
-        //'./js/plugins.js',
-        //'./js/vd-ep.js',
         './iahx/static/js/main.js'
         ],
 
-    output: './js'
+    output: './iahx/static/js'
 };
 
 function proccessJs() {
@@ -187,11 +180,6 @@ function proccessJs() {
             .pipe(
                 sourceMaps.init()
             )
-            /*
-            .pipe(
-                concat("vd-ep.min.js")
-            )
-            */
             .pipe(
                 uglify()
             )
@@ -207,7 +195,6 @@ function proccessJs() {
 }
 
 
-
 // Watchers
 function watchCSSProcess() {
     return watch(cssSources1.watchFolder,processCSS);
@@ -219,13 +206,11 @@ function watchStyleMobile() {
     return watch(cssSources3.watchFolder, processStyleMobile);
 }
 
-
-
 exports.watch = series(
     processCSS,
     processStyleMobile,
     processUiCustom,
-    proccessJs,
+   
 
     parallel(
         watchCSSProcess,
@@ -234,11 +219,6 @@ exports.watch = series(
     )
 );
 
-
-
 exports.default = series(
-    processCSS,
-    //processStyleMobile,
-    //processUiCustom,
-    proccessJs
+    processCSS
 );

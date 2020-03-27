@@ -44,6 +44,7 @@ $app->get('history/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
     $output_array['texts'] = $texts;
     $output_array['history_list'] = $history;
     $output_array['collectionData'] = $collectionData;
+    $output_array['config'] = $config;
 
     return $app['twig']->render( custom_template('history.html'), $output_array);
 });

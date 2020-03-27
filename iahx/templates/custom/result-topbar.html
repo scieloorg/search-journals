@@ -8,8 +8,8 @@
                     <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
                 </ul>
             </div>
-            <div class="col-xs-3" style="padding-left:0;text-align: center">
-                <a href="javascript:;" class="removeSelection">Remover seleção</a>
+            <div class="col-xs-3 col-action">
+                <a href="javascript:;" class="removeSelection">{{texts.REMOVE_SELECTION}}</a>
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
 
 <div class="col-md-9 col-sm-8" id="ResultArea">
     <div class="searchOptions">
-        <div class="col-md-6 col-sm-12">
+        <div class="hidden-xs col-md-6 col-sm-12">
 
             {% if collectionData.sort_list.sort|length > 1 %}
                 {{ texts.SORT_OPTIONS }}
@@ -86,7 +86,7 @@
     </div>
 
     <div class="searchActions">
-        <div class="col-md-9 col-sm-6 col-xs-12">
+        <div class="col-md-9 col-sm-6 col-xs-8">
             <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
             <label class="checkbox" for="searchForm_selectAll">{{ texts.SELECT_PAGE }}</label>
 
