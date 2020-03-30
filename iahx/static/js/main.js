@@ -7,13 +7,9 @@ var Portal = {
 	Init: function() {
 
 		/* Starts checking if it is mobile */
-		if($(document).width() < 767) Portal.IsMobile = true 
-		else Portal.IsMobile = false;
-
-		if(!Portal.IsMobile && $(document).width() < 992) Portal.IsTablet = true;
-		else  Portal.IsTablet = false;
+		Portal.IsMobile = ($(document).width() < 767) 
+		Portal.IsTablet = (!Portal.IsMobile && $(document).width() < 992)
 		/*  Ends verification if it is mobile */
-
 
 		$(".showTooltip").tooltip();
 
@@ -251,7 +247,6 @@ var Portal = {
 		*/
 		$(".toggleDetailMobile").on("click",function(e) {
 			if (Portal.IsMobile){
-
 				var d = $(this).parent().attr("id"),
 					j = $("#detail_" + d);			
 
@@ -262,7 +257,6 @@ var Portal = {
 				}
 			}
 		});
-
 		
 	}
 },
