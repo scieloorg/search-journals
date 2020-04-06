@@ -40,7 +40,7 @@ class UpdatePreprint(object):
 
     parser.add_argument('-d', '--delete',
                         dest='delete',
-                        default=None,
+                        default="q=type:'preprint'",
                         help='delete query ex.: q=*:* (Lucene Syntax).')
 
     parser.add_argument('-url', '--url',
