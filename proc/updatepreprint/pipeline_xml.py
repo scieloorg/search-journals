@@ -60,7 +60,19 @@ class Collection(plumber.Pipe):
         return data
 
 # <field name="ac">Agricultural Sciences</field>
-# <field name="type">editorial</field>
+
+
+# <field name="type">research-article</field>
+class DocumentType(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+        field = ET.Element('field')
+        field.text = 'research-article'
+        field.set('name', 'type')
+        xml.find('.').append(field)
+        return data
+
 # <field name="ur">art-S1980-993X2015000200234</field>
 # <field name="authors">Marcelo dos Santos, Targa</field>
 # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>

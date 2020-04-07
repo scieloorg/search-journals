@@ -83,7 +83,8 @@ class UpdatePreprint(object):
             pipeline_xml.Collection(),
 
             # <field name="ac">Agricultural Sciences</field>
-            # <field name="type">editorial</field>
+            # <field name="type">research-article</field>
+            pipeline_xml.DocumentType(),
             # <field name="ur">art-S1980-993X2015000200234</field>
             # <field name="authors">Marcelo dos Santos, Targa</field>
             # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
