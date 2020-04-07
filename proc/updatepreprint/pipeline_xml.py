@@ -47,7 +47,18 @@ class SetupDocument(plumber.Pipe):
 
 # <field name="id">art-S0102-695X2015000100053-scl</field>
 # <field name="journal_title">Revista Ambiente & Água</field>
-# <field name="in">scl</field>
+
+# <field name="in">preprint</field>
+class Collection(plumber.Pipe):
+
+    def transform(self, data):
+        raw, xml = data
+        field = ET.Element('field')
+        field.text = "preprint"
+        field.set('name', 'in')
+        xml.find('.').append(field)
+        return data
+
 # <field name="ac">Agricultural Sciences</field>
 # <field name="type">editorial</field>
 # <field name="ur">art-S1980-993X2015000200234</field>
