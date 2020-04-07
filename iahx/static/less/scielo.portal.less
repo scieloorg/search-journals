@@ -4695,23 +4695,51 @@ a.selectItens {
 
 	.selectItens{
 		margin-left: 20px;
-		margin-top: 15px;
-		padding-right: 20px!important;
-    	background: url(../image/button.glyphs.png) 125px -505px no-repeat;
+		margin-top: 10px;
+		padding-right: 20px !important;
     	
     	strong{
+    		padding: 7px !important;
     		margin-right: 2px;
     		min-width: 29px;
     		text-align: center;
+    		display: table-cell;
+    		vertical-align: middle;
+    		margin-right: 5px;
     	}
-		span{
-			min-width: 120px;
-			margin-top: -2px;
-    		display: inline-block;
-		}
+		
+			.countBox{
+				display: table-cell !important;
+    			vertical-align: middle;
+    			padding-right: 5px;
+			}
+			
+			.text{
+				width: 100%;
+				margin-top: -2px;
+	    		display: table-cell !important;
+    			vertical-align: middle;
+	    		border: 1px solid #B5C4E5;
+	    		border-radius: 4px;
+	    		padding: 10px;
+	    		text-decoration: none;
+
+	    		background-image: url('../image/searchForm.selectBox.png');
+	    		background-repeat: no-repeat;
+	    		background-position: right 0px;
+
+			}
+			.caret{
+				display: table-cell !important;
+    			vertical-align: middle;
+
+    			outline: 1px solid red;
+			}
+		
 	}
 	.dropdown-menu{
-		margin-left: 25px;
+		width: 80%;
+		margin-left: 15%;
 
 		li{
 			a{
@@ -4782,6 +4810,7 @@ a.selectItens {
 				border-bottom: 1px solid #E3E9F7;
 				padding: 10px;
 				text-align: center;
+				text-transform: uppercase;
 			}
 
 			th{

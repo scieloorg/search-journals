@@ -2,7 +2,12 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-9">
-                <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
+                <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown">
+                    <span class="countBox">
+                        <strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong>
+                    </span>
+                    <span class="text">{{ texts.YOUR_SELECTION }}</span>
+                </a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
                     <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
@@ -14,8 +19,6 @@
         </div>
     </div>
 </div>
-
-
 
 <div class="col-md-9 col-sm-8" id="ResultArea">
     <div class="searchOptions">
