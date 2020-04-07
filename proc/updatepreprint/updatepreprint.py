@@ -85,7 +85,37 @@ class UpdatePreprint(object):
 
         ppl = plumber.Pipeline(
             pipeline_xml.SetupDocument(),
-            pipeline_xml.Example(),
+            # <field name="id">art-S0102-695X2015000100053-scl</field>
+            # <field name="journal_title">Revista Ambiente & Água</field>
+            # <field name="in">preprint</field>
+            pipeline_xml.Collection(),
+
+            # <field name="ac">Agricultural Sciences</field>
+            # <field name="type">research-article</field>
+            pipeline_xml.DocumentType(),
+            # <field name="ur">art-S1980-993X2015000200234</field>
+            # <field name="au">Marcelo dos Santos, Targa</field>
+            pipeline_xml.Authors(),
+            # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
+            # <field name="pg">234-239</field>
+            # <field name="doi">10.1590/S0102-67202014000200011</field>
+            # <field name="wok_citation_index">SCIE</field>
+            # <field name="volume">48</field>
+            # <field name="supplement_volume">48</field>
+            # <field name="issue">7</field>
+            # <field name="supplement_issue">suppl. 2</field>
+            # <field name="start_page">216</field>
+            # <field name="end_page">218</field>
+            # <field name="ta">Rev. Ambient. Água</field>
+            # <field name="la">en</field>
+            # <field name="fulltext_pdf_pt">http://www.scielo.br/pdf/ambiagua/v10n2/1980-993X-ambiagua-10-02-00234.pdf</field>
+            # <field name="fulltext_pdf_pt">http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202014000200138&lng=en&nrm=iso&tlng=pt</field>
+            # <field name="da">2015-06</field>
+            # <field name="ab_*">In this editorial, we reflect on the benefits and legacy of the water crisis....</field>
+            # <field name="aff_country">Brasil</field>
+            # <field name="aff_institution">usp</field>
+            # <field name="sponsor">CNPQ</field>
+
             pipeline_xml.TearDown()
         )
 
