@@ -22,7 +22,6 @@ class UpdatePrePrintTests(unittest.TestCase):
 
 class TestAuthors(unittest.TestCase):
 
-
     def test_transform(self):
         text = """<root xmlns:dc="http://www.openarchives.org/OAI/2.0/provenance">
         <record>
@@ -52,3 +51,27 @@ class TestAuthors(unittest.TestCase):
             ],
             [node.text for node in xml.findall(".//field[@name='au']")]
         )
+
+
+class TestTitles(unittest.TestCase):
+
+    def test_transform(self):
+        text = """<root xmlns:dc="http://www.openarchives.org/OAI/2.0/provenance">
+        <record>
+        <metadata>
+            <dc:title xml:lang="en-US">COVID-19 in Brazil: advantages of a socialized unified health system and preparation to contain cases</dc:title>
+            <dc:title xml:lang="es-ES">COVID-19 in Brazil: advantages of a socialized unified health system and preparation to contain cases</dc:title>
+            <dc:title xml:lang="pt-BR">COVID-19 in Brazil: advantages of a socialized unified health system and preparation to contain cases</dc:title>
+            <dc:title xml:lang="fr-FR">COVID-19 in Brazil: advantages of a socialized unified health system and preparation to contain cases</dc:title>
+        </metadata>
+        </record>
+        </root>
+        """
+        xml = ET.Element("doc")
+        raw = ET.fromstring(text)
+        data = raw, xml
+        raw, xml = pipeline_xml.Authors().transform(data)
+        self.assertIsNone(xml.find(".//field[@name='ti_en']"))
+        self.assertIsNone(xml.find(".//field[@name='ti_es']"))
+        self.assertIsNone(xml.find(".//field[@name='ti_pt']"))
+        self.assertIsNone(xml.find(".//field[@name='ti_fr']"))

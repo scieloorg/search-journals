@@ -102,7 +102,30 @@ class Authors(plumber.Pipe):
             xml.find('.').append(field)
         return data
 
+
 # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
+class Titles(plumber.Pipe):
+
+    def precond(data):
+        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}title"
+        raw, xml = data
+        if not raw.findall(xpath):
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}title"
+        for item in raw.findall(xpath):
+            lang = item.get('{http://www.w3.org/XML/1998/namespace}lang')
+            if "-" in lang:
+                lang = lang.split("-")[0]
+            field = ET.Element('field')
+            field.text = item.text
+            field.set('name', 'ti_{}'.format(lang))
+            xml.find('.').append(field)
+        return data
+
 # <field name="pg">234-239</field>
 # <field name="doi">10.1590/S0102-67202014000200011</field>
 # <field name="wok_citation_index">SCIE</field>
