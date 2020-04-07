@@ -6,7 +6,6 @@ from __future__ import print_function
 import os
 import sys
 import time
-import json
 import argparse
 import logging
 import logging.config
@@ -17,6 +16,7 @@ from lxml import etree as ET
 
 import plumber
 import pipeline_xml
+from sickle import Sickle
 
 from SolrAPI import Solr
 
@@ -36,16 +36,20 @@ class UpdatePreprint(object):
 
     parser.add_argument('-p', '--period',
                         type=int,
-                        help='index articles from specific period, use number of days.')
+                        help='index articles from specific period, use number of hours.')
 
     parser.add_argument('-d', '--delete',
                         dest='delete',
-                        default="q=type:'preprint'",
-                        help='delete query ex.: q=*:* (Lucene Syntax).')
+                        help='delete query ex.: q=type:"preprint (Lucene Syntax).')
 
-    parser.add_argument('-url', '--url',
+    parser.add_argument('-solr_url', '--solr_url',
                         dest='solr_url',
-                        help='Solr RESTFul URL, processing try to get the variable from environment ``SOLR_URL`` otherwise use --url to set the url(preferable).')
+                        help='Solr RESTFul URL, processing try to get the variable from environment ``SOLR_URL`` otherwise use --solr_url to set the solr_url (preferable).')
+
+    parser.add_argument('-oai_url', '--oai_url',
+                        dest='oai_url',
+                        default="https://preprints.scielo.org/index.php/scielo/oai",
+                        help='OAI URL, processing try to get the variable from environment ``OAI_URL`` otherwise use --oai_url to set the oai_url (preferable).')
 
     parser.add_argument('-v', '--version',
                         action='version',
@@ -56,9 +60,13 @@ class UpdatePreprint(object):
         self.args = self.parser.parse_args()
 
         solr_url = os.environ.get('SOLR_URL')
+        oai_url = os.environ.get('OAI_URL')
 
         if not solr_url and not self.args.solr_url:
-            raise argparse.ArgumentTypeError('--url or ``SOLR_URL`` enviroment variable must be the set, use --help.')
+            raise argparse.ArgumentTypeError('--solr_url or ``SOLR_URL`` enviroment variable must be the set, use --help.')
+
+        if not oai_url and not self.args.oai_url:
+            raise argparse.ArgumentTypeError('--oai_url or ``OAI_URL`` enviroment variable must be the set, use --help.')
 
         if not solr_url:
             self.solr = Solr(self.args.solr_url, timeout=10)
@@ -66,7 +74,7 @@ class UpdatePreprint(object):
             self.solr = Solr(solr_url, timeout=10)
 
         if self.args.period:
-            self.from_date = datetime.now() - timedelta(days=self.args.period)
+            self.from_date = datetime.now() - timedelta(hours=self.args.period)
 
     def pipeline_to_xml(self, article):
         """
@@ -132,15 +140,20 @@ class UpdatePreprint(object):
 
         else:
 
-            # Get article identifiers
-
             logger.info("Indexing in {0}".format(self.solr.url))
 
-            # AQUI TERÁ PROVAVELMENTE O LAÇO PARA OBTER OS ARTIGOS EM PRE-PRINT
+            sickle = Sickle(self.args.oai_url)
+
+            records = sickle.ListRecords(**{
+                                        'metadataPrefix': 'oai_dc',
+                                        'from': self.from_date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                                        })
+
+            for record in records:
 
                 try:
-                    xml = self.pipeline_to_xml(document)
-                    self.solr.update(self.pipeline_to_xml(document), commit=True)
+                    xml = self.pipeline_to_xml(record)
+                    self.solr.update(xml, commit=True)
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))
                     logger.exception(e)
