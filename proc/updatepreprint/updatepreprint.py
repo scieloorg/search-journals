@@ -86,7 +86,8 @@ class UpdatePreprint(object):
             # <field name="type">research-article</field>
             pipeline_xml.DocumentType(),
             # <field name="ur">art-S1980-993X2015000200234</field>
-            # <field name="authors">Marcelo dos Santos, Targa</field>
+            # <field name="au">Marcelo dos Santos, Targa</field>
+            pipeline_xml.Authors(),
             # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
             # <field name="pg">234-239</field>
             # <field name="doi">10.1590/S0102-67202014000200011</field>
