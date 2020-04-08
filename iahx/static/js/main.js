@@ -1,7 +1,15 @@
 var isOldIE = $("html").is(".lt-ie9");
 var Portal = {
 	
+	IsMobile: false,
+	IsTablet: false,
+
 	Init: function() {
+
+		/* Starts checking if it is mobile */
+		Portal.IsMobile = ($(document).width() < 767) 
+		Portal.IsTablet = (!Portal.IsMobile && $(document).width() < 992)
+		/*  Ends verification if it is mobile */
 
 		$(".showTooltip").tooltip();
 
@@ -233,6 +241,23 @@ var Portal = {
 		}).mouseup(function(e) {
 			e.preventDefault();
 		});
+
+		/*
+		Adding function to open and close details in the list of mobile results.
+		*/
+		$(".toggleDetailMobile").on("click",function(e) {
+			if (Portal.IsMobile){
+				var d = $(this).parent().attr("id"),
+					j = $("#detail_" + d);			
+
+				if(j.is(":visible")){
+					j.slideUp("fast");
+				}else{
+					j.slideDown("fast");
+				}
+			}
+		});
+		
 	}
 },
 searchFormBuilder = {
@@ -476,9 +501,9 @@ searchFormBuilder = {
 
 				itens.each(function() {
 					$(this).prop("checked",false);
-					values += $(this).val()+",";	
+					values += $(this).val()+",";
 				});
-				
+
 				$(".selectAll").prop("checked",false);
 				$(".selectAll").data("all","0");
 
@@ -500,6 +525,7 @@ searchFormBuilder = {
 				t.data("all","1");
 			} else {
 				t.data("all","0");
+				console.log("esconder a barra de contagem");
 			}
 		});
 
@@ -929,6 +955,15 @@ searchFormBuilder = {
 				$("#btn-affix").removeClass("fixed");
 			}
 		});
+	},
+	ShowCloseSelectedItemsBarMobile: function(param){
+		if (Portal.IsMobile){
+			if(param >0){
+				$(".topbar-mobile").slideDown('fast');
+			}else{
+				$(".topbar-mobile").slideUp();
+			}
+		}
 	},
 	InsertSearchHistoryItem: function(obj) {
 		var $item = $(obj).data("item"),

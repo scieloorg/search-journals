@@ -32,6 +32,7 @@ function manipulate_bookmark(func, id) {
         } else{
             t.removeClass("highlighted");
         }
+        searchFormBuilder.ShowCloseSelectedItemsBarMobile(total);
     })
 }
 
