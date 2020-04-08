@@ -86,6 +86,7 @@ class UpdatePreprint(object):
         ppl = plumber.Pipeline(
             pipeline_xml.SetupDocument(),
             # <field name="id">art-S0102-695X2015000100053-scl</field>
+            # pipeline_xml.DocumentID(),
             # <field name="journal_title">Revista Ambiente & Água</field>
             # <field name="in">preprint</field>
             pipeline_xml.Collection(),
@@ -95,6 +96,8 @@ class UpdatePreprint(object):
             pipeline_xml.DocumentType(),
             # <field name="ur">art-S1980-993X2015000200234</field>
             # <field name="au">Marcelo dos Santos, Targa</field>
+            pipeline_xml.Titles(),
+            pipeline_xml.Abstract(),
             pipeline_xml.Authors(),
             # <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
             # <field name="pg">234-239</field>
@@ -152,7 +155,7 @@ class UpdatePreprint(object):
             for record in records:
 
                 try:
-                    xml = self.pipeline_to_xml(record)
+                    xml = self.pipeline_to_xml(record.xml)
                     self.solr.update(xml, commit=True)
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))

@@ -36,11 +36,10 @@ Full example output of this pipeline:
     </doc>
 """
 
-namespaces = {}
-namespaces['dc'] = 'http://www.openarchives.org/OAI/2.0/provenance'
-
-for namespace_id, namespace_link in namespaces.items():
-    ET.register_namespace(namespace_id, namespace_link)
+ns = {'dc': 'http://purl.org/dc/elements/1.1/',
+      'xmlns': 'http://www.openarchives.org/OAI/2.0/',
+      'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+      'oai': 'http://www.openarchives.org/OAI/2.0/'}
 
 
 class SetupDocument(plumber.Pipe):
@@ -52,7 +51,10 @@ class SetupDocument(plumber.Pipe):
 
 
 # <field name="id">art-S0102-695X2015000100053-scl</field>
+
+
 # <field name="journal_title">Revista Ambiente & Água</field>
+
 
 # <field name="in">preprint</field>
 class Collection(plumber.Pipe):
@@ -86,16 +88,18 @@ class DocumentType(plumber.Pipe):
 class Authors(plumber.Pipe):
 
     def precond(data):
-        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}creator"
+        xpath = ".//dc:creator"
         raw, xml = data
-        if not raw.findall(xpath):
+
+        if not raw.findall(xpath, namespaces=ns):
             raise plumber.UnmetPrecondition()
 
     @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
-        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}creator"
-        for author in raw.findall(xpath):
+        xpath = ".//dc:creator"
+
+        for author in raw.findall(xpath, namespaces=ns):
             field = ET.Element('field')
             field.text = author.text
             field.set('name', 'au')
@@ -107,16 +111,18 @@ class Authors(plumber.Pipe):
 class Titles(plumber.Pipe):
 
     def precond(data):
-        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}title"
+        xpath = ".//dc:title"
         raw, xml = data
-        if not raw.findall(xpath):
+
+        if not raw.findall(xpath, namespaces=ns):
             raise plumber.UnmetPrecondition()
 
     @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
-        xpath = ".//{http://www.openarchives.org/OAI/2.0/provenance}title"
-        for item in raw.findall(xpath):
+        xpath = ".//dc:title"
+
+        for item in raw.findall(xpath, namespaces=ns):
             lang = item.get('{http://www.w3.org/XML/1998/namespace}lang')
             if "-" in lang:
                 lang = lang.split("-")[0]
@@ -141,6 +147,32 @@ class Titles(plumber.Pipe):
 # <field name="fulltext_pdf_pt">http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202014000200138&lng=en&nrm=iso&tlng=pt</field>
 # <field name="da">2015-06</field>
 # <field name="ab_*">In this editorial, we reflect on the benefits and legacy of the water crisis....</field>
+
+
+class Abstract(plumber.Pipe):
+
+    def precond(data):
+        xpath = ".//dc:description"
+        raw, xml = data
+
+        if not raw.findall(xpath, namespaces=ns):
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+        xpath = ".//dc:description"
+
+        for item in raw.findall(xpath, namespaces=ns):
+            lang = item.get('{http://www.w3.org/XML/1998/namespace}lang')
+            if "-" in lang:
+                lang = lang.split("-")[0]
+            field = ET.Element('field')
+            field.text = item.text
+            field.set('name', 'ab_{}'.format(lang))
+            xml.find('.').append(field)
+        return data
+
 # <field name="aff_country">Brasil</field>
 # <field name="aff_institution">usp</field>
 # <field name="sponsor">CNPQ</field>
