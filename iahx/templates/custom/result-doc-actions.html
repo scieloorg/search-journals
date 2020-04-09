@@ -1,9 +1,8 @@
 
 {% block btn_fulltext %}
 
-    <div class="line versions">
-  
-        {% if doc.available_languages|length > 0 %}
+    {% if doc.available_languages|length > 0 %}
+        <div class="line versions">
 
             <!--
                 Resumo
@@ -12,14 +11,14 @@
 
                 <span>
 
-                {{ texts.RESULT.LABEL_ABSTRACT }}: 
-                
+                {{ texts.RESULT.LABEL_ABSTRACT }}:
+
                 {% for language in doc.available_languages %}
 
                     <a href="#" onclick="$(this).toggleClass('opened');$('#{{doc.id}}_{{language}}').slideToggle(); return false;" class=" showTooltip abstract" title="{{ translate(language, 'REFINE_la') }}">
                         {{ translate(language) }}
                     </a>
-                    
+
                 {% endfor %}
 
                 </span>
@@ -35,14 +34,14 @@
                 <span class="separator">|</span>
                 <span>
 
-                {{ texts.TEXT }}: 
-                
+                {{ texts.TEXT }}:
+
                 {% for language in doc.available_languages %}
 
                     <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
                         {{ translate(language) }}
                     </a>
-                    
+
                 {% endfor %}
 
                 </span>
@@ -52,16 +51,16 @@
 
             <!--
                 PDF
-            -->        
+            -->
             {% for language in doc.available_languages %}
 
                 {% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
                 {% if attribute(doc, pdf_lang) %}
                     <span class="separator">|</span>
-                    <span>  
-                                            
-                        PDF: 
+                    <span>
+
+                        PDF:
                         <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
                             {{ translate(language) }}
                         </a>
@@ -80,12 +79,12 @@
                     </span>
 
                  {% endif %}
-                
+
             {% endfor %}
 
-        {% endif %}     
-        
-    </div>
+        </div>
+    {% endif %}
+
 
     {% for language in doc.available_languages %}
         {% set ab_lang = 'ab_' ~ language %}

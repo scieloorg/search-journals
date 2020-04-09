@@ -11,26 +11,15 @@
         </div>
         <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
-                <!-- title -->
-                <div class="line">
-                    {{ loop.index + pag.start }}.
-                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
-                    {% if doc.ti %}
-                        {% set article_title = doc.ti.0|raw %}
-                    {% else %}
-                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
-                    {% endif %}
+                {% if doc.in.0 == 'preprint'%}
+                    <div class="line">
+                        {{ loop.index + pag.start }}.
+                        <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
 
-                    {% if doc.in|length > 1 %}
-                        <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
-                    {% else %}
-                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
+                        <a href="{{ doc.ur.0 }}" title="{{ doc.ti.1 }}" target="_blank">
+                            <strong class="title" id="title-{{doc.ur.0}}">[Preprint] - {{ doc.ti.0 }}</strong>
                         </a>
-                    {% endif %}
-                    <br class="visible-xs visible-sm">
-                    {% if output != 'print' %}
-                        {% set share_url = attribute(config.scielo_urls, doc.in.0) ~ '/scielo.php?script=sci_arttext&pid=' ~ doc.ur.0 ~ '&lang=' ~lang %}
+
                         <span class="socialLinks articleShareLink">
                             <a href="javascript:void()"><span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span></a>
                             <a href="{{share_url}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="{{ texts.SHARE }} Facebook">Facebook</a>
@@ -51,89 +40,134 @@
                                     <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
                                 </ul>
                             </span>
-                            {% if config.show_metrics|trim == 'true' %}
+                        </span>
+
+                    </div>
+                {% else %}
+                    <div class="line">
+                        {{ loop.index + pag.start }}.
+                        <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
+                        {% if doc.ti %}
+                            {% set article_title = doc.ti.0|raw %}
+                        {% else %}
+                            {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                        {% endif %}
+
+                        {% if doc.in|length > 1 %}
+                            <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
+                        {% else %}
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.1 }}" target="_blank">
+                                <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
+                            </a>
+                        {% endif %}
+                        <br class="visible-xs visible-sm">
+                        {% if output != 'print' %}
+                            {% set share_url = attribute(config.scielo_urls, doc.in.0) ~ '/scielo.php?script=sci_arttext&pid=' ~ doc.ur.0 ~ '&lang=' ~lang %}
+                            <span class="socialLinks articleShareLink">
+                                <a href="javascript:void()"><span class='st_email_custom' st_title="{{ doc.ti.0 }}" st_url="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" st_image="{{ constant("STATIC_URL") }}image/logo-scielo.png" style="margin-right: 0px"></span></a>
+                                <a href="{{share_url}}" class="articleAction shareFacebook" data-toggle="tooltip" data-placement="top" title="{{ texts.SHARE }} Facebook">Facebook</a>
+                                <a href="{{share_url}}" class="articleAction shareTwitter" data-toggle="tooltip" data-placement="top" title="{{ text.SHARE }} Twitter">Twitter</a>
+
                                 <span class="dropdown" style="margin:0;">
-
-                                    <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="auto" data-original-title="{{ texts.METRICS }}">
-                                        <span class="glyphBtn metrics"></span>
+                                    <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" title="" data-original-title="{{ texts.SHARE_OTHER_NETWORKS }}">
+                                        <span class="glyphBtn otherNetworks" style="margin:0;"></span>
                                     </a>
-
-                                    <ul class="dropdown-menu articleShare articleShareMetrics">
-                                        <li class="dropdown-header">{{ texts.METRICS }}</li>
-
-                                        {% if config.metrics.use_analytics|trim == 'true' %}
-                                            <li>
-                                                <ul class="metricTable">
-                                                    <li>
-                                                        <a target="_blank" href="
-                                                        {{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
-                                                            <div class="logo-statistc logo-statistc-scielo"></div>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a target="_blank" href="{{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
-                                                            SciELO Analytics
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        {% endif %}
-
-                                        {% if doc.doi %}
-                                            {% if config.metrics.use_dimensions|trim == 'true' %}
-                                                <li>
-                                                    <ul class="metricTable">
-                                                        <li>&nbsp;
-                                                            <div class="logo-statistc">
-                                                                <span class="__dimensions_badge_embed__"
-                                                                data-doi="{{ doc.doi }}"
-                                                                data-legend="never"
-                                                                data-style="small_circle">
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
-                                                                Dimensions
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            {% endif %}
-
-                                            {% if config.metrics.use_plumx|trim == 'true' %}
-                                                <li>
-                                                    <ul class="metricTable">
-                                                        <li>
-                                                            <div class="logo-statistc">
-                                                                <a href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}"
-                                                                    data-popup="hidden"
-                                                                    data-size="large"
-                                                                    class="plumx-plum-print-popup"
-                                                                    data-site="scielo">
-                                                                    {% if doc.ti %}
-                                                                    {% set article_title = doc.ti.0|raw %}
-                                                                    {% else %}
-                                                                    {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
-                                                                    {% endif %}
-                                                                </a>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
-                                                                PlumX
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            {% endif %}
-                                        {% endif %}
+                                    <ul class="dropdown-menu articleShare">
+                                        <li class="dropdown-header">{{ texts.OTHER_SOCIAL_NETWORKS }}</li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
+                                        <li><a target="_blank" href="{{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
+                                        <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
                                     </ul>
                                 </span>
-                            {% endif %}
-                        </span>
-                    {% endif %}
-                </div>
+                                {% if config.show_metrics|trim == 'true' %}
+                                    <span class="dropdown" style="margin:0;">
+
+                                        <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="auto" data-original-title="{{ texts.METRICS }}">
+                                            <span class="glyphBtn metrics"></span>
+                                        </a>
+
+                                        <ul class="dropdown-menu articleShare articleShareMetrics">
+                                            <li class="dropdown-header">{{ texts.METRICS }}</li>
+
+                                            {% if config.metrics.use_analytics|trim == 'true' %}
+                                                <li>
+                                                    <ul class="metricTable">
+                                                        <li>
+                                                            <a target="_blank" href="
+                                                            {{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
+                                                                <div class="logo-statistc logo-statistc-scielo"></div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a target="_blank" href="{{ config.metrics.analytics_metrics_url|trim }}?document={{ doc.ur.0 }}&amp;collection={{doc.in.0}}">
+                                                                SciELO Analytics
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+
+                                            {% if doc.doi %}
+                                                {% if config.metrics.use_dimensions|trim == 'true' %}
+                                                    <li>
+                                                        <ul class="metricTable">
+                                                            <li>&nbsp;
+                                                                <div class="logo-statistc">
+                                                                    <span class="__dimensions_badge_embed__"
+                                                                    data-doi="{{ doc.doi }}"
+                                                                    data-legend="never"
+                                                                    data-style="small_circle">
+                                                                    </span>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a target="_blank" href="{{ config.metrics.dimensions_metrics_url|trim }}{{ doc.doi }}">
+                                                                    Dimensions
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                {% endif %}
+
+                                                {% if config.metrics.use_plumx|trim == 'true' %}
+                                                    <li>
+                                                        <ul class="metricTable">
+                                                            <li>
+                                                                <div class="logo-statistc">
+                                                                    <a href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}"
+                                                                        data-popup="hidden"
+                                                                        data-size="large"
+                                                                        class="plumx-plum-print-popup"
+                                                                        data-site="scielo">
+                                                                        {% if doc.ti %}
+                                                                        {% set article_title = doc.ti.0|raw %}
+                                                                        {% else %}
+                                                                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                                                                        {% endif %}
+                                                                    </a>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a target="_blank" href="{{ config.metrics.plumx_metrics_url|trim }}/?doi={{ doc.doi }}">
+                                                                    PlumX
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        </ul>
+                                    </span>
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
                 <br class="visible-xs visible-sm">
 
             {% endblock %}
