@@ -39,15 +39,24 @@ function manipulate_bookmark(func, id) {
 // if confirms message, clean the list and go to the main page
 function clean_bookmark(phrase) {
     if(confirm(phrase)) {
+        
         manipulate_bookmark('c');
-        $(".my_selection").attr('checked', false);
-        var form = document.searchForm;
+        
+        var form = document.searchForm,
+            itens = $(".results .item input.checkbox");
+
+            itens.each(function() {
+                $(this).prop("checked",false);
+            });
+            $(".selectAll").prop("checked",false);
+            $(".selectAll").data("all","0");
 
         if (form.q.value.substring(0,4) == '+id:'){
             form.q.value = "";
+
+            form.submit();
         }
         form.from.value = 0;
-        form.submit();
     }
 
 }
