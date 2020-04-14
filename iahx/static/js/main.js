@@ -525,7 +525,6 @@ searchFormBuilder = {
 				t.data("all","1");
 			} else {
 				t.data("all","0");
-				console.log("esconder a barra de contagem");
 			}
 		});
 
@@ -963,6 +962,9 @@ searchFormBuilder = {
 			}else{
 				$(".topbar-mobile").slideUp();
 			}
+		}else{
+			$(".topbar-mobile").slideUp();
+			$(".detailContent").hide();
 		}
 	},
 	InsertSearchHistoryItem: function(obj) {
@@ -2023,4 +2025,29 @@ function send_query_to_history(form_action, form_params){
 		data: form_params,
 		url: form_action,
 	});
+}
+
+// Update interface after resize
+var rtime;
+var timeout = false;
+var delta = 200;
+$(window).resize(function() {
+    rtime = new Date();
+    if (timeout === false) {
+        timeout = true;
+        setTimeout(resizeend, delta);
+    }
+});
+
+function resizeend() {
+    if (new Date() - rtime < delta) {
+        setTimeout(resizeend, delta);
+    } else {
+        timeout = false;
+        
+        Portal.IsMobile = ($(document).width() < 767); 
+		Portal.IsTablet = (!Portal.IsMobile && $(document).width() < 992);
+
+        manipulate_bookmark();
+    }               
 }
