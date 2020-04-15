@@ -241,7 +241,9 @@
                 <div class="doiShareMobile">
 
                     {% if doc.doi %}
+
                         <div class="DOIResults"><a href="https://doi.org/{{ doc.doi }}" target="_blank">https://doi.org/{{ doc.doi }}</a></div>
+
                     {% endif %}
 
                     <div class="dropup shareResultItem">
@@ -256,6 +258,7 @@
                             {{texts.SHARE}}
                             <span class="caret"></span>
                         </button>
+
 
                         {% if output != 'print' %}
                             {% set share_url = attribute(config.scielo_urls, doc.in.0) ~ '/scielo.php?script=sci_arttext&pid=' ~ doc.ur.0 ~ '&lang=' ~lang %}
@@ -292,7 +295,7 @@
                             </div>
 
                         {% endif %}
-                        
+                    
                     </div>
                 </div>
 
