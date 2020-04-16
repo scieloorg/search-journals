@@ -1,0 +1,73 @@
+{% if doc.cit_chapter_title %}
+TY  - CHAP
+{% if doc.cit_ana_au %}
+{% for author in doc.cit_ana_au %}
+AU  - {{ author }}
+{% endfor %}
+{% else %}
+{% if doc.cit_inst %}
+{% for author in doc.cit_inst %}
+AU  - {{ author }}
+{% endfor %}
+{% endif %}
+{% endif %}
+TI  - {{ doc.cit_chapter_title }}
+{% if doc.cit_mon_au %}
+{% for author in doc.cit_mon_au %}
+ED  - {{ author }}
+{% endfor %}
+{% endif %}
+{% if doc.cit_source %}
+T1  - {{ doc.cit_source }}
+{% endif %}
+{% else %}
+TY  - BOOK
+{% if doc.cit_ana_au %}
+{% for author in doc.cit_ana_au %}
+AU  - {{ author }}
+{% endfor %}
+{% else %}
+{% if doc.cit_mon_au %}
+{% for author in doc.cit_mon_au %}
+AU  - {{ author }}
+{% endfor %}
+{% else %}
+{% if doc.cit_inst %}
+{% for author in doc.cit_inst %}
+AU  - {{ author }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if doc.cit_source %}
+TI  - {{ doc.cit_source }}
+{% endif %}
+{% endif %}
+{% if doc.cit_publisher %}
+PB  - {{ doc.cit_publisher }}
+{% endif %}
+{% if doc.cit_publisher_address %}
+PP  - {{ doc.cit_publisher_address }}
+{% endif %}
+{% if doc.volume %}
+VL  - {{ doc.volume }}
+{% endif %}
+{% if doc.da %}
+DA  - {{ doc.da }}
+PY  - {{ doc.da|slice(0,4) }}
+{% endif %}
+{% if doc.cit_edition %}
+ET  - {{ doc.cit_edition }}
+{% endif %}
+{% if doc.cit_isbn %}
+SN  - {{ doc.isbn.0 }}
+{% endif %}
+{% if doc.doi %}
+DO  - {{ doc.doi }}
+{% endif %}
+DB  - SciELO {{ translate(doc.in.0, 'REFINE_in') }}
+DP  - {{ config.home_url }}
+ID  - {{ doc.id }}
+SP  - {{ doc.start_page }}
+EP  - {{ doc.end_page }}
+ER  -

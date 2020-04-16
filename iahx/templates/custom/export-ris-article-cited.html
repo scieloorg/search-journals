@@ -1,0 +1,30 @@
+TY  - JOUR
+{% for author in doc.au %}
+AU  - {{ author }}
+{% endfor %}
+TI  - {{ doc.ti.0 }}
+JO  - {{ doc.cit_journal_title }}
+{% if doc.cit_publisher %}
+PB  - {{ doc.cit_publisher }}
+{% endif %}
+{% if doc.cit_publisher_address %}
+PP  - {{ doc.cit_publisher_address }}
+{% endif %}
+{% if doc.cit_issn %}
+SN  - {{ doc.cit_issn }}
+{% endif %}
+VL  - {{ doc.volume }}
+IS  - {{ doc.issue }}
+{% if doc.doi %}
+DO  - {{ doc.doi }}
+{% endif %}
+DB  - SciELO {{ translate(doc.in.0, 'REFINE_in') }}
+DP  - {{ config.home_url }}
+ID  - {{ doc.id }}
+SP  - {{ doc.start_page }}
+EP  - {{ doc.end_page }}
+{% if doc.da %}
+DA  - {{ doc.da }}
+PY  - {{ doc.da|slice(0,4) }}
+{% endif %}
+ER  -
