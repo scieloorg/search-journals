@@ -76,7 +76,7 @@
 				</index>
                 <index>
                     <name>TA</name>
-                    <prefix>ta</prefix>
+                    <prefix>super_ta</prefix>
                 </index>
                 <index>
                     <name>AB</name>
@@ -86,6 +86,15 @@
                     <name>TI</name>
                     <prefix>ti</prefix>
                 </index>
+				<index>
+					<name>CIT_AU</name>
+					<prefix>citation_fk_au</prefix>
+				</index>
+				<index>
+					<name>CIT_TA</name>
+					<prefix>citation_fk_ta</prefix>
+				</index>
+
 			</index_list>
 			<where_list>
 				<where>
