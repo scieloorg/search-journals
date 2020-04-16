@@ -1,0 +1,52 @@
+<!-- Citation's author's -->
+<strong>[{{ texts.CITATION }}]</strong>
+{% if doc.cit_ana_au %}
+    {% for author in doc.cit_ana_au %}
+        {{ author|title }}{% if loop.last %}.{% else %};{% endif %}
+    {% endfor %}
+{% else %}
+    {% if doc.cit_mon_au %}
+        {% for inst in doc.cit_mon_au %}
+            {{ inst|title }}{% if loop.last %}.{% else %};{% endif %}
+        {% endfor %}
+    {% else %}
+        {% if doc.cit_inst %}
+            {% for author in doc.cit_inst %}
+                {{ author|title }}{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+<!-- Citation year -->
+{% if doc.da is defined %}
+    ({{ doc.da|slice(0,4) }}).
+{% endif %}
+
+<!-- Citation book and/or chapter title -->
+{% if doc.cit_chapter_title %}
+    {{ doc.cit_chapter_title }}.
+    {% if doc.cit_source %}
+        <em>In:</em>
+        {% if doc.cit_mon_au %}
+            {% for author in doc.cit_mon_au %}
+                {{ author|title }}{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}(ed.).
+        {% endif %}
+        {{ doc.cit_source }}.
+    {% endif %}
+{% else %}
+    {% if doc.cit_source %}
+        {{ doc.cit_source }}.
+    {% endif %}
+{% endif %}
+
+<!-- Citation publisher address -->
+{% if doc.cit_publisher_address is defined %}
+    {{ doc.cit_publisher_address }}:
+{% endif %}
+
+<!-- Citation publisher name and Citation page numbers -->
+{% if doc.cit_publisher %}
+    {{ doc.cit_publisher }}{% if doc.pg %}, {{ doc.pg.0 }}.{% else %}.{% endif %}
+{% endif %}

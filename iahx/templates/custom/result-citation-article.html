@@ -1,0 +1,65 @@
+<!-- Citation's author's -->
+<strong>[{{ texts.CITATION }}]</strong>
+{% if doc.au is defined %}
+    {% for author in doc.au %}
+        {{ author|title }}{% if loop.last %}.{% else %};{% endif %}
+    {% endfor %}
+{% endif %}
+
+<!-- Citation year -->
+{% if doc.da is defined %}
+    ({{ doc.da|slice(0,4) }}).
+{% endif %}
+
+<!-- Citation title -->
+{% if doc.ti is defined %}
+    {{ doc.ti.0 }}.
+{% endif %}
+
+<!-- Citation journal title -->
+{% if doc.cit_journal_title %}
+    <a href="" class="showTooltip dropdown-toggle source" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.SHOW_DETAILS }}">{{ doc.cit_journal_title }}</a>,
+    <ul class="dropdown-menu">
+        <li class="dropdown-header">{{ texts.SHOW_DETAILS }}</li>
+        <li>
+            <ul class="metricTable">
+                <li>
+                    {% if doc.cit_journal_issn_canonical %}
+                        <a href="#" class="openCitationJournalInfo" data-cit-norm-status="{{ doc.cit_normalization_status }}" data-issn-normalized="{{ doc.cit_journal_issn_normalized|join(', ') }}" data-title-normalized="{{ doc.cit_journal_title_normalized|join('#') }}" data-title="{{ doc.cit_journal_title }}" data-title-canonical="{{ doc.cit_journal_title_canonical }}" data-issn="{{doc.issn.0}}" data-issn-canonical="{{doc.cit_journal_issn_canonical|join(', ')}}">
+                            <div class="logo-statistc logo-statistc-info"></div>
+                        </a>
+                    {% else %}
+                        <a href="#" class="openCitationJournalInfo" data-title="{{ doc.cit_journal_title }}" data-issn="{{doc.issn.0}}">
+                            <div class="logo-statistc logo-statistc-info"></div>
+                        </a>
+                    {% endif %}
+                </li>
+                <li>
+                    {% if doc.cit_journal_issn_canonical %}
+                        <a href="#" class="openCitationJournalInfo" data-cit-norm-status="{{ doc.cit_normalization_status }}" data-issn-normalized="{{ doc.cit_journal_issn_normalized|join(', ') }}" data-title-normalized="{{ doc.cit_journal_title_normalized|join('#') }}" data-title="{{ doc.cit_journal_title }}" data-title-canonical="{{ doc.cit_journal_title_canonical }}" data-issn="{{doc.issn.0}}" data-issn-canonical="{{doc.cit_journal_issn_canonical|join(', ')}}">
+                            Sobre o periódico
+                        </a>
+                    {% else %}
+                        <a href="#" class="openCitationJournalInfo" data-title="{{ doc.cit_journal_title }}" data-issn="{{doc.issn.0}}">
+                            Sobre o periódico
+                        </a>
+                    {% endif %}
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endif %}
+
+<!-- Citation journal volume and number -->
+{% if doc.volume %}
+    {{ doc.volume }}{% if doc.issue %}({{ doc.issue }}){% endif %}{% if doc.pg %},{% else %}.{% endif %}
+{% endif %}
+
+<!-- Citation start-end pages -->
+{% if doc.pg %}
+    {{ doc.pg.0 }}.
+{% endif %}
+
+{% if doc.doi %}
+    doi:{{ doc.doi }}.
+{% endif %}

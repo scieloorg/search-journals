@@ -1,0 +1,29 @@
+{% block citations %}
+    <div id="{{ doc.id }}" class="item">
+        <div class="col-md-1 col-sm-2 col-xs-1">
+            {% if output != 'print' %}
+                <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
+                       {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
+            {% endif %}
+            <label for="select_{{ doc.id }}" class="checkbox"></label>
+        </div>
+        <div class="col-md-11 col-sm-10 col-xs-11">
+            {% block data %}
+                <div class="line">
+                    {{ loop.index + pag.start }}.
+
+                    {% if doc.cit_type == 'article' %}
+                        {% include custom_template("result-citation-article.html") %}
+                    {% endif %}
+
+                    {% if doc.cit_type == 'book' %}
+                        {% include custom_template("result-citation-book.html") %}
+                    {% endif %}
+
+                </div>
+            {% endblock %}
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+{% endblock %}

@@ -1,5 +1,7 @@
 {% for doc in docs %}
 
+    {% if doc.entity == 'document' %}
+
     <div id="{{ doc.id }}" class="item">
 
         <div class="col-md-1 col-sm-2 col-xs-1">
@@ -196,4 +198,9 @@
         </div>
         <div class="clearfix"></div>
     </div>
+
+    {% else %}
+        {% include custom_template("result-citation.html") %}
+    {% endif %}
+
 {% endfor %}
