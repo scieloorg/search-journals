@@ -4,41 +4,10 @@ from lxml import etree as ET
 import plumber
 from citedby import client
 
+import citation_pipeline_xml
+
 
 CITEDBY = client.ThriftClient(domain='citedby.scielo.org:11610')
-
-"""
-Full example output of this pipeline:
-
-    <doc>
-        <field name="id">art-S0102-695X2015000100053-scl</field>
-        <field name="journal_title">Revista Ambiente & Água</field>
-        <field name="in">scl</field>
-        <field name="ac">Agricultural Sciences</field>
-        <field name="type">editorial</field>
-        <field name="ur">art-S1980-993X2015000200234</field>
-        <field name="authors">Marcelo dos Santos, Targa</field>
-        <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
-        <field name="pg">234-239</field>
-        <field name="doi">10.1590/S0102-67202014000200011</field>
-        <field name="wok_citation_index">SCIE</field>
-        <field name="volume">48</field>
-        <field name="supplement_volume">48</field>
-        <field name="issue">7</field>
-        <field name="supplement_issue">suppl. 2</field>
-        <field name="start_page">216</field>
-        <field name="end_page">218</field>
-        <field name="ta">Rev. Ambient. Água</field>
-        <field name="la">en</field>
-        <field name="fulltext_pdf_pt">http://www.scielo.br/pdf/ambiagua/v10n2/1980-993X-ambiagua-10-02-00234.pdf</field>
-        <field name="fulltext_pdf_pt">http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202014000200138&lng=en&nrm=iso&tlng=pt</field>
-        <field name="da">2015-06</field>
-        <field name="ab_*">In this editorial, we reflect on the benefits and legacy of the water crisis....</field>
-        <field name="aff_country">Brasil</field>
-        <field name="aff_institution">usp</field>
-        <field name="sponsor">CNPQ</field>
-    </doc>
-"""
 
 CITABLE_DOCUMENT_TYPES = (
     u'article-commentary',
@@ -47,6 +16,11 @@ CITABLE_DOCUMENT_TYPES = (
     u'rapid-communication',
     u'research-article',
     u'review-article'
+)
+
+CITATION_ALLOWED_TYPES = (
+    u'article',
+    u'book'
 )
 
 
@@ -165,14 +139,14 @@ class DocumentID(plumber.Pipe):
         return data
 
 
-class JournalTitle(plumber.Pipe):
+class Entity(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = raw.journal.title
-        field.set('name', 'journal_title')
+        field.text = 'document'
+        field.set('name', 'entity')
 
         xml.find('.').append(field)
 
@@ -181,12 +155,15 @@ class JournalTitle(plumber.Pipe):
 
 class JournalTitle(plumber.Pipe):
 
+    def __init__(self, field_name='journal_title'):
+        self.field_name = field_name
+
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
         field.text = raw.journal.title
-        field.set('name', 'journal_title')
+        field.set('name', self.field_name)
 
         xml.find('.').append(field)
 
@@ -269,8 +246,10 @@ class URL(plumber.Pipe):
 
 class Authors(plumber.Pipe):
 
-    def precond(data):
+    def __init__(self, field_name='au'):
+        self.field_name = field_name
 
+    def precond(data):
         raw, xml = data
 
         if not raw.authors:
@@ -292,7 +271,7 @@ class Authors(plumber.Pipe):
 
             field.text = ', '.join(name)
 
-            field.set('name', 'au')
+            field.set('name', self.field_name)
             xml.find('.').append(field)
 
         return data
@@ -561,12 +540,15 @@ class EndPage(plumber.Pipe):
 
 class JournalAbbrevTitle(plumber.Pipe):
 
+    def __init__(self, field_name='ta'):
+        self.field_name = field_name
+
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
         field.text = raw.journal.abbreviated_title
-        field.set('name', 'ta')
+        field.set('name', self.field_name)
         xml.find('.').append(field)
 
         return data
@@ -674,12 +656,15 @@ class ReceivedCitations(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        result = CITEDBY.citedby_pid(raw.publisher_id, metaonly=True)
+        result = CITEDBY.citedby_pid(raw.publisher_id, metaonly=True, from_heap=False)
+        if result:
+            tr = result.get('article', {'total_received': 0})['total_received']
 
-        field = ET.Element('field')
-        field.text = str(result.get('article', {'total_received': 0})['total_received'])
-        field.set('name', 'total_received')
-        xml.find('.').append(field)
+            field = ET.Element('field')
+            field.text = str(tr)
+            field.set('name', 'total_received')
+
+            xml.find('.').append(field)
 
         return data
 
@@ -801,6 +786,234 @@ class Sponsor(plumber.Pipe):
             field.text = sponsor
             field.set('name', 'sponsor')
             xml.find('.').append(field)
+
+        return data
+
+
+class CitationFKAuthors(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+        if not raw.citations:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        for cit in raw.citations:
+            if cit.publication_type in CITATION_ALLOWED_TYPES:
+                for author in cit.authors:
+                    field = ET.Element('field')
+                    name = []
+
+                    if 'surname' in author:
+                        name.append(author['surname'])
+
+                    if 'given_names' in author:
+                        name.append(author['given_names'])
+
+                    field.text = ', '.join(name)
+
+                    field.set('name', 'citation_fk_au')
+
+                    xml.find('.').append(field)
+
+        return data
+
+
+class CitationFKJournalsExternalData(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+        if not raw.citations:
+            raise plumber.UnmetPrecondition()
+
+    def __init__(self, external_metadata):
+        self.external_metadata = external_metadata
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        collection_acronym = raw.collection_acronym
+
+        if raw.citations:
+            for cit in raw.citations:
+                if cit.publication_type in CITATION_ALLOWED_TYPES:
+                    cit_id = cit.data['v880'][0]['_']
+                    cit_full_id = '{0}-{1}'.format(cit_id, collection_acronym)
+
+                    if self.external_metadata:
+                        if cit_full_id in self.external_metadata:
+                            if 'type' in self.external_metadata[cit_full_id]:
+                                if self.external_metadata[cit_full_id]['type'] == 'journal-article':
+                                    if 'container-title' in self.external_metadata[cit_full_id]:
+                                        for ct in self.external_metadata[cit_full_id]['container-title']:
+                                            field = ET.Element('field')
+                                            field.text = ct
+                                            field.set('name', 'citation_fk_ta')
+
+                                            xml.find('.').append(field)
+
+        return data
+
+
+class CitationFKJournals(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+        if not raw.citations:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        for cit in raw.citations:
+            if cit.publication_type == 'article':
+                if cit.source:
+                    field = ET.Element('field')
+                    field.text = cit.source
+                    field.set('name', 'citation_fk_ta')
+
+                    xml.find('.').append(field)
+
+        return data
+
+
+class CitationEntity(plumber.Pipe):
+
+    def __init__(self, external_metadata):
+        self.external_metadata = external_metadata
+
+    ppl_reference = plumber.Pipeline(
+        citation_pipeline_xml.SetupDocument(),
+        citation_pipeline_xml.Entity(),
+        citation_pipeline_xml.IndexNumber(),
+        citation_pipeline_xml.DocumentFK(),
+        citation_pipeline_xml.DOI(),
+        citation_pipeline_xml.PublicationType(),
+        citation_pipeline_xml.Authors(),
+        citation_pipeline_xml.AnalyticAuthors(),
+        citation_pipeline_xml.MonographicAuthors(),
+        citation_pipeline_xml.PublicationDate(),
+        citation_pipeline_xml.Institutions(),
+        citation_pipeline_xml.Publisher(),
+        citation_pipeline_xml.PublisherAddress(),
+        citation_pipeline_xml.Pages(),
+        citation_pipeline_xml.StartPage(),
+        citation_pipeline_xml.EndPage(),
+        citation_pipeline_xml.Title(),
+        citation_pipeline_xml.Source(),
+        citation_pipeline_xml.Serie(),
+        citation_pipeline_xml.ChapterTitle(),
+        citation_pipeline_xml.ISBN(),
+        citation_pipeline_xml.ISSN(),
+        citation_pipeline_xml.Issue(),
+        citation_pipeline_xml.Volume(),
+        citation_pipeline_xml.Edition(),
+    )
+
+    def precond(data):
+        raw, xml = data
+        if not raw.citations:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        # Document Authors' Names
+        ppl_document_author = plumber.Pipeline(
+            Authors(field_name='document_fk_au'),
+            TearDown()
+        )
+
+        # Document Journal's Titles
+        ppl_document_ta = plumber.Pipeline(
+            JournalTitle(field_name="document_fk_ta"),
+            JournalAbbrevTitle(field_name="document_fk_ta"),
+            TearDown()
+        )
+
+        # Document Collection
+        ppl_document_collection = plumber.Pipeline(
+            Collection(),
+            TearDown()
+        )
+
+        ppl_citation_id = plumber.Pipeline(
+            citation_pipeline_xml.DocumentID(collection_acronym=raw.collection_acronym),
+            TearDown()
+        )
+
+        # Canonical and Normalized External Data
+        ppl_external_data = plumber.Pipeline(
+            citation_pipeline_xml.ExternalData(self.external_metadata),
+            TearDown()
+        )
+
+        for cit in raw.citations:
+            if cit.publication_type in CITATION_ALLOWED_TYPES:
+                cit_root = ET.Element('doc')
+
+                cit_tags = self.ppl_reference.run([cit])
+
+                for d, t in cit_tags:
+                    for tag in t:
+                        cit_root.find('.').append(tag)
+
+                collection_tag = ppl_document_collection.run([[raw, cit_root]])
+
+                for tag in collection_tag:
+                    xml.append(tag)
+
+                author_tags = ppl_document_author.run([[raw, cit_root]])
+
+                for tag in author_tags:
+                    xml.append(tag)
+
+                journal_title_tags = ppl_document_ta.run([[raw, cit_root]])
+
+                for tag in journal_title_tags:
+                    xml.append(tag)
+
+                document_id_tags = ppl_citation_id.run([[cit, cit_root]])
+                for tag in document_id_tags:
+                    xml.append(tag)
+
+                canonical_tags = ppl_external_data.run([[cit, cit_root]])
+                for tag in canonical_tags:
+                    xml.append(tag)
+
+        return data
+
+
+class CitationFK(plumber.Pipe):
+
+    def precond(data):
+        raw, xml = data
+        if not raw.citations:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
+    def transform(self, data):
+        raw, xml = data
+
+        collection_acronym = raw.collection_acronym
+
+        for cit in raw.citations:
+            if cit.publication_type in CITATION_ALLOWED_TYPES:
+
+                # publisher id + 0{0,4} + index number
+                cit_id = cit.data['v880'][0]['_']
+
+                field = ET.Element('field')
+                field.text = '{0}-{1}'.format(cit_id, collection_acronym)
+                field.set('name', 'citation_fk')
+
+                xml.find('.').append(field)
 
         return data
 

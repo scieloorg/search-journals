@@ -22,6 +22,9 @@ from articlemeta.client import ThriftClient
 
 from SolrAPI import Solr
 
+import zipfile
+
+
 logger = logging.getLogger('updatesearch')
 
 ALLOWED_COLLECTION = [
@@ -109,6 +112,11 @@ class UpdateSearch(object):
                         action='version',
                         version='version: 0.2')
 
+    parser.add_argument('-m', '--metadata',
+                        dest='file_crossref',
+                        help='json zipped file containing metadata gathered from the CrossRef service'
+                        )
+
     def __init__(self):
 
         self.args = self.parser.parse_args()
@@ -126,6 +134,9 @@ class UpdateSearch(object):
         if self.args.period:
             self.args.from_date = datetime.now() - timedelta(days=self.args.period)
 
+        if self.args.file_crossref:
+            self.crossref = self.load_zipped_metadata(self.args.file_crossref)
+
     def format_date(self, date):
         """
         Convert datetime.datetime to str return: ``2000-05-12``.
@@ -139,7 +150,12 @@ class UpdateSearch(object):
 
         return date.strftime('%Y-%m-%d')
 
-    def pipeline_to_xml(self, article):
+    def load_zipped_metadata(self, zipped_metadata):
+        inner_file_name = zipped_metadata.split('/')[-1].split('.zip')[0]
+        with zipfile.ZipFile(zipped_metadata).open(inner_file_name) as zf:
+            return json.loads(zf.read()).get('metadata', {})
+
+    def pipeline_to_xml(self, article, external_metadata=None):
         """
         Pipeline to tranform a dictionary to XML format
 
@@ -149,6 +165,7 @@ class UpdateSearch(object):
         ppl = plumber.Pipeline(
             pipeline_xml.SetupDocument(),
             pipeline_xml.DocumentID(),
+            pipeline_xml.Entity(),
             pipeline_xml.DOI(),
             pipeline_xml.Collection(),
             pipeline_xml.DocumentType(),
@@ -160,6 +177,7 @@ class UpdateSearch(object):
             pipeline_xml.WOKCI(),
             pipeline_xml.WOKSC(),
             pipeline_xml.JournalAbbrevTitle(),
+            pipeline_xml.JournalAbbrevTitle(field_name='super_ta'),
             pipeline_xml.Languages(),
             pipeline_xml.AvailableLanguages(),
             pipeline_xml.Fulltexts(),
@@ -183,7 +201,22 @@ class UpdateSearch(object):
             pipeline_xml.Keywords(),
             pipeline_xml.JournalISSNs(),
             pipeline_xml.SubjectAreas(),
-            pipeline_xml.ReceivedCitations(),
+            # pipeline_xml.ReceivedCitations(),
+
+            # Citation IDs
+            pipeline_xml.CitationFK(),
+
+            # Citation Authors
+            pipeline_xml.CitationFKAuthors(),
+
+            # Citation Normalized Journals' Titles
+            pipeline_xml.CitationFKJournalsExternalData(external_metadata),
+
+            # Citation Journals' Titles
+            pipeline_xml.CitationFKJournals(),
+
+            # Pipeline Article.Citations
+            pipeline_xml.CitationEntity(external_metadata),
             pipeline_xml.TearDown()
         )
 
@@ -249,10 +282,15 @@ class UpdateSearch(object):
                 from_date=self.format_date(self.args.from_date),
                 until_date=self.format_date(self.args.until_date)
             ):
+                # Check if normalized metadata were loaded
+                if self.args.file_crossref:
+                    external_metadata = self.crossref
+                else:
+                    external_metadata = {}
 
                 try:
-                    xml = self.pipeline_to_xml(document)
-                    self.solr.update(self.pipeline_to_xml(document), commit=True)
+                    xml = self.pipeline_to_xml(document, external_metadata)
+                    self.solr.update(xml, commit=True)
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))
                     logger.exception(e)
