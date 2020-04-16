@@ -1,5 +1,6 @@
 {% spaceless %}
 {% for doc in docs %}
+{% if doc.entity == 'document' %}
 @article{% raw %}{{% endraw %}{{doc.au.0|substring_before(', ')|upper}}{{ doc.da|slice(0,4) }},
     title = {% raw %}{{{% endraw %}{{ doc.ti.0 }}{% raw %}}}{% endraw %},
     journal = {% raw %}{{{% endraw %}{{ doc.journal_title }}{% raw %}}}{% endraw %},
@@ -20,5 +21,14 @@
     URL = {% raw %}{{% endraw %}{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}{% raw %}}{% endraw %},
     }
 
+{% else %}
+{% if doc.cit_type == 'article' %}
+{% include custom_template("export-bibtex-article-cited.html") %}
+
+{% else %}
+{% include custom_template("export-bibtex-book-cited.html") %}
+
+{% endif %}
+{% endif %}
 {% endfor %}
 {% endspaceless %}

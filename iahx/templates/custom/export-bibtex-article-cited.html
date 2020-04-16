@@ -1,0 +1,27 @@
+@article{% raw %}{{% endraw %}{{doc.au.0|substring_before(', ')|upper}}{{ doc.da|slice(0,4) }},
+    title = {% raw %}{{{% endraw %}{{ doc.ti.0 }}{% raw %}}}{% endraw %},
+    journal = {% raw %}{{{% endraw %}{{ doc.cit_journal_title }}{% raw %}}}{% endraw %},
+    author = {% raw %}{{% endraw %}{% for author in doc.au %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% if doc.cit_issn %}
+    issn = {% raw %}{{{% endraw %}{{ doc.cit_issn }}{% raw %}}}{% endraw %},
+{% endif %}
+{% if doc.volume %}
+    volume = {% raw %}{{% endraw %}{{ doc.volume }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.issue %}
+    issue = {% raw %}{{% endraw %}{{ doc.issue }}{% raw %}}{% endraw %},
+{% endif %}
+    year = {% raw %}{{% endraw %}{{ doc.da|slice(0,4) }}{% raw %}}{% endraw %},
+{% if doc.cit_publisher %}
+    publisher = {% raw %}{{{% endraw %}{{ doc.cit_publisher }}{% raw %}}}{% endraw %},
+{% endif %}
+{% if doc.da|length > 4 %}
+    month = {% raw %}{{% endraw %}{{ doc.da|slice(5,2) }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.doi %}
+    crossref = {% raw %}{{% endraw %}{{ doc.doi }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.start_page %}
+    pages = {% raw %}{{% endraw %}{{ doc.start_page }}-{{ doc.end_page }}{% raw %}}{% endraw %},
+{% endif %}
+}
