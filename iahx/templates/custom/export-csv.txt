@@ -1,10 +1,22 @@
 {% spaceless %}
 {% if from == '0' %}
-ID,Title,Author(s),Source,Journal,Language(s),Publication year,Fulltext URL
+Result type,ID,Title,Author(s),Editor(s),Source,Journal,Language(s),Publisher,Publisher address,Publication year,Fulltext URL
 #BR#
 {% endif %}
 {%- for doc in docs -%}
-"{{ doc.id }}","{{ doc.ti.0 }}","{% for author in doc.au %}{{author}}{% if not loop.last %}, {% endif %}{% endfor %}","{{ doc.journal_title }}; {{ doc.volume }}({{ doc.issue }}); {{ doc.start_page }}-{{ doc.end_page }}","{{ doc.journal_title }}","{% for language in doc.la %}{{ translate(language, 'REFINE_la') }}{% if not loop.last %}, {% endif %}{% endfor %}","{{ doc.da|slice(0,4) }}","{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"
+{% if doc.entity == 'document' %}
+"ScieLO Document","{{ doc.id }}","{{ doc.ti.0 }}","{% for author in doc.au %}{{author}}{% if not loop.last %}, {% endif %}{% endfor %}","-","{{ doc.journal_title }}; {{ doc.volume }}({{ doc.issue }}); {{ doc.start_page }}-{{ doc.end_page }}","{{ doc.journal_title }}","{% for language in doc.la %}{{ translate(language, 'REFINE_la') }}{% if not loop.last %}, {% endif %}{% endfor %}","-","-","{{ doc.da|slice(0,4) }}","{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"
+{% else %}
+{% if doc.cit_type == 'article' %}
+"Article cited","{{ doc.id }}","{{ doc.ti.0 }}","{% for author in doc.au %}{{author}}{% if not loop.last %}, {% endif %}{% endfor %}","-","-","{{ doc.cit_journal_title }}","-","-","-","{{ doc.da|slice(0,4) }}","-"
+{% else %}
+{% if doc.cit_chapter_title %}
+"Chapter cited","{{ doc.id }}","{{ doc.cit_chapter_title }}","{% if doc.cit_ana_au %}{% for au in doc.cit_ana_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. {% else %}{% if doc.cit_inst %}{% for au in doc.cit_inst %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% endif %}{% endif %}","{% for au in doc.cit_mon_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}","{% if doc.cit_source %}{{ doc.cit_source }}{% endif %}","-","-","{% if doc.cit_publisher %}{{ doc.cit_publisher }}{% endif %}","{% if doc.cit_publisher_address %}{{ doc.cit_publisher_address }}{% endif %}","{{ doc.da|slice(0,4) }}","-"
+{% else %}
+"Book cited","{{ doc.id }}","{% if doc.cit_source %}{{ doc.cit_source }}{% endif %}","{% if doc.cit_ana_au %}{% for au in doc.cit_ana_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% else %}{% if doc.cit_mon_au %}{% for au in doc.cit_mon_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% else %}{% if doc.cit_inst %}{% for author in doc.cit_inst %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% endif %}{% endif %}{% endif %}","-","-","-","-","{% if doc.cit_publisher %}{{ doc.cit_publisher }}{% endif %}","{% if doc.cit_publisher_address %}{{ doc.cit_publisher_address }}{% endif %}","{{ doc.da|slice(0,4) }}","-"
+{% endif %}
+{% endif %}
+{% endif %}
 #BR#
 {%- endfor -%}
 {% endspaceless %}
