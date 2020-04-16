@@ -1701,6 +1701,75 @@ $(function() {
 		});
 		$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
 	});
+
+	$(".openCitationJournalInfo").on("click",function(e) {
+		e.preventDefault();
+		var t = $(this),
+			citation_issn = t.data("issn"),
+			citation_issn_canonical = t.data("issn-canonical"),
+			citation_issn_normalized = t.data("issn-normalized"),
+			citation_title = t.data("title"),
+			citation_title_canonical = t.data("title-canonical"),
+			citation_title_normalized = t.data("title-normalized"),
+			citation_normalization_status = t.data("cit-norm-status");
+
+		var modal_title = t.html();
+		$("#CitationJournalInfo").modal("show");
+		modal_body = $('#CitationJournalInfo .modal-body');
+		modal_footer = $('#CitationJournalInfo .modal-footer');
+		modal_body.html('<h2>' + modal_title + '</h2>');
+
+		modal_body.append('<p>');
+
+		if (citation_title){
+			modal_body.append('<strong>Título citado:</strong> ' + citation_title + '<br/>');
+		}
+
+		if (citation_issn){
+			modal_body.append('<strong>ISSN citado</strong><br/>');
+			modal_body.append(citation_issn.replace(', ', '<br/>'));
+		}
+
+		if (citation_title_canonical || citation_issn_canonical) {
+
+			modal_body.append('<br/><h4>' + 'Informações oficiais' + '</h4>');
+
+			if (citation_title_canonical) {
+				modal_body.append('<br/><strong>Titulo:</strong> ' + citation_title_canonical + '<br/>');
+			}
+
+			if (citation_issn_canonical) {
+				modal_body.append('<strong>ISSN:</strong> ' + citation_issn_canonical + '<br/>');
+			}
+		}
+
+		if (citation_issn_normalized || citation_title_normalized) {
+			modal_body.append('<br/><h4>' + 'Informações extras' + '</h4>');
+
+			if (citation_title_normalized) {
+				modal_body.append('<br/><strong>Titulo(s):</strong>');
+				cit_title_norm_list = citation_title_normalized.split('#');
+				modal_body.append('<ul style="list-style: none;margin: 0">');
+				for (i = 0; i < cit_title_norm_list.length; i ++){
+					modal_body.append('<li style="list-style: none">');
+					modal_body.append(cit_title_norm_list[i]);
+					modal_body.append('</li>');
+				}
+				modal_body.append('</ul><br/>');
+			}
+
+			if (citation_issn_normalized) {
+				modal_body.append('<br/><strong>ISSN(s): </strong>' + citation_issn_normalized + '<br/>');
+			}
+
+		}
+
+		if (citation_normalization_status) {
+			modal_body.append('<br/><h4>Status de normalização </h4>' + citation_normalization_status + '<br/>');
+		}
+
+		modal_body.append('</p>');
+	});
 });
 
 function get_language_filter_translations() {
