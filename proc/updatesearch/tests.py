@@ -998,15 +998,7 @@ class ExportTests(unittest.TestCase):
 
         raw, xml = xmlarticle.transform(data)
 
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="citation_fk"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
+        self.assertIsNone(xml.find('./field[name="citation_fk"]'))
 
     def test_xml_citation_fk_authors(self):
 
@@ -1034,15 +1026,7 @@ class ExportTests(unittest.TestCase):
 
         raw, xml = xmlarticle.transform(data)
 
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="citation_fk_au"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
+        self.assertIsNone(xml.find('./field[name="citation_fk_au"]'))
 
     def test_xml_citation_fk_journals(self):
 
@@ -1070,15 +1054,7 @@ class ExportTests(unittest.TestCase):
 
         raw, xml = xmlarticle.transform(data)
 
-        # This try except is a trick to test the expected result of the
-        # piped XML, once the precond method don't raise an exception
-        # we try to check if the preconditioned pipe was called or not.
-        try:
-            xml.find('./field[name="citation_fk_ta"]').text
-        except AttributeError:
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
+        self.assertIsNone(xml.find('./field[name="citation_fk_ta"]'))
 
     def test_xml_citation_fk_journals_external_data(self):
 
@@ -1093,21 +1069,3 @@ class ExportTests(unittest.TestCase):
         obtained_results = [x.text for x in xml.findall('./field[@name="citation_fk_ta"]')]
 
         self.assertItemsEqual(expected_results, obtained_results)
-
-    def test_xml_citation_entity(self):
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.CitationEntity({})
-        raw, xmls = xmlarticle.transform(data)
-
-        root = ET.Element('add')
-        for xml in xmls:
-            root.append(xml)
-        obtainded_results = ET.tostring(root)
-
-        file_xml = ET.fromstring(open('fixtures/entities.xml').read())
-        expected_results = ET.tostring(file_xml).replace('\n', '').replace('\t', '')
-
-        self.assertEqual(obtainded_results, expected_results)
