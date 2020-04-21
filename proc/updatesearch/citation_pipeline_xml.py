@@ -86,6 +86,12 @@ class Authors(plumber.Pipe):
 
 
 class ExternalData(plumber.Pipe):
+    """
+    Adiciona no <doc> citation dados extras e normalizados de citação.
+
+    :param external_data: dicionário com dados extras e normalizados
+    :param collection_acronym: coleção do documento citante
+    """
 
     def __init__(self, external_data, collection_acronym=None):
         self.external_data = external_data
@@ -106,48 +112,43 @@ class ExternalData(plumber.Pipe):
 
         if cit_metadata['type'] == 'journal-article':
             was_normalized = False
-            if 'container-title' in cit_metadata:
-                first_journal_title = cit_metadata['container-title'][0]
-                if first_journal_title:
-                    field = ET.Element('field')
-                    field.text = first_journal_title
-                    field.set('name', 'cit_journal_title_canonical')
+            journal_titles = cit_metadata.get('container-title', [])
+            first_journal_title = journal_titles[0] if len(journal_titles) else None
+            if first_journal_title:
+                field = ET.Element('field')
+                field.text = first_journal_title
+                field.set('name', 'cit_journal_title_canonical')
 
-                    xml.find('.').append(field)
+                xml.find('.').append(field)
 
-                    was_normalized = True
+                was_normalized = True
 
-            if 'ISSN' in cit_metadata:
-                for i in cit_metadata['ISSN']:
-                    if i:
-                        field = ET.Element('field')
-                        field.text = i
-                        field.set('name', 'cit_journal_issn_canonical')
+            for i in cit_metadata.get('ISSN', []):
+                field = ET.Element('field')
+                field.text = i
+                field.set('name', 'cit_journal_issn_canonical')
 
-                        xml.find('.').append(field)
+                xml.find('.').append(field)
 
-                        was_normalized = True
+                was_normalized = True
 
-            if 'BC1-ISSNS' in cit_metadata:
-                for i in cit_metadata['BC1-ISSNS']:
-                    if i:
-                        field = ET.Element('field')
-                        field.text = i
-                        field.set('name', 'cit_journal_issn_normalized')
+            for i in cit_metadata.get('BC1-ISSNS', []):
+                field = ET.Element('field')
+                field.text = i
+                field.set('name', 'cit_journal_issn_normalized')
 
-                        xml.find('.').append(field)
+                xml.find('.').append(field)
 
-                        was_normalized = True
+                was_normalized = True
 
-            if 'BC1-JOURNAL-TITLES' in cit_metadata:
-                for i in cit_metadata['BC1-JOURNAL-TITLES']:
-                    field = ET.Element('field')
-                    field.text = i
-                    field.set('name', 'cit_journal_title_normalized')
+            for i in cit_metadata.get('BC1-JOURNAL-TITLES', []):
+                field = ET.Element('field')
+                field.text = i
+                field.set('name', 'cit_journal_title_normalized')
 
-                    xml.find('.').append(field)
+                xml.find('.').append(field)
 
-                    was_normalized = True
+                was_normalized = True
 
             if was_normalized:
                 normalization_status = cit_metadata['normalization-status']
@@ -212,6 +213,9 @@ class Collection(plumber.Pipe):
 
 
 class DocumentFK(plumber.Pipe):
+    """
+    Adiciona no <doc> citation id do documento citante.
+    """
 
     def __init__(self, collection_acronym=None):
         self.collection_acronym = collection_acronym
@@ -251,6 +255,14 @@ class DocumentID(plumber.Pipe):
     def __init__(self, collection_acronym=None):
         self.collection_acronym = collection_acronym
 
+    def precond(data):
+
+        raw, xml = data
+
+        if 'v880' not in raw.data:
+            raise plumber.UnmetPrecondition()
+
+    @plumber.precondition(precond)
     def transform(self, data):
         raw, xml = data
 
@@ -316,20 +328,6 @@ class EndPage(plumber.Pipe):
         field = ET.Element('field')
         field.text = raw.end_page
         field.set('name', 'end_page')
-
-        xml.find('.').append(field)
-
-        return data
-
-
-class Entity(plumber.Pipe):
-
-    def transform(self, data):
-        raw, xml = data
-
-        field = ET.Element('field')
-        field.text = 'citation'
-        field.set('name', 'entity')
 
         xml.find('.').append(field)
 

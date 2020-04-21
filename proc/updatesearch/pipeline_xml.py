@@ -4,8 +4,6 @@ from lxml import etree as ET
 import plumber
 from citedby import client
 
-import citation_pipeline_xml
-
 
 CITEDBY = client.ThriftClient(domain='citedby.scielo.org:11610')
 
@@ -141,11 +139,14 @@ class DocumentID(plumber.Pipe):
 
 class Entity(plumber.Pipe):
 
+    def __init__(self, name='document'):
+        self.name = name
+
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = 'document'
+        field.text = self.name
         field.set('name', 'entity')
 
         xml.find('.').append(field)
@@ -791,6 +792,9 @@ class Sponsor(plumber.Pipe):
 
 
 class CitationFKAuthors(plumber.Pipe):
+    """
+    Adiciona nome dos autores das referências citadas.
+    """
 
     def precond(data):
         raw, xml = data
@@ -823,6 +827,7 @@ class CitationFKAuthors(plumber.Pipe):
 
 
 class CitationFKJournalsExternalData(plumber.Pipe):
+    "Adiciona títulos extras e normalizados dos periódicos das referências citadas."
 
     def precond(data):
         raw, xml = data
@@ -838,28 +843,29 @@ class CitationFKJournalsExternalData(plumber.Pipe):
 
         collection_acronym = raw.collection_acronym
 
-        if raw.citations:
-            for cit in raw.citations:
-                if cit.publication_type in CITATION_ALLOWED_TYPES:
-                    cit_id = cit.data['v880'][0]['_']
-                    cit_full_id = '{0}-{1}'.format(cit_id, collection_acronym)
+        for cit in raw.citations:
+            if cit.publication_type in CITATION_ALLOWED_TYPES:
+                cit_id = cit.data['v880'][0]['_']
+                cit_full_id = '{0}-{1}'.format(cit_id, collection_acronym)
 
-                    if self.external_metadata:
-                        if cit_full_id in self.external_metadata:
-                            if 'type' in self.external_metadata[cit_full_id]:
-                                if self.external_metadata[cit_full_id]['type'] == 'journal-article':
-                                    if 'container-title' in self.external_metadata[cit_full_id]:
-                                        for ct in self.external_metadata[cit_full_id]['container-title']:
-                                            field = ET.Element('field')
-                                            field.text = ct
-                                            field.set('name', 'citation_fk_ta')
+                citation = self.external_metadata.get(cit_full_id)
+                if citation:
+                    citation_type = citation.get('type')
+                    if citation_type == 'journal-article':
+                        for ct in citation.get('container-title', []):
+                            field = ET.Element('field')
+                            field.text = ct
+                            field.set('name', 'citation_fk_ta')
 
-                                            xml.find('.').append(field)
+                            xml.find('.').append(field)
 
         return data
 
 
 class CitationFKJournals(plumber.Pipe):
+    """
+    Adiciona títulos dos periódicos das referências citadas.
+    """
 
     def precond(data):
         raw, xml = data
@@ -882,115 +888,10 @@ class CitationFKJournals(plumber.Pipe):
         return data
 
 
-class CitationEntity(plumber.Pipe):
-
-    def __init__(self, external_metadata):
-        self.external_metadata = external_metadata
-
-    ppl_reference = plumber.Pipeline(
-        citation_pipeline_xml.SetupDocument(),
-        citation_pipeline_xml.Entity(),
-        citation_pipeline_xml.IndexNumber(),
-        citation_pipeline_xml.DocumentFK(),
-        citation_pipeline_xml.DOI(),
-        citation_pipeline_xml.PublicationType(),
-        citation_pipeline_xml.Authors(),
-        citation_pipeline_xml.AnalyticAuthors(),
-        citation_pipeline_xml.MonographicAuthors(),
-        citation_pipeline_xml.PublicationDate(),
-        citation_pipeline_xml.Institutions(),
-        citation_pipeline_xml.Publisher(),
-        citation_pipeline_xml.PublisherAddress(),
-        citation_pipeline_xml.Pages(),
-        citation_pipeline_xml.StartPage(),
-        citation_pipeline_xml.EndPage(),
-        citation_pipeline_xml.Title(),
-        citation_pipeline_xml.Source(),
-        citation_pipeline_xml.Serie(),
-        citation_pipeline_xml.ChapterTitle(),
-        citation_pipeline_xml.ISBN(),
-        citation_pipeline_xml.ISSN(),
-        citation_pipeline_xml.Issue(),
-        citation_pipeline_xml.Volume(),
-        citation_pipeline_xml.Edition(),
-    )
-
-    def precond(data):
-        raw, xml = data
-        if not raw.citations:
-            raise plumber.UnmetPrecondition()
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        # Document Authors' Names
-        ppl_document_author = plumber.Pipeline(
-            Authors(field_name='document_fk_au'),
-            TearDown()
-        )
-
-        # Document Journal's Titles
-        ppl_document_ta = plumber.Pipeline(
-            JournalTitle(field_name="document_fk_ta"),
-            JournalAbbrevTitle(field_name="document_fk_ta"),
-            TearDown()
-        )
-
-        # Document Collection
-        ppl_document_collection = plumber.Pipeline(
-            Collection(),
-            TearDown()
-        )
-
-        ppl_citation_id = plumber.Pipeline(
-            citation_pipeline_xml.DocumentID(collection_acronym=raw.collection_acronym),
-            TearDown()
-        )
-
-        # Canonical and Normalized External Data
-        ppl_external_data = plumber.Pipeline(
-            citation_pipeline_xml.ExternalData(self.external_metadata),
-            TearDown()
-        )
-
-        for cit in raw.citations:
-            if cit.publication_type in CITATION_ALLOWED_TYPES:
-                cit_root = ET.Element('doc')
-
-                cit_tags = self.ppl_reference.run([cit])
-
-                for d, t in cit_tags:
-                    for tag in t:
-                        cit_root.find('.').append(tag)
-
-                collection_tag = ppl_document_collection.run([[raw, cit_root]])
-
-                for tag in collection_tag:
-                    xml.append(tag)
-
-                author_tags = ppl_document_author.run([[raw, cit_root]])
-
-                for tag in author_tags:
-                    xml.append(tag)
-
-                journal_title_tags = ppl_document_ta.run([[raw, cit_root]])
-
-                for tag in journal_title_tags:
-                    xml.append(tag)
-
-                document_id_tags = ppl_citation_id.run([[cit, cit_root]])
-                for tag in document_id_tags:
-                    xml.append(tag)
-
-                canonical_tags = ppl_external_data.run([[cit, cit_root]])
-                for tag in canonical_tags:
-                    xml.append(tag)
-
-        return data
-
-
 class CitationFK(plumber.Pipe):
+    """
+    Adiciona ids das referências citadas.
+    """
 
     def precond(data):
         raw, xml = data
