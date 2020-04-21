@@ -212,7 +212,7 @@ class UpdateSearch(object):
             pipeline_xml.Keywords(),
             pipeline_xml.JournalISSNs(),
             pipeline_xml.SubjectAreas(),
-            # pipeline_xml.ReceivedCitations(),
+            pipeline_xml.ReceivedCitations(),
         )
 
         xmls = ppl.run([article])
