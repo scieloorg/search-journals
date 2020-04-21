@@ -1721,21 +1721,23 @@ $(function() {
 
 		modal_body.append('<p>');
 
+		var translations = get_citation_journal_info_translations();
+
 		if (citation_title){
-			modal_body.append('<strong>Título citado:</strong> ' + citation_title + '<br/>');
+			modal_body.append('<strong>' + translations.titleCited + ':</strong> ' + citation_title + '<br/>');
 		}
 
 		if (citation_issn){
-			modal_body.append('<strong>ISSN citado</strong><br/>');
+			modal_body.append('<strong>' + translations.issnCited + '</strong><br/>');
 			modal_body.append(citation_issn.replace(', ', '<br/>'));
 		}
 
 		if (citation_title_canonical || citation_issn_canonical) {
 
-			modal_body.append('<br/><h4>' + 'Informações oficiais' + '</h4>');
+			modal_body.append('<br/><h4>' + translations.officialInformation + '</h4>');
 
 			if (citation_title_canonical) {
-				modal_body.append('<br/><strong>Titulo:</strong> ' + citation_title_canonical + '<br/>');
+				modal_body.append('<br/><strong>' + translations.title + ':</strong> ' + citation_title_canonical + '<br/>');
 			}
 
 			if (citation_issn_canonical) {
@@ -1744,10 +1746,10 @@ $(function() {
 		}
 
 		if (citation_issn_normalized || citation_title_normalized) {
-			modal_body.append('<br/><h4>' + 'Informações extras' + '</h4>');
+			modal_body.append('<br/><h4>' + translations.extraInformation + '</h4>');
 
 			if (citation_title_normalized) {
-				modal_body.append('<br/><strong>Titulo(s):</strong>');
+				modal_body.append('<br/><strong>' + translations.title +'(s):</strong>');
 				cit_title_norm_list = citation_title_normalized.split('#');
 				modal_body.append('<ul style="list-style: none;margin: 0">');
 				for (i = 0; i < cit_title_norm_list.length; i ++){
@@ -1765,12 +1767,52 @@ $(function() {
 		}
 
 		if (citation_normalization_status) {
-			modal_body.append('<br/><h4>Status de normalização </h4>' + citation_normalization_status + '<br/>');
+			modal_body.append('<br/><h4>' + translations.normalizationStatus + '</h4>' + citation_normalization_status + '<br/>');
 		}
 
 		modal_body.append('</p>');
 	});
 });
+
+function get_citation_journal_info_translations() {
+
+	var lang = $(document.language.lang).val();
+
+	var translations = {
+		normalizationStatus: 'Status da normalização',
+		titleCited: 'Título citado',
+		title: 'Título',
+		issnCited: 'ISSN citado',
+		officialInformation: 'Informação oficial',
+		extraInformation: 'Informação extra',
+		modalTitle: 'Sobre o periódico',
+	};
+
+	switch (lang) {
+
+		case 'en':
+			translations.normalizationStatus= 'Normalization status';
+			translations.titleCited= 'Cited title';
+			translations.title= 'Title';
+			translations.issnCited= 'Cited ISSN';
+			translations.officialInformation= 'Official information';
+			translations.extraInformation= 'Extra information';
+			translations.modalTitle= 'About the journal';
+			break;
+
+		case 'es':
+			translations.normalizationStatus= 'Estado de normalización';
+			translations.titleCited= 'Título citado';
+			translations.title= 'Título';
+			translations.issnCited= 'ISSN citado';
+			translations.officialInformation= 'Información oficial';
+			translations.extraInformation= 'Información adicional';
+			translations.modalTitle= 'Sobre la revista';
+			break;
+	}
+
+	return translations;
+}
 
 function get_language_filter_translations() {
 

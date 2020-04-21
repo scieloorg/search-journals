@@ -37,11 +37,11 @@
                 <li>
                     {% if doc.cit_journal_issn_canonical %}
                         <a href="#" class="openCitationJournalInfo" data-cit-norm-status="{{ doc.cit_normalization_status }}" data-issn-normalized="{{ doc.cit_journal_issn_normalized|join(', ') }}" data-title-normalized="{{ doc.cit_journal_title_normalized|join('#') }}" data-title="{{ doc.cit_journal_title }}" data-title-canonical="{{ doc.cit_journal_title_canonical }}" data-issn="{{doc.issn.0}}" data-issn-canonical="{{doc.cit_journal_issn_canonical|join(', ')}}">
-                            Sobre o periódico
+                            {{ texts.ABOUT_JOURNAL }}
                         </a>
                     {% else %}
                         <a href="#" class="openCitationJournalInfo" data-title="{{ doc.cit_journal_title }}" data-issn="{{doc.issn.0}}">
-                            Sobre o periódico
+                            {{ texts.ABOUT_JOURNAL }}
                         </a>
                     {% endif %}
                 </li>
