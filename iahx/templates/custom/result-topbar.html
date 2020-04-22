@@ -1,6 +1,28 @@
+<div class="topbar-mobile">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-9">
+                <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown">
+                    <span class="countBox">
+                        <strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong>
+                    </span>
+                    <span class="text">{{ texts.YOUR_SELECTION }}</span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
+                    <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-3 col-action">
+                <a href="javascript:;" class="removeSelection">{{texts.REMOVE_SELECTION}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="col-md-9 col-sm-8" id="ResultArea">
     <div class="searchOptions">
-        <div class="col-md-6 col-sm-12">
+        <div class="hidden-xs col-md-6 col-sm-12">
 
             {% if collectionData.sort_list.sort|length > 1 %}
                 {{ texts.SORT_OPTIONS }}
@@ -42,8 +64,70 @@
         {% endif %}
         <div class="clearfix"></div>
     </div>
+
+    <!-- Search result - titlebar mobile -->
+    <div class="visible-xs container">
+        <div class="row dashline mobileTitleRow">
+            <div class="col-xs-8" style="padding-left:0;padding-top:7px;">
+                <h2 class="filterTitle">
+                    {{ texts.RESULTS }}: <span id="TotalHits">{{ pag.total_formatted }}</span>
+                </h2>
+            </div>
+
+            <div class="col-xs-4 right" style="padding-right:0;padding-left:0;">
+                
+                <button class="btn btn-default dropdown-toggle" type="button" data-target="dropDownShareAllList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">    
+                    <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                    <span class="caret"></span>
+                </button>
+
+                <div class="dropDownShareAllList dropdown-menu dropdown-menu-right">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <a href="{{share_url}}" class="shareFacebook" title="{{ texts.SHARE }} Facebook"><span class="glyphBtn facebook"></span> Facebook</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a href="{{share_url}}" class="shareTwitter"  title="{{ text.SHARE }} Twitter"><span class="glyphBtn twitter"></span> Twitter</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a target="_blank" href="{{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="javascript:;" class="btn btn-default"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></a>
+
+            </div>
+        </div>
+        <div class="row dashline mobileTitleRow searchQuery">
+            <div class="col-xs-12">
+                <div class="searchHistoryItem" data-original-title="" title="" data-history="{{history|length}}">#{{history|length}}</div>
+                <div class="query" id="searchHistoryQuery">
+                {{ detailed_query }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="searchActions">
-        <div class="col-md-9 col-sm-6">
+        <div class="col-md-9 col-sm-6 col-xs-8">
             <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
             <label class="checkbox" for="searchForm_selectAll">{{ texts.SELECT_PAGE }}</label>
 
@@ -71,7 +155,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3  col-sm-6 right">
+
+        <div class="col-md-3 col-sm-6 hidden-xs right">
             <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
             <ul class="dropdown-menu" role="menu">
                 <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>

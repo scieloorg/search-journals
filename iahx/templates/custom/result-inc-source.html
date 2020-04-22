@@ -1,5 +1,5 @@
 <!-- source -->
-<div class="line source">
+<div class="hidden-xs line source">
 
     <span class="dropdown" style="margin:0;display:inline-block;">
 
@@ -68,4 +68,32 @@
         <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
     {% endif %}
 {% endif %}
+</div>
+
+
+<!-- source without links and actions only for mobile -->
+<div class="visible-xs line source">
+
+    {{ doc.journal_title }}
+
+    {% if doc.da %}
+        <span style="margin: 0">{{ translate(doc.da|slice(5,2), 'MONTHS') }}</span>
+        <span style="margin: 0">{{ doc.da|slice(0,4) }}, </span>
+    {% endif %}
+    {% if doc.volume %}
+        <small>{{ texts.RESULT.LABEL_VOLUME }}</small>
+        <span>{{ doc.volume }}</span>
+    {% endif %}
+    {% if doc.issue %}
+        <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
+        <span>{{ doc.issue }}</span>
+    {% endif %}
+
+    {% if doc.elocation %}
+        <small>elocation</small>
+        <span>{{ doc.elocation }}</span>
+    {% elseif doc.start_page %}
+        <small>{{ texts.RESULT.LABEL_PAGES }}</small>
+        <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
+    {% endif %}
 </div>

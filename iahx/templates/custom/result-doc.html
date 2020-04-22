@@ -2,19 +2,23 @@
 
     <div id="{{ doc.id }}" class="item">
 
-        <div class="col-md-1 col-sm-2 col-xs-1">
+        <div class="col-md-1 col-sm-2 col-xs-2">
             {% if output != 'print' %}
                 <input type="checkbox" class="checkbox my_selection" value="{{ doc.id }}"
                 {% if doc.id in bookmark|keys %}checked{% endif %} id="select_{{ doc.id }}">
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
-        <div class="col-md-11 col-sm-10 col-xs-11">
+
+        <div class="col-md-11 col-sm-10 col-xs-10 no-padding-mobile toggleDetailMobile">
+
             {% block data %}
+
                 {% if doc.in.0 == 'preprint'%}
-                    <div class="line">
+                    <div class="hidden-xs line">
                         {{ loop.index + pag.start }}.
                         <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
+
 
                         <a href="{{ doc.ur.0 }}" title="{{ doc.ti.1 }}" target="_blank">
                             <strong class="title" id="title-{{doc.ur.0}}">[Preprint] - {{ doc.ti.0 }}</strong>
@@ -44,7 +48,7 @@
 
                     </div>
                 {% else %}
-                    <div class="line">
+                    <div class="hidden-xs line">
                         {{ loop.index + pag.start }}.
                         <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
                         {% if doc.ti %}
@@ -168,13 +172,26 @@
                     </div>
                 {% endif %}
 
+                <!-- title without link only for mobile -->
+                <div class="visible-xs line">
+                    {{ loop.index + pag.start }}.
+                    <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
+                    {% if doc.ti %}
+                        {% set article_title = doc.ti.0|raw %}
+                    {% else %}
+                        {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                    {% endif %}
+                    <strong class="title" id="title-{{doc.ur.0}}">{{ article_title }}</strong>
+                </div>
+                
                 <br class="visible-xs visible-sm">
 
             {% endblock %}
-            <div class="user-actions">
+            <div class="hidden-xs user-actions">
                 {% include custom_template("result-doc-actions.html") %}
             </div>
-            <div class="line metadata">
+           
+            <div class="hidden-xs line metadata">
 				<div class="col-md-12 col-sm-12">
                     {% if doc.doi %}
                        <span class="DOIResults"><a href="https://doi.org/{{ doc.doi }}" target="_blank">https://doi.org/{{ doc.doi }}</a></span>
@@ -194,6 +211,157 @@
 			</div>
 
         </div>
+
         <div class="clearfix"></div>
+
+        <div class="detailMobile">
+            <div id="detail_{{ doc.id }}" class="detailContent">
+            
+                 <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                {{ texts.RESULT.LABEL_ABSTRACT }}
+                            </th>
+                            <th>
+                                {{ texts.TEXT }}
+                            </th>
+                            <th>
+                                PDF
+                            </th>
+                        </tr>
+                    </thead>
+
+                    {% if doc.available_languages|length > 0 %}
+                    
+                    <tbody>
+                        
+                        {% for language in doc.available_languages %}
+                        
+                        <tr>
+                            <td>
+                                {% if texts.RESULT.LABEL_ABSTRACT %}
+                                    
+                                    <a href="#" class="openAbstractMobile" data-toggle="modal" data-target="#abstractMobile_{{doc.id}}_{{language}}">
+                                        {{ translate(language) }}
+                                    </a>
+
+                                {% endif %} 
+                            </td>
+                            <td>
+                                {% if texts.TEXT %}
+                                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}" target="_blank">
+                                        {{ translate(language) }}
+                                    </a>
+                                {% endif %} 
+                            </td>
+                            <td>
+                                {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+                                {% if attribute(doc, pdf_lang) %}
+                                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}" target="_blank">
+                                        {{ translate(language) }}
+                                    </a>
+                                {% endif %}   
+                            </td>
+                        </tr>
+                        
+                        {% endfor %}
+                        
+                    </tbody>
+
+                    {% endif %}  
+                    
+                </table>
+
+                <div class="doiShareMobile">
+
+                    {% if doc.doi %}
+
+                        <div class="DOIResults"><a href="https://doi.org/{{ doc.doi }}" target="_blank">https://doi.org/{{ doc.doi }}</a></div>
+
+                    {% endif %}
+
+                    <div class="dropup shareResultItem">
+
+                        {% if doc.doi %}
+                            <a href="javascript:;" class="btn btn-default">
+                            {{texts.COPY_DOI}}
+                            </a>
+                        {% endif %}
+
+                        <button class="btn btn-default dropdown-toggle" type="button" data-target="dropUpShare_{{doc.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{texts.SHARE}}
+                            <span class="caret"></span>
+                        </button>
+
+
+                        {% if output != 'print' %}
+                            {% set share_url = attribute(config.scielo_urls, doc.in.0) ~ '/scielo.php?script=sci_arttext&pid=' ~ doc.ur.0 ~ '&lang=' ~lang %}
+
+                            <div id="dropUpShare_{{doc.id}}" class="dropUpShare dropdown-menu">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <a href="{{share_url}}" class="shareFacebook" title="{{ texts.SHARE }} Facebook"><span class="glyphBtn facebook"></span> Facebook</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a href="{{share_url}}" class="shareTwitter"  title="{{ text.SHARE }} Twitter"><span class="glyphBtn twitter"></span> Twitter</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a target="_blank" href="{{share_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    
+                    </div>
+                </div>
+
+                {% for language in doc.available_languages %}
+                    {% set ab_lang = 'ab_' ~ language %}
+                    
+                    <!-- Abstract Modal -->
+                    <div class="modal fade" id="abstractMobile_{{doc.id}}_{{language}}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{ texts.RESULT.LABEL_ABSTRACT }}</h4>
+                          </div>
+                          <div class="modal-body">
+                            
+                            {{ attribute(doc, ab_lang).0|escape }}
+                            
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{texts.CLOSE}}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
     </div>
+
 {% endfor %}

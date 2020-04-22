@@ -1,6 +1,16 @@
 var isOldIE = $("html").is(".lt-ie9");
 var Portal = {
+	
+	IsMobile: false,
+	IsTablet: false,
+
 	Init: function() {
+
+		/* Starts checking if it is mobile */
+		Portal.IsMobile = ($(document).width() < 767) 
+		Portal.IsTablet = (!Portal.IsMobile && $(document).width() < 992)
+		/*  Ends verification if it is mobile */
+
 		$(".showTooltip").tooltip();
 
 		$(".mainNav .menu").on("click",function(e) {
@@ -231,6 +241,23 @@ var Portal = {
 		}).mouseup(function(e) {
 			e.preventDefault();
 		});
+
+		/*
+		Adding function to open and close details in the list of mobile results.
+		*/
+		$(".toggleDetailMobile").on("click",function(e) {
+			if (Portal.IsMobile){
+				var d = $(this).parent().attr("id"),
+					j = $("#detail_" + d);			
+
+				if(j.is(":visible")){
+					j.slideUp("fast");
+				}else{
+					j.slideDown("fast");
+				}
+			}
+		});
+		
 	}
 },
 searchFormBuilder = {
@@ -245,7 +272,7 @@ searchFormBuilder = {
 
 		$(p).on("submit",function(e) {
 
-			var historyQuery = $.trim($("#iptQuery").text());
+			var historyQuery = $.trim("#iptQuery");
 
 			var expr = $("*[name='q[]']",p),
 				connector = $("select[name='bool[]']",p),
@@ -253,11 +280,13 @@ searchFormBuilder = {
 				searchQuery = "";
 
 			for(var i=0,l=expr.length;i<l;i++) {
+
 				if ( $(expr[i]).attr('id') == 'iptQuery' ){
 					var v = $(expr[i]).text();
 				}else{
 					var v = $(expr[i]).val();
 				}
+
 				if(v != "") {
 					var ci = $("option:selected",idx[i]).val();
 
@@ -345,7 +374,6 @@ searchFormBuilder = {
 
 		$("textarea.form-control:visible",p).on("keyup",searchFormBuilder.TextareaAutoHeight).trigger("keyup");
 		
-		//$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 		$("a.clearIptText",p).on("click",searchFormBuilder.ClearPrevInput);
 
 		$(p).on("keypress",function(e) {
@@ -451,8 +479,6 @@ searchFormBuilder = {
 				});
 				t.data("all","1");
 
-				
-
 			} else {
 				action ="d";
 				itens.each(function() {
@@ -461,12 +487,29 @@ searchFormBuilder = {
 					
 				});
 				t.data("all","0");
-
 				
 			}
 			window.manipulate_bookmark(action,values);
 			
 		});
+
+		$(".removeSelection").on("click",function() {
+				
+			var itens = $(".results .item input.checkbox"),
+				values = "";
+				action = "d";
+
+				itens.each(function() {
+					$(this).prop("checked",false);
+					values += $(this).val()+",";
+				});
+
+				$(".selectAll").prop("checked",false);
+				$(".selectAll").data("all","0");
+
+			window.manipulate_bookmark(action,values);
+		});
+
 
 		$(".clusterSelectAll").on("click",function() {
 			var t = $(this),
@@ -912,10 +955,23 @@ searchFormBuilder = {
 			}
 		});
 	},
+	ShowCloseSelectedItemsBarMobile: function(param){
+		if (Portal.IsMobile){
+			if(param >0){
+				$(".topbar-mobile").slideDown('fast');
+			}else{
+				$(".topbar-mobile").slideUp();
+			}
+		}else{
+			$(".topbar-mobile").slideUp();
+			$(".detailContent").hide();
+		}
+	},
 	InsertSearchHistoryItem: function(obj) {
 		var $item = $(obj).data("item"),
 			$ctt = $(obj).parent().parent().find(".colSearch").text(),
-			q = $("#iptQuery"),
+			q = $("#iptQuery");
+			
 			shItem = '&#160;<div class="searchHistoryItem" contenteditable="false"  data-toggle="tooltip" data-placement="top" title="'+$ctt+'">#'+$item+'</div> AND&#160;';
 
 		q.append(shItem).focus();
@@ -1969,4 +2025,29 @@ function send_query_to_history(form_action, form_params){
 		data: form_params,
 		url: form_action,
 	});
+}
+
+// Update interface after resize
+var rtime;
+var timeout = false;
+var delta = 200;
+$(window).resize(function() {
+    rtime = new Date();
+    if (timeout === false) {
+        timeout = true;
+        setTimeout(resizeend, delta);
+    }
+});
+
+function resizeend() {
+    if (new Date() - rtime < delta) {
+        setTimeout(resizeend, delta);
+    } else {
+        timeout = false;
+        
+        Portal.IsMobile = ($(document).width() < 767); 
+		Portal.IsTablet = (!Portal.IsMobile && $(document).width() < 992);
+
+        manipulate_bookmark();
+    }               
 }

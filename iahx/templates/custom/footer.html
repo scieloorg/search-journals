@@ -1,32 +1,48 @@
     <footer>
 		<div class="collectionSignature">
-			<div class="container">
-				<div class="col-md-2 col-sm-2">
-					<img src="{{ constant("STATIC_URL") }}/image/logo-scielo-signature.png" alt="Logo SciELO" />
-				</div>
-				<div class="col-md-8 col-sm-9">
-					<strong>SciELO - Scientific Electronic Library Online</strong><br/>
-					Av. Onze de Junho, 269 - Vila Clementino 04041-050 São Paulo SP - Brasil<br/>
-					Tel.: (55 11) 5083-3639 - Email: scielo@scielo.org
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-1 col-md-offset-4 col-sm-2 col-xs-12">
+						<img src="{{ constant("STATIC_URL") }}/image/logo-scielo-portal-no-label.svg" alt="Logo SciELO" />
+					</div>
+					<div class="col-md-7 col-md-offset-0 col-sm-9 col-xs-10 col-xs-offset-1">
+						<strong>SciELO - Scientific Electronic Library Online</strong><br/>
+						Av. Onze de Junho, 269 - Vila Clementino 04041-050 São Paulo SP - Brasil<br/>
+						Tel.: (55 11) 5083-3639 - Email: scielo@scielo.org
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="partners">
-			<a href="http://www.fapesp.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-fapesp.png" alt="FAPESP"></a>
-			<a href="http://www.cnpq.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-cnpq.png" alt="CNPQ"></a>
-			<a href="http://regional.bvsalud.org/php/index.php?lang=pt" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bvs.png" alt="Biblioteca Virtual em Saúde"></a>
-			<a href="http://regional.bvsalud.org/bvs/bireme/homepage.htm" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bireme.png" alt="BIREME - OPAS - OMS"></a>
-			<img src="{{ constant("STATIC_URL") }}/image/partner-fap.png" alt="FAP UNIFESP">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<a href="http://www.fapesp.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-fapesp.png" alt="FAPESP"></a>
+						<a href="http://www.cnpq.br/" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-cnpq.png" alt="CNPQ"></a>
+						<a href="http://regional.bvsalud.org/php/index.php?lang=pt" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bvs.png" alt="Biblioteca Virtual em Saúde"></a>
+						<a href="http://regional.bvsalud.org/bvs/bireme/homepage.htm" target="_blank"><img src="{{ constant("STATIC_URL") }}/image/partner-bireme.png" alt="BIREME - OPAS - OMS"></a>
+						<img src="{{ constant("STATIC_URL") }}/image/partner-fap.png" alt="FAP UNIFESP">
+					</div>
+				</div>
+			</div>
+			
 		</div>
-		<div class="container collectionLicense">
-			<a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">
-				<img src="{{ constant("STATIC_URL") }}/image/cc-license.png" alt="Creative Common - BY" />
-				<span>
-					{{ texts.LICENCE_DISCLAIMER }}<br/>
-					<strong>{{ texts.LICENCE_DISCLAIMER_MORE }} »</strong>
-				</span>
-			</a>
-
+		<div class="collectionLicense">
+			
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12">
+						<a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">
+							<img src="{{ constant("STATIC_URL") }}/image/cc-license.png" alt="Creative Common - BY" />
+							<span>
+								{{ texts.LICENCE_DISCLAIMER }}<br/>
+								<strong>{{ texts.LICENCE_DISCLAIMER_MORE }} »</strong>
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 	</footer>
 
