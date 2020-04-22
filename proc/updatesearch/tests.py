@@ -4,10 +4,12 @@ import xml.etree.ElementTree as ET
 import json
 import os
 
+import plumber
 from lxml import etree
 from xylose.scielodocument import Article
 
 import pipeline_xml
+import updatesearch
 
 
 class ExportTests(unittest.TestCase):
@@ -1069,3 +1071,29 @@ class ExportTests(unittest.TestCase):
         obtained_results = [x.text for x in xml.findall('./field[@name="citation_fk_ta"]')]
 
         self.assertItemsEqual(expected_results, obtained_results)
+
+    def test_add_fields_to_doc(self):
+        # É preciso setar a variável de ambiente SOLR_URL=http://127.0.0.1/solr
+        us = updatesearch.UpdateSearch()
+
+        ppl = plumber.Pipeline(
+            pipeline_xml.SetupDocument(),
+            pipeline_xml.DocumentID(),
+            pipeline_xml.Entity(name='document'),
+            pipeline_xml.DOI(),
+            pipeline_xml.Collection(),
+            pipeline_xml.DocumentType(),
+            pipeline_xml.URL()
+        )
+
+        obtained_doc = ET.Element('testAddFieldsToDoc')
+        pipeline_results = ppl.run([self._article_meta])
+
+        us.add_fields_to_doc(pipeline_results, obtained_doc)
+
+        expected_doc = '<testAddFieldsToDoc><field name="id">S0034-89102010000400007-scl</field><field ' \
+                       'name="entity">document</field><field name="doi">10.1590/S0034-89102010000400007</field><field ' \
+                       'name="in">scl</field><field name="type">research-article</field><field ' \
+                       'name="ur">S0034-89102010000400007</field></testAddFieldsToDoc>'
+
+        self.assertEqual(ET.tostring(obtained_doc), expected_doc)
