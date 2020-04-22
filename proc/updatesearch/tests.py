@@ -974,21 +974,66 @@ class ExportTests(unittest.TestCase):
         else:
             self.assertTrue(False)
 
-    def test_xml_citation_fk(self):
+    def test_xml_citations_fk_data(self):
 
         pxml = ET.Element('doc')
 
         data = [self._article_meta, pxml]
 
-        xmlarticle = pipeline_xml.CitationFK()
+        xmlarticle = pipeline_xml.CitationsFKData({})
         raw, xml = xmlarticle.transform(data)
 
-        expected_results = ['S0034-8910201000040000700001-scl','S0034-8910201000040000700002-scl','S0034-8910201000040000700003-scl','S0034-8910201000040000700004-scl','S0034-8910201000040000700005-scl','S0034-8910201000040000700006-scl','S0034-8910201000040000700007-scl','S0034-8910201000040000700008-scl','S0034-8910201000040000700009-scl','S0034-8910201000040000700010-scl','S0034-8910201000040000700011-scl','S0034-8910201000040000700012-scl','S0034-8910201000040000700013-scl','S0034-8910201000040000700014-scl','S0034-8910201000040000700015-scl','S0034-8910201000040000700016-scl','S0034-8910201000040000700017-scl','S0034-8910201000040000700018-scl','S0034-8910201000040000700019-scl','S0034-8910201000040000700020-scl','S0034-8910201000040000700021-scl','S0034-8910201000040000700022-scl','S0034-8910201000040000700023-scl']
-        obtained_results = [x.text for x in xml.findall('./field[@name="citation_fk"]')]
+        expected_cit_fk_results = ['S0034-8910201000040000700001-scl', 'S0034-8910201000040000700002-scl',
+                                   'S0034-8910201000040000700003-scl', 'S0034-8910201000040000700004-scl',
+                                   'S0034-8910201000040000700005-scl', 'S0034-8910201000040000700006-scl',
+                                   'S0034-8910201000040000700007-scl', 'S0034-8910201000040000700008-scl',
+                                   'S0034-8910201000040000700009-scl', 'S0034-8910201000040000700010-scl',
+                                   'S0034-8910201000040000700011-scl', 'S0034-8910201000040000700012-scl',
+                                   'S0034-8910201000040000700013-scl', 'S0034-8910201000040000700014-scl',
+                                   'S0034-8910201000040000700015-scl', 'S0034-8910201000040000700016-scl',
+                                   'S0034-8910201000040000700017-scl', 'S0034-8910201000040000700018-scl',
+                                   'S0034-8910201000040000700019-scl', 'S0034-8910201000040000700020-scl',
+                                   'S0034-8910201000040000700021-scl', 'S0034-8910201000040000700022-scl',
+                                   'S0034-8910201000040000700023-scl']
 
-        self.assertItemsEqual(expected_results, obtained_results)
+        expected_cit_fk_au_results = ['Bamgboye, EL', 'Bastos, MG', 'Carmo, WB', 'Abrita, RR', 'Almeida, EC',
+                                      'Mafra, D', 'Costa, DMN', 'Bello, AK', 'Nwankwo, E', 'El Nahas, AM', 'Bommer, J',
+                                      'Cherchiglia, ML', 'Guerra Jr, AA', 'Andrade, EIG', 'Machado, CJ',
+                                      'Ac\xc3\xbarcio, FA', 'Meira Jr, W', 'Cusumano, A', 'Garcia-Garcia, G',
+                                      'Di Gioia, C', 'Hermida, O', 'Lavorato, C', 'Carre\xc3\xb1o, CA', 'Grassmann, A',
+                                      'Gioberge, S', 'Moeller, S', 'Brown, G', 'Inrig, JK', 'Sun, JL', 'Yang, Q',
+                                      'Briley, LP', 'Szczech, LA', 'Jaar, BG', 'Coresh, J', 'Plantinga, LC', 'Fink, NE',
+                                      'Klag, MJ', 'Levey, AS', 'Mazzuchi, N', 'Fernandez-Cean, JM', 'Carbonell, E',
+                                      'Moura, L', 'Schmidt, MI', 'Duncan, BB', 'Rosa, RS', 'Malta, DC', 'Stevens, A',
+                                      'Oliveira, MB', 'Rom\xc3\xa3o Jr, JE', 'Zatz, R', 'Oniscu, GC', 'Schalkwijk, AA',
+                                      'Johnson, RJ', 'Brown, H', 'Forsythe, JL', 'Pisoni, RL', 'Young, EW',
+                                      'Dykstra, DM', 'Greenwood, RN', 'Hecking, E', 'Gillespie, B', 'Queiroz, OV',
+                                      'Guerra Jr, AA', 'Machado, CJ', 'Andrade, EIG', 'Meira Jr, W',
+                                      'Ac\xc3\xbarcio, FA', 'CG, Rabbat', 'KE, Thorpe', 'JD, Russell', 'DN, Churchill',
+                                      'Ravanan, R', 'Udayaraj, U', 'Bakran, A', 'Steenkamp, R', 'Williams, AJ',
+                                      'Ansell, D', 'Sesso, R', 'Lopes, AA', 'Thom\xc3\xa9, FS', 'Bevilacqua J, L',
+                                      'Rom\xc3\xa3o, JEJ', 'Lugon, J', 'Stack, AG', 'Stengel, B', 'Billon, S',
+                                      'Van Dijk, PC', 'Jager, KJ', 'Dekker, FW', 'Simpson, K', 'Travassos, C',
+                                      'Oliveira, EXG', 'Viacava, F', 'Vonesh, EF', 'Snyder, JJ', 'Foley, RN',
+                                      'Collins, AJ']
 
-    def test_xml_citation_fk_without_data_pipe(self):
+        expected_cit_fk_ta_results = ['Ethn Dis.', 'J Bras Nefrol', 'Kidney Int Suppl.', 'Nephrol Dial Transplant.',
+                                      'Rev Bras Estud Pop', 'Ren Fail', 'Nephrol Dial Transplant.',
+                                      'Clin J Am Soc Nephrol.', 'Ann Intern Med.', 'Kidney Int Suppl.',
+                                      'Epidemiol Serv Saude.', 'Kidney Int Suppl.', 'BMJ', 'Kidney Int.',
+                                      'Epidemiol Serv Saude.', 'J Am Soc Nephrol', 'Nephrol Dial Transplant.',
+                                      'J Bras Nefrol.', 'J Am Soc Nephrol.', 'Nephrol Dial Transplant.',
+                                      'Cienc Saude Coletiva.', 'Kidney Int Suppl.']
+
+        obtained_cit_fk_results = [x.text.encode('utf-8') for x in xml.findall('./field[@name="citation_fk"]')]
+        obtained_cit_fk_au_results = [x.text.encode('utf-8') for x in xml.findall('./field[@name="citation_fk_au"]')]
+        obtained_cit_fk_ta_results = [x.text.encode('utf-8') for x in xml.findall('./field[@name="citation_fk_ta"]')]
+
+        self.assertItemsEqual(obtained_cit_fk_results, expected_cit_fk_results)
+        self.assertItemsEqual(obtained_cit_fk_au_results, expected_cit_fk_au_results)
+        self.assertItemsEqual(obtained_cit_fk_ta_results, expected_cit_fk_ta_results)
+
+    def test_xml_citations_fk_data_without_data_pipe(self):
 
         fakexylosearticle = Article({'article': {}, 'title': {}})
 
@@ -996,81 +1041,13 @@ class ExportTests(unittest.TestCase):
 
         data = [fakexylosearticle, pxml]
 
-        xmlarticle = pipeline_xml.CitationFK()
+        xmlarticle = pipeline_xml.CitationsFKData({})
 
         raw, xml = xmlarticle.transform(data)
 
         self.assertIsNone(xml.find('./field[name="citation_fk"]'))
-
-    def test_xml_citation_fk_authors(self):
-
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.CitationFKAuthors()
-        raw, xml = xmlarticle.transform(data)
-
-        expected_results = ['Bamgboye, EL','Bastos, MG','Carmo, WB','Abrita, RR','Almeida, EC','Mafra, D','Costa, DMN','Bello, AK','Nwankwo, E','El Nahas, AM','Bommer, J','Cherchiglia, ML','Guerra Jr, AA','Andrade, EIG','Machado, CJ','Ac\xc3\xbarcio, FA','Meira Jr, W','Cusumano, A','Garcia-Garcia, G','Di Gioia, C','Hermida, O','Lavorato, C','Carre\xc3\xb1o, CA','Grassmann, A','Gioberge, S','Moeller, S','Brown, G','Inrig, JK','Sun, JL','Yang, Q','Briley, LP','Szczech, LA','Jaar, BG','Coresh, J','Plantinga, LC','Fink, NE','Klag, MJ','Levey, AS','Mazzuchi, N','Fernandez-Cean, JM','Carbonell, E','Moura, L','Schmidt, MI','Duncan, BB','Rosa, RS','Malta, DC','Stevens, A','Oliveira, MB','Rom\xc3\xa3o Jr, JE','Zatz, R','Oniscu, GC','Schalkwijk, AA','Johnson, RJ','Brown, H','Forsythe, JL','Pisoni, RL','Young, EW','Dykstra, DM','Greenwood, RN','Hecking, E','Gillespie, B','Queiroz, OV','Guerra Jr, AA','Machado, CJ','Andrade, EIG','Meira Jr, W','Ac\xc3\xbarcio, FA','CG, Rabbat','KE, Thorpe','JD, Russell','DN, Churchill','Ravanan, R','Udayaraj, U','Bakran, A','Steenkamp, R','Williams, AJ','Ansell, D','Sesso, R','Lopes, AA','Thom\xc3\xa9, FS','Bevilacqua J, L','Rom\xc3\xa3o, JEJ','Lugon, J','Stack, AG','Stengel, B','Billon, S','Van Dijk, PC','Jager, KJ','Dekker, FW','Simpson, K','Travassos, C','Oliveira, EXG','Viacava, F','Vonesh, EF','Snyder, JJ','Foley, RN','Collins, AJ']
-        obtained_results = [x.text.encode('utf-8') for x in xml.findall('./field[@name="citation_fk_au"]')]
-
-        self.assertItemsEqual(expected_results, obtained_results)
-
-    def test_xml_citation_fk_authors_without_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.CitationFKAuthors()
-
-        raw, xml = xmlarticle.transform(data)
-
         self.assertIsNone(xml.find('./field[name="citation_fk_au"]'))
-
-    def test_xml_citation_fk_journals(self):
-
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.CitationFKJournals()
-        raw, xml = xmlarticle.transform(data)
-
-        expected_results = ['Ethn Dis.','J Bras Nefrol','Kidney Int Suppl.','Nephrol Dial Transplant.','Rev Bras Estud Pop','Ren Fail','Nephrol Dial Transplant.','Clin J Am Soc Nephrol.','Ann Intern Med.','Kidney Int Suppl.','Epidemiol Serv Saude.','Kidney Int Suppl.','BMJ','Kidney Int.','Epidemiol Serv Saude.','J Am Soc Nephrol','Nephrol Dial Transplant.','J Bras Nefrol.','J Am Soc Nephrol.','Nephrol Dial Transplant.','Cienc Saude Coletiva.','Kidney Int Suppl.']
-        obtained_results = [x.text for x in xml.findall('./field[@name="citation_fk_ta"]')]
-
-        self.assertItemsEqual(expected_results, obtained_results)
-
-    def test_xml_citation_fk_journals_without_data_pipe(self):
-
-        fakexylosearticle = Article({'article': {}, 'title': {}})
-
-        pxml = ET.Element('doc')
-
-        data = [fakexylosearticle, pxml]
-
-        xmlarticle = pipeline_xml.CitationFKJournals()
-
-        raw, xml = xmlarticle.transform(data)
-
         self.assertIsNone(xml.find('./field[name="citation_fk_ta"]'))
-
-    def test_xml_citation_fk_journals_external_data(self):
-
-        pxml = ET.Element('doc')
-
-        data = [self._article_meta, pxml]
-
-        xmlarticle = pipeline_xml.CitationFKJournalsExternalData({})
-        raw, xml = xmlarticle.transform(data)
-
-        expected_results = []
-        obtained_results = [x.text for x in xml.findall('./field[@name="citation_fk_ta"]')]
-
-        self.assertItemsEqual(expected_results, obtained_results)
 
     def test_add_fields_to_doc(self):
         # É preciso setar a variável de ambiente SOLR_URL=http://127.0.0.1/solr

@@ -791,10 +791,19 @@ class Sponsor(plumber.Pipe):
         return data
 
 
-class CitationFKAuthors(plumber.Pipe):
+class CitationsFKData(plumber.Pipe):
     """
-    Adiciona nome dos autores das referências citadas.
+    Adiciona
+        ids das referências citadas,
+        autores das referências citadas,
+        títulos dos periódicos das referências citadas,
+        títulos extras e normalizados dos perídicos das referências citadas.
+
+    :param external_metadata: dados extras e normalizados das citaçoes
     """
+
+    def __init__(self, external_metadata):
+        self.external_metadata = external_metadata
 
     def precond(data):
         raw, xml = data
@@ -807,8 +816,20 @@ class CitationFKAuthors(plumber.Pipe):
 
         for cit in raw.citations:
             if cit.publication_type in CITATION_ALLOWED_TYPES:
+
+                cit_id = cit.data['v880'][0]['_']
+                cit_full_id = '{0}-{1}'.format(cit_id, raw.collection_acronym)
+
+                # Adiciona os ids
+                field_id = ET.Element('field')
+                field_id.text = cit_full_id
+                field_id.set('name', 'citation_fk')
+
+                xml.find('.').append(field_id)
+
+                # Adiciona os autores
                 for author in cit.authors:
-                    field = ET.Element('field')
+                    field_au = ET.Element('field')
                     name = []
 
                     if 'surname' in author:
@@ -817,104 +838,32 @@ class CitationFKAuthors(plumber.Pipe):
                     if 'given_names' in author:
                         name.append(author['given_names'])
 
-                    field.text = ', '.join(name)
+                    field_au.text = ', '.join(name)
 
-                    field.set('name', 'citation_fk_au')
+                    field_au.set('name', 'citation_fk_au')
 
-                    xml.find('.').append(field)
+                    xml.find('.').append(field_au)
 
-        return data
+                if cit.publication_type == 'article':
+                    # Adiciona os títulos dos periódicos
+                    if cit.source:
+                        field_ta = ET.Element('field')
+                        field_ta.text = cit.source
+                        field_ta.set('name', 'citation_fk_ta')
 
+                        xml.find('.').append(field_ta)
 
-class CitationFKJournalsExternalData(plumber.Pipe):
-    "Adiciona títulos extras e normalizados dos periódicos das referências citadas."
+                    # Adiciona os títulos extras e normalizados dos periódicos
+                    citation = self.external_metadata.get(cit_full_id)
+                    if citation:
+                        citation_type = citation.get('type')
+                        if citation_type == 'journal-article':
+                            for ct in citation.get('container-title', []):
+                                field_ta_normalized = ET.Element('field')
+                                field_ta_normalized.text = ct
+                                field_ta_normalized.set('name', 'citation_fk_ta')
 
-    def precond(data):
-        raw, xml = data
-        if not raw.citations:
-            raise plumber.UnmetPrecondition()
-
-    def __init__(self, external_metadata):
-        self.external_metadata = external_metadata
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        collection_acronym = raw.collection_acronym
-
-        for cit in raw.citations:
-            if cit.publication_type in CITATION_ALLOWED_TYPES:
-                cit_id = cit.data['v880'][0]['_']
-                cit_full_id = '{0}-{1}'.format(cit_id, collection_acronym)
-
-                citation = self.external_metadata.get(cit_full_id)
-                if citation:
-                    citation_type = citation.get('type')
-                    if citation_type == 'journal-article':
-                        for ct in citation.get('container-title', []):
-                            field = ET.Element('field')
-                            field.text = ct
-                            field.set('name', 'citation_fk_ta')
-
-                            xml.find('.').append(field)
-
-        return data
-
-
-class CitationFKJournals(plumber.Pipe):
-    """
-    Adiciona títulos dos periódicos das referências citadas.
-    """
-
-    def precond(data):
-        raw, xml = data
-        if not raw.citations:
-            raise plumber.UnmetPrecondition()
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        for cit in raw.citations:
-            if cit.publication_type == 'article':
-                if cit.source:
-                    field = ET.Element('field')
-                    field.text = cit.source
-                    field.set('name', 'citation_fk_ta')
-
-                    xml.find('.').append(field)
-
-        return data
-
-
-class CitationFK(plumber.Pipe):
-    """
-    Adiciona ids das referências citadas.
-    """
-
-    def precond(data):
-        raw, xml = data
-        if not raw.citations:
-            raise plumber.UnmetPrecondition()
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        collection_acronym = raw.collection_acronym
-
-        for cit in raw.citations:
-            if cit.publication_type in CITATION_ALLOWED_TYPES:
-
-                # publisher id + 0{0,4} + index number
-                cit_id = cit.data['v880'][0]['_']
-
-                field = ET.Element('field')
-                field.text = '{0}-{1}'.format(cit_id, collection_acronym)
-                field.set('name', 'citation_fk')
-
-                xml.find('.').append(field)
+                                xml.find('.').append(field_ta_normalized)
 
         return data
 

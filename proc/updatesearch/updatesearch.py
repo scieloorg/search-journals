@@ -314,18 +314,7 @@ class UpdateSearch(object):
         # Pipeline para adicionar no <doc> do artigo dados das referências citadas
         ppl_citations_fk = plumber.Pipeline(
             pipeline_xml.SetupDocument(),
-
-            # Pipe para adicionar os ids das referências citadas
-            pipeline_xml.CitationFK(),
-
-            # Pipe para adicionar os nomes dos autores das referências citadas
-            pipeline_xml.CitationFKAuthors(),
-
-            # Pipe para adicionar os títulos extras e normalizados dos periódicos das referências citadas
-            pipeline_xml.CitationFKJournalsExternalData(external_metadata),
-
-            # Pipe para adicionar os títulos dos periódicos das referências citadas
-            pipeline_xml.CitationFKJournals()
+            pipeline_xml.CitationsFKData(external_metadata)
         )
 
         citations_xmls = []
