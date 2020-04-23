@@ -131,7 +131,6 @@ function processStyleMobile() {
         );
 }
 
-
 function processCSS() {
     return src(cssSources1.watchFolder)
         .pipe(
@@ -162,6 +161,40 @@ function processCSS() {
         );
 }
 
+
+// file in js/ folder
+let jsSources = {
+    scieloSearchContent: [
+        './iahx/static/js/main.js'
+        ],
+    
+    watcher: [
+        './iahx/static/js/main.js'
+        ],
+
+    output: './iahx/static/js'
+};
+
+function proccessJs() {
+    return src(jsSources.scieloSearchContent)
+            .pipe(
+                sourceMaps.init()
+            )
+            .pipe(
+                uglify()
+            )
+            .pipe(
+                sourceMaps.write('.')
+            )
+            .pipe(
+                dest(jsSources.output)
+            )
+            .pipe(
+                connect.reload()
+            );
+}
+
+
 // Watchers
 function watchCSSProcess() {
     return watch(cssSources1.watchFolder,processCSS);
@@ -177,6 +210,7 @@ exports.watch = series(
     processCSS,
     processStyleMobile,
     processUiCustom,
+   
 
     parallel(
         watchCSSProcess,
@@ -186,7 +220,5 @@ exports.watch = series(
 );
 
 exports.default = series(
-    processCSS,
-    processStyleMobile,
-    processUiCustom
+    processCSS
 );
