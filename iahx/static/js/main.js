@@ -257,6 +257,24 @@ var Portal = {
 				}
 			}
 		});
+
+		$(".copyLink").on("click",function(e) {
+			var d = $(this),
+				t = $("<input>");
+			
+			// copy doi
+			$("body").append(t);
+			t.val(d.parent().parent().find(".DOIResults a").attr("href")).select();
+			document.execCommand("copy");
+			t.remove();
+
+			// feedback
+			d.addClass("copyFeedback");
+			setTimeout(function() {
+				d.removeClass("copyFeedback");
+			},2000);
+		});
+	
 		
 	}
 },
