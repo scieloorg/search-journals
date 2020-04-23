@@ -2,7 +2,12 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-$app->get('citation-journal/{lang}/{id}', function (Request $request, $lang, $id) use ($app, $DEFAULT_PARAMS, $config) {
+$app->get('citation-journal/{id}/', function (Request $request, $id) use ($app, $DEFAULT_PARAMS, $config) {
+
+    $lang = $request->get("lang");
+    if (! isset($lang) or ! in_array($lang, array('pt', 'es', 'en'))) {
+        $lang = $DEFAULT_PARAMS['lang'];
+    }
 
     global $texts;
     $texts = parse_ini_file(TRANSLATE_PATH . $lang . "/texts.ini", true);
