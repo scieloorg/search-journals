@@ -29,23 +29,25 @@
             <!--
                 Texto
             -->
-            {% if texts.TEXT %}
+            {% if not 'http' in doc.ur.0 %}
+                {% if texts.TEXT %}
 
-                <span class="separator">|</span>
-                <span>
+                    <span class="separator">|</span>
+                    <span>
 
-                {{ texts.TEXT }}:
+                    {{ texts.TEXT }}:
 
-                {% for language in doc.available_languages %}
+                    {% for language in doc.available_languages %}
 
-                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
-                        {{ translate(language) }}
-                    </a>
+                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
+                            {{ translate(language) }}
+                        </a>
 
-                {% endfor %}
+                    {% endfor %}
 
-                </span>
+                    </span>
 
+                {% endif %}
             {% endif %}
 
 

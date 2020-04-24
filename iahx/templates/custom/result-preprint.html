@@ -1,0 +1,40 @@
+
+<div class="col-md-11 col-sm-10 col-xs-11">
+
+    <div class="line">
+        {{ loop.index + pag.start }}.
+        <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
+
+        <a href="{{ doc.ur.0 }}" title="{{ doc.ti.1 }}" target="_blank">
+            <strong class="title" id="title-{{doc.ur.0}}">[Preprint] - {{ doc.ti.0 }}</strong>
+        </a>
+
+        {% if output != 'print' %}
+            {% set share_url = doc.ur.0 %}
+            {% include custom_template("result-doc-share.html") %}
+        {% endif %}
+
+    </div>
+
+    <br class="visible-xs visible-sm">
+
+    {% if doc.au is defined %}
+        <div class="line authors">
+            {% for author in doc.au %}
+                <a href='https://preprints.scielo.org/index.php/scielo/search/search?query={{ author }}' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if doc.da %}
+        <span style="margin: 0">{{ texts.RESULT.LABEL_PUBLICATION_DATE }}: {{ doc.da }}</span>
+    {% endif %}
+
+    <div class="user-actions">
+        {% include custom_template("result-doc-actions.html") %}
+    </div>
+
+    {% include custom_template("result-doc-metadata.html") %}
+
+</div>
+
