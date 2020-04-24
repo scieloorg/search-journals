@@ -17,14 +17,10 @@ from datetime import datetime, timedelta
 from lxml import etree as ET
 
 import plumber
-import pipeline_xml, citation_pipeline_xml
+import pipeline_xml
 from articlemeta.client import ThriftClient
-from copy import deepcopy
 
 from SolrAPI import Solr
-
-import zipfile
-
 
 logger = logging.getLogger('updatesearch')
 
@@ -113,11 +109,6 @@ class UpdateSearch(object):
                         action='version',
                         version='version: 0.2')
 
-    parser.add_argument('-m', '--metadata',
-                        dest='file_crossref',
-                        help='json zipped file containing metadata gathered from the CrossRef service'
-                        )
-
     def __init__(self):
 
         self.args = self.parser.parse_args()
@@ -135,9 +126,6 @@ class UpdateSearch(object):
         if self.args.period:
             self.args.from_date = datetime.now() - timedelta(days=self.args.period)
 
-        if self.args.file_crossref:
-            self.crossref = self.load_zipped_external_data(self.args.file_crossref)
-
     def format_date(self, date):
         """
         Convert datetime.datetime to str return: ``2000-05-12``.
@@ -151,32 +139,7 @@ class UpdateSearch(object):
 
         return date.strftime('%Y-%m-%d')
 
-    def load_zipped_external_data(self, zipped_external_data):
-        """
-        Lê arquivo com dados extras e normalizados de citações.
-        Chave de cada registro é o id da citação.
-        Valor de cada registro é o conjunto de campos extras e normalizados da citação.
-        
-        :param zipped_external_data: dados normalizados em formato zip
-
-        :returns: dict
-        """
-        inner_file_name = zipped_external_data.split('/')[-1].split('.zip')[0]
-        with zipfile.ZipFile(zipped_external_data).open(inner_file_name) as zf:
-            return json.loads(zf.read()).get('metadata', {})
-
-    def add_fields_to_doc(self, pipeline_results, doc):
-        """
-        Adiciona a um doc os campos de um xml empacotado em um lista de tupla (raw, xml).
-
-        :param pipeline_results: lista com um elemento tupla (raw, xml)
-        :param doc: um ET.Element raiz
-        """
-        for raw, xml in pipeline_results:
-            for field in xml:
-                doc.find('.').append(field)
-
-    def pipeline_to_xml(self, article, external_metadata=None):
+    def pipeline_to_xml(self, article):
         """
         Pipeline to tranform a dictionary to XML format
 
@@ -184,10 +147,8 @@ class UpdateSearch(object):
         """
 
         ppl = plumber.Pipeline(
-            # Conjunto de pipes criador de artigo (<doc> artigo, entity: document)
             pipeline_xml.SetupDocument(),
             pipeline_xml.DocumentID(),
-            pipeline_xml.Entity(name='document'),
             pipeline_xml.DOI(),
             pipeline_xml.Collection(),
             pipeline_xml.DocumentType(),
@@ -199,7 +160,6 @@ class UpdateSearch(object):
             pipeline_xml.WOKCI(),
             pipeline_xml.WOKSC(),
             pipeline_xml.JournalAbbrevTitle(),
-            pipeline_xml.JournalAbbrevTitle(field_name='super_ta'),
             pipeline_xml.Languages(),
             pipeline_xml.AvailableLanguages(),
             pipeline_xml.Fulltexts(),
@@ -224,131 +184,18 @@ class UpdateSearch(object):
             pipeline_xml.JournalISSNs(),
             pipeline_xml.SubjectAreas(),
             pipeline_xml.ReceivedCitations(),
+            pipeline_xml.TearDown()
         )
 
-        article_pipeline_results = ppl.run([article])
+        xmls = ppl.run([article])
 
-        # Constrói elementos <doc> para as referências citadas (<doc>s citação, entities 'citation')
-        # Obtem elementos estrangeiros das referências citadas (para usar no <doc> artigo)
-        cit_xmls, citations_fk_doc = self.get_xmls_citations(article, external_metadata)
-
-        # Cria elemento raiz
+        # Add root document
         add = ET.Element('add')
 
-        # Adiciona <doc>s citação na raiz
-        for cit_xml in cit_xmls:
-            add.append(cit_xml)
-
-        # Completa pipeline de artigo com informações estrangeiras das referências citadas
-        self.add_fields_to_doc(article_pipeline_results, citations_fk_doc)
-
-        # Adiciona <doc> artigo na raiz
-        add.append(citations_fk_doc)
+        for xml in xmls:
+            add.append(xml)
 
         return ET.tostring(add, encoding="utf-8", method="xml")
-
-    def get_xmls_citations(self, document, external_metadata):
-        """
-        Pipeline para transformar citações em documentos Solr.
-        Gera um <doc> citação para cada citação. Povoa esses <doc>s com dados das citações e do artigo citante.
-        Extrai campos estrangeiros das referências citadas para povoar <doc> artigo.
-
-        :param document: Article
-        :param external_metadata: dict de dados extras e normalizados das citações
-
-        :return citations_xmls: <doc>s das citações
-        :return citations_fk: campos estrangeiros das citações
-        """
-
-        # Pipeline para adicionar no <doc> citation dados da referência citada
-        ppl_citation = plumber.Pipeline(
-            # Dados da referência citada
-            citation_pipeline_xml.SetupDocument(),
-            pipeline_xml.Entity(name='citation'),
-            citation_pipeline_xml.DocumentID(),
-            citation_pipeline_xml.IndexNumber(),
-            citation_pipeline_xml.DOI(),
-            citation_pipeline_xml.PublicationType(),
-            citation_pipeline_xml.Authors(),
-            citation_pipeline_xml.AnalyticAuthors(),
-            citation_pipeline_xml.MonographicAuthors(),
-            citation_pipeline_xml.PublicationDate(),
-            citation_pipeline_xml.Institutions(),
-            citation_pipeline_xml.Publisher(),
-            citation_pipeline_xml.PublisherAddress(),
-            citation_pipeline_xml.Pages(),
-            citation_pipeline_xml.StartPage(),
-            citation_pipeline_xml.EndPage(),
-            citation_pipeline_xml.Title(),
-            citation_pipeline_xml.Source(),
-            citation_pipeline_xml.Serie(),
-            citation_pipeline_xml.ChapterTitle(),
-            citation_pipeline_xml.ISBN(),
-            citation_pipeline_xml.ISSN(),
-            citation_pipeline_xml.Issue(),
-            citation_pipeline_xml.Volume(),
-            citation_pipeline_xml.Edition(),
-
-            # Pipe para adicionar no <doc> citation dados normalizados do dicionário external_metadata
-            citation_pipeline_xml.ExternalData(external_metadata),
-
-            # Pipe para adicionar no <doc> citation o id do artigo citante
-            citation_pipeline_xml.DocumentFK(),
-
-            # Pipe para adicionar no <doc> citation a coleção do artigo citante
-            citation_pipeline_xml.Collection()
-        )
-
-        # Pipeline para adicionar no <doc> citation os autores e periódico do documento citante
-        ppl_doc_fk = plumber.Pipeline(
-            pipeline_xml.SetupDocument(),
-
-            # Pipe para adicionar autores do artigo citante
-            pipeline_xml.Authors(field_name='document_fk_au'),
-
-            # Pipe para adicionar títulos do periódico do artigo citante
-            pipeline_xml.JournalTitle(field_name="document_fk_ta"),
-            pipeline_xml.JournalAbbrevTitle(field_name="document_fk_ta")
-        )
-
-        # Pipeline para adicionar no <doc> do artigo dados das referências citadas
-        ppl_citations_fk = plumber.Pipeline(
-            pipeline_xml.SetupDocument(),
-            pipeline_xml.CitationsFKData(external_metadata)
-        )
-
-        citations_xmls = []
-
-        # Cria raiz para armazenar dados básicos do artigo
-        article_fk_doc = ET.Element('doc')
-
-        # Obtém dados estrangeiros do artigo (a serem inseridos nos <doc>s citação)
-        article_fk_pipeline_results = ppl_doc_fk.run([document])
-
-        # Insere na raiz doc_basic_xml os dados estrangeiros do artigo
-        self.add_fields_to_doc(article_fk_pipeline_results, article_fk_doc)
-
-        # Cria documentos para as citações
-        if document.citations:
-            for cit in document.citations:
-                citation_doc = ET.Element('doc')
-                if cit.publication_type in pipeline_xml.CITATION_ALLOWED_TYPES:
-                    citation_pipeline_results = ppl_citation.run([cit])
-                    # Adiciona tags da citação no documento citação
-                    self.add_fields_to_doc(citation_pipeline_results, citation_doc)
-
-                    # Adiciona tags do documento citante no documento citação
-                    for tag in deepcopy(article_fk_doc):
-                        citation_doc.append(tag)
-
-                    citations_xmls.append(citation_doc)
-
-        # Cria tags de dados estrangeiros das citações a serem inseridas no documento citante
-        citations_fk_doc = ET.Element('doc')
-        citations_fk_pipeline_results = ppl_citations_fk.run([document])
-        self.add_fields_to_doc(citations_fk_pipeline_results, citations_fk_doc)
-
-        return citations_xmls, citations_fk_doc
 
     def run(self):
         """
@@ -402,15 +249,10 @@ class UpdateSearch(object):
                 from_date=self.format_date(self.args.from_date),
                 until_date=self.format_date(self.args.until_date)
             ):
-                # Verifica se dados normalizados foram carregados
-                if self.args.file_crossref:
-                    external_metadata = self.crossref
-                else:
-                    external_metadata = {}
 
                 try:
-                    xml = self.pipeline_to_xml(document, external_metadata)
-                    self.solr.update(xml, commit=True)
+                    xml = self.pipeline_to_xml(document)
+                    self.solr.update(self.pipeline_to_xml(document), commit=True)
                 except ValueError as e:
                     logger.error("ValueError: {0}".format(e))
                     logger.exception(e)

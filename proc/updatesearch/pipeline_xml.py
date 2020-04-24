@@ -7,6 +7,39 @@ from citedby import client
 
 CITEDBY = client.ThriftClient(domain='citedby.scielo.org:11610')
 
+"""
+Full example output of this pipeline:
+
+    <doc>
+        <field name="id">art-S0102-695X2015000100053-scl</field>
+        <field name="journal_title">Revista Ambiente & Água</field>
+        <field name="in">scl</field>
+        <field name="ac">Agricultural Sciences</field>
+        <field name="type">editorial</field>
+        <field name="ur">art-S1980-993X2015000200234</field>
+        <field name="authors">Marcelo dos Santos, Targa</field>
+        <field name="ti_*">Benefits and legacy of the water crisis in Brazil</field>
+        <field name="pg">234-239</field>
+        <field name="doi">10.1590/S0102-67202014000200011</field>
+        <field name="wok_citation_index">SCIE</field>
+        <field name="volume">48</field>
+        <field name="supplement_volume">48</field>
+        <field name="issue">7</field>
+        <field name="supplement_issue">suppl. 2</field>
+        <field name="start_page">216</field>
+        <field name="end_page">218</field>
+        <field name="ta">Rev. Ambient. Água</field>
+        <field name="la">en</field>
+        <field name="fulltext_pdf_pt">http://www.scielo.br/pdf/ambiagua/v10n2/1980-993X-ambiagua-10-02-00234.pdf</field>
+        <field name="fulltext_pdf_pt">http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0102-67202014000200138&lng=en&nrm=iso&tlng=pt</field>
+        <field name="da">2015-06</field>
+        <field name="ab_*">In this editorial, we reflect on the benefits and legacy of the water crisis....</field>
+        <field name="aff_country">Brasil</field>
+        <field name="aff_institution">usp</field>
+        <field name="sponsor">CNPQ</field>
+    </doc>
+"""
+
 CITABLE_DOCUMENT_TYPES = (
     u'article-commentary',
     u'brief-report',
@@ -14,11 +47,6 @@ CITABLE_DOCUMENT_TYPES = (
     u'rapid-communication',
     u'research-article',
     u'review-article'
-)
-
-CITATION_ALLOWED_TYPES = (
-    u'article',
-    u'book'
 )
 
 
@@ -137,17 +165,14 @@ class DocumentID(plumber.Pipe):
         return data
 
 
-class Entity(plumber.Pipe):
-
-    def __init__(self, name='document'):
-        self.name = name
+class JournalTitle(plumber.Pipe):
 
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
-        field.text = self.name
-        field.set('name', 'entity')
+        field.text = raw.journal.title
+        field.set('name', 'journal_title')
 
         xml.find('.').append(field)
 
@@ -156,15 +181,12 @@ class Entity(plumber.Pipe):
 
 class JournalTitle(plumber.Pipe):
 
-    def __init__(self, field_name='journal_title'):
-        self.field_name = field_name
-
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
         field.text = raw.journal.title
-        field.set('name', self.field_name)
+        field.set('name', 'journal_title')
 
         xml.find('.').append(field)
 
@@ -247,10 +269,8 @@ class URL(plumber.Pipe):
 
 class Authors(plumber.Pipe):
 
-    def __init__(self, field_name='au'):
-        self.field_name = field_name
-
     def precond(data):
+
         raw, xml = data
 
         if not raw.authors:
@@ -272,7 +292,7 @@ class Authors(plumber.Pipe):
 
             field.text = ', '.join(name)
 
-            field.set('name', self.field_name)
+            field.set('name', 'au')
             xml.find('.').append(field)
 
         return data
@@ -541,15 +561,12 @@ class EndPage(plumber.Pipe):
 
 class JournalAbbrevTitle(plumber.Pipe):
 
-    def __init__(self, field_name='ta'):
-        self.field_name = field_name
-
     def transform(self, data):
         raw, xml = data
 
         field = ET.Element('field')
         field.text = raw.journal.abbreviated_title
-        field.set('name', self.field_name)
+        field.set('name', 'ta')
         xml.find('.').append(field)
 
         return data
@@ -657,15 +674,12 @@ class ReceivedCitations(plumber.Pipe):
     def transform(self, data):
         raw, xml = data
 
-        result = CITEDBY.citedby_pid(raw.publisher_id, metaonly=True, from_heap=False)
-        if result:
-            tr = result.get('article', {'total_received': 0})['total_received']
+        result = CITEDBY.citedby_pid(raw.publisher_id, metaonly=True)
 
-            field = ET.Element('field')
-            field.text = str(tr)
-            field.set('name', 'total_received')
-
-            xml.find('.').append(field)
+        field = ET.Element('field')
+        field.text = str(result.get('article', {'total_received': 0})['total_received'])
+        field.set('name', 'total_received')
+        xml.find('.').append(field)
 
         return data
 
@@ -787,83 +801,6 @@ class Sponsor(plumber.Pipe):
             field.text = sponsor
             field.set('name', 'sponsor')
             xml.find('.').append(field)
-
-        return data
-
-
-class CitationsFKData(plumber.Pipe):
-    """
-    Adiciona
-        ids das referências citadas,
-        autores das referências citadas,
-        títulos dos periódicos das referências citadas,
-        títulos extras e normalizados dos perídicos das referências citadas.
-
-    :param external_metadata: dados extras e normalizados das citaçoes
-    """
-
-    def __init__(self, external_metadata):
-        self.external_metadata = external_metadata
-
-    def precond(data):
-        raw, xml = data
-        if not raw.citations:
-            raise plumber.UnmetPrecondition()
-
-    @plumber.precondition(precond)
-    def transform(self, data):
-        raw, xml = data
-
-        for cit in raw.citations:
-            if cit.publication_type in CITATION_ALLOWED_TYPES:
-
-                cit_id = cit.data['v880'][0]['_']
-                cit_full_id = '{0}-{1}'.format(cit_id, raw.collection_acronym)
-
-                # Adiciona os ids
-                field_id = ET.Element('field')
-                field_id.text = cit_full_id
-                field_id.set('name', 'citation_fk')
-
-                xml.find('.').append(field_id)
-
-                # Adiciona os autores
-                for author in cit.authors:
-                    field_au = ET.Element('field')
-                    name = []
-
-                    if 'surname' in author:
-                        name.append(author['surname'])
-
-                    if 'given_names' in author:
-                        name.append(author['given_names'])
-
-                    field_au.text = ', '.join(name)
-
-                    field_au.set('name', 'citation_fk_au')
-
-                    xml.find('.').append(field_au)
-
-                if cit.publication_type == 'article':
-                    # Adiciona os títulos dos periódicos
-                    if cit.source:
-                        field_ta = ET.Element('field')
-                        field_ta.text = cit.source
-                        field_ta.set('name', 'citation_fk_ta')
-
-                        xml.find('.').append(field_ta)
-
-                    # Adiciona os títulos extras e normalizados dos periódicos
-                    citation = self.external_metadata.get(cit_full_id)
-                    if citation:
-                        citation_type = citation.get('type')
-                        if citation_type == 'journal-article':
-                            for ct in citation.get('container-title', []):
-                                field_ta_normalized = ET.Element('field')
-                                field_ta_normalized.text = ct
-                                field_ta_normalized.set('name', 'citation_fk_ta')
-
-                                xml.find('.').append(field_ta_normalized)
 
         return data
 
