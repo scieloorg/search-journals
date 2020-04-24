@@ -260,7 +260,7 @@
     <field name="document_fk_ta" type="string" indexed="true" multiValued="true"/>
 
     <!-- Entities Document and Citation Journal Title -->
-    <field name="super_ta" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="tis" type="text" indexed="true" stored="true" multiValued="true"/>
 
     <!-- Cluster of Entity -->
     <field name="entity_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
@@ -273,7 +273,7 @@
     <copyField source="au" dest="tw"/>
     <copyField source="ab" dest="tw"/>
     <copyField source="ab_*" dest="tw"/>
-    <copyField source="super_ta" dest="tw"/>
+    <copyField source="tis" dest="tw"/>
     <copyField source="doi" dest="tw"/>
     <copyField source="orcid" dest="tw"/>
     <copyField source="sponsor" dest="tw"/>
@@ -308,10 +308,11 @@
     <!-- /Cluster indexes -->
 
     <!-- Additional indexes -->
+    <copyField source="ta" dest="tis"/>
     <copyField source="journal_title" dest="ta"/>
-    <copyField source="journal_title" dest="super_ta"/>
-    <copyField source="cit_journal_title" dest="super_ta"/>
-    <copyField source="cit_journal_title_canonical" dest="super_ta"/>
+    <copyField source="journal_title" dest="tis"/>
+    <copyField source="cit_journal_title" dest="tis"/>
+    <copyField source="cit_journal_title_canonical" dest="tis"/>
     <copyField source="id" dest="pid"/>
     <!-- /Additional indexes -->
 
