@@ -16,7 +16,7 @@ Aplicação responsável por tornar os artigos ciêntificos da rede SciELO pesqu
 * Pesquisa aglomerada (cluster)
 * Visualização dos resultado da pesquisa em registro simples e completo
 * Envio do resultado de pesquisa por e-mail
-* Exportação do resultado de pesquisa para os formato:
+* Exportação do resultado de pesquisa para os formatos:
     * RIS
     * BibTex
     * Citação
