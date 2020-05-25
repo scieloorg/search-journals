@@ -1,15 +1,12 @@
 // usado para fazer paginação
 function go_to_page(page) {
-    var form = document.searchForm;
     var count = document.searchForm.count.value;
     var from = (page*count)-count+1;
 
-    form.from.value = from;
-    form.page.value = page;
-
-    $("#q").focus();            // prevent submit of default placeholder text
-    $("#searchForm").submit();
-    $("#q").blur();
+    var url = new URL(document.URL);
+    url.searchParams.set("from", from);
+    url.searchParams.set("page", page);
+    window.location = url.toString();
 }
 
 // usado para mudar a forma de exibição do dado (xml/rss/print/site)
