@@ -355,12 +355,11 @@
        with ReplicationHandler and may cause replication to not work
        correctly. See SOLR-1366 for details.
 
+      <indexReaderFactory name="IndexReaderFactory" class="solr.StandardIndexReaderFactory">
+          <str name="setTermsIndexDivisor">2</str>
+      </indexReaderFactory >
     -->
-  <!--
-  <indexReaderFactory name="IndexReaderFactory" class="package.class">
-    <str name="someArg">Some Value</str>
-  </indexReaderFactory >
-  -->
+
 
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
        Query section - these settings control query time things like caches
@@ -417,8 +416,8 @@
                       and initialSize parameters are ignored.
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
-                 initialSize="512"
+                 size="1024"
+                 initialSize="1024"
                  autowarmCount="0"/>
 
     <!-- Query Result Cache
@@ -430,8 +429,8 @@
                        to occupy
       -->
     <queryResultCache class="solr.LRUCache"
-                      size="512"
-                      initialSize="512"
+                      size="1024"
+                      initialSize="1024"
                       autowarmCount="0"/>
 
     <!-- Document Cache
@@ -441,9 +440,10 @@
          this cache will not be autowarmed.
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
-                   initialSize="512"
-                   autowarmCount="0"/>
+                   size="1024"
+                   initialSize="1024"
+                   autowarmCount="0"
+                   maxRamMB="2000"/>
 
     <!-- custom cache currently used by block join -->
     <cache name="perSegFilter"
@@ -704,6 +704,7 @@
        <str name="df">tw</str>
        <str name="q.op">AND</str>
        <str name="defType">edismax</str>
+       <str name="facet.threads">12</str>
     </lst>
     <!-- In addition to defaults, "appends" params can be specified
          to identify values which should be appended to the list of
@@ -742,16 +743,18 @@
 
       <lst name="invariants">
          <str name="facet">true</str>
+         <str name="facet.field">entity_cluster</str>
          <str name="facet.field">in</str>
          <str name="facet.field">journal_title</str>
          <str name="facet.field">la</str>
          <str name="facet.field">year_cluster</str>
+         <str name="facet.field">cit_type_cluster</str>
+         <!-- <str name="facet.field">cit_official_journal_title</str> -->
          <str name="facet.field">subject_area</str>
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
          <str name="facet.field">is_citable</str>
          <str name="facet.field">type</str>
-         <!--str name="facet.field">use_license</str-->
          <str name="facet.limit">15</str>
          <str name="facet.mincount">1</str>
       </lst>
@@ -1121,10 +1124,18 @@
       <str name="fieldType">pdoubles</str>
     </lst>
   </updateProcessor>
+  <updateProcessor class="solr.UniqFieldsUpdateProcessorFactory" name="distinct-multivalued-fields">
+    <arr name="fieldName">
+      <str>document_fk_au</str>
+      <str>document_fk_ta</str>
+      <str>citation_fk_au</str>
+      <str>citation_fk_ta</str>
+    </arr>
+  </updateProcessor>
 
   <!-- The update.autoCreateFields property can be turned to false to disable schemaless mode -->
   <updateRequestProcessorChain name="add-unknown-fields-to-the-schema" default="${update.autoCreateFields:true}"
-           processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
+           processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,distinct-multivalued-fields,add-schema-fields">
     <processor class="solr.LogUpdateProcessorFactory"/>
     <processor class="solr.DistributedUpdateProcessorFactory"/>
     <processor class="solr.RunUpdateProcessorFactory"/>
