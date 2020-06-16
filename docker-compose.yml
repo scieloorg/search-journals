@@ -50,6 +50,7 @@ services:
             - solr-precreate
             - articles
         environment:
-            - SOLR_HEAP=1024m
-            - SOLR_JAVA_MEM="-Xms1024m -Xmx1024m"
+            - SOLR_HEAP=4g
+            - SOLR_JAVA_MEM="-Xms4g -Xmx4g"
+            - SOLR_OPTS=-XX:G1HeapRegionSize=32m -XX:InitiatingHeapOccupancyPercent=75 -XX:+AggressiveOpts
 
