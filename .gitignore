@@ -3,3 +3,4 @@
 iahx/logs/*.txt
 
 solr/8.5.1/cores/solrdata/data/articles/data
+solr/8.5.1/cores/solrdata/logs
