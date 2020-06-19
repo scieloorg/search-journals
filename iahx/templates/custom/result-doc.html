@@ -1,7 +1,5 @@
 {% for doc in docs %}
 
-    {% if doc.entity == 'document' %}
-
     <div id="{{ doc.id }}" class="item">
 
         <div class="col-md-1 col-sm-2 col-xs-1">
@@ -11,6 +9,7 @@
             {% endif %}
             <label for="select_{{ doc.id }}" class="checkbox">&nbsp;</label>
         </div>
+        {% if doc.entity == 'document' %}
         <div class="col-md-11 col-sm-10 col-xs-11">
             {% block data %}
                 {% if doc.in.0 == 'preprint'%}
@@ -196,11 +195,9 @@
 			</div>
 
         </div>
+        {% else %}
+            {% include custom_template("result-citation.html") %}
+        {% endif %}
         <div class="clearfix"></div>
     </div>
-
-    {% else %}
-        {% include custom_template("result-citation.html") %}
-    {% endif %}
-
 {% endfor %}
