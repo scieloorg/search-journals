@@ -5,6 +5,7 @@
 
 <div class="modal-body">
     <div>
+        <h4>{{ texts.CITATION_ORIGINAL_INFO }}</h4>
         <p>
             <strong>{{ texts.CITATION_TITLE_CITED }}</strong>: {{ doc.cit_journal_title }}
         </p>
@@ -17,54 +18,50 @@
         <br/>
     </div>
 
-    {% if doc.cit_journal_title_canonical or doc.cit_journal_issn_canonical %}
-    <div>
-        <h4>{{ texts.CITATION_OFFICIAL_INFO }}</h4>
-        {% if doc.cit_journal_title_canonical %}
-        <p>
-            <strong>{{ texts.CITATION_TITLE }}</strong>: {{ doc.cit_journal_title_canonical }}
-        </p>
-        {% endif %}
-        {% if doc.cit_journal_issn_canonical %}
-        <p>
-            <strong>ISSN</strong>: {% for i in doc.cit_journal_issn_canonical %} {% if loop.last %} {{ i }} {% else %} {{ i }}, {% endif %}{% endfor %}
-        </p>
-        {% endif %}
-        <br/>
-    </div>
-    {% endif %}
-
-    {% if doc.cit_journal_title_normalized or doc.cit_journal_issn_normalized %}
-    <div>
-        <h4>{{ texts.CITATION_EXTRA_INFO }}</h4>
-        {% if doc.cit_journal_title_normalized %}
-        <p>
-            <strong>{{ texts.CITATION_TITLE }}(s)</strong>:
-        </p>
-            <ul class="list-unstyled">
-                {% for i in doc.cit_journal_title_normalized %}
-                    <li>{{ i }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% if doc.cit_journal_issn_normalized %}
-        <p>
-            <strong>ISSN(s)</strong>:
-        </p>
-            <ul class="list-unstyled">
-                {% for i in doc.cit_journal_issn_normalized %}
-                    <li>{{ i }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <br/>
-    </div>
-    {% endif %}
-
     {% if doc.cit_normalization_status %}
-    <div>
-        <h4>{{ texts.CITATION_NORMALIZATION_STATUS }}</h4>
-        <p>{{ doc.cit_normalization_status }}</p>
-    </div>
+        <div>
+            <h4>{{ texts.CITATION_OFFICIAL_INFO }}</h4>
+            <p>
+                <strong>{{ texts.CITATION_OFFICIAL_JOURNAL_TITLE }}</strong>:
+            </p>
+            <ul class="list-unstyled">
+                {% for i in doc.cit_official_journal_title %}
+                    <li>{{ i|title }}</li>
+                {% endfor %}
+            </ul>
+            {% if doc.cit_official_abbreviated_journal_title %}
+                <p>
+                    <strong>{{ texts.CITATION_OFFICIAL_ABBREVIATED_JOURNAL_TITLE }}</strong>:
+                </p>
+                <ul class="list-unstyled">
+                    {% for i in doc.cit_official_abbreviated_journal_title %}
+                        <li>{{ i|title }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p>
+                <strong>ISSN-L</strong>: {{ doc.cit_official_journal_issn_l }}
+            </p>
+            <p>
+                <strong>ISSN(s)</strong>:
+            </p>
+            <ul class="list-unstyled">
+                {% for i in doc.cit_official_journal_issn %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
+            <p>
+                <strong>{{ texts.CITATION_ALTERNATIVE_JOURNAL_TITLE }}</strong>:
+            </p>
+            <ul class="list-unstyled">
+                {% for i in doc.cit_alternative_journal_title %}
+                    <li>{{ i|title }}</li>
+                {% endfor %}
+            </ul>
+            <p>
+                <strong>{{ texts.CITATION_NORMALIZATION_STATUS }}</strong>:
+                {{ doc.cit_normalization_status }}
+            </p>
+        </div>
     {% endif %}
 </div>
