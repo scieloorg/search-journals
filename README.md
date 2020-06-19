@@ -29,11 +29,11 @@ Aplicação responsável por tornar os artigos ciêntificos da rede SciELO pesqu
     * Acessos - Mais acessados primeiro
 * Realizar compartilhamento nas redes sociais
 * Visualizar os resumos nos diversos idiomas
-* Imprimi o resultado de pesquisa
+* Imprime o resultado de pesquisa
 
 ## Integrações:
 
-* Solr 5.5.5 (https://lucene.apache.org/solr/)
+* Solr 8.5.1 (https://lucene.apache.org/solr/)
 * iahx-controller (https://github.com/bireme/iahx-controller)
 
 ```
