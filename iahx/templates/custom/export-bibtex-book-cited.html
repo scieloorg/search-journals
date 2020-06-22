@@ -1,0 +1,61 @@
+{% if doc.cit_chapter_title %}
+@incollection{% raw %}{{% endraw %}{{doc.au.0|substring_before(', ')|upper}}{{ doc.da|slice(0,4) }},
+{% if doc.cit_ana_au %}
+    author = {% raw %}{{% endraw %}{% for author in doc.cit_ana_au %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% else %}
+{% if dic.cit_inst %}
+    author = {% raw %}{{% endraw %}{% for author in doc.cit_inst %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% endif %}
+{% endif %}
+    title = {% raw %}{{{% endraw %}{{ doc.cit_chapter_title }}{% raw %}}}{% endraw %},
+{% if doc.cit_mon_au %}
+    editor = {% raw %}{{% endraw %}{% for author in doc.cit_mon_au %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.cit_source %}
+    booktitle = {% raw %}{{{% endraw %}{{ doc.cit_source }}{% raw %}}}{% endraw %},
+{% endif %}
+{% else %}
+@book{% raw %}{{% endraw %}{{doc.au.0|substring_before(', ')|upper}}{{ doc.da|slice(0,4) }},
+{% if doc.cit_ana_au %}
+    author = {% raw %}{{% endraw %}{% for author in doc.cit_ana_au %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% else %}
+{% if doc.cit_mon_au %}
+    author = {% raw %}{{% endraw %}{% for author in doc.cit_mon_au %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% else %}
+{% if doc.cit_inst %}
+    author = {% raw %}{{% endraw %}{% for author in doc.cit_inst %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% raw %}}{% endraw %},
+{% endif %}
+{% endif %}
+{% endif %}
+{% if doc.cit_source %}
+    title = {% raw %}{{{% endraw %}{{ doc.cit_source }}{% raw %}}}{% endraw %},
+{% endif %}
+{% endif %}
+{% if doc.cit_publisher %}
+    publisher = {% raw %}{{{% endraw %}{{ doc.cit_publisher }}{% raw %}}}{% endraw %},
+{% endif %}
+{% if doc.cit_publisher_address %}
+    address = {% raw %}{{{% endraw %}{{ doc.cit_publisher_address }}{% raw %}}}{% endraw %},
+{% endif %}
+{% if doc.volume %}
+    volume = {% raw %}{{% endraw %}{{ doc.volume }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.da %}
+    year = {% raw %}{{% endraw %}{{ doc.da|slice(0,4) }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.da|length > 4 %}
+    month = {% raw %}{{% endraw %}{{ doc.da|slice(5,2) }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.cit_edition %}
+    edition = {% raw %}{{% endraw %}{{ doc.cit_edition }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.cit_isbn %}
+    isbn = {% raw %}{{% endraw %}{{ doc.cit_isbn }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.doi %}
+    crossref = {% raw %}{{% endraw %}{{ doc.doi }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.start_page %}
+    pages = {% raw %}{{% endraw %}{{ doc.start_page }}-{{ doc.end_page }}{% raw %}}{% endraw %},
+{% endif %}
+}

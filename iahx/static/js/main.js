@@ -1701,6 +1701,10 @@ $(function() {
 		});
 		$("#journal_info_more_link").attr("href", "http://analytics.scielo.org/?journal=" + issn + "&collection=" + collection);
 	});
+
+	$("#CitationJournalInfo").on("hidden.bs.modal", function () {
+		$(this).removeData('bs.modal');
+	});
 });
 
 function get_language_filter_translations() {

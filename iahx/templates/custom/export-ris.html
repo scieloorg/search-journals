@@ -1,5 +1,6 @@
 {% spaceless %}
 {% for doc in docs %}
+{% if doc.entity == 'document' %}
 TY  - JOUR
 {% for author in doc.au %}
 AU  - {{ author }}
@@ -58,5 +59,14 @@ KW  - {{ kw }}
 {% endfor %}
 ER  -
 
+{% else %}
+{% if doc.cit_type == 'article' %}
+{% include custom_template("export-ris-article-cited.html") %}
+
+{% else %}
+{% include custom_template("export-ris-book-cited.html") %}
+
+{% endif %}
+{% endif %}
 {% endfor %}
 {% endspaceless %}

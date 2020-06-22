@@ -7,6 +7,9 @@
     <field name="_version_" type="long" indexed="true" stored="true"/>
     <field name="_root_" type="string" indexed="true" stored="false"/>
 
+	<!-- Entity **document or citation**-->
+    <field name="entity" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+
     <!-- Publisher ID = consist of 'S' + ISSN + numbers + '-' + and the abbreviation of collection, in the future it can be anything -->
     <field name="pid" type="publisher_id" indexed="true" stored="false" multiValued="false"/>
 
@@ -165,6 +168,104 @@
     <!-- Text Words (All indexes) -->
     <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
 
+    <!-- Document Foreign Indexes -->
+
+    <!-- Citations Foreign Keys -->
+    <field name="citation_fk" type="string" indexed="true" multiValued="true"/>
+
+    <!-- Citations Authors -->
+    <field name="citation_fk_au" type="text" stored="true" indexed="true" multiValued="true"/>
+
+    <!-- Citations Journals' Title -->
+    <field name="citation_fk_ta" type="text" stored="true" indexed="true" multiValued="true"/>
+    
+
+	<!-- Entity Citation Exclusive Indexes -->
+
+    <!-- Citation Index Number -->
+    <field name="cit_index_number" type="int" indexed="false" stored="true" multiValued="false"/>
+
+    <!-- Citation Type **article or book** -->
+    <field name="cit_type" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Institutions -->
+    <field name="cit_inst" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Publisher -->
+    <field name="cit_publisher" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Publisher Address -->
+    <field name="cit_publisher_address" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Chapter Title -->
+    <field name="cit_chapter_title" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Source -->
+    <field name="cit_source" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Journal Title -->
+    <field name="cit_journal_title" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Canonical Journal Title -->
+    <field name="cit_journal_title_canonical" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Canonical Journal ISSN -->
+    <field name="cit_journal_issn_canonical" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Normalized Journal Title -->
+    <field name="cit_journal_title_normalized" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Normalized Journal ISSNs -->
+    <field name="cit_journal_issn_normalized" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Normalization Status -->
+    <field name="cit_normalization_status" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Journal ISSN -->
+    <field name="cit_issn"  type="string" indexed="true" stored="true"  multiValued="false"/>
+
+    <!-- Citation Book ISBN -->
+    <field name="cit_isbn"  type="string" indexed="true" stored="true"  multiValued="false"/>
+
+    <!-- Citation Serie -->
+    <field name="cit_serie" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Citation Edition -->
+    <field name="cit_edition"  type="string" indexed="true" stored="true"  multiValued="false"/>
+
+    <!-- Citation Monographic Author -->
+    <field name="cit_mon_au" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Analytic Author -->
+    <field name="cit_ana_au" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Author's Quality Level -->
+    <field name="cit_au_quality_level" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Citation Publication Date's Quality Level -->
+    <field name="cit_da_quality_level" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Cluster of Citation Type -->
+    <field name="cit_type_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
+
+	<!-- Citation Foreign Data -->
+
+    <!-- Document Foreign Key -->
+    <field name="document_fk" type="string" indexed="true" multiValued="false"/>
+    
+    <!-- Document Authors -->
+    <field name="document_fk_au" type="text" indexed="true" multiValued="true"/>
+
+    <!-- Document Journal Title -->
+    <field name="document_fk_ta" type="string" indexed="true" multiValued="true"/>
+
+    <!-- Entities Document and Citation Journal Title -->
+    <field name="tis" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Cluster of Entity -->
+    <field name="entity_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
+    
+
     <!-- All indexes -->
     <copyField source="id" dest="tw"/>
     <copyField source="ti" dest="tw"/>
@@ -172,12 +273,17 @@
     <copyField source="au" dest="tw"/>
     <copyField source="ab" dest="tw"/>
     <copyField source="ab_*" dest="tw"/>
-    <copyField source="ta" dest="tw"/>
+    <copyField source="tis" dest="tw"/>
     <copyField source="doi" dest="tw"/>
     <copyField source="orcid" dest="tw"/>
     <copyField source="sponsor" dest="tw"/>
     <copyField source="journal_title" dest="tw"/>
     <copyField source="keyword_*" dest="tw"/>
+    <copyField source="document_fk_au" dest="tw"/>
+    <copyField source="document_fk_ta" dest="tw"/>
+    <copyField source="citation_fk_au" dest="tw"/>
+    <copyField source="citation_fk_ta" dest="tw"/>
+    <copyField source="cit_journal_title_canonical" dest="tw"/>
     <!-- /All indexes -->
 
     <!-- Subject index -->
@@ -197,10 +303,16 @@
     <!-- Cluster indexes -->
     <copyField source="ta" dest="ta_cluster"/>
     <copyField source="da" dest="year_cluster"/>
+    <copyField source="cit_type" dest="cit_type_cluster"/>
+    <copyField source="entity" dest="entity_cluster"/>
     <!-- /Cluster indexes -->
 
     <!-- Additional indexes -->
+    <copyField source="ta" dest="tis"/>
     <copyField source="journal_title" dest="ta"/>
+    <copyField source="journal_title" dest="tis"/>
+    <copyField source="cit_journal_title" dest="tis"/>
+    <copyField source="cit_journal_title_canonical" dest="tis"/>
     <copyField source="id" dest="pid"/>
     <!-- /Additional indexes -->
 

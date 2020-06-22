@@ -41,12 +41,15 @@ services:
             - "8080:8080"
 
     solr:
-        image: solr:5.5.5
+        image: solr:8.5.1
         volumes:
-            - ./cores:/opt/solr/server/solr/mycores
+            - ./solr/8.5.1/cores/solrdata:/var/solr
         ports:
             - 8983:8983/tcp
         command:
             - solr-precreate
             - articles
-
+        environment:
+            - SOLR_HEAP=4g
+            - SOLR_JAVA_MEM="-Xms4g -Xmx4g"
+            - SOLR_OPTS=-XX:G1HeapRegionSize=32m -XX:InitiatingHeapOccupancyPercent=75 -XX:+AggressiveOpts

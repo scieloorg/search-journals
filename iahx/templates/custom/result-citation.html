@@ -1,0 +1,18 @@
+{% block citations %}
+    <div class="col-md-11 col-sm-10 col-xs-11">
+        {% block data %}
+            <div class="line">
+                {{ loop.index + pag.start }}.
+
+                {% if doc.cit_type == 'article' %}
+                    {% include custom_template("result-citation-article.html") %}
+                {% endif %}
+
+                {% if doc.cit_type == 'book' %}
+                    {% include custom_template("result-citation-book.html") %}
+                {% endif %}
+
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

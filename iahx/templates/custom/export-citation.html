@@ -1,4 +1,18 @@
 {% for doc in docs %}
+{% if doc.entity == 'document' %}
 {% for au in doc.au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. - {{ doc.ti.0 }} - {{ doc.journal_title }}; {{ doc.volume }}({{ doc.issue }}); {{ doc.start_page }}-{{ doc.end_page }}; {{ doc.da }}
+{% else %}
+{% if doc.cit_type == 'article' %}
+{% for au in doc.au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. - {{ doc.ti.0 }} - {{ doc.cit_journal_title }}; {% if doc.volume %}{{ doc.volume }}{% if doc.issue %}({{ doc.issue }}){% endif %}; {% endif %}{% if doc.start_page %}{{ doc.start_page }}-{{ doc.end_page }}; {% endif %}{{ doc.da }}
+{% else %}
+{% if doc.cit_type == 'book' %}
+{% if doc.cit_chapter_title %}
+{% if doc.cit_ana_au %}{% for au in doc.cit_ana_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. {% else %}{% if doc.cit_inst %}{% for au in doc.cit_inst %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% endif %}{% endif %} - {{ doc.cit_chapter_title }}{% if doc.cit_mon_au %}. In: {% for au in doc.cit_mon_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. {% endif %}{% if doc.cit_source %}{{ doc.cit_source }}{% endif %}{% if doc.volume %}; {{ doc.volume }}{% endif %}{% if doc.start_page %}; {{ doc.start_page }}-{{ doc.end_page }}{% endif %}{% if doc.da %}; {{ doc.da }}{% endif %}
+{% else %}
+{% if doc.cit_ana_au %}{% for au in doc.cit_ana_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% else %}{% if doc.cit_mon_au %}{% for au in doc.cit_mon_au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}.{% else %}{% if doc.cit_inst %}{% for author in doc.cit_inst %}{{ author }}{% if not loop.last %} and {% endif %}{% endfor %}{% endif %}{% endif %}{% endif %}{% if doc.cit_source %} - {{ doc.cit_source }}{% endif %}{% if doc.volume %}; {{ doc.volume }}{% endif %}{% if doc.start_page %}; {{ doc.start_page }}-{{ doc.end_page }}{% endif %}{% if doc.da %}; {{ doc.da }}{% endif %}
+{% endif %}
 
+{% endif %}
+{% endif %}
+{% endif %}
 {% endfor %}

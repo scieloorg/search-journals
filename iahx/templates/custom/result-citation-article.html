@@ -1,0 +1,53 @@
+<!-- Citation's author's -->
+<strong>[{{ texts.CITATION }}]</strong>
+{% if doc.au is defined %}
+    {% for author in doc.au %}
+        {{ author|title }}{% if loop.last %}.{% else %};{% endif %}
+    {% endfor %}
+{% endif %}
+
+<!-- Citation year -->
+{% if doc.da is defined %}
+    ({{ doc.da|slice(0,4) }}).
+{% endif %}
+
+<!-- Citation title -->
+{% if doc.ti is defined %}
+    {{ doc.ti.0 }}.
+{% endif %}
+
+<!-- Citation journal title -->
+{% if doc.cit_journal_title %}
+    <a href="#" class="showTooltip dropdown-toggle source" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.SHOW_DETAILS }}">{{ doc.cit_journal_title }}</a>,
+    <ul class="dropdown-menu">
+        <li class="dropdown-header">{{ texts.SHOW_DETAILS }}</li>
+        <li>
+            <ul class="metricTable">
+                <li>
+                    <a href="citation-journal/{{ doc.id }}/?lang={{ lang }}" data-toggle="modal" data-placement="top" data-target="#CitationJournalInfo">
+                        <div class="logo-statistc logo-statistc-info"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="citation-journal/{{ doc.id }}/?lang={{ lang }}" data-toggle="modal" data-target="#CitationJournalInfo">
+                        {{ texts.ABOUT_JOURNAL }}
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endif %}
+
+<!-- Citation journal volume and number -->
+{% if doc.volume %}
+    {{ doc.volume }}{% if doc.issue %}({{ doc.issue }}){% endif %}{% if doc.pg %},{% else %}.{% endif %}
+{% endif %}
+
+<!-- Citation start-end pages -->
+{% if doc.pg %}
+    {{ doc.pg.0 }}.
+{% endif %}
+
+{% if doc.doi %}
+    doi:{{ doc.doi }}.
+{% endif %}
