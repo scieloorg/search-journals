@@ -260,7 +260,7 @@
       <field name="document_fk_ta" type="string" indexed="true" stored="true" multiValued="true"/>
 
       <!-- Entities Document and Citation Journal Title -->
-      <field name="tis" type="text" indexed="true" stored="true" multiValued="true"/>
+      <field name="tis" type="text" indexed="true" stored="false" multiValued="true"/>
 
 
       <!-- All indexes -->
