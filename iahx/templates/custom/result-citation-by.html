@@ -1,0 +1,21 @@
+<div class="user-actions">
+    <div class="line citingDocuments">
+        <span>
+            <a class="citingDocumentLink" href="#!" onclick="$(this).toggleClass('opened');get_citing_documents('{{doc.id}}', '{{lang}}');" data-toggle="collapse" data-target="#citingDocuments-{{doc.id}}">
+                {{ texts.CITED }} {{ doc.document_fk|length }}
+                {% if doc.document_fk|length > 1 %}
+                    {{ texts.CITED_TIMES }}
+                {% else %}
+                    {{ texts.CITED_TIME }}
+                {% endif %}
+            </a>
+            {% if doc.document_fk|length > 50 %}
+                <span class="citingDocumentListLoading" id="citingDocumentListLoading-{{doc.id}}">
+                    &nbsp;
+                </span>
+            {% endif %}
+        </span>
+        <div class="collapse citingDocumentResults" id="citingDocuments-{{doc.id}}">
+        </div>
+    </div>
+</div>
