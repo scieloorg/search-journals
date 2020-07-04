@@ -1974,8 +1974,56 @@ button.btn {
 		.articleAction.shareOtherNetworks {
 			background-position: -15px -735px;
 		}
+		.citingDocuments {
+			margin-top: 5px;
+			.citingDocumentLink{
+				background: #f8f8f6;
+				border-radius: 2px;
+				padding: 5px 5px 5px 10px;
+				margin: 5px 0 5px 0;
+				font-weight: bold;
+			}
+			span {
+				a.citingDocumentLink {
+					&:after {
+						content: '>';
+						font-family: "courier new", monaco, monospace;
+						display: inline-block;
+					}
+				}
+
+				a.citingDocumentLink.opened {
+					&:after {
+						transform: rotate(90deg);
+					}
+				}
+				.citingDocumentListLoading {
+					display: none;
+					background: url("../image/citingDocumentsListLoading.gif") center center no-repeat;
+					width: 15px;
+				}
+			}
+			.citingDocumentList {
+				background: #f8f8f6;
+				margin-top: 0;
+				padding-top: 7px;
+				overflow-y: auto;
+				overflow-x: hidden;
+				max-height: 300px;
+			}
+			.citingDocumentItem{
+				padding-right: 7px;
+			}
+			hr.citingDocumentItemBorder {
+				border-top: #e5e5e5 dashed 2px;
+				margin: 0;
+				padding: 5px;
+				width: 98%;
+			}
+		}
 	}
 }
+
 #Statistics {
 	.chartBlock {
 		text-align: center;
