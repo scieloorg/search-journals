@@ -45,6 +45,7 @@ $app->get('citing-documents/{id}/', function (Request $request, $id) use ($app, 
         $output_array['citation_id'] = $id;
         $output_array['citing_docs'] = $responses;
         $output_array['lang'] = $lang;
+        $output_array['config'] = $config;
     }
 
     echo $app['twig']->render(custom_template($view . '/result-citing-docs.html'), $output_array);
