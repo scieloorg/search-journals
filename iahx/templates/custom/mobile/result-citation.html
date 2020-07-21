@@ -1,0 +1,24 @@
+<li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
+
+    <span class="c-results-a">
+        {% block data %}
+            <span class="c-results-tit-citation">
+                <span class="c-results-num">{{ loop.index + pag.start }}.</span>
+                {% if doc.cit_type == 'article' %}
+                    {% if doc.ti is defined %}
+                        {% set cited_title = doc.ti.0 %}
+                    {% else %}
+                        {% set cited_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                    {% endif %}
+                {% else %}
+                    {% if doc.cit_chapter_title %}
+                        {% set cited_title = doc.cit_chapter_title %}
+                    {% else %}
+                        {% set cited_title = doc.cit_source %}
+                    {% endif %}
+                {% endif %}
+                <strong>[{{ texts.CITATION }}]</strong> {{ cited_title }}
+            </span>
+        {% endblock %}
+    </span>
+</li>
