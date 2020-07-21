@@ -2,23 +2,29 @@
     <ul class="c-results-list">
     {% for doc in docs %}
 
-        <li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
+        {% if doc.entity == 'document' %}
 
-            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"  class="c-results-a">
-                {% block data %}
-                    <span class="c-results-tit">
-                        <span class="c-results-num">{{ loop.index + pag.start }}.</span>
-                        {% if doc.ti %}
-                            {% set article_title = doc.ti.0|raw %}
-                        {% else %}
-                            {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
-                        {% endif %}
-                        {{ article_title }}
-                    </span>
-                {% endblock %}
-                <span class="i-results-arrow"></span>
-            </a>
-        </li>
+            <li id="{{ doc.id }}" class="c-results simplePagerPage1" style="display: list-item;">
+
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"  class="c-results-a">
+                    {% block data %}
+                        <span class="c-results-tit">
+                            <span class="c-results-num">{{ loop.index + pag.start }}.</span>
+                            {% if doc.ti %}
+                                {% set article_title = doc.ti.0|raw %}
+                            {% else %}
+                                {% set article_title = attribute(texts, 'DOCUMENT_WITHOUT_TITLE')  %}
+                            {% endif %}
+                            {{ article_title }}
+                        </span>
+                    {% endblock %}
+                    <span class="i-results-arrow"></span>
+                </a>
+            </li>
+        {% else %}
+            {% include custom_template("mobile/result-citation.html") %}
+        {% endif %}
+
     {% endfor %}
     </ul>
 </div>
