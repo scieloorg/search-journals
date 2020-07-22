@@ -1,3 +1,32 @@
+// usado para fazer paginação de painel de documentos citantes - entrada por página digitada
+function goto_citing_docs_page_by_input(obj, event, cmd) {
+    if (event.keyCode == 13) {
+        new_page = $(obj).val();
+        citation_info = cmd.split(',');
+        citation_info.push(new_page);
+        goto_citing_docs_page(citation_info.join(','));
+    }
+}
+
+// usado para fazer paginação de painel de documentos citantes - entrada por incremento de página
+function goto_citing_docs_page(cmd) {
+    console.log(cmd);
+    els = cmd.split(",");
+    cit_id = els[0];
+    lang = els[1];
+    page = els[2];
+
+    $.ajax({
+        type: "get",
+        dataType: "html",
+        url: "citing-documents/" + cit_id + "/?lang=" + lang + '&page=' + page,
+        success: function (data) {
+            modal_div_citing_docs = $("#modalCitingDocument-" + cit_id)[0];
+            modal_div_citing_docs.innerHTML = data;
+        }
+    });
+}
+
 // usado para fazer paginação
 function go_to_page(page) {
     var count = document.searchForm.count.value;
