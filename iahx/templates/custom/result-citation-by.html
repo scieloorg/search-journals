@@ -1,7 +1,7 @@
 <div class="user-actions">
     <div class="line citingDocuments">
         <span>
-            <a class="citingDocumentLink" href="#!" onclick="$(this).toggleClass('opened');get_citing_documents('{{doc.id}}', '{{lang}}');" data-toggle="collapse" data-target="#citingDocuments-{{doc.id}}">
+            <a class="citingDocumentLink" href="citing-documents/{{doc.id}}/?lang={{ lang }}" data-toggle="modal" data-target="#CitingDocuments-{{doc.id}}">
                 {{ texts.CITED }} {{ doc.document_fk|length }}
                 {% if doc.document_fk|length > 1 %}
                     {{ texts.CITED_TIMES }}
@@ -9,13 +9,13 @@
                     {{ texts.CITED_TIME }}
                 {% endif %}
             </a>
-            {% if doc.document_fk|length > 50 %}
-                <span class="citingDocumentListLoading" id="citingDocumentListLoading-{{doc.id}}">
-                    &nbsp;
-                </span>
-            {% endif %}
         </span>
-        <div class="collapse citingDocumentResults" id="citingDocuments-{{doc.id}}">
+    </div>
+</div>
+
+<div class="modal fade" id="CitingDocuments-{{doc.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-citing-docs" id="modalCitingDocument-{{doc.id}}">
         </div>
     </div>
 </div>
