@@ -1707,32 +1707,6 @@ $(function() {
 	});
 });
 
-function get_citing_documents(doc_id, lang) {
-	var is_loaded = $('#citingDocumentListForId-' + doc_id).length;
-	if (!is_loaded) {
-		element_loading = $('#citingDocumentListLoading-' + doc_id)[0];
-		if (element_loading) {
-			element_loading.style.display = "inline-block";
-		}
-
-		$.ajax({
-			type: "get",
-			async: false,
-			dataType: "html",
-			url: "citing-documents/" + doc_id + "/?lang=" + lang,
-			success: function (data) {
-				doc_div = $("#citingDocuments-" + doc_id)[0];
-				doc_div.innerHTML = data;
-			},
-			complete: function () {
-				if (element_loading) {
-					element_loading.style.display = "none";
-				}
-			}
-		});
-	}
-}
-
 function get_language_filter_translations() {
 
 	var lang = $(document.language.lang).val();

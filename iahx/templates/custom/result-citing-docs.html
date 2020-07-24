@@ -1,13 +1,40 @@
-<ol class="citingDocumentList" id="citingDocumentListForId-{{citation_id}}">
-{% for doc in citing_docs %}
-    <li class="citingDocumentItem">
-        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.0 }}" target="_blank">
-            <strong>{{ doc.ti.0 }}</strong></a>
-        <br/>
-        {{ doc.au|join('; ') }}
-        <br/>
-        <i>{{ doc.journal_title }}</i> ({{ doc.da|slice(0,4) }})
-        <hr class="citingDocumentItemBorder"/>
-    </li>
-{% endfor %}
-</ol>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">{{ texts.CITED_BY }}</h3>
+</div>
+
+<div class="modal-body">
+    <div>
+        <ol class="modal-ol" id="citingDocumentListForId-{{citation_id}}" start="{{pos + 1}}">
+            {% for doc in citing_docs %}
+            <li class="citing-document-item">
+                <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}" title="{{ doc.ti.0 }}" target="_blank">
+                    <strong>{{ doc.ti.0 }}</strong></a>
+                <br/>
+                {{ doc.au|join('; ') }}
+                <br/>
+                <i>{{ doc.journal_title }}</i> ({{ doc.da|slice(0,4) }})
+                {% if not loop.last %}
+                <hr class="citing-document-item-border"/>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+{% if pag.total_pages > 0 %}
+<div class="modal-footer">
+    <div>
+        {% if page is defined and page > 1 %}
+            <a class="modal-page-prev" href="#" onclick="goto_citing_docs_page('{{citation_id}},{{lang}},{{page-1}}');">{{texts.PREVIOUS_PAGE}}</a>
+        {% endif %}
+        {{ texts.PAGE }}
+        <input onkeyup="goto_citing_docs_page_by_input(this, event, '{{citation_id}},{{lang}}')" class="modal-form-control" type="text" name="page" value="{% if page %}{{ page }}{% else %}1{% endif %}" size="1"/>
+        {{ texts.PAGE_OF }} {{ pag.total_pages }}
+        {% if page < pag.total_pages %}
+            <a class="modal-page-next" href="#" onclick="goto_citing_docs_page('{{citation_id}},{{lang}},{{page+1}}');">{{texts.NEXT_PAGE}}</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

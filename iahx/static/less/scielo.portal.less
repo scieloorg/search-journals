@@ -1976,49 +1976,75 @@ button.btn {
 		}
 		.citingDocuments {
 			margin-top: 5px;
-			.citingDocumentLink{
+			.citingDocumentLink {
 				background: #f8f8f6;
 				border-radius: 2px;
 				padding: 5px 5px 5px 10px;
 				margin: 5px 0 5px 0;
 				font-weight: bold;
 			}
-			span {
-				a.citingDocumentLink {
-					&:after {
-						content: '>';
-						font-family: "courier new", monaco, monospace;
-						display: inline-block;
-					}
-				}
+		}
+	}
+}
 
-				a.citingDocumentLink.opened {
-					&:after {
-						transform: rotate(90deg);
-					}
-				}
-				.citingDocumentListLoading {
-					display: none;
-					background: url("../image/citingDocumentsListLoading.gif") center center no-repeat;
-					width: 15px;
-				}
-			}
-			.citingDocumentList {
-				background: #f8f8f6;
-				margin-top: 0;
-				padding-top: 7px;
-				overflow-y: auto;
-				overflow-x: hidden;
-				max-height: 300px;
-			}
-			.citingDocumentItem{
-				padding-right: 7px;
-			}
-			hr.citingDocumentItemBorder {
-				border-top: #e5e5e5 dashed 2px;
-				margin: 0;
-				padding: 5px;
-				width: 98%;
+.modal-citing-docs {
+	.modal-ol {
+		margin-top: 0;
+		padding-top: 7px;
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		.citing-document-item {
+			padding-right: 7px;
+		}
+
+		hr.citing-document-item-border {
+			border-top: #e5e5e5 dashed 2px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			padding-right: 10px;
+		}
+	}
+
+	.modal-footer {
+		.modal-page-next {
+			display: inline-block;
+			text-align: left;
+			text-indent: -5000px;
+			width: 25px;
+			height: 34px;
+			background: url(../image/button.glyphs.png) -10px -105px no-repeat;
+		}
+
+		.modal-page-prev {
+			display: inline-block;
+			text-align: left;
+			text-indent: -5000px;
+			width: 25px;
+			height: 34px;
+			background: url(../image/button.glyphs.png) -10px -105px no-repeat;
+			background-position: -10px -149px;
+		}
+
+		.modal-form-control {
+			padding: 0;
+			background-position: 95% 0;
+			background-color: #f2f1ef;
+			border-color: #dddbd7;
+			-webkit-box-shadow: 0 0 0 0;
+			-moz-box-shadow: 0 0 0 0;
+			box-shadow: 0 0 0 0;
+			width: auto;
+			display: inline-block;
+			background-color: inherit;
+			border: 1px solid #dddbd7;
+			height: 34px;
+			width: 40px;
+			margin: 0 5px;
+			text-align: center;
+
+			select {
+				color: #403d39;
 			}
 		}
 	}
@@ -4073,14 +4099,14 @@ button.btn {
 .lt-ie9 {
 	input[type=checkbox].checkbox {
 		display: inline-block;
-		
+
 		+ label.checkbox {
 			background: none;
 		}
 	}
 	input[type=radio].radio {
 		display: inline-block;
-		
+
 		+ label.radio {
 			background: none;
 		}
