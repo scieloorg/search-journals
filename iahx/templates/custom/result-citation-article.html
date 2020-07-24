@@ -18,24 +18,7 @@
 
 <!-- Citation journal title -->
 {% if doc.cit_journal_title %}
-    <a href="#" class="showTooltip dropdown-toggle source" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.SHOW_DETAILS }}">{{ doc.cit_journal_title }}</a>,
-    <ul class="dropdown-menu">
-        <li class="dropdown-header">{{ texts.SHOW_DETAILS }}</li>
-        <li>
-            <ul class="metricTable">
-                <li>
-                    <a href="citation-journal/{{ doc.id }}/?lang={{ lang }}" data-toggle="modal" data-placement="top" data-target="#CitationJournalInfo">
-                        <div class="logo-statistc logo-statistc-info"></div>
-                    </a>
-                </li>
-                <li>
-                    <a href="citation-journal/{{ doc.id }}/?lang={{ lang }}" data-toggle="modal" data-target="#CitationJournalInfo">
-                        {{ texts.ABOUT_JOURNAL }}
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+    <a href="citation-journal/{{ doc.id }}/?lang={{ lang }}" data-toggle="modal" data-placement="top" data-target="#CitationJournalInfo">{{ doc.cit_journal_title }}</a>,
 {% endif %}
 
 <!-- Citation journal volume and number -->
