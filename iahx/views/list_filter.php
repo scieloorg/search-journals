@@ -9,10 +9,11 @@ $app->get('list-filter/{filter_id}', function (Request $request, $filter_id) use
         $app['request']->request->all(),
         $app['request']->query->all()
     );
-    
+
     $collectionData = $DEFAULT_PARAMS['defaultCollectionData'];
     $site = $DEFAULT_PARAMS['defaultSite'];
     $col = $DEFAULT_PARAMS['defaultCollection'];
+    $initial_filter = html_entity_decode($collectionData->initial_filter);
     $filter = array();
 
     $lang = $DEFAULT_PARAMS['lang'];
@@ -36,6 +37,7 @@ $app->get('list-filter/{filter_id}', function (Request $request, $filter_id) use
 
     $dia = new Dia($site, $col, 1, 'site', $lang);
     $dia->setParam('fb', $fb);
+    $dia->setParam('initial_filter', $initial_filter );
 
     $dia_response = $dia->search($q, $index, $filter);
     $result = json_decode($dia_response, true);
