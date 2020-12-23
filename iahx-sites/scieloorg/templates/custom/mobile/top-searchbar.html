@@ -1,0 +1,29 @@
+<section class="h-search">
+    <div class="form-search">
+
+        <form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}" method="GET">
+            <input type="hidden" name="view" id="view" value="mobile">
+            <input type="hidden" name="output" id="output" value="{{ output }}">
+            <input type="hidden" name="lang" id="lang" value="{{ lang }}">
+            <input type="hidden" name="from" id="from" value="{{ from }}">
+            <input type="hidden" name="sort" id="sort" value="{{ sort }}">
+            <input type="hidden" name="format" id="format" value="{{ format }}">
+            <input type="hidden" name="count" id="count" value="{{ pag.count }}">
+            <input type="hidden" name="fb" id="fb" value="">
+            <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
+
+            
+            {% for name, items in filters if filters is defined %}
+                {% for item in items %}
+                    <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+                {% endfor %}
+            {% endfor %}
+
+    
+            <input type="text" name="q" id="q" value="{% if params.q is defined %}{{ params.q }}{% endif %}" class="input-search" title="{{ texts.SEARCH_WORDS }}">
+
+            <button class="b-search">{{ texts.SEARCH_SUBMIT }}</button>
+            
+        </div>
+    </form>
+</section>

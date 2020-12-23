@@ -1,0 +1,24 @@
+{% spaceless %}
+{% for doc in docs %}
+@article{% raw %}{{% endraw %}{{doc.au.0|substring_before(', ')|upper}}{{ doc.da|slice(0,4) }},
+    title = {% raw %}{{{% endraw %}{{ doc.ti.0 }}{% raw %}}}{% endraw %},
+    journal = {% raw %}{{{% endraw %}{{ doc.journal_title }}{% raw %}}}{% endraw %},
+    author = {% raw %}{{% endraw %}{{ occ({'element': doc.au}) }}{% raw %}}{% endraw %},
+    volume = {% raw %}{{% endraw %}{{ doc.volume }}{% raw %}}{% endraw %},
+    year = {% raw %}{{% endraw %}{{ doc.da|slice(0,4) }}{% raw %}}{% endraw %},
+    publisher = {scielo},
+    language = {% raw %}{{% endraw %}{{ occ({'element': doc.available_languages}) }}{% raw %}}{% endraw %},
+{% if doc.da|length > 4 %}
+    month = {% raw %}{{% endraw %}{{ doc.da|slice(5,2) }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.doi %}
+    crossref = {% raw %}{{% endraw %}{{ doc.doi }}{% raw %}}{% endraw %},
+{% endif %}
+{% if doc.start_page %}
+    pages = {% raw %}{{% endraw %}{{ doc.start_page }}-{{ doc.end_page }}{% raw %}}{% endraw %},
+{% endif %}
+    URL = {% raw %}{{% endraw %}{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}{% raw %}}{% endraw %},
+    }
+
+{% endfor %}
+{% endspaceless %}

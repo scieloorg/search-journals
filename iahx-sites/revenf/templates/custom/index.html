@@ -1,0 +1,95 @@
+{% extends custom_template("base.html") %}
+
+{% block content %}
+
+    {{ parent() }}
+
+    {% if flash_message is defined %}
+        <div id="flash" style="display: none;">{{ attribute(texts, flash_message) }}</div>
+    {% endif %}
+
+    {% if q != '' and docs|length > 0 %}
+        {% block results %}
+            <div class="searchForm">
+                <div class="container resultBlock">
+
+                    <div class="searchFilters col-md-3 col-sm-4">
+                        {% block clusters %}
+                            {% include custom_template("result-clusters.html") %}
+                        {% endblock %}
+                    </div>
+
+                    {% block result_options %}
+
+                        {% block results_bar %}
+                            {% block results_topbar %}
+                                {% include custom_template("result-topbar.html") %}
+                            {% endblock %}
+                        {% endblock %}
+
+                        {% block result_set %}
+                            <div class="results">
+                                {% block result_doc %}{% include custom_template( display_file ) %}{% endblock %}
+                                {% block result_navigation %}{% include custom_template("result-navigation.html") %}{% endblock %}
+                            </div>
+                        {% endblock %}
+
+                    {% endblock %}
+
+                </div>
+            </div>
+        {% endblock %}
+
+        {% include custom_template("result-actions.html") %}
+
+        {% if flash_message is defined %}
+            {% if 'SUCCESS' in flash_message %}
+                {% set icon = 'success' %}
+            {% endif %}
+
+            <div class="modal fade" id="flash_message" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Mensagem</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="midGlyph {{icon}}">
+                                {{ attribute(texts, flash_message) }}
+                                <br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="shareButtons">
+            <span class='st_facebook' displayText='Facebook'></span>
+            <span class='st_twitter' displayText='Tweet'></span>
+            <span class='st_googleplus' displayText='Google+'></span>
+            <span class='st_sharethis' displayText='ShareThis'></span>
+        </div>
+
+    {% endif %}
+
+    <div class="modal fade" id="NotFound" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Sem resultados</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="midGlyph alert">
+                        {{ texts.NO_RESULTS }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include custom_template('help-searchbar-' ~ lang ~ '.html') %}
+
+{% endblock %}

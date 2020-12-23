@@ -1,0 +1,82 @@
+<div class="col-md-9 col-sm-8" id="ResultArea">
+    <div class="searchOptions">
+        <div class="col-md-6 col-sm-12">
+
+            {% if collectionData.sort_list.sort|length > 1 %}
+                {{ texts.SORT_OPTIONS }}
+                <div class="selectBox inline" style="width: 225px;">
+                    <select name="sortBy" id="sortBy" onchange="javascript:change_sort(this);">
+                        {% for sort in collectionData.sort_list.sort %}
+
+                            {% if params.sort is defined %}
+
+                                {* ajusta a variavel de traducao *}
+                                {% if sort.name == params.sort %}
+                                    <option value="{{ sort.name }}" selected="true">{{ attribute(texts.SORT, sort.name) }}</option>
+                                {% else %}
+                                    <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ sort.name }}" >{{ attribute(texts.SORT, sort.name) }}</option>
+                            {% endif %}
+
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
+
+        </div>
+        {% if pag.total_pages > 0 %}
+            <div class="col-md-6 notTablet right">
+                {% if params.page is defined and params.page > 1 %}
+                    <a href="javascript:go_to_page('{{ params.page-1 }}')" class="pagePrev">{{ texts.PREVIOUS_PAGE }}</a>
+                {% endif %}
+                {{ texts.PAGE }}
+                <input type="text" name="page" class="form-control goto_page" value="{% if params.page %}{{ params.page }}{% else %}1{% endif %}"/>
+                {{ texts.PAGE_OF }}  {{ pag.total_pages }}
+                {% if params.page < pag.total_pages %}
+                    <a href="javascript:go_to_page('{{ params.page+1 }}')" class="pageNext">{{ texts.NEXT_PAGE }}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+    </div>
+    <div class="searchActions">
+        <div class="col-md-9 col-sm-6">
+            <input type="checkbox" name="selectAll" value="" class="checkbox selectAll" id="searchForm_selectAll" data-all="0" />
+            <label class="checkbox" for="searchForm_selectAll">{{ texts.SELECT_PAGE }}</label>
+
+            <div class="actionList notTablet">
+                <a href="javascript:print('{{ pag.count }}');">{{ texts.PRINT }}</a>
+                |
+                <a href="" class="sendViaMail">{{ texts.SEND_BY_EMAIL }}</a>
+                |
+                <a href="" data-toggle="modal" data-target="#Export" class="openExport">{{ texts.EXPORT }}</a>
+                |
+                <div class="fixDrop">
+                    {% set share_page_url = app.request.requestUri %}
+                    <a href="javascript:;" class="dropdownIcon dropdown-toggle" data-toggle="dropdown">{{ texts.SHARE }}</a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareFacebook"><span class="glyphBtn facebook"></span> Facebook</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareTwitter"><span class="glyphBtn twitter"></span> Twitter</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareGooglePlus"><span class="glyphBtn googlePlus"></span> Google+</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareLinkedIn"><span class="glyphBtn linkedIn"></span> LinkedIn</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareReddit"><span class="glyphBtn reddit"></span> Reddit</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareStambleUpon"><span class="glyphBtn stambleUpon"></span> StambleUpon</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareCiteULike"><span class="glyphBtn citeULike"></span> CiteULike</a></li>
+                        <li><a target="_blank" href="{{share_page_url}}" class="shareMendeley"><span class="glyphBtn mendeley"></span> Mendeley</a></li>
+                        <li><a href="#" onclick="javascript:return false;" class="st_sharethis" st_url="{{share_page_url}}">{{ texts.OTHER_NETWORKS }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3  col-sm-6 right">
+            <a href="" class="selectItens dropdownIcon dropdown-toggle" data-toggle="dropdown"><strong id="selectedCount" class="my_selection_count" data-preselected="0">0</strong> <span>{{ texts.YOUR_SELECTION }}</span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:list_bookmark();" title="{{ texts.SELECTION_LIST_REGISTERS }}">{{ texts.SELECTION_LIST_REGISTERS }}</a></li>
+                <li><a href="javascript:clean_bookmark('{{ texts.CONFIRM_CLEAR_LIST }}');" title="{{ texts.SELECTION_CLEAR_LIST }}">{{ texts.SELECTION_CLEAR_LIST }}</a></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>

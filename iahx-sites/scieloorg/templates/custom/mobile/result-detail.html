@@ -1,0 +1,73 @@
+{% set abstract_languages = ['pt', 'es', 'en'] %}
+{% extends "mobile/index.html" %}
+
+{% block back_button %}
+    <div class="h-div-back">
+        <a class="b-back" href="#" onclick="history.back(); return false;">{{ texts.BACK }}</a>
+    </div>
+{% endblock %}
+
+
+{# hide unused blocks #}
+
+{% block result_navigation %}{% endblock %}
+{% block clusters %}{% endblock %}
+{% block results_topbar %}{% endblock %}
+{% block resultNavigation %}{% endblock %}
+
+{% block result_set %}      
+    <div id="{{ doc.id }}" class="record detail">
+        <div class="data padding7">
+            {% block data %}
+                <!-- title -->
+                <h1 class="c-results-tit">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</h1>
+                <!-- author -->
+                <h2 class="c-results-intro">                    
+                    {% if doc.au is defined %}
+                    
+                        {% for author in doc.au %}
+                            {{ author }}{% if loop.last %}.{% else %};{% endif %}
+                        {% endfor %}
+
+                    {% endif %}             
+
+                    {% include custom_template("mobile/result-inc-source.html") %}
+                </h2>
+        </div>
+
+        <div class="c-results-resume">
+            <p class="padding5">            
+                {% for lang in abstract_languages %}
+                    {% set label_name = 'LABEL_ABSTRACT_' ~ lang %}
+                    {% set label_attr = 'ab_' ~ lang %}
+                    {% set id = doc.id %}
+
+                    {% if attribute(doc, label_attr) %}
+                        <h4>{{ attribute(texts.RESULT, label_name) }}</h4>
+                        {{ attribute(doc, label_attr).0|raw }}
+                    {% endif %}
+                {% endfor %}            
+            </p>
+        </div>
+
+        <nav class="c-share">
+            {% embed custom_template("mobile/result-doc-actions.html") %}
+                {# hide unused options #}
+                {% block btn_detail %}{% endblock %}
+            {% endembed %}
+        </nav>
+
+
+        {% if maxScore > config.related_min_score %}
+            <div style="display: none">
+              {% include "related-list.html" %}
+            </div>
+        {% endif %}                 
+
+        {% endblock %}            
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block footer %}{% endblock %}

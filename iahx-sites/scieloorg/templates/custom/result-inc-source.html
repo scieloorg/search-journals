@@ -1,0 +1,71 @@
+<!-- source -->
+<div class="line source">
+
+    <span class="dropdown" style="margin:0;display:inline-block;">
+
+        <a href="" class="showTooltip dropdown-toggle" data-toggle="dropdown" data-placement="top" data-original-title="{{ texts.METRICS }}">
+            {{ doc.journal_title }}
+        </a>
+
+        <ul class="dropdown-menu articleShare articleShareMetrics">
+            <li class="dropdown-header">{{ texts.JOURNAL_METRICS }}</li>
+            <li>
+                <ul class="metricTable">
+                    <li>
+                        <a href="#" class="openJournalInfo" data-issn="{{doc.issn.0}}" data-publisher="{{doc.publisher}}" data-collection="{{doc.in.0}}">
+                            <div class="logo-statistc logo-statistc-info"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="openJournalInfo" data-issn="{{doc.issn.0}}" data-publisher="{{doc.publisher}}" data-collection="{{doc.in.0}}">
+                            Sobre o periódico
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <ul class="metricTable">
+                    <li>
+                        <a target="_blank" href="
+                        {{ config.metrics.analytics_metrics_url|trim }}?journal={{doc.issn.0}}&amp;collection={{doc.in.0}}">
+                            <div class="logo-statistc logo-statistc-scielo"></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="
+                        {{ config.metrics.analytics_metrics_url|trim }}?journal={{doc.issn.0}}&amp;collection={{doc.in.0}}">
+                            SciELO Analytics
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </span>
+
+{% if doc.in.0 == 'preprint' %}
+    {% if doc.da %}
+            <span style="margin: 0">{{ texts.RESULT.LABEL_PUBLICATION_DATE }}: {{ doc.da }}</span>
+    {% endif %}
+{% else %}
+    {% if doc.da %}
+        <span style="margin: 0">{{ translate(doc.da|slice(5,2), 'MONTHS') }}</span>
+        <span style="margin: 0">{{ doc.da|slice(0,4) }}, </span>
+    {% endif %}
+    {% if doc.volume %}
+        <small>{{ texts.RESULT.LABEL_VOLUME }}</small>
+        <span>{{ doc.volume }}</span>
+    {% endif %}
+    {% if doc.issue %}
+        <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
+        <span>{{ doc.issue }}</span>
+    {% endif %}
+
+    {% if doc.elocation %}
+        <small>elocation</small>
+        <span>{{ doc.elocation }}</span>
+    {% elseif doc.start_page %}
+        <small>{{ texts.RESULT.LABEL_PAGES }}</small>
+        <span>{{ doc.start_page }} - {{ doc.end_page }}</span>
+    {% endif %}
+{% endif %}
+</div>

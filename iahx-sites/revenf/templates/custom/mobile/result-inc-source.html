@@ -1,0 +1,20 @@
+<!-- source -->
+{% if doc.fo %}
+    <div>
+       <i>{{ doc.fo.0 }}</i>
+    </div>
+{% endif %}
+
+<div>
+    <span>
+        SciELO {{ translate(doc.in, 'REFINE_in') }} |
+    </span>
+    <span>
+        {% if doc.la|length > 1 %}
+            {{ texts.RESULT.LABEL_LANGUAGES }}:
+        {% else %}
+            {{ texts.RESULT.LABEL_LANGUAGE }}:
+        {% endif %}
+        {{ occ( {'element': doc.la,  'translate': true, 'group': 'REFINE_la'} ) }}
+    </span>
+</div>

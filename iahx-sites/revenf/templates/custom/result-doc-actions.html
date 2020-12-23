@@ -1,0 +1,98 @@
+
+
+{% block btn_fulltext %}
+
+    {% if doc.available_languages|length > 0 %}
+        <div class="line versions">
+
+            <!--
+                Resumo
+            -->
+            {% if texts.RESULT.LABEL_ABSTRACT %}
+
+                <span>
+
+                {{ texts.RESULT.LABEL_ABSTRACT }}:
+
+                {% for language in doc.available_languages %}
+
+                    <a href="#" onclick="$(this).toggleClass('opened');$('#{{doc.id}}_{{language}}').slideToggle(); return false;" class=" showTooltip abstract" title="{{ translate(language, 'REFINE_la') }}">
+                        {{ translate(language) }}
+                    </a>
+
+                {% endfor %}
+
+                </span>
+
+            {% endif %}
+
+
+            <!--
+                Texto
+            -->
+            {% if 'http' not in doc.ur.0  %}
+                {% if texts.TEXT %}
+
+                    <span class="separator">|</span>
+                    <span>
+
+                    {{ texts.TEXT }}:
+
+                    {% for language in doc.available_languages %}
+
+                        <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
+                            {{ translate(language) }}
+                        </a>
+
+                    {% endfor %}
+
+                    </span>
+
+                {% endif %}
+
+
+                <!--
+                    PDF
+                -->
+                {% for language in doc.available_languages %}
+
+                    {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+
+                    {% if attribute(doc, pdf_lang) %}
+                        <span class="separator">|</span>
+                        <span>
+
+                            PDF:
+                            <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_pdf&pid={{doc.ur.0}}&lng={{lang}}&tlng={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
+                                {{ translate(language) }}
+                            </a>
+
+                            {% if doc.doi and doc.in.0 == 'scl' %}
+
+                                <span class="separator">|</span>
+                                <span class="e-pdf">
+                                    ePDF:
+                                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/readcube/epdf.php?doi={{doc.doi}}&pid={{doc.ur.0}}&pdf_path={{ attribute(doc, pdf_lang).0|substring_after('pdf/') }}&lang={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
+                                        {{ translate(language) }}
+                                    </a>
+                                </span>
+                            {% endif %}
+
+                        </span>
+
+                     {% endif %}
+
+                {% endfor %}
+            {% endif %}
+            </div>
+    {% endif %}
+
+
+    {% for language in doc.available_languages %}
+        {% set ab_lang = 'ab_' ~ language %}
+        <div id="{{doc.id}}_{{language}}" class="abstract" style="display:none">
+            {{ attribute(doc, ab_lang).0|escape }}
+        </div>
+    {% endfor %}
+
+{% endblock %}

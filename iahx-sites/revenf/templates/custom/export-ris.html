@@ -1,0 +1,62 @@
+{% spaceless %}
+{% for doc in docs %}
+TY  - JOUR
+{% for author in doc.au %}
+AU  - {{ author }}
+{% endfor %}
+TI  - {{ doc.ti.0 }}
+{% for title in doc.ti %}
+{% if not loop.first and title != doc.ti.0 %}
+TT  - {{ title }}
+{% endif %}
+{% endfor %}
+JO  - {{ doc.journal_title }}
+{% if doc.issn %}
+J2  - {{ doc.ta.0 }}
+SN  - {{ doc.issn.0 }}
+{% endif %}
+VL  - {{ doc.volume }}
+IS  - {{ doc.issue }}
+{% if doc.doi %}
+DO  - {{ doc.doi }}
+{% endif %}
+DB  - SciELO {{ translate(doc.in.0, 'REFINE_in') }}
+DP  - {{ config.home_url }}
+ID  - {{ doc.id }}
+{% for language in doc.la %}
+LA  - {{ language }}
+{% endfor %}
+SP  - {{ doc.start_page }}
+EP  - {{ doc.end_page }}
+{% if doc.da %}
+DA  - {{ doc.da }}
+PY  - {{ doc.da|slice(0,4) }}
+{% endif %}
+{% if doc.ab_en %}
+AB  - {{ doc.ab_en.0|raw }}
+{% endif %}
+{% if doc.ab_es %}
+AB  - {{ doc.ab_es.0|raw }}
+{% endif %}
+{% if doc.ab_pt %}
+AB  - {{ doc.ab_pt.0|raw }}
+{% endif %}
+UR  - {{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}
+{% for language in doc.available_languages %}
+{% set pdf_lang = 'fulltext_pdf_' ~ language %}
+{% if attribute(doc, pdf_lang) %}
+L1  - {{ attribute(doc, pdf_lang).0 }}
+{% endif %}
+{% endfor %}
+{% for language in doc.available_languages %}
+{% set kw_lang = 'keyword_' ~ language %}
+{% if attribute(doc, kw_lang) %}
+{% for kw in attribute(doc, kw_lang) %}
+KW  - {{ kw }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+ER  -
+
+{% endfor %}
+{% endspaceless %}

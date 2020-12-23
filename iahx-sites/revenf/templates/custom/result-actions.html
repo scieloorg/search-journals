@@ -1,0 +1,238 @@
+            <div class="modal fade" id="selectClusterItens" tabindex="-1" role="dialog" aria-hidden="true">
+    			<div class="modal-dialog modal-md">
+    				<div class="modal-content">
+    					<div class="modal-header">
+    						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    						<h4 class="modal-title"></h4>
+                            <!--ul class="list-unstyled list-inline">
+                                <li><strong class="icon order">{{ texts.ORDER_BY }}:</strong></li>
+                                <li><a href="javascript:;" class="orderBy" data-field="count" data-rel="" id="orderby_results">• {{ texts.ORDER_BY_RESULTS }}</a></li>
+                                <li><a href="javascript:;" class="orderBy" data-field="item" data-rel="" id="orderby_alpha">• {{ texts.ORDER_BY_ALPHA }}</a></li>
+                            </ul-->
+    					</div>
+
+    					<form name="formSubmit" action="{{ constant("SEARCH_URL") }}" id="selectClusterItensForm" method="GET">
+                            {% for key, value in params %}
+                                {% if key != "filter" and key != "filter_boolean_operator" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
+                                    {% if key == "from" or key == "page" %}
+                                        <input type="hidden" name="{{ key }}" value="1">
+                                    {% else %}
+                                        <input type="hidden" name="{{ key }}" value="{{ value }}">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for name, items in filters if filters is defined %}
+                                {% for item in items %}
+                                    <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% for name, items in filter_boolean_operator if filter_boolean_operator is defined %}
+                                {% for item in items %}
+                                    <input type="hidden" name="filter_boolean_operator[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                                {% endfor %}
+                            {% endfor %}
+
+    						<div class="modal-body">
+                                <div id="no_cluster_selected" style="display:none; text-align: center;">
+                                    <div class="alert alert-warning" role="alert">{{ texts.SELECT_ONE_OR_MORE }}</div>
+                                </div>
+
+    							<div class="filterHead row">
+    								<div class="col-xs-9">
+                                        <input type="checkbox" name="filter" value="*" id="selectClusterItens_all" class="checkbox clusterSelectAll" data-all="0">
+    									<label class="checkbox" for="selectClusterItens_all" title="{{texts.ALL_ITEMS}}">{{ texts.ALL_ITEMS }}</label>
+                                        <a href="javascript:;" class="orderBy_title orderBy showTooltip orderBy_selected" data-field="item" data-rel="" data-group="selectClusterItens" data-original-title="Clique para ordenar" id="orderby_alpha">{{ texts.ORDER_BY_ALPHA }}</a>
+    								</div>
+    								<div class="col-xs-3">
+                                        <a href="javascript:;" class="orderBy_title orderBy showTooltip" data-field="count" data-rel="" data-original-title="Clique para ordenar" id="orderby_results">{{ texts.ORDER_BY_RESULTS }}</a>
+    								</div>
+    								<div class="clearfix"></div>
+    							</div>
+    							<div class="filterBody">
+
+    							</div>
+    						</div>
+    						<div class="modal-footer" style="margin-top: 0;">
+                                <div class="cluster-actions-menu">
+                                    <a href="javascript:;" class="btn singleBtn singleBtn_disabled openStatistics showTooltip" id="statistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="" style=" display: inline-block" data-original-title="Selecione ao menos 1 item">{{ texts.SHOW_GRAPHIC }}</a>
+                                    &nbsp;
+                                    <a href="javascript:;" class="btn singleBtn singleBtn_disabled exportCSV showTooltip" style="display: inline-block;" id="exportcsv" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource="" data-original-title="Selecione ao menos 1 item">{{ texts.CSV_DOWNLOAD }}</a>
+                                    <!--ul>
+                                        <li><a href="javascript:;" class="openStatistics" id="statistics" data-type="bar" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.SHOW_GRAPHIC }}</strong></a></li>
+                                        <li><a href="javascript:;" class="exportCSV" id="exportcsv" target="_blank" data-cluster="{{ attribute(texts.REFINE, name) }}" data-chartsource=""><strong>{{ texts.CSV_DOWNLOAD }}</strong></a></li>
+                                    </ul-->
+                                </div>
+    							<input type="submit" class="btn" value="{{ texts.APPLY_FILTERS }}" />
+
+                                <div class="clearfix"></div>
+    						</div>
+    					</form>
+    				</div>
+    			</div>
+    		</div>
+
+            <div class="modal fade large" id="Statistics" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.SHOW_STATISTICS }} <span class="cluster"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="chartBlock loading">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="SendViaEmail" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.SEND_RESULT }}</h4>
+                        </div>
+                        <form name="sendViaEmail" action="{{ current_url }}" method="post" class="validate">
+                            <input type="hidden" name="is_email" value="true" />
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="control-label">{{ texts.SEND_RESULT_TO }}*</label>
+                                    <input type="text" name="email" value="" class="form-control valid multipleMail" />
+
+                                    <p class="text-muted">
+                                        {{ texts.SEND_RESULT_TO_HELP }}
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ texts.SEND_BY_EMAIL }}</label>
+                                    <div>
+                                        <input type="radio" name="selection" id="sendViaEmail_selection_page" value="page" checked class="radio">
+                                        <label class="radio" for="sendViaEmail_selection_page">{{ texts.THIS_PAGE }}</label>
+                                    </div>
+                                    <div class="selection" style="display: none;">
+                                        <input type="radio" name="selection" value="my_selection" class="radio" id="sendViaEmail_selection_my_selection" />
+                                        <label class="radio" for="sendViaEmail_selection_my_selection">{{ texts.SELETED_RECORDS }} <strong></strong></label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="selection" value="all_results" class="radio" id="sendViaEmail_selection_all_results" />
+                                        <label class="radio" for="sendViaEmail_selection_all_results">{{ texts.ALL_REFERENCES_LIMIT }} <span class="text-muted">(max. 300)</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group extendForm">
+                                    <a href="javascript:;" class="showBlock" id="showBlock" data-rel="#extraFields" data-hide="#showBlock">{{ texts.SEND_RESULT_CHANGE }}</a>
+
+                                    <div id="extraFields" style="display: none;">
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_FROM_EMAIL }}</label>
+                                            <input type="text" name="your_email" value="" class="form-control" placeholder="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_SUBJECT }}</label>
+                                            <input type="text" name="subject" value="" class="form-control" placeholder="" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>{{ texts.MAIL_COMMENT }}</label>
+                                            <textarea name="comment" class="form-control"></textarea>
+                                        </div>
+                                        <a href="javascript:;" class="showBlock" data-rel="#showBlock" data-hide="#extraFields">{{ texts.SEND_RESULT_CHANGE }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" value="{{ texts.SEND }}" class="btn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="Export" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{{ texts.EXPORT_RESULT }}</h4>
+                        </div>
+                        <form name="exportForm" id="exportForm">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <label class="col-xs-12">{{ texts.EXPORT_FORMAT }}:</label>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="ris" class="radio" id="export_format_ris" checked data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_ris">{{ texts.EXPORT_FORMAT_RIS }}</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="bibtex" class="radio" id="export_format_bibtex" data-hide=".csvTypes,.citationTypes" />
+                                            <label class="radio" for="export_format_bibtex">BibTeX</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="citation" class="radio" id="export_format_citation" data-show=".citationTypes" data-hide=".csvTypes" />
+                                            <label class="radio" for="export_format_citation">{{ texts.EXPORT_FORMAT_CITATION }}</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="format" value="csv" class="radio" id="export_format_csv" data-hide=".citationTypes" data-show=".csvTypes" />
+                                            <label class="radio" for="export_format_csv">{{ texts.EXPORT_FORMAT_CSV }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-xs-12">{{ texts.EXPORT}}:</label>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="{{ pag.count }}" class="radio" id="export_selection_current_page" checked="1" />
+                                            <label class="radio" for="export_selection_current_page">{{ texts.THIS_PAGE }} <strong></strong></label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="selection" class="radio" id="export_selection_user_selection" />
+                                            <label class="radio" for="export_selection_user_selection">{{ texts.YOUR_SELECTION }}</label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <input type="radio" name="selection" value="all_results" class="radio" id="export_selection_all_results" />
+                                            <label class="radio" for="export_selection_all_results">{{ texts.ALL_REFERENCES_LIMIT }} <span class="text-muted">(max. {{ config.max_export_records }})</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" name="s" value="{{ texts.EXPORT }}" class="btn" onclick="var select_val = $('input[name=selection]:checked','#exportForm').val(); if (select_val != 'all_results') { export_result(select_val) } else { export_result() }">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="CitedBy" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title"> <span id="article_cited"></span></h4>
+                        </div>
+                        <div class="modal-body" data-label-cited="{{ texts.CITED_BY }}" data-label-nocited="{{ texts.CITED_NONE }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="JournalInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title"> <span id="journal_title"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <a href="" target="_blank" id="journal_info_more_link">{{ texts.SHOW_DETAILS }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
