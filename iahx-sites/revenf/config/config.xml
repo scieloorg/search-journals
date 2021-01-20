@@ -2,9 +2,9 @@
 <dia_config>
     <use_https>true</use_https>
 	<site>solr/scielo-articles</site>
-	<bvs_url>http://www.scielo.org/</bvs_url>
-	<about_bvs_url>http://www.scielo.org/php/level.php?lang=pt&amp;component=56&amp;item=8</about_bvs_url>
-	<home_url>http://www.scielo.org/</home_url>
+	<bvs_url>http://www.revenf.bvs.br/</bvs_url>
+	<about_bvs_url>http://www.revenf.bvs.br/</about_bvs_url>
+	<home_url>http://www.revenf.bvs.br/</home_url>
 	<search_server>api-search.scielo.org</search_server>
 	<photocopy_url/>
 	<documents_per_page>15</documents_per_page>
@@ -50,13 +50,13 @@
 	<feedback_id></feedback_id>
 	<browse_index_url></browse_index_url>
 	<mobile_version>false</mobile_version>
-        <publication_year_start>1909</publication_year_start>
-        <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
+    <publication_year_start>1909</publication_year_start>
+    <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
 	<search_collection_list>
 		<collection>
 			<name></name>
 			<cluster_items_limit>5</cluster_items_limit>
-			<initial_filter></initial_filter>
+			<initial_filter>wok_subject_categories:"nursing"</initial_filter>
 			<index_list>
 				<index>
 					<name>ALL</name>
@@ -87,72 +87,7 @@
                     <prefix>ti</prefix>
                 </index>
 			</index_list>
-			<where_list>
-				<where>
-					<name>ORG</name>
-					<filter></filter>
-				</where>
-				<where>
-					<name>ARG</name>
-					<filter>in:("arg")</filter>
-				</where>
-				<where>
-					<name>SCL</name>
-					<filter>in:("scl")</filter>
-				</where>
-				<where>
-					<name>CHL</name>
-					<filter>in:("chl")</filter>
-				</where>
-				<where>
-					<name>COL</name>
-					<filter>in:("col")</filter>
-				</where>
-				<where>
-					<name>CRI</name>
-					<filter>in:("cri")</filter>
-				</where>
-				<where>
-					<name>CUB</name>
-					<filter>in:("cub")</filter>
-				</where>
-				<where>
-					<name>ESP</name>
-					<filter>in:("esp")</filter>
-				</where>
-				<where>
-					<name>MEX</name>
-					<filter>in:("mex")</filter>
-				</where>
-				<where>
-					<name>PRT</name>
-					<filter>in:("prt")</filter>
-				</where>
-				<where>
-					<name>VEN</name>
-					<filter>in:("ven")</filter>
-				</where>
-				<where>
-					<name>SPA</name>
-					<filter>in:("spa")</filter>
-				</where>
-				<where>
-					<name>SSS</name>
-					<filter>in:("sss")</filter>
-				</where>
-				<where>
-					<name>SZA</name>
-					<filter>in:("sza")</filter>
-				</where>
-                <where>
-                        <name>PER</name>
-                        <filter>in:("per")</filter>
-                </where>
-                <where>
-                        <name>BOL</name>
-                        <filter>in:("bol")</filter>
-                </where>
-			</where_list>
+			<where_list/>
 			<sort_list>
                 <sort>
                 	<name>YEAR_DESC</name>
@@ -181,10 +116,15 @@
             	</format>
             </format_list>
             <!-- restrict list of clusters to show on result. If not set show all availables on solrconf.xml -->
-            <!--cluster_list>
-                <cluster>collection</cluster>
-                <cluster>tag_brasil</cluster>
-            </cluster_list-->
+            <cluster_list>
+                <cluster>journal_title</cluster>
+				<cluster>la</cluster>
+				<cluster>subject_area</cluster>
+				<cluster>wok_subject_categories</cluster>
+				<cluster>wok_citation_index</cluster>
+				<cluster>is_citable</cluster>
+				<cluster>type</cluster>
+            </cluster_list>
 			<filter_list_boolean>true</filter_list_boolean>
 		</collection>
 	</search_collection_list>
