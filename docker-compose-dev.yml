@@ -18,7 +18,9 @@ services:
             - mailhog
             - solrcontroller
         volumes:
-            - ./iahx:/var/www/site # SciELO Search Journals
+            - ./iahx:/var/www/iahx # IAHX core
+            - ./iahx-sites/scieloorg:/var/www/site/scieloorg # SciELO Search Journals
+            - ./iahx-sites/revenf:/var/www/site/revenf # RevEnf Search Journals
         links:
             - mailhog:mailhog
             - solrcontroller:solrcontroller
