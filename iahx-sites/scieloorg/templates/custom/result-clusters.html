@@ -6,7 +6,7 @@
         <div class="searchQuery">
             <div class="searchHistoryItem" data-original-title="" title="" data-history="{{history|length}}">#{{history|length}}</div>
             <div class="query" id="searchHistoryQuery">
-                {{ detailed_query }}
+                {{ attribute(history|last, 'q') }}
             </div>
         </div>
 
