@@ -253,12 +253,12 @@
       <!-- Cluster of Citation Type -->
       <field name="cit_type_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
 
-      
+
       <!-- Citation Foreign Data -->
 
       <!-- Document Foreign Key -->
       <field name="document_fk" type="string" indexed="true" multiValued="false"/>
-      
+
       <!-- Document Authors -->
       <field name="document_fk_au" type="text" indexed="true" multiValued="true"/>
 
@@ -271,6 +271,8 @@
       <!-- Cluster of Entity -->
       <field name="entity_cluster" type="string" indexed="true" stored="false" multiValued="true"/>
 
+      <!-- Serial Network -->
+      <field name="network" type="string" indexed="true" stored="true" multiValued="true"/>
 
       <!-- All indexes -->
       <copyField source="id" dest="tw"/>
