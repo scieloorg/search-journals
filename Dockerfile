@@ -28,14 +28,17 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 EXPOSE 80
 
 # Copy site into place.
-ADD iahx /var/www/site
+ADD iahx /var/www/iahx
+ADD iahx-sites/scieloorg /var/www/iahx-sites/scieloorg
+ADD iahx-sites/revenf /var/www/iahx-sites/revenf
 
 # Work place.
-WORKDIR /var/www/site
+WORKDIR /var/www/iahx
 
 RUN mv config/config-mail-TEMPLATE.php config/config-mail.php
 
-RUN chown -R www-data:www-data /var/www/site/logs
+RUN chown -R www-data:www-data /var/www/iahx-sites/scieloorg/logs
+RUN chown -R www-data:www-data /var/www/iahx-sites/revenf/logs
 
 # Update the default apache site with the config we created.
 ADD config/apache/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
