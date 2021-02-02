@@ -1,0 +1,133 @@
+<form name="searchForm" id="searchForm" action="{{ constant("SEARCH_URL") }}"
+                        method="{% if detailed_query|length > 2048 %}post{% else %}get{% endif %}">
+
+    <input type="hidden" name="q" id="q" value="{{ q }}">
+    <input type="hidden" name="lang" id="lang" value="{{ lang }}">
+    <input type="hidden" name="count" id="count" value="{{ pag.count }}">
+    <input type="hidden" name="from" id="from" value="{{ from }}">
+    <input type="hidden" name="output" id="output" value="{{ output }}">
+    <input type="hidden" name="sort" id="sort" value="{{ sort }}">
+    <input type="hidden" name="format" id="format" value="{{ format }}">
+    <input type="hidden" name="fb" id="fb" value="">
+    <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
+
+    {% for name, items in filters if filters is defined %}
+        {% for item in items %}
+            <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+        {% endfor %}
+    {% endfor %}
+
+</form>
+<form name="searchFormBuilder" class="searchFormBuilder searchForm">
+    <div class="highlight {% if detailed_query != '' %}result{% endif %}">
+        <div class="container">
+            <!--a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a-->
+
+            {% if detailed_query == '' %}
+                <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
+                    <h2>{{ texts.SEARCH_ARTICLES }}</h2>
+                </div>
+                <div class="col-md-2 col-sm-2">
+
+                </div>
+                <div class="clearfix"></div>
+            {% endif %}
+
+            <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
+                <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
+                    {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
+                </a>
+
+                <div class="input-group col-md-12 col-sm-12">
+                    <div class="form-textarea">
+                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control showContextHelper" data-helper="#contextHelper1">{% if docs|length > 0 %}{{ params.q }}{% endif %}</textarea>
+                        <a href="javascript:;" class="clearIptText showTooltip" title="{{ texts.CLEAN_SEARCHFIELD }}" style="display: none;"></a>
+                    </div>
+                    <div class="selectBox index">
+                        <select name="index[]">
+                            {% for index in collectionData.index_list.index if not index.advanced %}
+                                {% if params.index is defined %}
+                                    {% if index.prefix == params.index %}
+                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                    {% else %}
+                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                    {% endif %}
+                                {% else %}
+                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
+            </div>
+            {% if detailed_query != '' %}
+                <div class="col-md-1 col-sm-1">
+                    <a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
+                </div>
+            {% endif %}
+            <div class="clearfix"></div>
+
+            <div class="searchRow-container">
+
+            </div>
+
+            <div class="{% if detailed_query == '' %}col-md-7 col-sm-7{% else %}col-md-6 col-sm-6{% endif %} right">
+                <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
+            </div>
+            <div class="col-md-3  col-md-offset-2 col-sm-3">
+                <a href="{{ constant("SEARCH_URL") }}history/?lang={{lang}}" class="shLink">{{ texts.HISTORY }}</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="row hide" id="NoResults">
+            <div class="col-md-8 col-sm-8 col-md-offset-4 col-sm-offset-4">
+                <h2>{{ texts.NO_RESULTS }}</h2>
+            </div>
+        </div>
+
+    </div>
+    <div id="searchRow-matriz">
+        <div class="searchRow" id="searchRow-@" style="display: none;">
+            <div class="col-md-1 col-sm-1 right">
+                <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
+            </div>
+            <div class="{% if detailed_query == '' %}col-md-8 col-sm-8{% else %}col-md-7 col-sm-7{% endif %}">
+                <div class="input-group col-md-12 col-sm-12">
+                    <div class="selectBox connector">
+                        <select name="bool[]">
+                            <option>AND</option>
+                            <option>OR</option>
+                            <option>AND NOT</option>
+                        </select>
+                    </div>
+                    <div class="form-textarea no-divisor">
+                        <textarea name="q[]" placeholder="{{ texts.SEARCH_WORDS }}" rows="1" class="form-control"></textarea>
+                        <a href="javascript:;" class="clearIptText showTooltip" title="Limpar expressão" style="display: none;"></a>
+                    </div>
+                    <div class="selectBox index">
+                        <select name="index[]">
+                            {% for index in collectionData.index_list.index if not index.advanced %}
+                                {% if params.index is defined %}
+                                    {% if index.prefix == params.index %}
+                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                    {% else %}
+                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                    {% endif %}
+                                {% else %}
+                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</form>
+{# % include custom_template('help-searchbar-' ~ lang ~ '.html') % #}

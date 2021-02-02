@@ -1,0 +1,25 @@
+{% extends "result-format-summary.html" %}
+
+{% set abstract_languages = ['pt', 'es', 'en'] %}
+
+{% block data %}
+    {{ parent () }}
+
+    <div>
+        {% for lang in abstract_languages %}
+            {% set label_name = 'LABEL_ABSTRACT_' ~ lang %}
+            {% set label_attr = 'ab_' ~ lang %}
+            {% set id = doc.id %}
+
+            {% if attribute(doc, label_attr) %}
+                <h4>{{ attribute(texts.RESULT, label_name) }}</h4>
+                {{ attribute(doc, label_attr).0|slice(0,300)|raw }}
+                <a href="#" onclick="$('#{{id}}_{{lang}}').show(); $('#show_{{id}}_{{lang}}').hide(); return false;"  id="show_{{id}}_{{lang}}">[...]</a>
+                    <span style="display:none" id="{{id}}_{{lang}}">
+                    {{ attribute(doc, label_attr).0|slice(300)|raw }}
+                </span>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

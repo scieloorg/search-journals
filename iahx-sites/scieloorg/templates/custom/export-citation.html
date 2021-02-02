@@ -1,0 +1,4 @@
+{% for doc in docs %}
+{% for au in doc.au %}{{au}}{% if not loop.last %}; {% endif %}{% endfor %}. - {{ doc.ti.0 }} - {{ doc.journal_title }}; {{ doc.volume }}({{ doc.issue }}); {{ doc.start_page }}-{{ doc.end_page }}; {{ doc.da }}
+
+{% endfor %}

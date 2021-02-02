@@ -1,0 +1,10 @@
+{% spaceless %}
+{% if from == '0' %}
+ID,Title,Author(s),Source,Journal,Language(s),Publication year,Fulltext URL
+#BR#
+{% endif %}
+{%- for doc in docs -%}
+"{{ doc.id }}","{{ doc.ti.0 }}","{% for author in doc.au %}{{author}}{% if not loop.last %}, {% endif %}{% endfor %}","{{ doc.journal_title }}; {{ doc.volume }}({{ doc.issue }}); {{ doc.start_page }}-{{ doc.end_page }}","{{ doc.journal_title }}","{% for language in doc.la %}{{ translate(language, 'REFINE_la') }}{% if not loop.last %}, {% endif %}{% endfor %}","{{ doc.da|slice(0,4) }}","{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0}}&lang={{lang}}"
+#BR#
+{%- endfor -%}
+{% endspaceless %}

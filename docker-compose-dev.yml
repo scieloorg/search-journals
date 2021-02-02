@@ -18,7 +18,9 @@ services:
             - mailhog
             - solrcontroller
         volumes:
-            - ./iahx:/var/www/site # SciELO Search Journals
+            - ./iahx:/var/www/iahx # IAHX core
+            - ./iahx-sites/scieloorg:/var/www/site/scieloorg # SciELO Search Journals
+            - ./iahx-sites/revenf:/var/www/site/revenf # RevEnf Search Journals
         links:
             - mailhog:mailhog
             - solrcontroller:solrcontroller
@@ -42,12 +44,15 @@ services:
             - "8080:8080"
 
     solr:
-        image: solr:5.5.5
+        image: solr:8.5.1
         volumes:
-            - ./cores:/opt/solr/server/solr/mycores
+            - ./solr/8.5.1/cores/solrdata:/var/solr
         ports:
             - 8983:8983/tcp
         command:
             - solr-precreate
             - articles
-
+        environment:
+            - SOLR_HEAP=4g
+            - SOLR_JAVA_MEM="-Xms4g -Xmx4g"
+            - SOLR_OPTS=-XX:G1HeapRegionSize=32m -XX:InitiatingHeapOccupancyPercent=75 -XX:+AggressiveOpts

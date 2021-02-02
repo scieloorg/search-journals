@@ -271,6 +271,11 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     // detailed query
     $solr_param_q = $result['diaServerResponse'][0]['responseHeader']['params']['q'];
     $solr_param_fq = $result['diaServerResponse'][0]['responseHeader']['params']['fq'];
+
+    // limpa initial filter da variavel solr_param_fq
+    if ($initial_filter != ''){
+        $solr_param_fq = preg_replace('~\('. $initial_filter . '\) AND | AND \('. $initial_filter . '\) |\('. $initial_filter . '\)~', '', $solr_param_fq);
+    }
     if ($solr_param_q != '*:*' && $solr_param_fq != ''){
         $detailed_query = $solr_param_q . " AND " . $solr_param_fq ;
     }elseif ($solr_param_q != '*:*'){

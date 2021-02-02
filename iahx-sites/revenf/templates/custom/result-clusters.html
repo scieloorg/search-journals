@@ -1,0 +1,158 @@
+    <div class="filterTitle">
+            {{ texts.RESULTS }}: <strong id="TotalHits">{{ pag.total_formatted|replace({".": " "}) }}</strong>
+    </div>
+    <div class="filterContent" id="refineSearch">
+
+        <div class="searchQuery">
+            <div class="searchHistoryItem" data-original-title="" title="" data-history="{{history|length}}">#{{history|length}}</div>
+            <div class="query" id="searchHistoryQuery">
+                {{ attribute(history|last, 'q') }}
+            </div>
+        </div>
+
+        {% if filters_formatted|length > 0 %}
+            <div class="collapseBlock">
+                <div class="title">
+                    <a href="javascript:;" class="action opened">{{ texts.SELECTED_FILTERS }}</a>
+                    <a href="javascript:reset_filters()" class="singleBtn"><span>{{ texts.CLEAN }}</span></a>
+                </div>
+                <div class="content">
+                    {% for cluster, items in filters_formatted %}
+                        {% set texts_group = 'REFINE_' ~ cluster %}
+                        {% for item in items %}
+                            {% set item_value = cluster ~ '_' ~ item|slugify ~ '' %}
+
+                            <a href="javascript:remove_filter('{{ item_value }}{% if item == '*' %}ALL{% endif %}')" title="Remover cluster: {{ item }}" class="selectedFilter">
+                                 <span>{{ attribute(texts.REFINE, cluster) }}: <strong>
+                                 {% if item == '*' %}
+                                    {{ texts.ALL_ITEMS }}
+                                 {% else %}
+                                     {{ translate(item, texts_group) }}
+                                 {% endif %}
+                                 </strong></span>
+                            </a>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="filterTitle">
+        <strong>{{ texts.FILTERS }}</strong>
+    </div>
+
+    <div class="filterContent" id="refineSearch">
+
+            <form action="" id="form_clusters" method="GET">
+                <div class="buttons" id="btn-affix">
+                    <button type="button" id="apply_filters_button" class="btn glyph-search">{{texts.FILTER}}</button>
+                </div>
+                <!-- used for show more values (facet browse)-->
+                <input type="hidden" name="fb" value="">
+
+                {% for key, value in params %}
+                    {% if key != "filter" and key != "submit" and key != "fb" and key != "reset_filters" and "_submit" not in key  %}
+                        {% if key == "from" or key == "page" %}
+                            <input type="hidden" name="{{ key }}" value="1">
+                        {% elseif key == "filter_boolean_operator" %}
+                            {% for bkey, bvalue in  value %}
+                                {% for operator in  bvalue %}
+                                    <input type="hidden" name="{{ key }}[{{bkey}}][]" value="{{ operator }}">
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <input type="hidden" name="{{ key }}" value="{{ value }}">
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% for name, cluster in clusters if cluster|length > 0 %}
+
+                    {% set cluster_labels = 'REFINE_' ~ name %}
+
+                    {# check if config has a cluster list to show, if not show all #}
+
+                    {% if not collectionData.cluster_list.cluster or name in collectionData.cluster_list.cluster %}
+
+                        {% if (name == 'acronym_sponsor' and params.where != 'SCL') or name == 'dedup_signature' %}
+                            {# hide acronym_sponsor cluster when not collection equal Brazil  #}
+                            {# hide dedup_signature used in the process of delete duplication #}
+                        {% else %}
+                            <a name="{{ name }}"></a>
+                            <div id="{{ name }}" class="collapseBlock">
+                                <div class="title">
+                                    <a href="javascript:;" title="{{ attribute(texts.REFINE, name) }}" class="action opened">
+                                        {{ attribute(texts.REFINE, name) }}
+                                    </a>
+                                    {% if cluster|length > 1 %}
+                                        <!--a href="javascript:;" class="icon configs openSelectItens pull-right configsText" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}">{{texts.SETTINGS}}</a-->
+                                        <a href="javascript:;" id="openSelectItens_{{ name }}" class="singleBtn openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}" title="{{texts.SETTINGS}}"><span>+ {{texts.SETTINGS}}</span></a>
+                                    {% endif %}
+                                </div>
+
+                                <div id="colletion_{{ name }}" class="content filterCollapsedList" style="display: block">
+                                    <ul id="ul_{{ name }}">
+                                        <li class="filterItem row">
+                                            <div class="col-xs-9">
+
+                                                <input type="checkbox" name="filter[{{ name }}][]" value='*' id="{{name}}_ALL"
+                                                {% for filter_name, filter in filters if filter_name == name %}
+                                                    {% if filter.0 == '*' %}checked="true"{% endif %}
+                                                {% endfor %}
+                                                class="checkbox">
+                                                <label class="checkbox" for="{{name}}_ALL">{{ texts.ALL_ITEMS }}</label>
+                                            </div>
+                                        </li>
+                                        {% for item in cluster if item.0 != '' %}
+                                            {% set cluster_item_id = name ~ '_'
+~ item.0|slugify %}
+
+                                            {% if name == 'document_type' and
+attribute(texts.REFINE_document_type, item.0|slugify) == '' %}
+                                               {# hide cluster for document_type that dont have translation #}
+
+                                            {% elseif name == 'la' and
+attribute(texts.REFINE_la, item.0|slugify) == '' %}
+                                               {# hide cluster for languages that dont have translation #}
+
+                                            {% else %}
+                                                <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
+                                                    <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
+                                                        <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
+                                                        {% for filter_name, filter in filters if filter_name == name %}
+                                                            {% if item.0 in filter %}checked="true"{% endif %}
+                                                        {% endfor %}
+                                                        class="checkbox">
+                                                        {% set item_label = translate(item.0, cluster_labels ) %}
+                                                        <label class="checkbox {% if item_label|length > 30 %}showTooltip{% endif %}" for="{{ cluster_item_id }}" {% if item_label|length > 30 %}data-original-title="{{item_label}}" {% endif %}>
+                                                            {% if '/' in item.0 %}
+                                                                {% set item_part = item.0|split('/') %}
+                                                                {{ translate(item_part.1, cluster_labels ) }}
+                                                            {% else %}
+                                                                {{ item_label }}
+                                                            {% endif %}
+                                                        </label>
+
+                                                    </div>
+                                                    <div class="col-xs-3 right">
+                                                        <span>{{ item.1 }}</span>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
+                                            <a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{ texts.SHOW_ALL_ITEMS }}...</a>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </form>
+
+
+
+    </div>

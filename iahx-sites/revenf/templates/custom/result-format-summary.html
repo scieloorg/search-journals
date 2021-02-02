@@ -1,0 +1,16 @@
+{% extends custom_template("result-doc.html") %}
+
+{% block data %}
+    {{ parent () }}
+    <!-- author -->
+    {% if doc.au is defined %}
+        <div class="line authors">
+            {% for author in doc.au %}
+                <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% include custom_template("result-inc-source.html") %}
+
+{% endblock %}
