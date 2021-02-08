@@ -42,6 +42,21 @@ Aplicação responsável por tornar os artigos ciêntificos da rede SciELO pesqu
 +-------------------+       +------------------------------+      +--------------+
 ```
 
+
+## Multisite
+
+A aplicação esta preparada para atender múltiplos sites usando o mesmo conjunto principal de arquivos do IAHX (arquivos core). Para isso é necessário:
+
+* Replicar uma estrutura de um site existente abaixo do diretório **iahx-sites/**. 
+* Ajustar o arquivo de configuração **config.xml** que se encontra abaixo do diretório **config/** deste novo site:
+    * Indicar no parâmetro ```<site>``` o nome do índice SOLR onde serão realizadas as buscas
+    * Caso seja um índice SOLR compartilhado por vários sites indicar no parâmetro ```<initial_filter>``` qual filtro dever ser aplicado para cada busca realizada pelo usuario. 
+Exemplo ```<initial_filter>network:"rve"</initial_filter>```
+    * Ajustar os demais parâmetros do config.xml, como por exemplos filtros disponíveis, url da homepage, etc.
+* Realizar ajustes de aparência da interface (CSS, imagens, etc) usando os arquivos disponíveis abaixo do diretório **static/**
+* Realizar ajustes nos templates de apresentação (apresentar ou eliminar campos na apresentação, etc) alterando o template no diretório **templates/custom/**
+
+
 ## Requisitos:
 
 * PHP >= 5
