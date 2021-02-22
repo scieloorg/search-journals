@@ -37,6 +37,9 @@ WORKDIR /var/www/iahx
 
 RUN mv config/config-mail-TEMPLATE.php config/config-mail.php
 
+RUN mkdir /var/www/iahx-sites/scieloorg/logs
+RUN mkdir /var/www/iahx-sites/revenf/logs
+
 RUN chown -R www-data:www-data /var/www/iahx-sites/scieloorg/logs
 RUN chown -R www-data:www-data /var/www/iahx-sites/revenf/logs
 
