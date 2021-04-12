@@ -1,3 +1,15 @@
+# Build static files container
+FROM node:10.15.3 AS buildstatic
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install -y
+RUN npm install -g gulp-cli
+
+RUN cd /app \
+    && gulp
+
 FROM ubuntu:14.04
 
 MAINTAINER Jamil Atta Junior<atta.jamil@gmail.com>
@@ -34,6 +46,11 @@ ADD iahx-sites/revenf /var/www/iahx-sites/revenf
 
 # Work place.
 WORKDIR /var/www/iahx
+
+# Copy static(s)
+COPY --from=buildstatic /app/iahx/static/ /var/www/iahx/static/
+COPY --from=buildstatic /app/iahx-sites/revenf/static/ /var/www/iahx-sites/revenf/static/
+COPY --from=buildstatic /app/iahx-sites/scieloorg/static/ /var/www/iahx-sites/scieloorg/static/
 
 RUN mv config/config-mail-TEMPLATE.php config/config-mail.php
 

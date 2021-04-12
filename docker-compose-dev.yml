@@ -32,6 +32,8 @@ services:
             - SEARCH_SOLR_SERVER=solrcontroller:8080
             - COOKIE_POLICY_ENABLED=true
             - COOKIE_POLICY_SCRIPT_URL=https://static.scielo.org/js/cookiePolicy.min.js
+            - REVENF_DOMAIN=homolog-search.revenf.org
+            - SCL_DOMAIN=homolog-search.scielo.org
 
     solrcontroller:
         image: scieloorg/search-journal-iahx-controller:latest
@@ -53,6 +55,6 @@ services:
             - solr-precreate
             - articles
         environment:
-            - SOLR_HEAP=4g
-            - SOLR_JAVA_MEM="-Xms4g -Xmx4g"
+            - SOLR_HEAP=1g
+            - SOLR_JAVA_MEM="-Xms1g -Xmx1g"
             - SOLR_OPTS=-XX:G1HeapRegionSize=32m -XX:InitiatingHeapOccupancyPercent=75 -XX:+AggressiveOpts

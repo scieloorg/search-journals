@@ -28,8 +28,7 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 EXPOSE 80
 
 # Work place.
-WORKDIR /var/www/site
-
+WORKDIR /var/www/iahx
 
 # Update the default apache site with the config we created.
 ADD config/apache/apache-config.conf /etc/apache2/sites-enabled/000-default.conf

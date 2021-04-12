@@ -2,24 +2,13 @@ version: '2'
 
 services:
 
-    mailhog:
-        image: mailhog/mailhog:latest
-        hostname: mailhog
-        ports:
-            - "1025:1025"
-            - "8025:8025"
-
     webapp:
-        image: scieloorg/search-journals:stable
+        image: infrascielo/search-journals:stable
         restart: always
         hostname: webapp
         depends_on:
-            - mailhog
             - solrcontroller
-        volumes:
-            - ./iahx:/var/www/site # SciELO Search Journals
         links:
-            - mailhog:mailhog
             - solrcontroller:solrcontroller
         ports:
             - "80:80"
@@ -29,9 +18,11 @@ services:
             - SEARCH_SOLR_SERVER=solrcontroller:8080
             - COOKIE_POLICY_ENABLED=true
             - COOKIE_POLICY_SCRIPT_URL=https://static.scielo.org/js/cookiePolicy.min.js
+            - REVENF_DOMAIN=search.revenf.org
+            - SCL_DOMAIN=search.scielo.org
 
     solrcontroller:
-        image: scieloorg/search-journal-iahx-controller:latest
+        image: infrascielo/search-journal-iahx-controller:latest
         restart: always
         depends_on:
             - solr
