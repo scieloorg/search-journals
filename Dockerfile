@@ -17,10 +17,7 @@ MAINTAINER Jamil Atta Junior<atta.jamil@gmail.com>
 RUN apt-get update
 RUN apt-get -y upgrade
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-php5 php5-mysql php5-gd php5-mcrypt php5-curl php5-redis php5-memcached curl lynx-cur python-setuptools collectd vim python-pip
-
-# Install supervisord
-RUN pip install supervisor
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-php5 php5-mysql php5-gd php5-mcrypt php5-curl php5-redis php5-memcached curl lynx-cur python-setuptools collectd vim python-pip supervisor
 
 # Enable apache mods.
 RUN a2enmod php5
@@ -54,8 +51,8 @@ COPY --from=buildstatic /app/iahx-sites/scieloorg/static/ /var/www/iahx-sites/sc
 
 RUN mv config/config-mail-TEMPLATE.php config/config-mail.php
 
-RUN mkdir /var/www/iahx-sites/scieloorg/logs
-RUN mkdir /var/www/iahx-sites/revenf/logs
+RUN mkdir -p /var/www/iahx-sites/scieloorg/logs
+RUN mkdir -p /var/www/iahx-sites/revenf/logs
 
 RUN chown -R www-data:www-data /var/www/iahx-sites/scieloorg/logs
 RUN chown -R www-data:www-data /var/www/iahx-sites/revenf/logs
@@ -71,7 +68,7 @@ RUN cp /etc/apache2/mods-available/expires.load /etc/apache2/mods-enabled/
 ADD config/supervisor/supervisord.conf /etc/supervisord.conf
 
 RUN chmod 755 /etc/apache2/foreground.sh
-RUN mkdir /var/log/supervisor/
+RUN mkdir -p /var/log/supervisor/
 
 # By default, run start.sh script
 CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
