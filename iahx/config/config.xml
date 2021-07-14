@@ -29,7 +29,7 @@
             true
         </use_plumx>
         <dimensions_metrics_url>
-            https://badge.dimensions.ai/details/doi/
+            https://badge.dimensions.ai/details/doi
         </dimensions_metrics_url>
         <use_dimensions>
             true
@@ -40,6 +40,12 @@
         <use_analytics>
             true
         </use_analytics>
+        <altmetric_metrics_url>
+			https://www.altmetric.com/details.php
+        </altmetric_metrics_url>
+        <use_altmetric>
+            true
+        </use_altmetric>
     </metrics>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
