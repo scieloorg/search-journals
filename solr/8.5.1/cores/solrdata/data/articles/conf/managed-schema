@@ -9,7 +9,7 @@
       <field name="_root_" type="string" indexed="true" stored="false"/>
 
       <!-- Entity **document or citation**-->
-      <field name="entity" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+      <field name="entity" type="string" indexed="true" stored="true"  multiValued="false" />
 
       <!-- Publisher ID = consist of 'S' + ISSN + numbers + '-' + and the abbreviation of collection, in the future it can be anything -->
       <field name="pid" type="publisher_id" indexed="true" stored="false" multiValued="false"/>
