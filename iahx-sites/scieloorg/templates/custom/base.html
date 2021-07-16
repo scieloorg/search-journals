@@ -18,11 +18,11 @@
 
     <!-- css -->
     <link href="https://fonts.googleapis.com/css?family=Arapey" rel="stylesheet">
-    <link rel="stylesheet" href="{{ constant(" STATIC_URL") }}css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ constant(" STATIC_URL") }}css/scielo.portal.min.css">
-    <link rel="stylesheet" href="{{ constant(" STATIC_URL") }}css/scielo.portal.custom.min.css">
-    <link rel="stylesheet" href="{{ constant(" STATIC_URL") }}css/scielo.print.min.css" media="print">
-    <link rel="stylesheet" href="{{ constant(" STATIC_URL") }}css/selectize.bootstrap3.min.css">
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.portal.min.css">
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.portal.custom.min.css">
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/scielo.print.min.css" media="print">
+    <link rel="stylesheet" href="{{ constant("STATIC_URL") }}css/selectize.bootstrap3.min.css">
     <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
     <!--[if lt IE 9]>
         	<script src="{{ constant("STATIC_URL") }}js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
@@ -90,17 +90,17 @@
         var STATIC_URL = '{{ constant("STATIC_URL") }}';
     </script>
 
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL")
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL")
         }}js/vendor/jquery-1.11.0.min.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL") }}js/functions.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/functions.js"></script>
 
     <!-- custom scielo -->
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL")
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL")
         }}js/vendor/bootstrap.min.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL")
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL")
         }}js/vendor/jquery-ui.min.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL") }}js/main.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL") }}js/vendor/chart.min.js"
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/main.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/vendor/chart.min.js"
         defer></script>
 
     {% if config.sharethis_pub != '' %}
@@ -131,11 +131,11 @@
     <!-- /custom scielo -->
 
     {% block script %}
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL") }}js/my_selection.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL") }}js/clusters.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL")
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/my_selection.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL") }}js/clusters.js"></script>
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL")
         }}js/bootstrap-affix.js"></script>
-    <script language="javascript" type="text/javascript" src="{{ constant(" STATIC_URL")
+    <script language="javascript" type="text/javascript" src="{{ constant("STATIC_URL")
         }}js/vendor/selectize.js"></script>
 
     {% if constant('COOKIE_POLICY_ENABLED') == 'true' %}
