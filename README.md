@@ -1,3 +1,4 @@
+
 # Pesquisa nos periódicos
 
 Aplicação responsável por tornar os artigos ciêntificos da rede SciELO pesquisável.
