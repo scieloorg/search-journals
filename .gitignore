@@ -1,6 +1,8 @@
 .DS_Store
 
 iahx/logs/*.txt
+iahx-sites/scieloorg/logs/
+node_modules
 
 solr/8.5.1/cores/solrdata/data/articles/data
 solr/8.5.1/cores/solrdata/logs
