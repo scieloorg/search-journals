@@ -55,9 +55,15 @@
         <small>{{ texts.RESULT.LABEL_VOLUME }}</small>
         <span>{{ doc.volume }}</span>
     {% endif %}
+
     {% if doc.issue %}
-        <small><small>{{ texts.RESULT.LABEL_NUMBER }}</small></small>
+        <small>{{ texts.RESULT.LABEL_NUMBER }}</small>
         <span>{{ doc.issue }}</span>
+    {% endif %}
+
+    {% if doc.supplement_volume %}
+        <small>{{ texts.RESULT.LABEL_SUPPLEMENT }}</small>
+        <span>{{ doc.supplement_volume }}</span>
     {% endif %}
 
     {% if doc.elocation %}
