@@ -62,7 +62,7 @@
 		<collection>
 			<name></name>
 			<cluster_items_limit>5</cluster_items_limit>
-			<initial_filter>network:org AND -in:rve</initial_filter>
+			<initial_filter></initial_filter>
 			<index_list>
 				<index>
 					<name>ALL</name>
