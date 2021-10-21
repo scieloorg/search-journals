@@ -60,6 +60,7 @@ RUN chown -R www-data:www-data /var/www/iahx-sites/revenf/logs
 # Update the default apache site with the config we created.
 ADD config/apache/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 ADD config/apache/foreground.sh /etc/apache2/foreground.sh
+ADD config/apache/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
 # Enable mod_expires
 RUN cp /etc/apache2/mods-available/expires.load /etc/apache2/mods-enabled/
