@@ -19,21 +19,10 @@
 
 </form>
 <form name="searchFormBuilder" class="searchFormBuilder searchForm">
-    <div class="highlight {% if detailed_query != '' %}result{% endif %}">
+    <div class="highlight result">
         <div class="container">
-            <!--a href="" class="help" data-toggle="modal" data-target="#Help" style="margin-left: 20px;">{{ texts.HELP }}</a-->
 
-            {% if detailed_query == '' %}
-                <div class="col-md-8 col-md-offset-1 col-sm-6 col-sm-offset-1">
-                    <h2>{{ texts.SEARCH_ARTICLES }}</h2>
-                </div>
-                <div class="col-md-2 col-sm-2">
-
-                </div>
-                <div class="clearfix"></div>
-            {% endif %}
-
-            <div class="col-md-8 col-sm-8 {% if detailed_query == '' %}col-md-offset-1 col-sm-offset-1{% endif %}">
+            <div class="col-md-8 col-sm-8">
                 <a href="" class="contextHelper" data-toggle="modal" id="contextHelper1" data-target="#BuscaAjuda">
                     {{ texts.NEED }} <strong>{{ texts.HELP }}</strong>?
                 </a>
@@ -63,18 +52,14 @@
             <div class="col-md-2 col-sm-2">
                 <input type="submit" name="search_button" value="{{ texts.SEARCH_SUBMIT }}" class="btn btn-primary glyph glyph-search">
             </div>
-            {% if detailed_query != '' %}
-                <div class="col-md-1 col-sm-1">
-                    <a href="{{ constant("SEARCH_URL") }}?lang={{lang}}" class="normalizeButton">» {{ texts.NEW_SEARCH }}</a>
-                </div>
-            {% endif %}
+
             <div class="clearfix"></div>
 
             <div class="searchRow-container">
 
             </div>
 
-            <div class="{% if detailed_query == '' %}col-md-7 col-sm-7{% else %}col-md-6 col-sm-6{% endif %} right">
+            <div class="col-md-6 col-sm-6 right">
                 <a href="" class="newSearchField" data-count="2">{{ texts.ADD_FIELD }}</a>
             </div>
             <div class="col-md-3  col-md-offset-2 col-sm-3">
@@ -95,7 +80,7 @@
             <div class="col-md-1 col-sm-1 right">
                 <a href="" class="eraseSearchField" data-rel="" title="Apagar campo"></a>
             </div>
-            <div class="{% if detailed_query == '' %}col-md-8 col-sm-8{% else %}col-md-7 col-sm-7{% endif %}">
+            <div class="col-md-7 col-sm-7">
                 <div class="input-group col-md-12 col-sm-12">
                     <div class="selectBox connector">
                         <select name="bool[]">

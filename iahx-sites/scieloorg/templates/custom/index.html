@@ -8,7 +8,6 @@
         <div id="flash" style="display: none;">{{ attribute(texts, flash_message) }}</div>
     {% endif %}
 
-    {% if detailed_query != '' and docs|length > 0 %}
         {% block results %}
             <div class="searchForm">
                 <div class="container resultBlock">
@@ -71,8 +70,6 @@
             <span class='st_googleplus' displayText='Google+'></span>
             <span class='st_sharethis' displayText='ShareThis'></span>
         </div>
-
-    {% endif %}
 
     <div class="modal fade" id="NotFound" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
