@@ -389,9 +389,9 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     // output
     switch($output) {
 
-        case "xml": case "sol":
-            return new Response($dia_response, 200, array("Content-type" => "text/xml"));
-            break;
+        // case "xml": case "sol":
+        //     return new Response($dia_response, 200, array("Content-type" => "text/xml"));
+        //     break;
 
         case "print":
             return $app['twig']->render('print.html', $output_array);
@@ -429,7 +429,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
         case "csv":
             if ( !isset($export_template) ){
                 $export_template = 'export-csv.txt';
-                $export_filename = 'export.csv';
+                $export_filename = 'export_' . date("Ymd") . '.csv';
                 $content_type = 'text/csv';
             }
             if ( !isset($export_total) ){
