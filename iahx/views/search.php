@@ -389,10 +389,6 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     // output
     switch($output) {
 
-        // case "xml": case "sol":
-        //     return new Response($dia_response, 200, array("Content-type" => "text/xml"));
-        //     break;
-
         case "print":
             return $app['twig']->render('print.html', $output_array);
             break;
