@@ -11,7 +11,7 @@ $app->match('chart/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
         $app['request']->query->all()
     );
 
-    if(!isset($params['d']) or !isset($params['l']) or !isset($params['title'])) 
+    if(!isset($params['d']) or !isset($params['l']) or !isset($params['title']))
         die;
 
     $data = $params['d'];
@@ -39,7 +39,7 @@ $app->match('chart/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
 
     if ($sort == true){
         array_multisort($labels,$data);
-    }  
+    }
 
     if ($type == 'line'){
 
@@ -55,7 +55,7 @@ $app->match('chart/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
     }else if ($type == 'pie'){
 
         $g->pie(60,'#505050','{font-size: 11px; color: #404040}');
-        
+
         $g->pie_values( $data, $labels );
         $g->pie_slice_colours( array('#d01f3c','#356aa0','#C79810','#FFCC99','#009933','#FF99FF','#33FFFF','#CCCC99','#330033','#00CCFF','#CCCCCC','#FFCC00','#FF0033','#660000','#FFCCCC','#33FF33','#FF6633' ) );
 
@@ -68,7 +68,7 @@ $app->match('chart/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
         $response = new Response($csv_out);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename=export_cluster.csv');
+        header('Content-Disposition: attachment; filename=export_cluster_' . date("Ymd") . '.csv');
         echo "\xEF\xBB\xBF"; // UTF-8 BOM
         return $response->sendHeaders();
 
@@ -76,29 +76,29 @@ $app->match('chart/', function (Request $request) use ($app, $DEFAULT_PARAMS, $c
 
         $bar = new bar( 95, '#5E83BF', '#424581' );
         //$bar->key( 'documentos', 10 );
-        
+
         $bar->data = $data;
-        
+
         // set the X axis labels
         $g->set_x_labels( $labels );
-        
+
         //$g->set_data( $data );
         //$g->bar_sketch( 50, 6, '#99FF00', '#7030A0', '% Complete', 10 );
         // add the bar object to the graph
         //
         $g->data_sets[] = $bar;
-        
+
         $g->set_x_max(count($labels));
         $g->set_x_min(count($labels));
-        
+
         $g->set_x_label_style( 11, '#A0A0A0', 2 );
         $g->set_y_label_style( 11, '#A0A0A0' );
         $g->x_axis_colour( '#A0A0A0', '#FFFFFF' );
-        
+
         //$g->set_x_legend( 'Week 1', 12, '#A0A0A0' );
         $g->y_axis_colour( '#A0A0A0', '#FFFFFF' );
-        
-        
+
+
         $g->set_y_min( min($data) );
         $g->set_y_max( max($data) );
         $g->y_label_steps( 2 );
