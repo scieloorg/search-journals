@@ -6,7 +6,10 @@
     {% if doc.au is defined %}
         <div class="line authors">
             {% for author in doc.au %}
-                <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>{% if loop.last %}.{% else %};{% endif %}
+                <a href='http://www.google.com/search?q="{{ author }}"' target="_blank" class="author">{{ author }}</a>
+                <a href='https://orcid.org/{{ doc.orcid[loop.index0]}}' target="_blank">
+                        <img src="{{ constant('STATIC_URL') }}image/authorIcon-orcid.png" alt="ORCID"></img>
+                </a>{% if loop.last %}.{% else %};{% endif %}
             {% endfor %}
         </div>
     {% endif %}
