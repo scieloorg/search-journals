@@ -56,9 +56,9 @@
                 -->
                 {% for language in doc.available_languages %}
 
-                    {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+                    {#% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
-                    {% if attribute(doc, pdf_lang) %}
+                    {% if attribute(doc, pdf_lang) %#}
                         <span class="separator">|</span>
                         <span>
 
@@ -67,20 +67,9 @@
                                 {{ translate(language) }}
                             </a>
 
-                            {% if doc.doi and doc.in.0 == 'scl' %}
-
-                                <span class="separator">|</span>
-                                <span class="e-pdf">
-                                    ePDF:
-                                    <a href="{{ attribute(config.scielo_urls, doc.in.0) }}/readcube/epdf.php?doi={{doc.doi}}&pid={{doc.ur.0}}&pdf_path={{ attribute(doc, pdf_lang).0|substring_after('pdf/') }}&lang={{language}}" class="showTooltip" title="{{ translate(language, 'REFINE_la') }}">
-                                        {{ translate(language) }}
-                                    </a>
-                                </span>
-                            {% endif %}
-
                         </span>
 
-                     {% endif %}
+                     {#% endif %#}
 
                 {% endfor %}
             {% endif %}
