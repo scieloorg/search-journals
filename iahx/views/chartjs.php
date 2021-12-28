@@ -10,12 +10,13 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
         $app['request']->query->all()
     );
 
-    if(!isset($params['d']) or !isset($params['l'])) 
+    if(!isset($params['d']) or !isset($params['l']))
         die;
 
     $data = $params['d'];
     $labels = $params['l'];
     $title = $params['title'];
+
 
     $type = "";
     if(isset($params['type'])) {
@@ -31,18 +32,18 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
 
     if ($sort == true){
         array_multisort($labels,$data);
-    }  
+    }
 
     if ($type == 'export-csv'){
 
-        $csv_out =  "Label,Value\r\n";
+        $csv_out =  $title . ",Total\r\n";
         for ( $i = 0; $i < count($data); $i++ ){
             $csv_out .= '"' . $labels[$i] . '","' . $data[$i] . '"' . "\r\n";
         }
         $response = new Response($csv_out);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename=export_cluster.csv');
+        header('Content-Disposition: attachment; filename=export_cluster_' . date('dmY') .  '.csv');
         echo "\xEF\xBB\xBF"; // UTF-8 BOM
         return $response->sendHeaders();
 
@@ -57,7 +58,7 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
                   . '   "datasets" : ['
                   . '       { '
                   . '           "fillColor" : "#5DC55D", '
-                  . '           "strokeColor" : "#5DC55D", ' 
+                  . '           "strokeColor" : "#5DC55D", '
                   . '           "highlightFill": "#348734", '
                   . '           "highlightStroke": "#348734",'
                   . '           "data" : ' . json_encode($data)
@@ -78,15 +79,15 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
                 $json .= ' "color": "' . $colors[$i] . '"}';
                 if ($i < ($l_total-1) ){
                   $json .= ',';
-                } 
+                }
             }
             $json .= "]";
         }
-        
+
         echo $json;
-        
+
         return $response->sendHeaders();
-    }   
+    }
 
 });
 
