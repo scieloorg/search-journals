@@ -17,7 +17,7 @@
                         <img src="{{ constant("STATIC_URL") }}image/open-access-icon.png" title="CC-{{ doc.use_license|upper }}" data-toggle="tooltip" class="openAccessIcon showTooltip">
 
                         <a href="{{ doc.ur.0 }}" title="{{ doc.ti.1 }}" target="_blank">
-                            <strong class="title" id="title-{{doc.ur.0}}">[Preprint] - {{ doc.ti.0 }}</strong>
+                            <strong class="title" id="title-{{doc.ur.0}}">[SciELO Preprints] - {{ doc.ti.0 }}</strong>
                         </a>
                 {% else %}
                     {{ loop.index + pag.start }}.
