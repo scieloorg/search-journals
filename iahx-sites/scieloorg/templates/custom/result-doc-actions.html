@@ -56,9 +56,9 @@
                 -->
                 {% for language in doc.available_languages %}
 
-                    {% set pdf_lang = 'fulltext_pdf_' ~ language %}
+                    {#% set pdf_lang = 'fulltext_pdf_' ~ language %}
 
-                    {% if attribute(doc, pdf_lang) %}
+                    {% if attribute(doc, pdf_lang) %#}
                         <span class="separator">|</span>
                         <span>
 
@@ -69,7 +69,7 @@
 
                         </span>
 
-                     {% endif %}
+                     {#% endif %#}
 
                 {% endfor %}
             {% endif %}
