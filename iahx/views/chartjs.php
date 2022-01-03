@@ -17,6 +17,7 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
     $labels = $params['l'];
     $title = $params['title'];
 
+
     $type = "";
     if(isset($params['type'])) {
         $type  = $params['type'];
@@ -35,14 +36,14 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
 
     if ($type == 'export-csv'){
 
-        $csv_out =  "Label,Value\r\n";
+        $csv_out =  $title . ",Total\r\n";
         for ( $i = 0; $i < count($data); $i++ ){
             $csv_out .= '"' . $labels[$i] . '","' . $data[$i] . '"' . "\r\n";
         }
         $response = new Response($csv_out);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename=export_cluster_' . date("Ymd") . '.csv');
+        header('Content-Disposition: attachment; filename=export_cluster_' . date('dmY') .  '.csv');
         echo "\xEF\xBB\xBF"; // UTF-8 BOM
         return $response->sendHeaders();
 
