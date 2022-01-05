@@ -43,7 +43,7 @@ $app->match('chartjs/', function (Request $request) use ($app, $DEFAULT_PARAMS, 
         $response = new Response($csv_out);
         $response->headers->set('Content-Encoding', 'UTF-8');
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename=export_cluster_' . date('dmY') .  '.csv');
+        header('Content-Disposition: attachment; filename=' . $title . '_' . date('dmY') .  '.csv');
         echo "\xEF\xBB\xBF"; // UTF-8 BOM
         return $response->sendHeaders();
 
