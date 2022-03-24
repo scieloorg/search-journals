@@ -21,6 +21,11 @@
 		<button>delicious</button>
 	</addthis_buttons>
     <show_metrics>true</show_metrics>
+	<access_json_format>
+		<allowed_ip>
+			143.108.10.1
+		</allowed_ip>
+	</access_json_format>
     <metrics>
         <plumx_metrics_url>
             https://plu.mx/scielo/a

@@ -389,8 +389,17 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
     // output
     switch($output) {
 
+        // In this case we check the IP, if it not in $config->access_json_format->allowed_ip array
+        // the reponse a blank page.
         case "json":
-            return new Response($dia_response, 200, array("Content-type" => "application/json"));
+
+            foreach ($config->access_json_format->allowed_ip as $key => $value) {
+
+                if(trim($value) == $_SERVER['REMOTE_ADDR']){
+                    return new Response($dia_response, 200, array("Content-type" => "application/json"));
+                    break;
+                }
+            }
             break;
 
         case "print":
