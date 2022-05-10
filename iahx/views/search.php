@@ -393,13 +393,11 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
         // the reponse a blank page.
         case "json":
 
-            foreach ($config->access_json_format->allowed_ip as $key => $value) {
-
-                if(trim($value) == $_SERVER['REMOTE_ADDR']){
-                    return new Response($dia_response, 200, array("Content-type" => "application/json"));
-                    break;
-                }
+            if(trim($config->access_token) == trim($params['access_token'])){
+                return new Response($dia_response, 200, array("Content-type" => "application/json"));
+                break;
             }
+
             break;
 
         case "print":

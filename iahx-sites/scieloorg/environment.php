@@ -49,6 +49,8 @@ $DEFAULT_PARAMS['defaultDisplayFormat'] = (string) $DEFAULT_PARAMS['defaultColle
 
 $config->use_https = getenv('SEARCH_USE_HTTPS', true) ?: $config->site;
 
+$config->access_token = getenv('SEARCH_JSON_ACCESS_TOKEN', '');
+
 // urls
 $protocol = ( (isset($config->use_https) && $config->use_https == 'true') ? 'https' : 'http');
 
