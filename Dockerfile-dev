@@ -10,6 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-php
 # Enable apache mods.
 RUN a2enmod php5
 RUN a2enmod rewrite
+RUN a2enmod remoteip
 
 RUN sed -ie 's/memory_limit\ =\ 128M/memory_limit\ =\ 2G/g' /etc/php5/apache2/php.ini
 RUN sed -i 's/\;date\.timezone\ =/date\.timezone\ =\ America\/Sao_Paulo/g' /etc/php5/apache2/php.ini
