@@ -51,9 +51,6 @@ services:
             - ./solr/8.5.1/cores/solrdata:/var/solr
         ports:
             - 8983:8983/tcp
-        command:
-            - solr-precreate
-            - articles
         environment:
             - SOLR_HEAP=1g
             - SOLR_JAVA_MEM="-Xms1g -Xmx1g"
