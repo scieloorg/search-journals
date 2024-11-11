@@ -317,7 +317,7 @@
       <copyField source="ab_*" dest="ab"/>
       <copyField source="ti_*" dest="ti"/>
       <copyField source="keyword_*" dest="kw"/>
-      <copyField source="cleaned_ti_*" dest="ti"/>
+      <!--copyField source="cleaned_ti_*" dest="ti"/-->
       <copyField source="cleaned_ab_*" dest="ab"/>
       <copyField source="cleaned_keyword_*" dest="kw"/>
       <!-- /Language fields -->
