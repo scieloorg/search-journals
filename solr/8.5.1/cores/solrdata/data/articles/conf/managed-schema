@@ -148,11 +148,6 @@
       <!-- Dynamic Field to Article Keywords in any languages -->
       <dynamicField name="keyword_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
 
-      <!-- Dynamic Field to Abstract in any languages **from:ab_* to:abstract_in_* ** -->
-      <dynamicField name="cleaned_ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-      <dynamicField name="cleaned_ti_*"  type="text_ws" indexed="false" stored="true"  multiValued="true"/>
-      <dynamicField name="cleaned_keyword_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-
       <!-- Allow search for keywords in different languages -->
       <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
 
@@ -283,18 +278,15 @@
       <copyField source="id" dest="tw"/>
       <copyField source="ti" dest="tw"/>
       <copyField source="ti_*" dest="tw"/>
-      <copyField source="cleaned_ti_*" dest="tw"/>
       <copyField source="au" dest="tw"/>
       <copyField source="ab" dest="tw"/>
       <copyField source="ab_*" dest="tw"/>
-      <copyField source="cleaned_ab_*" dest="tw"/>
       <copyField source="ta" dest="tw"/>
       <copyField source="doi" dest="tw"/>
       <copyField source="orcid" dest="tw"/>
       <copyField source="sponsor" dest="tw"/>
       <copyField source="journal_title" dest="tw"/>
       <copyField source="keyword_*" dest="tw"/>
-      <copyField source="cleaned_keyword_*" dest="tw"/>
       <copyField source="document_fk_au" dest="tw"/>
       <copyField source="document_fk_ta" dest="tw"/>
       <copyField source="citation_fk_au" dest="tw"/>
@@ -308,18 +300,12 @@
       <copyField source="ab" dest="subject"/>
       <copyField source="ab_*" dest="subject"/>
       <copyField source="keyword_*" dest="subject"/>
-      <copyField source="cleaned_ti_*" dest="subject"/>
-      <copyField source="cleaned_ab_*" dest="subject"/>
-      <copyField source="cleaned_keyword_*" dest="subject"/>
       <!-- /Subject index -->
 
       <!-- Language fields  -->
       <copyField source="ab_*" dest="ab"/>
       <copyField source="ti_*" dest="ti"/>
       <copyField source="keyword_*" dest="kw"/>
-      <copyField source="cleaned_ti_*" dest="ti"/>
-      <copyField source="cleaned_ab_*" dest="ab"/>
-      <copyField source="cleaned_keyword_*" dest="kw"/>
       <!-- /Language fields -->
 
       <!-- Cluster indexes -->
@@ -392,13 +378,13 @@
       <fieldType name="text" class="solr.TextField" positionIncrementGap="100" multiValued="true">
         <analyzer type="index">
           <tokenizer class="solr.StandardTokenizerFactory"/>
-          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <!-- <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" /> -->
           <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false" />
           <filter class="solr.LowerCaseFilterFactory"/>
         </analyzer>
         <analyzer type="query">
           <tokenizer class="solr.StandardTokenizerFactory"/>
-          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <!-- <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" /> -->
           <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
           <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false" />
           <filter class="solr.LowerCaseFilterFactory"/>
@@ -408,16 +394,17 @@
       <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100" multiValued="true">
         <analyzer type="index">
           <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-          <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false" />
-          <filter class="solr.LowerCaseFilterFactory"/>
+          <charFilter class="solr.PatternReplaceCharFilterFactory" pattern='[+\-|!(){}\[\]^"~*?:\/\\“”]' replacement=""/>
+          <!-- <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/> -->
+          <filter class="solr.LowerCaseFilterFactory"/>        
+          <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="true"/>  
         </analyzer>
         <analyzer type="query">
-          <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-          <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
-          <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false" />
-          <filter class="solr.LowerCaseFilterFactory"/>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <charFilter class="solr.PatternReplaceCharFilterFactory" pattern='[+\-|!(){}\[\]^"~*?:\/\\“”]' replacement=""/>
+        <!-- <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/> -->
+        <filter class="solr.LowerCaseFilterFactory"/>        
+        <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="true"/>  
         </analyzer>
       </fieldType>
 
@@ -447,7 +434,7 @@
         <analyzer>
           <tokenizer class="solr.StandardTokenizerFactory"/>
           <filter class="solr.LowerCaseFilterFactory" />
-          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <!-- <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" /> -->
         </analyzer>
       </fieldType>
 
