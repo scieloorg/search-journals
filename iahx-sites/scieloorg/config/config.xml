@@ -46,6 +46,15 @@
         <use_altmetric>
             true
         </use_altmetric>
+        <scite_metrics_url>
+			https://cdn.scite.ai/badge/scite-badge-latest.min.js
+        </scite_metrics_url>
+        <scite_report_url>
+			https://scite.ai/reports/
+        </scite_report_url>
+        <use_scite>
+            true
+        </use_scite>
     </metrics>
 	<show_related_docs>false</show_related_docs>
 	<related_min_score>40</related_min_score>
