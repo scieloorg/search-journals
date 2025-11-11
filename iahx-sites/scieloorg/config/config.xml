@@ -214,5 +214,6 @@
         <ecu>http://scielo.senescyt.gob.ec</ecu>
         <pry>http://scielo.iics.una.py/</pry>
         <wid>http://westindies.scielo.org</wid>
+        <dom>http://scielo.do</dom>
 	</scielo_urls>
 </dia_config>
