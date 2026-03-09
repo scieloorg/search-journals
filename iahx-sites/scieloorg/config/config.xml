@@ -217,6 +217,6 @@
         <dom>http://scielo.do</dom>
         <psi>http://pepsic.bvsalud.org</psi>
         <rve>http://revodonto.bvsalud.org</rve>
-        <cic>http://</cic>
+        <cic>http://cienciaecultura.bvs.br</cic>
 	</scielo_urls>
 </dia_config>
