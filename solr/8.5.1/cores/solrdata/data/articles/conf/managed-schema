@@ -279,6 +279,12 @@
       <!-- Serial Network -->
       <field name="network" type="string" indexed="true" stored="true" multiValued="true"/>
 
+      <!-- Is thematic collection -->
+      <field name="is_thematic_collection" type="string" indexed="true" stored="true" multiValued="false"/>
+
+      <!-- Is scielo network -->
+      <field name="is_scielo_network" type="string" indexed="true" stored="true" multiValued="false"/>
+
       <!-- All indexes -->
       <copyField source="id" dest="tw"/>
       <copyField source="ti" dest="tw"/>
@@ -300,6 +306,8 @@
       <copyField source="citation_fk_au" dest="tw"/>
       <copyField source="citation_fk_ta" dest="tw"/>
       <copyField source="cit_official_journal_title" dest="tw"/>
+      <copyField source="is_thematic_collection" dest="tw"/>
+      <copyField source="is_scielo_network" dest="tw"/>
       <!-- /All indexes -->
 
       <!-- Subject index -->
