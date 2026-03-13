@@ -285,6 +285,9 @@
       <!-- Is scielo network -->
       <field name="is_scielo_network" type="string" indexed="true" stored="true" multiValued="false"/>
 
+      <!-- Is scielo network -->
+      <field name="network_classification" type="string" indexed="true" stored="true" multiValued="true"/>
+
       <!-- All indexes -->
       <copyField source="id" dest="tw"/>
       <copyField source="ti" dest="tw"/>
