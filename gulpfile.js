@@ -9,6 +9,7 @@ const rename = require('gulp-rename');
 const concat = require('gulp-concat');
 const minifyCSS = require('gulp-minify-css');
 
+
 // Creating webserver with live-reload
 function webserver() {
     return connect.server({
@@ -21,8 +22,12 @@ function webserver() {
     });
 }
 
+
+//Core
+
 //All files in css folder
-let cssSources1 = {
+
+let cssSources = {
     watchFolder: [
 
         'iahx/static/less/bootstrap.less',
@@ -45,8 +50,31 @@ let cssSources1 = {
     output: 'iahx/static/css'
 };
 
+// file in css/ui-lightness folder
+let cssSourcesUI = {
+    watchFolder: [
+
+        'iahx/static/less/jquery.ui.1.10.1.custom.less'
+
+    ],
+    output: 'iahx/static/css/ui-lightness'
+};
+
+// file in css/mobile folder
+let cssSourcesMobile = {
+    watchFolder: [
+
+        'iahx/static/less/style.mobile.less'
+
+    ],
+    output: 'iahx/static/css/mobile'
+};
+
+
+// RevEnf
+
 //All files in revenf css folder
-let cssSources1RevEnf = {
+let cssSourcesRevEnf = {
     watchFolder: [
 
         'iahx-sites/revenf/static/less/bootstrap.less',
@@ -69,18 +97,8 @@ let cssSources1RevEnf = {
     output: 'iahx-sites/revenf/static/css'
 };
 
-// file in css/ui-lightness folder
-let cssSources2 = {
-    watchFolder: [
-
-        'iahx/static/less/jquery.ui.1.10.1.custom.less'
-
-    ],
-    output: 'iahx/static/css/ui-lightness'
-};
-
 // file in rev enf css/ui-lightness folder
-let cssSources2RevEnf = {
+let cssSourcesUIRevEnf = {
     watchFolder: [
 
         'iahx-sites/revenf/static/less/jquery.ui.1.10.1.custom.less'
@@ -89,18 +107,8 @@ let cssSources2RevEnf = {
     output: 'iahx-sites/revenf/static/css/ui-lightness'
 };
 
-// file in css/mobile folder
-let cssSources3 = {
-    watchFolder: [
-
-        'iahx/static/less/style.mobile.less'
-
-    ],
-    output: 'iahx/static/css/mobile'
-};
-
 // file in rev enf css/mobile folder
-let cssSources3RevEnf = {
+let cssSourcesMobileRevEnf = {
     watchFolder: [
 
         'iahx-sites/revenf/static/less/style.mobile.less'
@@ -109,6 +117,58 @@ let cssSources3RevEnf = {
     output: 'iahx-sites/revenf/static/css/mobile'
 };
 
+
+// ScieloOrg
+
+//All files in scieloorg css folder
+let cssSourcesScieloOrg = {
+    watchFolder: [
+
+        'iahx-sites/scieloorg/static/less/bootstrap.less',
+        'iahx-sites/scieloorg/static/less/advanced.less',
+        'iahx-sites/scieloorg/static/less/chart.less',
+        'iahx-sites/scieloorg/static/less/decs.locator.less',
+        'iahx-sites/scieloorg/static/less/jquery.cluetip.less',
+        'iahx-sites/scieloorg/static/less/jquery.fancybox.1.3.4.less',
+        'iahx-sites/scieloorg/static/less/layout.less',
+        'iahx-sites/scieloorg/static/less/print.less',
+        'iahx-sites/scieloorg/static/less/related.less',
+        'iahx-sites/scieloorg/static/less/scielo.portal.custom.less',
+        'iahx-sites/scieloorg/static/less/scielo.portal.less',
+        'iahx-sites/scieloorg/static/less/scielo.print.less',
+        'iahx-sites/scieloorg/static/less/selectize.bootstrap3.less',
+        'iahx-sites/scieloorg/static/less/skin.less',
+        'iahx-sites/scieloorg/static/less/styles.less'
+
+    ],
+    output: 'iahx-sites/scieloorg/static/css'
+};
+
+// file in rev enf css/ui-lightness folder
+let cssSourcesUIScieloOrg = {
+    watchFolder: [
+
+        'iahx-sites/scieloorg/static/less/jquery.ui.1.10.1.custom.less'
+
+    ],
+    output: 'iahx-sites/scieloorg/static/css/ui-lightness'
+};
+
+// file in rev enf css/mobile folder
+let cssSourcesMobileScieloOrg = {
+    watchFolder: [
+
+        'iahx-sites/scieloorg/static/less/style.mobile.less'
+
+    ],
+    output: 'iahx-sites/scieloorg/static/css/mobile'
+};
+
+
+
+// Process
+
+// Core
 function processUiCustom() {
     return src("iahx/static/less/jquery.ui.1.10.1.custom.less")
         .pipe(
@@ -175,9 +235,8 @@ function processStyleMobile() {
         );
 }
 
-
 function processCSS() {
-    return src(cssSources1.watchFolder)
+    return src(cssSources.watchFolder)
         .pipe(
             sourceMaps.init()
         )
@@ -199,14 +258,14 @@ function processCSS() {
             sourceMaps.write(".")
         )
         .pipe(
-            dest(cssSources1.output)
+            dest(cssSources.output)
         )
         .pipe(
             connect.reload()
         );
 }
 
-//////
+// RevEnf
 function processUiCustomRevEnf() {
     return src("iahx-sites/revenf/static/less/jquery.ui.1.10.1.custom.less")
         .pipe(
@@ -273,9 +332,8 @@ function processStyleMobileRevEnf() {
         );
 }
 
-
 function processCSSRevEnf() {
-    return src(cssSources1RevEnf.watchFolder)
+    return src(cssSourcesRevEnf.watchFolder)
         .pipe(
             sourceMaps.init()
         )
@@ -297,7 +355,105 @@ function processCSSRevEnf() {
             sourceMaps.write(".")
         )
         .pipe(
-            dest(cssSources1RevEnf.output)
+            dest(cssSourcesRevEnf.output)
+        )
+        .pipe(
+            connect.reload()
+        );
+}
+
+
+// ScieloOrg
+function processUiCustomScieloOrg() {
+    return src("iahx-sites/scieloorg/static/less/jquery.ui.1.10.1.custom.less")
+        .pipe(
+            sourceMaps.init()
+        )
+        .pipe(
+            less().on('error', function(err) {
+                gutil.log(err);
+                this.emit('end');
+            }))
+        .pipe(
+            cleanCSS()
+        )
+        .pipe(
+            minifyCSS()
+        )
+        .pipe(
+            rename({ suffix: ".min" })
+        )
+        .pipe(
+            sourceMaps.write(".")
+        )
+        .pipe(
+            rename("jquery.ui.1.10.1.custom.min.css")
+        )
+        .pipe(
+            dest("iahx-sites/scieloorg/static/css/ui-lightness")
+        )
+        .pipe(
+            connect.reload()
+        );
+}
+
+function processStyleMobileScieloOrg() {
+    return src("iahx-sites/scieloorg/static/less/style.mobile.less")
+        .pipe(
+            sourceMaps.init()
+        )
+        .pipe(
+            less().on('error', function(err) {
+                gutil.log(err);
+                this.emit('end');
+            }))
+        .pipe(
+            cleanCSS()
+        )
+        .pipe(
+            minifyCSS()
+        )
+        .pipe(
+            rename({ suffix: ".min" })
+        )
+        .pipe(
+            sourceMaps.write(".")
+        )
+        .pipe(
+            rename("style.min.css")
+        )
+        .pipe(
+            dest("iahx-sites/scieloorg/static/css/mobile")
+        )
+        .pipe(
+            connect.reload()
+        );
+}
+
+function processCSSScieloOrg() {
+    return src(cssSourcesScieloOrg.watchFolder)
+        .pipe(
+            sourceMaps.init()
+        )
+        .pipe(
+            less().on('error', function(err) {
+                gutil.log(err);
+                this.emit('end');
+            }))
+        .pipe(
+            cleanCSS()
+        )
+        .pipe(
+            minifyCSS()
+        )
+        .pipe(
+            rename({ suffix: ".min" })
+        )
+        .pipe(
+            sourceMaps.write(".")
+        )
+        .pipe(
+            dest(cssSourcesScieloOrg.output)
         )
         .pipe(
             connect.reload()
@@ -307,29 +463,44 @@ function processCSSRevEnf() {
 
 
 // Watchers
+
+//Core
 function watchCSSProcess() {
-    return watch(cssSources1.watchFolder, processCSS);
+    return watch(cssSources.watchFolder, processCSS);
 }
 
 function watchUiCustom() {
-    return watch(cssSources2.watchFolder, processUiCustom);
+    return watch(cssSourcesUI.watchFolder, processUiCustom);
 }
 
 function watchStyleMobile() {
-    return watch(cssSources3.watchFolder, processStyleMobile);
+    return watch(cssSourcesMobile.watchFolder, processStyleMobile);
 }
 
-////
+// RevEnf
 function watchCSSProcessRevEnf() {
-    return watch(cssSources1RevEnf.watchFolder, processCSS);
+    return watch(cssSourcesRevEnf.watchFolder, processCSS);
 }
 
 function watchUiCustomRevEnf() {
-    return watch(cssSources2RevEnf.watchFolder, processUiCustom);
+    return watch(cssSourcesUIRevEnf.watchFolder, processUiCustom);
 }
 
 function watchStyleMobileRevEnf() {
-    return watch(cssSources3RevEnf.watchFolder, processStyleMobile);
+    return watch(cssSourcesMobileRevEnf.watchFolder, processStyleMobile);
+}
+
+// ScieloOrg
+function watchCSSProcessScieloOrg() {
+    return watch(cssSourcesScieloOrg.watchFolder, processCSS);
+}
+
+function watchUiCustomScieloOrg() {
+    return watch(cssSourcesUIScieloOrg.watchFolder, processUiCustom);
+}
+
+function watchStyleMobileScieloOrg() {
+    return watch(cssSourcesMobileScieloOrg.watchFolder, processStyleMobile);
 }
 
 
@@ -342,6 +513,10 @@ exports.watch = series(
     processStyleMobileRevEnf,
     processUiCustomRevEnf,
 
+    processCSSScieloOrg,
+    processStyleMobileScieloOrg,
+    processUiCustomScieloOrg,
+
     parallel(
         watchCSSProcess,
         watchUiCustom,
@@ -349,7 +524,11 @@ exports.watch = series(
 
         watchCSSProcessRevEnf,
         watchUiCustomRevEnf,
-        watchStyleMobileRevEnf
+        watchStyleMobileRevEnf,
+
+        watchCSSProcessScieloOrg,
+        watchUiCustomScieloOrg,
+        watchStyleMobileScieloOrg
     )
 );
 
@@ -360,5 +539,9 @@ exports.default = series(
 
     processCSSRevEnf,
     processStyleMobileRevEnf,
-    processUiCustomRevEnf
+    processUiCustomRevEnf,
+
+    processCSSScieloOrg,
+    processStyleMobileScieloOrg,
+    processUiCustomScieloOrg
 );
