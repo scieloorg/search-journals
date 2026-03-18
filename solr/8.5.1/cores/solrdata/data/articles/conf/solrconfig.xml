@@ -754,9 +754,8 @@
          <str name="facet.field">wok_subject_categories</str>
          <str name="facet.field">wok_citation_index</str>
          <str name="facet.field">is_citable</str>
-         <str name="facet.field">is_thematic_collection</str>
-         <str name="facet.field">is_scielo_network</str>
          <str name="facet.field">type</str>
+         <str name="facet.field">network_classification</str>
          <str name="facet.limit">15</str>
          <str name="facet.mincount">1</str>
       </lst>
