@@ -16,23 +16,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
         $app['request']->query->all()
     );
 
-    // if magic quotes gpc is on, this function clean all parameters and
-    // results that was modified by the directive
-    if (get_magic_quotes_gpc()) {
-        $process = array(&$params);
-        while (list($key, $val) = each($process)) {
-            foreach ($val as $k => $v) {
-                unset($process[$key][$k]);
-                if (is_array($v)) {
-                    $process[$key][stripslashes($k)] = $v;
-                    $process[] = &$process[$key][stripslashes($k)];
-                } else {
-                    $process[$key][stripslashes($k)] = stripslashes($v);
-                }
-            }
-        }
-        unset($process);
-    }
+    $params = normalize_request_params($params);
 
     $collectionData = $DEFAULT_PARAMS['defaultCollectionData'];
     $site = $DEFAULT_PARAMS['defaultSite'];

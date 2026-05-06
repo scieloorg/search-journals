@@ -157,6 +157,26 @@ function addslashes_array($a){
     }
 }
 
+function normalize_request_params($params) {
+    if (!function_exists('get_magic_quotes_gpc') || !get_magic_quotes_gpc()) {
+        return $params;
+    }
+
+    return stripslashes_array($params);
+}
+
+function stripslashes_array($value) {
+    if (is_array($value)) {
+        $clean = array();
+        foreach ($value as $key => $item) {
+            $clean[stripslashes($key)] = stripslashes_array($item);
+        }
+        return $clean;
+    }
+
+    return stripslashes($value);
+}
+
 /* Log User Actions */
 
 function log_user_action($lang, $col, $site, $query, $index, $where, $filter, $page, $output, $session_id, $format ='', $sort = ''){

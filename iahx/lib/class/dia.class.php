@@ -5,6 +5,10 @@ class Dia
     var $DIASERVER = "";
     var $param = array();
 
+    function __construct($site, $collection, $count, $output, $lang ){
+        $this->Dia($site, $collection, $count, $output, $lang);
+    }
+
     function Dia($site, $collection, $count, $output, $lang ){
         global $config;
 
@@ -154,8 +158,7 @@ class Dia
 
     function requestUrl()   {
         $urlParam = "";
-        reset($this->param);
-        while (list($key, $value) = each($this->param)) {
+        foreach ($this->param as $key => $value) {
             if ($value != ""){
                 $urlParam .= "&" . $key . "=" . urlencode($value);
             }

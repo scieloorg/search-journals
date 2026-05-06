@@ -9,6 +9,11 @@ class graph
     * Constructer for the open_flash_chart_api
     * Sets our default variables
     */
+    function __construct()
+    {
+        $this->graph();
+    }
+
     function graph()
     {
         $this->data_sets = array();
@@ -1246,6 +1251,11 @@ class line
     // extra tool tip info:
     var $tips;
     
+    function __construct( $line_width, $colour )
+    {
+        $this->line( $line_width, $colour );
+    }
+
     function line( $line_width, $colour )
     {
         $this->var = 'line';
@@ -1345,6 +1355,11 @@ class line_hollow extends line
 {
     var $dot_size;
     
+    function __construct( $line_width, $dot_size, $colour )
+    {
+        $this->line_hollow( $line_width, $dot_size, $colour );
+    }
+
     function line_hollow( $line_width, $dot_size, $colour )
     {
         parent::line( $line_width, $colour );
@@ -1377,9 +1392,14 @@ class line_hollow extends line
 
 class line_dot extends line_hollow
 {
+    function __construct( $line_width, $dot_size, $colour )
+    {
+        $this->line_dot( $line_width, $dot_size, $colour );
+    }
+
     function line_dot( $line_width, $dot_size, $colour )
     {
-        parent::line_dot( $line_width, $colour );
+        parent::line_hollow( $line_width, $dot_size, $colour );
         $this->var = 'line_dot';
     }
 }
@@ -1397,6 +1417,11 @@ class bar
     // extra tool tip info:
     var $tips;
     
+    function __construct( $alpha, $colour )
+    {
+        $this->bar( $alpha, $colour );
+    }
+
     function bar( $alpha, $colour )
     {
         $this->var = 'bar';
@@ -1488,6 +1513,11 @@ class bar
 
 class bar_3d extends bar
 {
+    function __construct( $alpha, $colour )
+    {
+        $this->bar_3d( $alpha, $colour );
+    }
+
     function bar_3d( $alpha, $colour )
     {
         parent::bar( $alpha, $colour );
@@ -1497,6 +1527,11 @@ class bar_3d extends bar
 
 class bar_fade extends bar
 {
+    function __construct( $alpha, $colour )
+    {
+        $this->bar_fade( $alpha, $colour );
+    }
+
     function bar_fade( $alpha, $colour )
     {
         parent::bar( $alpha, $colour );
@@ -1508,6 +1543,11 @@ class bar_outline extends bar
 {
     var $outline_colour;
     
+    function __construct( $alpha, $colour, $outline_colour )
+    {
+        $this->bar_outline( $alpha, $colour, $outline_colour );
+    }
+
     function bar_outline( $alpha, $colour, $outline_colour )
     {
         parent::bar( $alpha, $colour );
@@ -1535,6 +1575,11 @@ class bar_outline extends bar
 
 class bar_glass extends bar_outline
 {
+    function __construct( $alpha, $colour, $outline_colour )
+    {
+        $this->bar_glass( $alpha, $colour, $outline_colour );
+    }
+
     function bar_glass( $alpha, $colour, $outline_colour )
     {
         parent::bar_outline( $alpha, $colour, $outline_colour );
@@ -1550,6 +1595,11 @@ class bar_sketch extends bar_outline
 {
     var $offset;
     
+    function __construct( $alpha, $offset, $colour, $outline_colour )
+    {
+        $this->bar_sketch( $alpha, $offset, $colour, $outline_colour );
+    }
+
     function bar_sketch( $alpha, $offset, $colour, $outline_colour )
     {
         parent::bar_outline( $alpha, $colour, $outline_colour );
@@ -1580,6 +1630,11 @@ class candle
 {
     var $out;
     
+    function __construct( $high, $open, $close, $low )
+    {
+        $this->candle( $high, $open, $close, $low );
+    }
+
     function candle( $high, $open, $close, $low )
     {
         $this->out = array();
@@ -1599,6 +1654,11 @@ class hlc
 {
     var $out;
     
+    function __construct( $high, $low, $close )
+    {
+        $this->hlc( $high, $low, $close );
+    }
+
     function hlc( $high, $low, $close )
     {
         $this->out = array();
@@ -1617,6 +1677,11 @@ class point
 {
     var $out;
     
+    function __construct( $x, $y, $size_px )
+    {
+        $this->point( $x, $y, $size_px );
+    }
+
     function point( $x, $y, $size_px )
     {
         $this->out = array();

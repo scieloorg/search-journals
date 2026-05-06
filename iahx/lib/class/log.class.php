@@ -24,6 +24,11 @@ class Log
     /**
      * @desc constructor
      */
+    function __construct()
+    {
+        $this->log();
+    }
+
     function log()
     {
         $this->setDirectory();
@@ -149,7 +154,7 @@ class Log
     function logAccess()
     {
         $this->setFileName("access_log.txt");
-        $ip   = getenv(REMOTE_ADDR); //guarda o endereco ip do host
+        $ip   = getenv('REMOTE_ADDR'); //guarda o endereco ip do host
         $host = gethostbyaddr($ip); //guarda o mome do host
         $text = "[".date('d/m/Y h:i:s')."] - $host;$ip;$data\n";
         $this->writeFile($text);
