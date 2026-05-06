@@ -6,3 +6,5 @@ node_modules
 
 solr/8.5.1/cores/solrdata/data/articles/data
 solr/8.5.1/cores/solrdata/logs
+solr/9.10.1/cores/solrdata/logs/*.log
+solr/9.10.1/cores/solrdata/logs/*.request.log
