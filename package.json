@@ -22,6 +22,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "compat:php85": "bash tests/php_compat/lint_app_php85.sh",
     "smoke": "bash tests/smoke/http_smoke.sh",
     "test": "npm run smoke"
   },
