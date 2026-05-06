@@ -22,7 +22,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "smoke": "bash tests/smoke/http_smoke.sh",
+    "test": "npm run smoke"
   },
   "repository": {
     "type": "git",
