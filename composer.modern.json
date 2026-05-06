@@ -1,0 +1,23 @@
+{
+    "name": "scielo/search-journals-modernization",
+    "description": "Modern PHP dependency target for the SciELO Search Journals migration.",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^8.5",
+        "symfony/http-foundation": "^7.0",
+        "symfony/http-kernel": "^7.0",
+        "symfony/routing": "^7.0",
+        "symfony/mailer": "^7.0",
+        "symfony/mime": "^7.0",
+        "symfony/twig-bridge": "^7.0",
+        "twig/twig": "^3.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.5.5"
+        },
+        "sort-packages": true,
+        "vendor-dir": "vendor-modern"
+    }
+}

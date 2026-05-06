@@ -47,3 +47,17 @@ Essas dependências são o maior bloqueio para trocar o container da aplicação
 para PHP 8.5. A próxima etapa deve substituir o bootstrap Silex/Twig/Swift por
 dependências modernas instaladas via Composer no nível do projeto, sem editar o
 vendor antigo manualmente.
+
+## Alvo de dependências modernas
+
+O arquivo `composer.modern.json` define um alvo separado para a migração. Ele
+não altera o runtime PHP 5 atual e instala dependências em `vendor-modern`.
+
+O conjunto inicial substitui:
+
+* Silex 1 por componentes Symfony 7 de HTTP, Kernel e Routing.
+* Twig 1 por Twig 3.
+* Swiftmailer 4 por Symfony Mailer/Mime 7.
+
+Esse manifesto deve ser usado para construir o novo bootstrap antes de remover
+`iahx/lib/silex/vendor`.
