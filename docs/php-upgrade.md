@@ -73,6 +73,7 @@ Comandos úteis:
 ```bash
 npm run compat:php85:version
 npm run compat:php85:deps
+npm run compat:php85:modern-advanced
 npm run compat:php85:modern-app
 npm run compat:php85:modern-bootstrap
 npm run compat:php85:modern-bookmark
@@ -121,3 +122,6 @@ com sessão, parâmetros opcionais e respostas Symfony no PHP 8.5.
 
 `tests/php_compat/modern_history_route.php` carrega `views/history.php` no
 bootstrap moderno e valida o caminho HTTP + sessão + Twig com uma view real.
+
+`tests/php_compat/modern_advanced_route.php` carrega `views/advanced.php` no
+bootstrap moderno e valida renderizacao Twig, sessão e logging no PHP 8.5.
