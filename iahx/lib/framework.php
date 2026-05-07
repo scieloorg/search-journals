@@ -31,6 +31,20 @@ function iahx_register_mailer($app) {
     );
 }
 
+function iahx_send_search_email($app, $subject, $fromName, $toEmail, $htmlBody) {
+    if (!is_array($toEmail) && strpos($toEmail, ';') !== false) {
+        $toEmail = explode(';', $toEmail);
+    }
+
+    $message = \Swift_Message::newInstance()
+        ->setSubject($subject)
+        ->setFrom(array(FROM_MAIL => $fromName))
+        ->setTo($toEmail)
+        ->setBody($htmlBody, 'text/html');
+
+    return $app['mailer']->send($message);
+}
+
 function iahx_configure_twig_cache($app, $cachePath) {
     if (!DEBUG) {
         if (!is_dir($cachePath)) {
