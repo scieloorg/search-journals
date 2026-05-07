@@ -33,6 +33,7 @@ $app = iahx_modern_create_search_application(
         'debug' => true,
         'smtp_host' => getenv('SEARCH_SMTP_SERVER') ?: 'host.docker.internal',
         'smtp_port' => getenv('SEARCH_SMTP_PORT') ?: 1025,
+        'session' => array('mock' => true),
     )
 );
 
@@ -45,6 +46,10 @@ if (!$app['mailer'] instanceof MailerInterface) {
     fwrite(STDERR, "Missing modern Mailer service.\n");
     exit(1);
 }
+
+$app['session']->start();
+$app['session']->set('bookmark', array('S1020' => array('id' => 'S1020')));
+$app['session']->save();
 
 $app->match('/probe/{name}/', function (Request $request, $name) use ($app) {
     $template = $app['twig']->createTemplate(
@@ -60,9 +65,19 @@ $app->match('/probe/{name}/', function (Request $request, $name) use ($app) {
     ));
 });
 
+$app->match('/bookmark/{action}/{id}', function (Request $request, $action, $id) use ($app) {
+    return $action . ':' . ($id ?: 'none') . ':' . count($app['session']->get('bookmark'));
+})->value('id', null);
+
 $response = $app->handle(Request::create('/probe/scielo/', 'GET', array('check' => 'ok')));
 if ($response->getStatusCode() !== 200 || $response->getContent() !== 'Search|scielo|ok|custom/index.html') {
     fwrite(STDERR, "Unexpected modern application response: " . $response->getContent() . "\n");
+    exit(1);
+}
+
+$response = $app->handle(Request::create('/bookmark/list', 'GET'));
+if ($response->getStatusCode() !== 200 || $response->getContent() !== 'list:none:1') {
+    fwrite(STDERR, "Unexpected modern session/default route response: " . $response->getContent() . "\n");
     exit(1);
 }
 

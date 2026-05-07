@@ -76,7 +76,7 @@ class IahxModernApplication implements ArrayAccess {
 
         $this->routes->add('route_' . count($this->routes), $route);
 
-        return $route;
+        return new IahxModernRoute($route);
     }
 
     private function normalizePath($path) {
@@ -89,11 +89,33 @@ class IahxModernApplication implements ArrayAccess {
 
     private function invoke($controller, Request $request, array $attributes) {
         $arguments = array($request);
-        foreach ($attributes as $value) {
-            $arguments[] = $value;
+
+        foreach ($this->controllerParameters($controller) as $index => $parameter) {
+            if ($index === 0) {
+                continue;
+            }
+
+            $name = $parameter->getName();
+            $arguments[] = array_key_exists($name, $attributes) ? $attributes[$name] : null;
         }
 
         return call_user_func_array($controller, $arguments);
+    }
+
+    private function controllerParameters($controller) {
+        if ($controller instanceof Closure) {
+            return (new ReflectionFunction($controller))->getParameters();
+        }
+
+        if (is_array($controller)) {
+            return (new ReflectionMethod($controller[0], $controller[1]))->getParameters();
+        }
+
+        if (is_string($controller) && strpos($controller, '::') !== false) {
+            return (new ReflectionMethod($controller))->getParameters();
+        }
+
+        return (new ReflectionFunction($controller))->getParameters();
     }
 
     private function toResponse($result) {
@@ -107,4 +129,22 @@ class IahxModernApplication implements ArrayAccess {
 
 function iahx_modern_create_application(array $services = array()) {
     return new IahxModernApplication($services);
+}
+
+class IahxModernRoute {
+    private $route;
+
+    public function __construct(Route $route) {
+        $this->route = $route;
+    }
+
+    public function value($variable, $default) {
+        $this->route->setDefault($variable, $default);
+
+        return $this;
+    }
+
+    public function getRoute() {
+        return $this->route;
+    }
 }

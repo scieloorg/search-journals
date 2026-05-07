@@ -105,5 +105,10 @@ essencial usada pelas views (`get`, `post`, `match`, `handle` e `run`) para que
 as rotas possam ser migradas gradualmente.
 
 `iahx/lib/modern/app.php` monta essas peças em um único objeto de aplicação,
-registrando `twig` e `mailer` como serviços acessíveis por `$app[...]`. Esse é
-o ponto de entrada inicial para portar as views sem depender do container Silex.
+registrando `twig`, `mailer` e `session` como serviços acessíveis por
+`$app[...]`. Esse é o ponto de entrada inicial para portar as views sem depender
+do container Silex.
+
+`iahx/lib/modern/session.php` cria a sessão moderna via Symfony HttpFoundation.
+O adaptador HTTP também cobre `->value(...)`, usado por rotas Silex com
+parâmetros opcionais.

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/http.php';
 require_once __DIR__ . '/mailer.php';
+require_once __DIR__ . '/session.php';
 require_once __DIR__ . '/twig.php';
 
 function iahx_modern_create_search_application($templatePath, array $options = array()) {
@@ -17,6 +18,7 @@ function iahx_modern_create_search_application($templatePath, array $options = a
             $options['smtp_password'] ?? null,
             $options['smtp_encryption'] ?? null
         ),
+        'session' => iahx_modern_create_session($options['session'] ?? array()),
     );
 
     return iahx_modern_create_application($services);
