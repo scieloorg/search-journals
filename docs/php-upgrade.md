@@ -74,6 +74,7 @@ Comandos úteis:
 npm run compat:php85:version
 npm run compat:php85:deps
 npm run compat:php85:modern-bootstrap
+npm run compat:php85:modern-http
 npm run compat:php85:modern-mailer
 npm run compat:php85
 ```
@@ -96,3 +97,8 @@ registra extensões e renderiza uma expressão mínima com os helpers existentes
 Symfony Mailer. O teste `tests/php_compat/modern_mailer.php` reutiliza a
 configuração SMTP conceitual do legado e envia uma mensagem real para o MailHog
 do Docker pela porta exposta em `localhost:1025`.
+
+`iahx/lib/modern/http.php` inicia a substituição paralela do Silex por
+componentes Symfony de HTTP e Routing. A primeira versão mantém a superfície
+essencial usada pelas views (`get`, `post`, `match`, `handle` e `run`) para que
+as rotas possam ser migradas gradualmente.
