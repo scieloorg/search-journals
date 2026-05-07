@@ -75,6 +75,8 @@ Com o ambiente Docker local em execução:
 npm run smoke
 ```
 
+Por padrão, a suíte usa `http://127.0.0.1` como destino local.
+
 Para subir o ambiente local antes do teste, garanta que as portas configuradas
 no `docker-compose-dev.yml` estejam livres, principalmente `80`, `8025`, `8080`
 e `8983`.

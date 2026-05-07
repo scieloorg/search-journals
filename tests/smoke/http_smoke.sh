@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL="${BASE_URL:-http://localhost}"
+BASE_URL="${BASE_URL:-http://127.0.0.1}"
 HOST_HEADER="${HOST_HEADER:-}"
 JSON_ACCESS_TOKEN="${JSON_ACCESS_TOKEN:-}"
 
