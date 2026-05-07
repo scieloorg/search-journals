@@ -73,9 +73,20 @@ Comandos úteis:
 ```bash
 npm run compat:php85:version
 npm run compat:php85:deps
+npm run compat:php85:modern-bootstrap
 npm run compat:php85
 ```
 
 Esse container ainda não substitui o webapp Apache. A troca do runtime depende
 da remoção do vendor Silex/Twig/Swiftmailer antigo ou da criação de um novo
 bootstrap compatível com Symfony/Twig/Mailer modernos.
+
+## Bootstrap moderno em andamento
+
+`iahx/lib/modern/twig.php` inicia a camada paralela para Twig 3. Ela registra
+as mesmas funções e filtros Twig usados pelos templates legados, mas usando as
+classes modernas `TwigFunction` e `TwigFilter`.
+
+Essa camada ainda não atende requisições HTTP. Por enquanto, ela é validada por
+`tests/php_compat/modern_bootstrap.php`, que garante que o Twig 3 inicializa,
+registra extensões e renderiza uma expressão mínima com os helpers existentes.
