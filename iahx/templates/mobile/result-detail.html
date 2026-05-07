@@ -21,7 +21,7 @@
 	            <!-- title -->
 	            <h1 class="c-results-tit">{{ occ( {'element': doc.ti, separator: ' / '} ) }}</h1>
 			    <!-- author -->
-			    <h2 class="c-results-intro">
+			    <div class="c-results-intro">
 				<div class="author">
 				    {% if doc.au is defined %}
 				    
@@ -33,7 +33,7 @@
 				</div>          
 
 					{% include "result-inc-source.html" %}
-				</h2>
+				</div>
 
 				<!-- subject -->
                 {% if doc.mh is defined  %}
