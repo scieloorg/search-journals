@@ -74,6 +74,7 @@ Comandos úteis:
 npm run compat:php85:version
 npm run compat:php85:deps
 npm run compat:php85:modern-bootstrap
+npm run compat:php85:modern-mailer
 npm run compat:php85
 ```
 
@@ -90,3 +91,8 @@ classes modernas `TwigFunction` e `TwigFilter`.
 Essa camada ainda não atende requisições HTTP. Por enquanto, ela é validada por
 `tests/php_compat/modern_bootstrap.php`, que garante que o Twig 3 inicializa,
 registra extensões e renderiza uma expressão mínima com os helpers existentes.
+
+`iahx/lib/modern/mailer.php` inicia a substituição paralela do Swiftmailer por
+Symfony Mailer. O teste `tests/php_compat/modern_mailer.php` reutiliza a
+configuração SMTP conceitual do legado e envia uma mensagem real para o MailHog
+do Docker pela porta exposta em `localhost:1025`.
