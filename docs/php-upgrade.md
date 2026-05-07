@@ -73,6 +73,7 @@ Comandos úteis:
 ```bash
 npm run compat:php85:version
 npm run compat:php85:deps
+npm run compat:php85:modern-app
 npm run compat:php85:modern-bootstrap
 npm run compat:php85:modern-http
 npm run compat:php85:modern-mailer
@@ -102,3 +103,7 @@ do Docker pela porta exposta em `localhost:1025`.
 componentes Symfony de HTTP e Routing. A primeira versão mantém a superfície
 essencial usada pelas views (`get`, `post`, `match`, `handle` e `run`) para que
 as rotas possam ser migradas gradualmente.
+
+`iahx/lib/modern/app.php` monta essas peças em um único objeto de aplicação,
+registrando `twig` e `mailer` como serviços acessíveis por `$app[...]`. Esse é
+o ponto de entrada inicial para portar as views sem depender do container Silex.

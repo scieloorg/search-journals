@@ -24,6 +24,7 @@
   "scripts": {
     "compat:php85": "bash tests/php_compat/lint_app_php85.sh",
     "compat:php85:deps": "docker compose -f docker-compose-php85.yml run --rm php85 composer validate --strict composer.modern.json",
+    "compat:php85:modern-app": "bash tests/php_compat/modern_app.sh",
     "compat:php85:modern-bootstrap": "bash tests/php_compat/modern_bootstrap.sh",
     "compat:php85:modern-http": "bash tests/php_compat/modern_http.sh",
     "compat:php85:modern-mailer": "bash tests/php_compat/modern_mailer.sh",
