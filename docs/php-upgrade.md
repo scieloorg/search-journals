@@ -75,6 +75,7 @@ npm run compat:php85:version
 npm run compat:php85:deps
 npm run compat:php85:modern-app
 npm run compat:php85:modern-bootstrap
+npm run compat:php85:modern-bookmark
 npm run compat:php85:modern-http
 npm run compat:php85:modern-mailer
 npm run compat:php85
@@ -112,3 +113,7 @@ do container Silex.
 `iahx/lib/modern/session.php` cria a sessão moderna via Symfony HttpFoundation.
 O adaptador HTTP também cobre `->value(...)`, usado por rotas Silex com
 parâmetros opcionais.
+
+`tests/php_compat/modern_bookmark_route.php` é o primeiro teste carregando uma
+rota real legada dentro do bootstrap moderno. Ele valida `views/bookmark.php`
+com sessão, parâmetros opcionais e respostas Symfony no PHP 8.5.

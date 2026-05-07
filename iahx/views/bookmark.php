@@ -14,7 +14,7 @@ $app->match('bookmark/{action}/{id}', function (Request $request, $action, $id) 
     
     $bookmark = $SESSION->get('bookmark');
 
-    if(strpos($id,",") !== false) {
+    if($id !== NULL && strpos($id,",") !== false) {
         $id = explode(",",$id);
         $id = array_filter($id);
     }
@@ -58,7 +58,7 @@ $app->match('bookmark/{action}/{id}', function (Request $request, $action, $id) 
     $SESSION->save();
 
     if($action == 'list') {
-        $q = '+id:("' . join(array_keys($bookmark), '" OR "') . '")';
+        $q = '+id:("' . implode('" OR "', array_keys($bookmark)) . '")';
         return new Response($q);    
     }
     
