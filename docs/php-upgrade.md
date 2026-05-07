@@ -79,6 +79,7 @@ npm run compat:php85:modern-bootstrap
 npm run compat:php85:modern-bookmark
 npm run compat:php85:modern-history
 npm run compat:php85:modern-http
+npm run compat:php85:modern-list-filter
 npm run compat:php85:modern-mailer
 npm run compat:php85
 ```
@@ -125,3 +126,7 @@ bootstrap moderno e valida o caminho HTTP + sessão + Twig com uma view real.
 
 `tests/php_compat/modern_advanced_route.php` carrega `views/advanced.php` no
 bootstrap moderno e valida renderizacao Twig, sessão e logging no PHP 8.5.
+
+`tests/php_compat/modern_list_filter_route.php` carrega `views/list_filter.php`
+no bootstrap moderno com uma implementação fake de `Dia`, validando a rota real
+e seu template sem consultar o Solr.

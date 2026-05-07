@@ -30,6 +30,7 @@
     "compat:php85:modern-bookmark": "bash tests/php_compat/modern_bookmark_route.sh",
     "compat:php85:modern-history": "bash tests/php_compat/modern_history_route.sh",
     "compat:php85:modern-http": "bash tests/php_compat/modern_http.sh",
+    "compat:php85:modern-list-filter": "bash tests/php_compat/modern_list_filter_route.sh",
     "compat:php85:modern-mailer": "bash tests/php_compat/modern_mailer.sh",
     "compat:php85:version": "docker compose -f docker-compose-php85.yml run --rm php85 php -v",
     "smoke": "bash tests/smoke/http_smoke.sh",
