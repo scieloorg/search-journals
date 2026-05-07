@@ -21,5 +21,8 @@ function iahx_modern_create_search_application($templatePath, array $options = a
         'session' => iahx_modern_create_session($options['session'] ?? array()),
     );
 
-    return iahx_modern_create_application($services);
+    $app = iahx_modern_create_application($services);
+    $app['twig']->addGlobal('app', $app);
+
+    return $app;
 }

@@ -29,16 +29,18 @@
 							</div>
 							<div class="selectBox index">
 		                        <select name="index[]">
-		                            {% for index in collectionData.index_list.index if not index.advanced %}
-		                                {% if params.index is defined %}
-		                                    {% if index.prefix == params.index %}
-		                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+		                            {% for index in collectionData.index_list.index %}
+		                                {% if not index.advanced %}
+			                                {% if params.index is defined %}
+			                                    {% if index.prefix == params.index %}
+			                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
 		                                    {% else %}
 		                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
 		                                    {% endif %}
 		                                {% else %}
-		                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-		                                {% endif %}
+			                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+			                                {% endif %}
+			                                {% endif %}
 		                            {% endfor %}
 		                        </select>
 		                    </div>
@@ -89,16 +91,18 @@
 		                    </div>
 		                    <div class="selectBox index">
 		                        <select name="index[]">
-		                            {% for index in collectionData.index_list.index if not index.advanced %}
-		                                {% if params.index is defined %}
-		                                    {% if index.prefix == params.index %}
-		                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+		                            {% for index in collectionData.index_list.index %}
+		                                {% if not index.advanced %}
+			                                {% if params.index is defined %}
+			                                    {% if index.prefix == params.index %}
+			                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
 		                                    {% else %}
 		                                        <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
 		                                    {% endif %}
 		                                {% else %}
-		                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
-		                                {% endif %}
+			                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+			                                {% endif %}
+			                                {% endif %}
 		                            {% endfor %}
 		                        </select>
 		                    </div>

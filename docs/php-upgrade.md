@@ -76,6 +76,7 @@ npm run compat:php85:deps
 npm run compat:php85:modern-app
 npm run compat:php85:modern-bootstrap
 npm run compat:php85:modern-bookmark
+npm run compat:php85:modern-history
 npm run compat:php85:modern-http
 npm run compat:php85:modern-mailer
 npm run compat:php85
@@ -117,3 +118,6 @@ parâmetros opcionais.
 `tests/php_compat/modern_bookmark_route.php` é o primeiro teste carregando uma
 rota real legada dentro do bootstrap moderno. Ele valida `views/bookmark.php`
 com sessão, parâmetros opcionais e respostas Symfony no PHP 8.5.
+
+`tests/php_compat/modern_history_route.php` carrega `views/history.php` no
+bootstrap moderno e valida o caminho HTTP + sessão + Twig com uma view real.
