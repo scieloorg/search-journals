@@ -35,6 +35,10 @@ function has_translation($label, $group=NULL) {
     }
 }
 
+function config_bool($value) {
+    return filter_var((string) $value, FILTER_VALIDATE_BOOLEAN);
+}
+
 
 // funcao retirada da pagina http://www.php.net/utf8_encode
 function isUTF8($string){

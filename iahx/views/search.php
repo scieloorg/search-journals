@@ -454,7 +454,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
             break;
 
         default:
-            $check_mobile = (bool)$config->mobile_version;
+            $check_mobile = config_bool($config->mobile_version);
             $view = ( isset($params['view']) ? $params['view'] : '');
 
             if( $view == 'desktop' ) {   // forced by user desktop version

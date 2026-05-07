@@ -49,7 +49,7 @@
 	<maintenance>false</maintenance>
 	<feedback_id></feedback_id>
 	<browse_index_url></browse_index_url>
-	<mobile_version>false</mobile_version>
+	<mobile_version>true</mobile_version>
     <publication_year_start>1909</publication_year_start>
     <sharethis_pub>42009467-3534-44d9-901d-6bfa29a807c4</sharethis_pub>
 	<search_collection_list>

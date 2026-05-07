@@ -12,6 +12,7 @@
 * {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
 body {
 	font: 11px "Arial", Helvetica, Sans-Serif;
@@ -312,10 +313,13 @@ img {
 	position: relative;
 }
 .c-results-a {
+	width: 100%;
 	float: left;
 	color: rgb(51,51,51);
 	text-decoration: none;
 	padding: 0 40px 0 7px;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 .c-results-tit {
 	width: 100%;
@@ -325,6 +329,8 @@ img {
 	font-size: 14px;
 	line-height: 16px;
 	margin: 0 0 2px 0;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 .c-results-intro {
 	width: 100%;
@@ -333,6 +339,8 @@ img {
 	font-weight: normal;
 	color: rgb(51,51,51);
 	line-height: 15px;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 .c-results-lang {
 	width: 100%;
@@ -443,6 +451,7 @@ img {
 	}
 }
 .input-search {
+	flex: 1 1 auto;
 	width: 70%;
 	font-size: 11px;
 	min-height: 20px;
@@ -451,6 +460,17 @@ img {
 	border: 1px solid rgb(60,67,75);
 	padding: 2px 7px;
 	border-radius: 5px;
+}
+.form-search {
+	form {
+		display: flex;
+		gap: 6px;
+		width: 100%;
+	}
+}
+.b-search {
+	flex: 0 0 61px;
+	margin-left: 0;
 }
 .c-filters-ck {
 	float: left;

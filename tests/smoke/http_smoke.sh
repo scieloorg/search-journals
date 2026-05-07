@@ -12,18 +12,25 @@ curl_args=(-sS -L --connect-timeout 5 --max-time 30)
 if [[ -n "$HOST_HEADER" ]]; then
   curl_args+=(-H "Host: $HOST_HEADER")
 fi
+mobile_curl_args=("${curl_args[@]}" -A "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1")
 
 failures=0
 
 run_request() {
   local name="$1"
   local path="$2"
+  local mode="${3:-default}"
   local body_file="$TMP_DIR/${name}.body"
   local headers_file="$TMP_DIR/${name}.headers"
   local status
+  local -a request_args=("${curl_args[@]}")
+
+  if [[ "$mode" == "mobile" ]]; then
+    request_args=("${mobile_curl_args[@]}")
+  fi
 
   status="$(
-    curl "${curl_args[@]}" \
+    curl "${request_args[@]}" \
       -D "$headers_file" \
       -o "$body_file" \
       -w '%{http_code}' \
@@ -108,6 +115,15 @@ assert_header_contains search "content-type: text/html"
 assert_body_contains search "SciELO"
 assert_body_not_contains search "Fatal error"
 assert_body_not_contains search "Warning:"
+
+run_request mobile "/?q=malaria&lang=en&count=1" mobile >/dev/null
+assert_status mobile 200
+assert_header_contains mobile "content-type: text/html"
+assert_body_contains mobile "css/mobile/style.min.css"
+assert_body_contains mobile "css/mobile/responsive.css"
+assert_body_contains mobile "class=\"mobile\""
+assert_body_not_contains mobile "Fatal error"
+assert_body_not_contains mobile "Warning:"
 
 json_path="/?q=malaria&lang=en&count=1&output=json"
 if [[ -n "$JSON_ACCESS_TOKEN" ]]; then
