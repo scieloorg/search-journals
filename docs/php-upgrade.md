@@ -61,3 +61,21 @@ O conjunto inicial substitui:
 
 Esse manifesto deve ser usado para construir o novo bootstrap antes de remover
 `iahx/lib/silex/vendor`.
+
+## Container PHP 8.5 paralelo
+
+O arquivo `docker-compose-php85.yml` define um serviço `php85` separado do
+runtime PHP 5. Ele usa `Dockerfile-php85` e serve para validações de
+compatibilidade enquanto a aplicação ainda roda no container legado.
+
+Comandos úteis:
+
+```bash
+npm run compat:php85:version
+npm run compat:php85:deps
+npm run compat:php85
+```
+
+Esse container ainda não substitui o webapp Apache. A troca do runtime depende
+da remoção do vendor Silex/Twig/Swiftmailer antigo ou da criação de um novo
+bootstrap compatível com Symfony/Twig/Mailer modernos.

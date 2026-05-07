@@ -23,6 +23,8 @@
   "devDependencies": {},
   "scripts": {
     "compat:php85": "bash tests/php_compat/lint_app_php85.sh",
+    "compat:php85:deps": "docker compose -f docker-compose-php85.yml run --rm php85 composer validate --strict composer.modern.json",
+    "compat:php85:version": "docker compose -f docker-compose-php85.yml run --rm php85 php -v",
     "smoke": "bash tests/smoke/http_smoke.sh",
     "test": "npm run smoke"
   },

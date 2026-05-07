@@ -1,0 +1,12 @@
+name: search-journals-php85
+
+services:
+    php85:
+        build:
+            context: .
+            dockerfile: ./Dockerfile-php85
+        working_dir: /app
+        volumes:
+            - ./:/app
+        environment:
+            - COMPOSER=composer.modern.json
