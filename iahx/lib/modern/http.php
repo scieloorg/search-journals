@@ -99,7 +99,20 @@ class IahxModernApplication implements ArrayAccess {
             $arguments[] = array_key_exists($name, $attributes) ? $attributes[$name] : null;
         }
 
-        return call_user_func_array($controller, $arguments);
+        ob_start();
+        try {
+            $result = call_user_func_array($controller, $arguments);
+            $output = ob_get_clean();
+        } catch (Throwable $exception) {
+            ob_end_clean();
+            throw $exception;
+        }
+
+        if ($result === null && $output !== '') {
+            return $output;
+        }
+
+        return $result;
     }
 
     private function controllerParameters($controller) {
