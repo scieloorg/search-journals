@@ -82,6 +82,7 @@ npm run compat:php85:modern-http
 npm run compat:php85:modern-list-filter
 npm run compat:php85:modern-mailer
 npm run compat:php85:modern-resource
+npm run compat:php85:modern-scielo-index
 npm run compat:php85
 ```
 
@@ -135,3 +136,11 @@ e seu template sem consultar o Solr.
 `tests/php_compat/modern_resource_route.php` carrega `views/resource.php` no
 bootstrap moderno com uma implementação fake de `Dia`, validando renderização
 Twig mobile, sessão e logging sem consultar o Solr.
+
+`iahx-sites/scieloorg/modern_index.php` é o primeiro ponto de entrada HTTP
+moderno para a aplicação SciELO. Ele carrega `modern_environment.php` e
+`modern_routes.php`, mantendo o `index.php` legado intacto enquanto as rotas
+restantes ainda são migradas.
+
+`tests/php_compat/modern_scielo_index.php` valida esse ponto de entrada moderno
+com as rotas já portadas.
