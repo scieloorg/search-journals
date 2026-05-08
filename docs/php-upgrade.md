@@ -69,10 +69,13 @@ runtime PHP 5. Ele usa `Dockerfile-php85` e serve para validações de
 compatibilidade enquanto a aplicação ainda roda no container legado.
 
 O mesmo compose também define `php85-web`, um servidor HTTP PHP 8.5 apontado
-para `iahx-sites/scieloorg/modern_index.php`. Ele expõe `localhost:8085` e
-serve apenas as rotas já carregadas em `modern_routes.php`. Para a rota
-principal de busca, o serviço usa `host.docker.internal:8080` como ponte para o
-Solr controller do stack de desenvolvimento.
+para `iahx-sites/scieloorg/modern_index.php`. Ele usa `Dockerfile-php85-web`,
+uma imagem runtime separada da imagem CLI: instala dependências Composer em um
+stage intermediário, não inclui Composer/git/unzip no runtime final, roda como
+usuário não-root e derruba Linux capabilities pelo Compose. Ele expõe
+`localhost:8085` e serve apenas as rotas já carregadas em `modern_routes.php`.
+Para a rota principal de busca, o serviço usa `host.docker.internal:8080` como
+ponte para o Solr controller do stack de desenvolvimento.
 
 Comandos úteis:
 

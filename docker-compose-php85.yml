@@ -14,10 +14,8 @@ services:
     php85-web:
         build:
             context: .
-            dockerfile: ./Dockerfile-php85
+            dockerfile: ./Dockerfile-php85-web
         working_dir: /app/iahx-sites/scieloorg
-        volumes:
-            - ./:/app
         ports:
             - "8085:8085"
         environment:
@@ -27,7 +25,7 @@ services:
             - SEARCH_SOLR_SERVER=host.docker.internal:8080
             - SEARCH_SMTP_SERVER=host.docker.internal
             - SEARCH_SMTP_PORT=1025
-        command:
-            - sh
-            - -lc
-            - cd /app && composer install --no-interaction --no-progress --working-dir=/app && cd /app/iahx-sites/scieloorg && php -S 0.0.0.0:8085 modern_router.php
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
