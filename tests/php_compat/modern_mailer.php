@@ -31,4 +31,13 @@ iahx_modern_send_search_email(
     '<p>Modern Symfony Mailer bootstrap passed.</p>'
 );
 
+$app = array('mailer' => $mailer);
+iahx_send_search_email(
+    $app,
+    'Legacy mailer compatibility smoke',
+    'SciELO Search',
+    'recipient@example.org',
+    '<p>Legacy search mail function delegated to Symfony Mailer.</p>'
+);
+
 echo "Modern Mailer bootstrap passed\n";

@@ -42,6 +42,12 @@ function iahx_modern_send_search_email(MailerInterface $mailer, $subject, $fromN
     return true;
 }
 
+if (!function_exists('iahx_send_search_email')) {
+    function iahx_send_search_email($app, $subject, $fromName, $toEmail, $htmlBody) {
+        return iahx_modern_send_search_email($app['mailer'], $subject, $fromName, $toEmail, $htmlBody);
+    }
+}
+
 function iahx_modern_normalize_recipients($toEmail) {
     if (!is_array($toEmail)) {
         $toEmail = explode(';', $toEmail);

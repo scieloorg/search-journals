@@ -103,7 +103,9 @@ registra extensões e renderiza uma expressão mínima com os helpers existentes
 `iahx/lib/modern/mailer.php` inicia a substituição paralela do Swiftmailer por
 Symfony Mailer. O teste `tests/php_compat/modern_mailer.php` reutiliza a
 configuração SMTP conceitual do legado e envia uma mensagem real para o MailHog
-do Docker pela porta exposta em `localhost:1025`.
+do Docker pela porta exposta em `localhost:1025`. Ele também expõe a função
+legada `iahx_send_search_email()` no bootstrap moderno, delegando para Symfony
+Mailer para preservar o contrato usado por `views/search.php`.
 
 `iahx/lib/modern/http.php` inicia a substituição paralela do Silex por
 componentes Symfony de HTTP e Routing. A primeira versão mantém a superfície
