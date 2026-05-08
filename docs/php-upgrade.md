@@ -68,6 +68,10 @@ O arquivo `docker-compose-php85.yml` define um serviço `php85` separado do
 runtime PHP 5. Ele usa `Dockerfile-php85` e serve para validações de
 compatibilidade enquanto a aplicação ainda roda no container legado.
 
+O mesmo compose também define `php85-web`, um servidor HTTP PHP 8.5 apontado
+para `iahx-sites/scieloorg/modern_index.php`. Ele expõe `localhost:8085` e
+serve apenas as rotas já carregadas em `modern_routes.php`.
+
 Comandos úteis:
 
 ```bash
@@ -84,6 +88,7 @@ npm run compat:php85:modern-mailer
 npm run compat:php85:modern-resource
 npm run compat:php85:modern-scielo-index
 npm run compat:php85
+npm run smoke:modern
 ```
 
 Esse container ainda não substitui o webapp Apache. A troca do runtime depende
