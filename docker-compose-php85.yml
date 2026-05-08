@@ -23,6 +23,8 @@ services:
         environment:
             - COMPOSER=composer.modern.json
             - SEARCH_USE_HTTPS=false
+            - SEARCH_SOLR_CORE=solr/articles
+            - SEARCH_SOLR_SERVER=host.docker.internal:8080
             - SEARCH_SMTP_SERVER=host.docker.internal
             - SEARCH_SMTP_PORT=1025
         command:

@@ -1,8 +1,8 @@
 <?php
 
 require_once 'lib/class/dia.class.php';
-include 'lib/class/log.class.php';
-include 'lib/Mobile_Detect.php';
+include_once 'lib/class/log.class.php';
+include_once 'lib/Mobile_Detect.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

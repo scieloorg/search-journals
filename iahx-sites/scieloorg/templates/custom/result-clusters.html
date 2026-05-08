@@ -68,7 +68,8 @@
                     {% endif %}
                 {% endfor %}
 
-                {% for name, cluster in clusters if cluster|length > 0 %}
+                {% for name, cluster in clusters %}
+                    {% if cluster|length > 0 %}
 
                     {% set cluster_labels = 'REFINE_' ~ name %}
 
@@ -98,14 +99,17 @@
                                             <div class="col-xs-9">
 
                                                 <input type="checkbox" name="filter[{{ name }}][]" value='*' id="{{name}}_ALL"
-                                                {% for filter_name, filter in filters if filter_name == name %}
-                                                    {% if filter.0 == '*' %}checked="true"{% endif %}
+                                                {% for filter_name, filter in filters %}
+                                                    {% if filter_name == name %}
+                                                        {% if filter.0 == '*' %}checked="true"{% endif %}
+                                                    {% endif %}
                                                 {% endfor %}
                                                 class="checkbox">
                                                 <label class="checkbox" for="{{name}}_ALL">{{ texts.ALL_ITEMS }}</label>
                                             </div>
                                         </li>
-                                        {% for item in cluster if item.0 != '' %}
+                                        {% for item in cluster %}
+                                            {% if item.0 != '' %}
                                             {% set cluster_item_id = name ~ '_'
 ~ item.0|slugify %}
 
@@ -121,8 +125,10 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                 <li class="filterItem row" data-item="{{ translate(item.0, cluster_labels ) }}" data-count="{{ item.1 }}">
                                                     <div class="{% if '/' in item.0 %}subtopic{% endif %} col-xs-9">
                                                         <input type="checkbox" name="filter[{{ name }}][]" value='{{ item.0 }}' id="{{ cluster_item_id }}"
-                                                        {% for filter_name, filter in filters if filter_name == name %}
-                                                            {% if item.0 in filter %}checked="true"{% endif %}
+                                                        {% for filter_name, filter in filters %}
+                                                            {% if filter_name == name %}
+                                                                {% if item.0 in filter %}checked="true"{% endif %}
+                                                            {% endif %}
                                                         {% endfor %}
                                                         class="checkbox">
                                                         {% set item_label = translate(item.0, cluster_labels ) %}
@@ -141,6 +147,7 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                                     </div>
                                                 </li>
                                             {% endif %}
+                                            {% endif %}
                                         {% endfor %}
                                         {% if (cluster|length % collectionData.cluster_items_limit) == 0 %}
                                             <a href="javascript:;" class="icon select openSelectItens" data-rel="#ul_{{ name }}" data-filter="{{ name }}" data-label="{{ attribute(texts.REFINE, name) }}">{{ texts.SHOW_ALL_ITEMS }}...</a>
@@ -149,6 +156,7 @@ attribute(texts.REFINE_la, item.0|slugify) == '' %}
                                 </div>
                             </div>
                         {% endif %}
+                    {% endif %}
                     {% endif %}
                 {% endfor %}
             </form>

@@ -70,6 +70,12 @@ assert_body_not_contains() {
 
 echo "Smoke testing modern PHP at ${BASE_URL}"
 
+run_request search "/?q=malaria&lang=en&count=1"
+assert_status search 200
+assert_body_contains search "SciELO"
+assert_body_not_contains search "Fatal error"
+assert_body_not_contains search "Warning:"
+
 run_request advanced "/advanced/?lang=en"
 assert_status advanced 200
 assert_body_contains advanced "Advanced Search"

@@ -70,7 +70,9 @@ compatibilidade enquanto a aplicação ainda roda no container legado.
 
 O mesmo compose também define `php85-web`, um servidor HTTP PHP 8.5 apontado
 para `iahx-sites/scieloorg/modern_index.php`. Ele expõe `localhost:8085` e
-serve apenas as rotas já carregadas em `modern_routes.php`.
+serve apenas as rotas já carregadas em `modern_routes.php`. Para a rota
+principal de busca, o serviço usa `host.docker.internal:8080` como ponte para o
+Solr controller do stack de desenvolvimento.
 
 Comandos úteis:
 
@@ -151,3 +153,7 @@ restantes ainda são migradas.
 
 `tests/php_compat/modern_scielo_index.php` valida esse ponto de entrada moderno
 com as rotas já portadas.
+
+`modern_routes.php` já carrega a rota principal `views/search.php`, além das
+rotas menores migradas. O smoke moderno cobre `search`, `advanced`, `bookmark`
+e `history` no web container PHP 8.5.

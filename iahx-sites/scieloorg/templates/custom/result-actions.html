@@ -22,17 +22,21 @@
                                 {% endif %}
                             {% endfor %}
 
-                            {% for name, items in filters if filters is defined %}
-                                {% for item in items %}
-                                    <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                            {% if filters is defined %}
+                                {% for name, items in filters %}
+                                    {% for item in items %}
+                                        <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
+                            {% endif %}
 
-                            {% for name, items in filter_boolean_operator if filter_boolean_operator is defined %}
-                                {% for item in items %}
-                                    <input type="hidden" name="filter_boolean_operator[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                            {% if filter_boolean_operator is defined %}
+                                {% for name, items in filter_boolean_operator %}
+                                    {% for item in items %}
+                                        <input type="hidden" name="filter_boolean_operator[{{ name }}][]" value="{{ item }}" data-filter="{{name}}">
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
+                            {% endif %}
 
     						<div class="modal-body">
                                 <div id="no_cluster_selected" style="display:none; text-align: center;">
