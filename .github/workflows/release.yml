@@ -27,6 +27,7 @@ jobs:
       - name: Build image
         run: |
           docker build \
+            -f Dockerfile-php85 \
             -t infrascielo/search-journals:${VERSION} \
             -t infrascielo/search-journals:latest \
             .
