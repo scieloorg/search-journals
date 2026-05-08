@@ -9,7 +9,7 @@
     {% block btn_fulltext %}
         {% if doc.ur is defined %}
             <li class="c-share-li">
-                <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in) }}/scielo.php?script=sci_arttext&pid={{doc.ur|substring_after}}&lang={{lang}}">
+                <a target="_blank" href="{{ attribute(config.scielo_urls, doc.in.0) }}/scielo.php?script=sci_arttext&pid={{doc.ur.0|substring_after}}&lang={{lang}}">
                     {{ texts.FULLTEXT }}
                 </a>
             </li>

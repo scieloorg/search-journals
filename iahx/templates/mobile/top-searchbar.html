@@ -13,11 +13,13 @@
             <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 
             
-            {% for name, items in filters if filters is defined %}
-                {% for item in items %}
-                    <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+            {% if filters is defined %}
+                {% for name, items in filters %}
+                    {% for item in items %}
+                        <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
 
     
             <input type="text" name="q" id="q" value="{% if params.q is defined %}{{ params.q }}{% else %}{{ texts.SEARCH_WORDS }}{% endif %}" class="input-search {% if params.q is not defined %}defaultValue{% endif %}" title="{{ texts.SEARCH_WORDS }}" placeholder="{{ texts.SEARCH_WORDS }}" onfocus="if(this.value=='{{ texts.SEARCH_WORDS }}') this.value = '';" onblur="if(this.value=='') this.value = '{{ texts.SEARCH_WORDS }}';" onkeydown="$('#q').removeClass('defaultValue');">

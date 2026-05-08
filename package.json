@@ -32,6 +32,7 @@
     "compat:php85:modern-http": "bash tests/php_compat/modern_http.sh",
     "compat:php85:modern-list-filter": "bash tests/php_compat/modern_list_filter_route.sh",
     "compat:php85:modern-mailer": "bash tests/php_compat/modern_mailer.sh",
+    "compat:php85:modern-resource": "bash tests/php_compat/modern_resource_route.sh",
     "compat:php85:version": "docker compose -f docker-compose-php85.yml run --rm php85 php -v",
     "smoke": "bash tests/smoke/http_smoke.sh",
     "test": "npm run smoke"
