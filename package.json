@@ -22,7 +22,22 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compat:php85": "bash tests/php_compat/lint_app_php85.sh",
+    "compat:php85:deps": "docker compose -f docker-compose-php85.yml run --rm php85 composer validate --strict composer.modern.json",
+    "compat:php85:modern-advanced": "bash tests/php_compat/modern_advanced_route.sh",
+    "compat:php85:modern-app": "bash tests/php_compat/modern_app.sh",
+    "compat:php85:modern-bootstrap": "bash tests/php_compat/modern_bootstrap.sh",
+    "compat:php85:modern-bookmark": "bash tests/php_compat/modern_bookmark_route.sh",
+    "compat:php85:modern-history": "bash tests/php_compat/modern_history_route.sh",
+    "compat:php85:modern-http": "bash tests/php_compat/modern_http.sh",
+    "compat:php85:modern-list-filter": "bash tests/php_compat/modern_list_filter_route.sh",
+    "compat:php85:modern-mailer": "bash tests/php_compat/modern_mailer.sh",
+    "compat:php85:modern-resource": "bash tests/php_compat/modern_resource_route.sh",
+    "compat:php85:modern-scielo-index": "bash tests/php_compat/modern_scielo_index.sh",
+    "compat:php85:version": "docker compose -f docker-compose-php85.yml run --rm php85 php -v",
+    "smoke:modern": "bash tests/smoke/modern_http_smoke.sh",
+    "smoke": "bash tests/smoke/http_smoke.sh",
+    "test": "npm run smoke"
   },
   "repository": {
     "type": "git",

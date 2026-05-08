@@ -25,7 +25,7 @@
             <li class="h-nav-ul-li show-orderby">
                 <a class="h-nav-ul-lia" href="#">{{ texts.SORT_OPTIONS }} <i class="i-arrow-right"></i></a>
             </li>
-            <div class="orderby" style="display: none;">
+            <li class="orderby" style="display: none;">
                 <ul class="c-orderby-ul">
                 {% for sort in collectionData.sort_list.sort %}
                     {% set sort_label = 'SORT_' ~ sort.name %}
@@ -42,7 +42,7 @@
                     </li>                   
                 {% endfor %}
                 </ul>
-            </div>
+            </li>
         </ul>
         <div class="spacer"></div>
     </nav>

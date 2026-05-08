@@ -11,11 +11,13 @@
     <input type="hidden" name="fb" id="fb" value="">
     <input type="hidden" name="page" id="page" value="{% if params.page is defined %}{{ params.page }}{% else %}1{% endif %}">
 
-    {% for name, items in filters if filters is defined %}
-        {% for item in items %}
-            <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+    {% if filters is defined %}
+        {% for name, items in filters %}
+            {% for item in items %}
+                <input type="hidden" name="filter[{{ name }}][]" value="{{ item }}">
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    {% endif %}
 
 </form>
 <form name="searchFormBuilder" class="searchFormBuilder searchForm">
@@ -34,15 +36,17 @@
                     </div>
                     <div class="selectBox index">
                         <select name="index[]">
-                            {% for index in collectionData.index_list.index if not index.advanced %}
-                                {% if params.index is defined %}
-                                    {% if index.prefix == params.index %}
-                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% for index in collectionData.index_list.index %}
+                                {% if not index.advanced %}
+                                    {% if params.index is defined %}
+                                        {% if index.prefix == params.index %}
+                                            <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        {% else %}
+                                            <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        {% endif %}
                                     {% else %}
                                         <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
                                     {% endif %}
-                                {% else %}
-                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -95,15 +99,17 @@
                     </div>
                     <div class="selectBox index">
                         <select name="index[]">
-                            {% for index in collectionData.index_list.index if not index.advanced %}
-                                {% if params.index is defined %}
-                                    {% if index.prefix == params.index %}
-                                        <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                            {% for index in collectionData.index_list.index %}
+                                {% if not index.advanced %}
+                                    {% if params.index is defined %}
+                                        {% if index.prefix == params.index %}
+                                            <option value="{{ index.prefix }}" selected="true">{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        {% else %}
+                                            <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
+                                        {% endif %}
                                     {% else %}
                                         <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
                                     {% endif %}
-                                {% else %}
-                                    <option value="{{ index.prefix }}" >{{ attribute(texts.INDEXES, index.name) }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>

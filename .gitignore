@@ -1,8 +1,13 @@
 .DS_Store
 
 iahx/logs/*.txt
+iahx-sites/scieloorg/cache/
 iahx-sites/scieloorg/logs/
+logs/
 node_modules
+vendor-modern
 
 solr/8.5.1/cores/solrdata/data/articles/data
 solr/8.5.1/cores/solrdata/logs
+solr/9.10.1/cores/solrdata/logs/*
+!solr/9.10.1/cores/solrdata/logs/.gitkeep

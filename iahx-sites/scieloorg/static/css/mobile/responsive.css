@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.mobile {
+    min-width: 0;
+}
+
+.form-search form {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.input-search {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+}
+
+.b-search {
+    flex: 0 0 61px;
+    margin-left: 0;
+}
+
+.orderby {
+    list-style: none;
+}
+
+.simplePagerNav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.simplePagerNav li {
+    margin-left: 0;
+}
+
+.simplePagerNav a {
+    min-width: 32px;
+    text-align: center;
+}
+
+.c-results-a {
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.c-results-tit,
+.c-results-intro {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+@media (max-width: 360px) {
+    .h-padding,
+    .padding7,
+    .footer {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .c-results-a {
+        padding-left: 5px;
+        padding-right: 32px;
+    }
+
+    .simplePagerNav {
+        justify-content: center;
+        margin-right: 0;
+        padding: 0 5px 7px;
+    }
+}

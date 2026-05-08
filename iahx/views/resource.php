@@ -61,7 +61,7 @@ $app->get('resource/{lang}/{id}', function (Request $request, $lang, $id) use ($
     // log user action
     log_user_action($lang, $col, $site, 'id:' . $id, '', '', '', '', 'detail', $SESSION->getId());
 
-    $check_mobile = (bool)$config->mobile_version;
+    $check_mobile = config_bool($config->mobile_version);
     $view = $request->get("view");
 
     if( $view == 'desktop' ) {   // forced by user desktop version

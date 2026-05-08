@@ -35,6 +35,10 @@ function has_translation($label, $group=NULL) {
     }
 }
 
+function config_bool($value) {
+    return filter_var((string) $value, FILTER_VALIDATE_BOOLEAN);
+}
+
 
 // funcao retirada da pagina http://www.php.net/utf8_encode
 function isUTF8($string){
@@ -155,6 +159,26 @@ function addslashes_array($a){
             return addslashes($a);
         }
     }
+}
+
+function normalize_request_params($params) {
+    if (!function_exists('get_magic_quotes_gpc') || !get_magic_quotes_gpc()) {
+        return $params;
+    }
+
+    return stripslashes_array($params);
+}
+
+function stripslashes_array($value) {
+    if (is_array($value)) {
+        $clean = array();
+        foreach ($value as $key => $item) {
+            $clean[stripslashes($key)] = stripslashes_array($item);
+        }
+        return $clean;
+    }
+
+    return stripslashes($value);
 }
 
 /* Log User Actions */

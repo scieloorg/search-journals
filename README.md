@@ -64,6 +64,37 @@ Exemplo ```<initial_filter>network:"rve"</initial_filter>```
 * Apache2
 * Solr
 
+## Smoke tests:
+
+Antes de refatorar a aplicação, rode a suíte mínima de smoke tests contra o
+ambiente local ou de homologação para registrar o comportamento HTTP esperado.
+
+Com o ambiente Docker local em execução:
+
+```bash
+npm run smoke
+```
+
+Por padrão, a suíte usa `http://127.0.0.1` como destino local.
+
+Para subir o ambiente local antes do teste, garanta que as portas configuradas
+no `docker-compose-dev.yml` estejam livres, principalmente `80`, `8025`, `8080`
+e `8983`.
+
+Para apontar para outro host:
+
+```bash
+BASE_URL=https://search.scielo.org npm run smoke
+```
+
+Caso o Apache precise selecionar um virtual host específico:
+
+```bash
+HOST_HEADER=homolog-search.scielo.org npm run smoke
+```
+
+Os testes cobrem a página inicial, busca HTML, saída JSON, RSS e CSV.
+
 
 ## Licença de uso:
 

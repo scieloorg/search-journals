@@ -1,8 +1,8 @@
 <?php
 
 require_once 'lib/class/dia.class.php';
-include 'lib/class/log.class.php';
-include 'lib/Mobile_Detect.php';
+include_once 'lib/class/log.class.php';
+include_once 'lib/Mobile_Detect.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,23 +16,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
         $app['request']->query->all()
     );
 
-    // if magic quotes gpc is on, this function clean all parameters and
-    // results that was modified by the directive
-    if (get_magic_quotes_gpc()) {
-        $process = array(&$params);
-        while (list($key, $val) = each($process)) {
-            foreach ($val as $k => $v) {
-                unset($process[$key][$k]);
-                if (is_array($v)) {
-                    $process[$key][stripslashes($k)] = $v;
-                    $process[] = &$process[$key][stripslashes($k)];
-                } else {
-                    $process[$key][stripslashes($k)] = stripslashes($v);
-                }
-            }
-        }
-        unset($process);
-    }
+    $params = normalize_request_params($params);
 
     $collectionData = $DEFAULT_PARAMS['defaultCollectionData'];
     $site = $DEFAULT_PARAMS['defaultSite'];
@@ -361,21 +345,9 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
 
         $render = $app['twig']->render( custom_template('export-email.html'), $output_array);
         $subject = ($email['subject'] != '' ? $email['subject'] : $texts['SEARCH_HOME'] . ' | ' . $texts['BVS_TITLE']);
+        $from_name = $email['name'] . ' (' . $texts['BVS_HOME'] . ')';
 
-        # check if param email (to) is in the format of email list separated by ;
-        if ( !is_array($email['email']) && strpos($email['email'], ';') !== false) {
-            $to_email = explode(';', $email['email']);
-        }else{
-            $to_email = $email['email'];
-        }
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom(array(FROM_MAIL => $email['name'] . ' (' . $texts['BVS_HOME'] . ')') )
-            ->setTo($to_email)
-            ->setBody($render, 'text/html');
-
-        if ( $app['mailer']->send($message) ){
+        if (iahx_send_search_email($app, $subject, $from_name, $email['email'], $render)){
             $output_array['flash_message'] = 'MAIL_SUCCESS';
         }else{
             $output_array['flash_message'] = 'MAIL_FAIL';
@@ -482,7 +454,7 @@ $app->match('/', function (Request $request) use ($app, $DEFAULT_PARAMS, $config
             break;
 
         default:
-            $check_mobile = (bool)$config->mobile_version;
+            $check_mobile = config_bool($config->mobile_version);
             $view = ( isset($params['view']) ? $params['view'] : '');
 
             if( $view == 'desktop' ) {   // forced by user desktop version
