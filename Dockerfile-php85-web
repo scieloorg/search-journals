@@ -1,0 +1,28 @@
+FROM composer:2 AS vendor
+
+WORKDIR /app
+ENV COMPOSER=composer.modern.json
+
+COPY composer.modern.json composer.modern.lock ./
+RUN composer install --no-dev --no-interaction --no-progress --no-scripts --no-plugins
+
+FROM php:8.5-cli-alpine
+
+RUN apk upgrade --no-cache \
+    && apk del curl \
+    && addgroup -S app \
+    && adduser -S -D -H -s /sbin/nologin -G app app
+
+WORKDIR /app
+
+COPY --chown=app:app . /app
+COPY --from=vendor --chown=app:app /app/vendor-modern /app/vendor-modern
+
+RUN mkdir -p /app/iahx-sites/scieloorg/cache /app/iahx-sites/scieloorg/logs \
+    && chown -R app:app /app/iahx-sites/scieloorg/cache /app/iahx-sites/scieloorg/logs
+
+USER app
+WORKDIR /app/iahx-sites/scieloorg
+
+EXPOSE 8085
+CMD ["php", "-S", "0.0.0.0:8085", "modern_router.php"]

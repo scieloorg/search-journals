@@ -1,0 +1,10 @@
+.git
+.DS_Store
+node_modules
+vendor-modern
+iahx-sites/scieloorg/cache
+iahx-sites/scieloorg/logs
+logs
+solr/8.5.1/cores/solrdata/data/articles/data
+solr/8.5.1/cores/solrdata/logs
+solr/9.10.1/cores/solrdata/logs
