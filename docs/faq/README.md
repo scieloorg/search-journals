@@ -54,12 +54,7 @@ Se sua pergunta não foi respondida aqui, você pode:
    - Descreva sua dúvida detalhadamente
    - A equipe do SciELO responderá em breve
 
-### 2. **Consultar a documentação oficial**
-   - Visite [www.scielo.br](https://www.scielo.br)
-   - Procure pela seção de ajuda ou suporte
-   - Explore a base de conhecimento
-
-### 3. **Entrar em contato direto**
+### 2. **Entrar em contato direto**
    - Via formulário de contato no site do SciELO
    - Email de suporte técnico disponível no site
 
